@@ -1,0 +1,30 @@
+[Thread-4] WEBORB ERROR:27/1/2010 15:24:09:System.Exception: [erro anotado 38] Existem 2 clientes cadastrados para o cpf/cnpj 15974314000162    at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109 ---> System.Exception: Existem 2 clientes cadastrados para o cpf/cnpj 15974314000162
+   at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 152
+[Thread-4] WEBORB ERROR:27/1/2010 17:19:16:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-9] WEBORB ERROR:27/1/2010 18:05:16:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-8] WEBORB ERROR:27/1/2010 18:05:16:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-13] WEBORB ERROR:27/1/2010 18:05:16:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

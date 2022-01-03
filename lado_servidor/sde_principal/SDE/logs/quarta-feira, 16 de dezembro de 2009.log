@@ -1,0 +1,26 @@
+[Thread-13] WEBORB ERROR:16/12/2009 09:02:19:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:16/12/2009 09:02:19:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:16/12/2009 17:21:00:System.Exception: [erro anotado 2] Nome do tipo de lançamento não encontrado
+Deve existir o tipo 'DESPESAS DE VIAJEM'    at SDE.CamadaNuvem.NuvemModificacoes.Finan_lancamento_RecebimentoRota(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Lancamento lancamento) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 581 ---> System.Exception: Nome do tipo de lançamento não encontrado
+Deve existir o tipo 'DESPESAS DE VIAJEM'
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_lancamento_RecebimentoRota(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Lancamento lancamento) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 581
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_lancamento_RecebimentoRota(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Lancamento lancamento) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 590
+[Thread-12] WEBORB EXCEPTION:16/12/2009 17:21:39:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+   at Weborb.Protocols.ProtocolRegistry.BuildMessage(String contentType, Stream requestStream, NameValueCollection headers)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-21] WEBORB ERROR:16/12/2009 17:59:54:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

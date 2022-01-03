@@ -1,0 +1,147 @@
+[Thread-4] WEBORB ERROR:25/11/2009 09:01:25:System.Exception: [erro anotado] Object reference not set to an instance of an object. ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaServico.SMov.CalculaImpostos(Int32 idEmp, Mov mov, List`1 movItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SMov.cs:line 366
+   at SDE.CamadaServico.SMov.NovaMovPDV(Int32 idCorp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SMov.cs:line 156
+   --- End of inner exception stack trace ---
+   at SDE.CamadaServico.SMov.NovaMovPDV(Int32 idCorp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SMov.cs:line 178
+[Thread-4] WEBORB ERROR:25/11/2009 09:01:34:System.Exception: [erro anotado] Object reference not set to an instance of an object. ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaServico.SMov.CalculaImpostos(Int32 idEmp, Mov mov, List`1 movItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SMov.cs:line 366
+   at SDE.CamadaServico.SMov.NovaMovPDV(Int32 idCorp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SMov.cs:line 156
+   --- End of inner exception stack trace ---
+   at SDE.CamadaServico.SMov.NovaMovPDV(Int32 idCorp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SMov.cs:line 178
+[Thread-12] WEBORB ERROR:25/11/2009 10:51:49:System.ArgumentException: An item with the same key has already been added.
+   at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at GerenteCacheBancoDadosCliente.getCacheByIdCorp(Int32 idCorp) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\pattern\GerenteCacheBancoDadosCliente.cs:line 42
+   at GerenteCacheBancoDadosCliente.getAtualizacoes(Int32 idCorp, Int32 ultima) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\pattern\GerenteCacheBancoDadosCliente.cs:line 65
+   at SDE.CamadaNuvem.NuvemNotificacoes.Lista_Notificacoes(Int32 idCorp, Int32 ultima) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemNotificacoes.cs:line 18
+[Thread-11] WEBORB ERROR:25/11/2009 10:51:49:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:25/11/2009 10:59:33:Db4objects.Db4o.Ext.DatabaseFileLockedException: C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf ---> System.IO.IOException: The process cannot access the file 'C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at Sharpen.IO.RandomAccessFile..ctor(String file, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   --- End of inner exception stack trace ---
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.FileStorage.FileBin..ctor(BinConfiguration config)
+   at Db4objects.Db4o.IO.FileStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.StorageDecorator.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.CachingStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer.OpenImpl()
+   at Db4objects.Db4o.Internal.ObjectContainerBase._IRunnable_104.Run()
+   at Db4objects.Db4o.Foundation.DynamicVariable.With(Object value, IRunnable block)
+   at Db4objects.Db4o.Foundation.Environments.RunWith(IEnvironment environment, IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.WithEnvironment(IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.Open()
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer..ctor(IConfiguration config, String fileName)
+   at Db4objects.Db4o.Internal.ObjectContainerFactory.OpenObjectContainer(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(String databaseFileName)
+   at GerenteConectividadeBancoDados.get(Int32 idCorp, TipoBanco tipoBanco) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\pattern\GerenteConectividadeBancoDados.cs:line 99
+   at SDE.CamadaNuvem.SuperNuvem..ctor() in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 17
+   at SDE.CamadaNuvem.NuvemNotificacoes..ctor()
+[Thread-11] WEBORB ERROR:25/11/2009 10:59:33:Db4objects.Db4o.Ext.DatabaseFileLockedException: C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf ---> System.IO.IOException: The process cannot access the file 'C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at Sharpen.IO.RandomAccessFile..ctor(String file, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   --- End of inner exception stack trace ---
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.FileStorage.FileBin..ctor(BinConfiguration config)
+   at Db4objects.Db4o.IO.FileStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.StorageDecorator.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.CachingStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer.OpenImpl()
+   at Db4objects.Db4o.Internal.ObjectContainerBase._IRunnable_104.Run()
+   at Db4objects.Db4o.Foundation.DynamicVariable.With(Object value, IRunnable block)
+   at Db4objects.Db4o.Foundation.Environments.RunWith(IEnvironment environment, IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.WithEnvironment(IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.Open()
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer..ctor(IConfiguration config, String fileName)
+   at Db4objects.Db4o.Internal.ObjectContainerFactory.OpenObjectContainer(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(String databaseFileName)
+   at GerenteConectividadeBancoDados.get(Int32 idCorp, TipoBanco tipoBanco) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\pattern\GerenteConectividadeBancoDados.cs:line 99
+   at SDE.CamadaNuvem.SuperNuvem..ctor() in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 17
+   at SDE.CamadaNuvem.NuvemNotificacoes..ctor()
+[Thread-4] WEBORB ERROR:25/11/2009 10:59:34:Db4objects.Db4o.Ext.DatabaseFileLockedException: C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf ---> System.IO.IOException: The process cannot access the file 'C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at Sharpen.IO.RandomAccessFile..ctor(String file, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   --- End of inner exception stack trace ---
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.FileStorage.FileBin..ctor(BinConfiguration config)
+   at Db4objects.Db4o.IO.FileStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.StorageDecorator.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.CachingStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer.OpenImpl()
+   at Db4objects.Db4o.Internal.ObjectContainerBase._IRunnable_104.Run()
+   at Db4objects.Db4o.Foundation.DynamicVariable.With(Object value, IRunnable block)
+   at Db4objects.Db4o.Foundation.Environments.RunWith(IEnvironment environment, IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.WithEnvironment(IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.Open()
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer..ctor(IConfiguration config, String fileName)
+   at Db4objects.Db4o.Internal.ObjectContainerFactory.OpenObjectContainer(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(String databaseFileName)
+   at GerenteConectividadeBancoDados.get(Int32 idCorp, TipoBanco tipoBanco) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\pattern\GerenteConectividadeBancoDados.cs:line 99
+   at SDE.CamadaNuvem.SuperNuvem..ctor() in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 17
+   at SDE.CamadaNuvem.NuvemNotificacoes..ctor()
+[Thread-11] WEBORB ERROR:25/11/2009 10:59:39:Db4objects.Db4o.Ext.DatabaseFileLockedException: C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf ---> System.IO.IOException: The process cannot access the file 'C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at Sharpen.IO.RandomAccessFile..ctor(String file, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   --- End of inner exception stack trace ---
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.FileStorage.FileBin..ctor(BinConfiguration config)
+   at Db4objects.Db4o.IO.FileStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.StorageDecorator.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.CachingStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer.OpenImpl()
+   at Db4objects.Db4o.Internal.ObjectContainerBase._IRunnable_104.Run()
+   at Db4objects.Db4o.Foundation.DynamicVariable.With(Object value, IRunnable block)
+   at Db4objects.Db4o.Foundation.Environments.RunWith(IEnvironment environment, IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.WithEnvironment(IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.Open()
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer..ctor(IConfiguration config, String fileName)
+   at Db4objects.Db4o.Internal.ObjectContainerFactory.OpenObjectContainer(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(String databaseFileName)
+   at GerenteConectividadeBancoDados.get(Int32 idCorp, TipoBanco tipoBanco) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\pattern\GerenteConectividadeBancoDados.cs:line 99
+   at SDE.CamadaNuvem.SuperNuvem..ctor() in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 17
+   at SDE.CamadaNuvem.NuvemNotificacoes..ctor()
+[Thread-11] WEBORB ERROR:25/11/2009 10:59:45:Db4objects.Db4o.Ext.DatabaseFileLockedException: C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf ---> System.IO.IOException: The process cannot access the file 'C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\banco_de_dados\Banco\0.dbf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at Sharpen.IO.RandomAccessFile..ctor(String file, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   --- End of inner exception stack trace ---
+   at Db4objects.Db4o.IO.RandomAccessFileFactory.NewRandomAccessFile(String path, Boolean readOnly, Boolean lockFile)
+   at Db4objects.Db4o.IO.FileStorage.FileBin..ctor(BinConfiguration config)
+   at Db4objects.Db4o.IO.FileStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.StorageDecorator.Open(BinConfiguration config)
+   at Db4objects.Db4o.IO.CachingStorage.Open(BinConfiguration config)
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer.OpenImpl()
+   at Db4objects.Db4o.Internal.ObjectContainerBase._IRunnable_104.Run()
+   at Db4objects.Db4o.Foundation.DynamicVariable.With(Object value, IRunnable block)
+   at Db4objects.Db4o.Foundation.Environments.RunWith(IEnvironment environment, IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.WithEnvironment(IRunnable runnable)
+   at Db4objects.Db4o.Internal.ObjectContainerBase.Open()
+   at Db4objects.Db4o.Internal.IoAdaptedObjectContainer..ctor(IConfiguration config, String fileName)
+   at Db4objects.Db4o.Internal.ObjectContainerFactory.OpenObjectContainer(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(IConfiguration config, String databaseFileName)
+   at Db4objects.Db4o.Db4oFactory.OpenFile(String databaseFileName)
+   at GerenteConectividadeBancoDados.get(Int32 idCorp, TipoBanco tipoBanco) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\pattern\GerenteConectividadeBancoDados.cs:line 99
+   at SDE.CamadaServico.SuperServico..ctor() in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SuperServico.cs:line 14
+   at SDE.CamadaServico.SLogin..ctor()

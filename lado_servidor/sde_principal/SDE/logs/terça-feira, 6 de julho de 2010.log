@@ -1,0 +1,12 @@
+[Thread-9] WEBORB ERROR:6/7/2010 11:46:51:System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   em System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   em Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   em b.a(Object A_0, IProtocolFormatter A_1)
+   em Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   em Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   em Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   em Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   em Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   em Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   em Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)

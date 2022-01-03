@@ -1,0 +1,76 @@
+[Thread-4] WEBORB ERROR:26/4/2010 09:30:36:System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Inetpub\wwwroot\ftp\documentos\argox\53\enviaImpressao.bat'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at System.IO.StreamWriter.CreateFile(String path, Boolean append)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding, Int32 bufferSize)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding)
+   at System.IO.File.WriteAllText(String path, String contents, Encoding encoding)
+   at System.IO.File.WriteAllText(String path, String contents)
+   at SDE.code.ConfiguracoesArgox.ObraDensa.EscreveEtiqueta(Int32 idCorp, Int32 idEmp, List`1 listaMovItem, String portaCOM) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\ConfiguracoesArgox\ObraDensa.cs:line 424
+   at SDE.CamadaNuvem.NuvemModificacoes.EscreveEtiquetaPorListaObraDensa(Int32 idCorp, Int32 idEmp, List`1 listaMovItem, String portaCOM) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 60
+[Thread-9] WEBORB ERROR:26/4/2010 09:57:59:System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Inetpub\wwwroot\ftp\documentos\argox\53\enviaImpressao.bat'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at System.IO.StreamWriter.CreateFile(String path, Boolean append)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding, Int32 bufferSize)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding)
+   at System.IO.File.WriteAllText(String path, String contents, Encoding encoding)
+   at System.IO.File.WriteAllText(String path, String contents)
+   at SDE.code.ConfiguracoesArgox.ObraDensa.EscreveEtiqueta(Int32 idCorp, Int32 idEmp, List`1 listaMovItem, String portaCOM) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\ConfiguracoesArgox\ObraDensa.cs:line 424
+   at SDE.CamadaNuvem.NuvemModificacoes.EscreveEtiquetaPorListaObraDensa(Int32 idCorp, Int32 idEmp, List`1 listaMovItem, String portaCOM) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 60
+[Thread-9] WEBORB ERROR:26/4/2010 09:59:01:System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Inetpub\wwwroot\ftp\documentos\argox\53\enviaImpressao.bat'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at System.IO.StreamWriter.CreateFile(String path, Boolean append)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding, Int32 bufferSize)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding)
+   at System.IO.File.WriteAllText(String path, String contents, Encoding encoding)
+   at System.IO.File.WriteAllText(String path, String contents)
+   at SDE.code.ConfiguracoesArgox.ObraDensa.EscreveEtiqueta(Int32 idCorp, Int32 idEmp, List`1 listaMovItem, String portaCOM) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\ConfiguracoesArgox\ObraDensa.cs:line 424
+   at SDE.CamadaNuvem.NuvemModificacoes.EscreveEtiquetaPorListaObraDensa(Int32 idCorp, Int32 idEmp, List`1 listaMovItem, String portaCOM) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 60
+[Thread-9] WEBORB ERROR:26/4/2010 10:01:01:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:26/4/2010 10:03:21:System.Exception: Empresa não possui configuração de etiqueta
+   at SDE.CamadaNuvem.NuvemModificacoes.Tecnico_nomeEtiqueta(Int32 idCorp) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Tecnico.cs:line 372
+[Thread-11] WEBORB ERROR:26/4/2010 10:03:26:System.Exception: Empresa não possui configuração de etiqueta
+   at SDE.CamadaNuvem.NuvemModificacoes.Tecnico_nomeEtiqueta(Int32 idCorp) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Tecnico.cs:line 372
+[Thread-11] WEBORB ERROR:26/4/2010 10:03:26:System.Exception: Empresa não possui configuração de etiqueta
+   at SDE.CamadaNuvem.NuvemModificacoes.Tecnico_nomeEtiqueta(Int32 idCorp) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Tecnico.cs:line 372
+[Thread-4] WEBORB ERROR:26/4/2010 10:03:27:System.Exception: Empresa não possui configuração de etiqueta
+   at SDE.CamadaNuvem.NuvemModificacoes.Tecnico_nomeEtiqueta(Int32 idCorp) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Tecnico.cs:line 372
+[Thread-11] WEBORB ERROR:26/4/2010 10:03:27:System.Exception: Empresa não possui configuração de etiqueta
+   at SDE.CamadaNuvem.NuvemModificacoes.Tecnico_nomeEtiqueta(Int32 idCorp) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Tecnico.cs:line 372
+[Thread-4] WEBORB ERROR:26/4/2010 10:04:37:System.Exception: Empresa não possui configuração de etiqueta
+   at SDE.CamadaNuvem.NuvemModificacoes.Tecnico_nomeEtiqueta(Int32 idCorp) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Tecnico.cs:line 372
+[Thread-4] WEBORB ERROR:26/4/2010 10:43:33:System.Exception: [erro anotado 19] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 151 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 151
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 303
+[Thread-10] WEBORB ERROR:26/4/2010 10:44:43:System.Exception: [erro anotado 19] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 151 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 151
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 303

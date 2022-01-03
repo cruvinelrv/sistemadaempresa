@@ -1,0 +1,12 @@
+[Thread-9] WEBORB ERROR:7/5/2010 15:10:18:System.MissingMethodException: unable to find method with name Balanco_Fecha and the given argument types
+   em Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-9] WEBORB ERROR:7/5/2010 15:10:24:System.MissingMethodException: unable to find method with name Balanco_Fecha and the given argument types
+   em Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-9] WEBORB ERROR:7/5/2010 15:11:07:System.MissingMethodException: unable to find method with name Balanco_Fecha and the given argument types
+   em Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:7/5/2010 15:13:36:System.MissingMethodException: unable to find method with name Balanco_Fecha and the given argument types
+   em Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

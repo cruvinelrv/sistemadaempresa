@@ -1,0 +1,8 @@
+[Thread-8] WEBORB ERROR:13/3/2010 11:24:06:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:13/3/2010 11:27:53:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62

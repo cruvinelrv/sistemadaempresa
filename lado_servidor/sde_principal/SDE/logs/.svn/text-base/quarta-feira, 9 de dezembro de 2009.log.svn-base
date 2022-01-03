@@ -1,0 +1,33 @@
+[Thread-8] WEBORB ERROR:9/12/2009 14:45:49:System.Exception: [erro anotado 8] String reference not set to an instance of a String.
+Parameter name: s    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.DateTime.Parse(String s)
+   at SDE.CamadaNuvem.NuvemModificacoes.Temp_Salva(Int32 idCorp, Int32 idClienteFuncionarioLogado, Mov mov, MovNFE movnfeDados, List`1 listaMovItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_TempMovNfe.cs:line 30 ---> System.ArgumentNullException: String reference not set to an instance of a String.
+Parameter name: s
+   at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.DateTime.Parse(String s)
+   at SDE.CamadaNuvem.NuvemModificacoes.Temp_Salva(Int32 idCorp, Int32 idClienteFuncionarioLogado, Mov mov, MovNFE movnfeDados, List`1 listaMovItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_TempMovNfe.cs:line 30
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Temp_Salva(Int32 idCorp, Int32 idClienteFuncionarioLogado, Mov mov, MovNFE movnfeDados, List`1 listaMovItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_TempMovNfe.cs:line 60
+[Thread-4] WEBORB ERROR:9/12/2009 14:55:34:System.Exception: [erro anotado 8] Field 'id' defined on type 'SDE.Entidade.MovItem' is not a field on the target object which is of type 'SDE.Entidade.TempMovItem'.    at System.Reflection.RtFieldInfo.CheckConsistency(Object target)
+   at System.Reflection.RtFieldInfo.InternalSetValue(Object obj, Object value, BindingFlags invokeAttr, Binder binder, CultureInfo culture, Boolean doVisibilityCheck, Boolean doCheckConsistency)
+   at System.Reflection.RtFieldInfo.InternalSetValue(Object obj, Object value, BindingFlags invokeAttr, Binder binder, CultureInfo culture, Boolean doVisibilityCheck)
+   at System.Reflection.RtFieldInfo.SetValue(Object obj, Object value, BindingFlags invokeAttr, Binder binder, CultureInfo culture)
+   at System.Reflection.FieldInfo.SetValue(Object obj, Object value)
+   at Utils.copiaCamposBasicos(Object de, Object para) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\Utils\Utils.cs:line 220
+   at SDE.CamadaNuvem.NuvemModificacoes.Temp_Salva(Int32 idCorp, Int32 idClienteFuncionarioLogado, Mov mov, MovNFE movnfeDados, List`1 listaMovItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_TempMovNfe.cs:line 35 ---> System.ArgumentException: Field 'id' defined on type 'SDE.Entidade.MovItem' is not a field on the target object which is of type 'SDE.Entidade.TempMovItem'.
+   at System.Reflection.RtFieldInfo.CheckConsistency(Object target)
+   at System.Reflection.RtFieldInfo.InternalSetValue(Object obj, Object value, BindingFlags invokeAttr, Binder binder, CultureInfo culture, Boolean doVisibilityCheck, Boolean doCheckConsistency)
+   at System.Reflection.RtFieldInfo.InternalSetValue(Object obj, Object value, BindingFlags invokeAttr, Binder binder, CultureInfo culture, Boolean doVisibilityCheck)
+   at System.Reflection.RtFieldInfo.SetValue(Object obj, Object value, BindingFlags invokeAttr, Binder binder, CultureInfo culture)
+   at System.Reflection.FieldInfo.SetValue(Object obj, Object value)
+   at Utils.copiaCamposBasicos(Object de, Object para) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\Utils\Utils.cs:line 220
+   at SDE.CamadaNuvem.NuvemModificacoes.Temp_Salva(Int32 idCorp, Int32 idClienteFuncionarioLogado, Mov mov, MovNFE movnfeDados, List`1 listaMovItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_TempMovNfe.cs:line 35
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Temp_Salva(Int32 idCorp, Int32 idClienteFuncionarioLogado, Mov mov, MovNFE movnfeDados, List`1 listaMovItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_TempMovNfe.cs:line 60
+[Thread-4] WEBORB ERROR:9/12/2009 15:29:38:System.Exception: [erro anotado 8] 2    at SDE.CamadaNuvem.NuvemModificacoes.Temp_Salva(Int32 idCorp, Int32 idClienteFuncionarioLogado, Mov mov, MovNFE movNfe, List`1 listaMovItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_TempMovNfe.cs:line 31 ---> System.Exception: 2
+   at SDE.CamadaNuvem.NuvemModificacoes.Temp_Salva(Int32 idCorp, Int32 idClienteFuncionarioLogado, Mov mov, MovNFE movNfe, List`1 listaMovItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_TempMovNfe.cs:line 31
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Temp_Salva(Int32 idCorp, Int32 idClienteFuncionarioLogado, Mov mov, MovNFE movNfe, List`1 listaMovItens) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_TempMovNfe.cs:line 197

@@ -1,0 +1,59 @@
+[Thread-4] WEBORB ERROR:28/4/2010 08:42:37:System.Exception: [erro anotado 56] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_Conta_SaldoInicial(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 370 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_Conta_SaldoInicial(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 370
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_Conta_SaldoInicial(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 397
+[Thread-4] WEBORB ERROR:28/4/2010 08:44:00:System.Exception: [erro anotado 56] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_Conta_SaldoInicial(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 370 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_Conta_SaldoInicial(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 370
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_Conta_SaldoInicial(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 397
+[Thread-4] WEBORB ERROR:28/4/2010 10:57:46:System.Exception: Endereço do cliente não encontrado.
+Id do endereço: 0
+   at SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 104
+   at SDE.CamadaNuvem.NuvemModificacoes.MovEscrevePdf(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 102
+[Thread-8] WEBORB ERROR:28/4/2010 17:47:32:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-12] WEBORB ERROR:28/4/2010 17:47:32:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:28/4/2010 18:00:07:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-12] WEBORB ERROR:28/4/2010 18:00:07:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)

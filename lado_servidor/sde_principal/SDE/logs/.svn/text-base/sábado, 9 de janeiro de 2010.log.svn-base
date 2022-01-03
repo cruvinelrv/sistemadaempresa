@@ -1,0 +1,3 @@
+[Thread-10] WEBORB ERROR:9/1/2010 11:03:16:System.MissingMethodException: unable to find method with name EscreveEtiqueta. Type is null
+   at Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

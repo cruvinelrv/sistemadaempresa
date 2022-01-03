@@ -1,0 +1,5 @@
+[Thread-4] WEBORB ERROR:10/3/2010 15:14:50:iTextSharp.text.DocumentException: Wrong number of columns.
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Single[] relativeWidths)
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Int32[] relativeWidths)
+   at SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 196
+   at SDE.CamadaNuvem.NuvemModificacoes.MovEscrevePdf(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 102

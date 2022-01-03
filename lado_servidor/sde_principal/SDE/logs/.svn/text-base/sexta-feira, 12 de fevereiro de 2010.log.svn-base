@@ -1,0 +1,80 @@
+[Thread-4] WEBORB ERROR:12/2/2010 10:48:51:System.IO.IOException: The process cannot access the file 'C:\SDE\Orcamento.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at System.Net.Mail.AttachmentBase.SetContentFromFile(String fileName, String mediaType)
+   at System.Net.Mail.AttachmentBase..ctor(String fileName)
+   at System.Net.Mail.Attachment..ctor(String fileName)
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 102
+[Thread-4] WEBORB ERROR:12/2/2010 10:54:00:System.Exception: The document is not open.
+   at iTextSharp.text.pdf.PdfWriter.get_DirectContent()
+   at iTextSharp.text.pdf.PdfDocument.get_PageEmpty()
+   at iTextSharp.text.pdf.PdfDocument.NewPage()
+   at iTextSharp.text.pdf.PdfDocument.Close()
+   at iTextSharp.text.Document.Close()
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 102
+[Thread-4] WEBORB ERROR:12/2/2010 10:55:26:System.Exception: The document is not open.
+   at iTextSharp.text.pdf.PdfWriter.get_DirectContent()
+   at iTextSharp.text.pdf.PdfDocument.get_PageEmpty()
+   at iTextSharp.text.pdf.PdfDocument.NewPage()
+   at iTextSharp.text.pdf.PdfDocument.Close()
+   at iTextSharp.text.Document.Close()
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 102
+[Thread-4] WEBORB ERROR:12/2/2010 10:58:04:System.Exception: The document is not open.
+   at iTextSharp.text.pdf.PdfWriter.get_DirectContent()
+   at iTextSharp.text.pdf.PdfDocument.get_PageEmpty()
+   at iTextSharp.text.pdf.PdfDocument.NewPage()
+   at iTextSharp.text.pdf.PdfDocument.Close()
+   at iTextSharp.text.Document.Close()
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 102
+[Thread-4] WEBORB ERROR:12/2/2010 11:03:25:System.IO.IOException: The process cannot access the file 'C:\SDE\Orcamento.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at System.Net.Mail.AttachmentBase.SetContentFromFile(String fileName, String mediaType)
+   at System.Net.Mail.AttachmentBase..ctor(String fileName)
+   at System.Net.Mail.Attachment..ctor(String fileName)
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 105
+[Thread-9] WEBORB ERROR:12/2/2010 15:36:48:System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov, String filePath) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 119
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 104
+[Thread-4] WEBORB ERROR:12/2/2010 16:00:00:System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Inetpub\wwwroot\ftp\documentos\mov.pdf'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 106
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 104
+[Thread-4] WEBORB ERROR:12/2/2010 17:58:27:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-4] WEBORB ERROR:12/2/2010 18:09:50:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\mov.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 124
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 104
+[Thread-4] WEBORB ERROR:12/2/2010 18:10:43:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\mov.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 124
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 104
+[Thread-10] WEBORB ERROR:12/2/2010 18:14:00:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\mov.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 124
+   at SDE.CamadaNuvem.NuvemModificacoes.EnviaEmail(Int32 idCorp, Int32 idEmp, Int32 idMov, Int32 idCliente, String fromMailAddressData, String fromNameData, String fromPasswordData, String toMailAddressData, String toNameData, String subjectData, String messageData, String urlData) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_EnviaEmail.cs:line 104

@@ -1,0 +1,155 @@
+[Thread-13] WEBORB ERROR:22/2/2010 12:53:13:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:22/2/2010 12:54:37:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:22/2/2010 12:54:37:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-4] WEBORB ERROR:22/2/2010 13:06:40:iTextSharp.text.DocumentException: Wrong number of columns.
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Single[] relativeWidths)
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Int32[] relativeWidths)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 507
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1121
+[Thread-9] WEBORB ERROR:22/2/2010 13:07:56:iTextSharp.text.DocumentException: Wrong number of columns.
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Single[] relativeWidths)
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Int32[] relativeWidths)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 507
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1121
+[Thread-9] WEBORB ERROR:22/2/2010 13:09:01:System.Exception: ClienteEndereco não encontrado. ID Cliente: 1
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 461
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1121
+[Thread-4] WEBORB ERROR:22/2/2010 13:10:31:iTextSharp.text.DocumentException: Wrong number of columns.
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Single[] relativeWidths)
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Int32[] relativeWidths)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 507
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1121
+[Thread-4] WEBORB ERROR:22/2/2010 13:13:52:iTextSharp.text.DocumentException: Wrong number of columns.
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Single[] relativeWidths)
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Int32[] relativeWidths)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 507
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1121
+[Thread-4] WEBORB ERROR:22/2/2010 13:27:22:iTextSharp.text.DocumentException: Wrong number of columns.
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Single[] relativeWidths)
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Int32[] relativeWidths)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 507
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1121
+[Thread-4] WEBORB ERROR:22/2/2010 13:35:37:iTextSharp.text.DocumentException: Wrong number of columns.
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Single[] relativeWidths)
+   at iTextSharp.text.pdf.PdfPTable.SetWidths(Int32[] relativeWidths)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 507
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1127
+[Thread-4] WEBORB ERROR:22/2/2010 14:10:42:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-15] WEBORB ERROR:22/2/2010 14:30:01:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-15] WEBORB ERROR:22/2/2010 14:30:02:System.InvalidOperationException: The width cannot be set.
+   at iTextSharp.text.Rectangle.set_Width(Single value)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 607
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1127
+[Thread-15] WEBORB ERROR:22/2/2010 14:30:03:System.InvalidOperationException: The width cannot be set.
+   at iTextSharp.text.Rectangle.set_Width(Single value)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 607
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1127
+[Thread-4] WEBORB ERROR:22/2/2010 14:30:06:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\duplicata.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 408
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1127
+[Thread-14] WEBORB ERROR:22/2/2010 14:30:08:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\duplicata.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 408
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1127
+[Thread-4] WEBORB ERROR:22/2/2010 14:30:15:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\duplicata.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 408
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1127
+[Thread-4] WEBORB ERROR:22/2/2010 14:39:03:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:22/2/2010 14:40:42:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:22/2/2010 14:44:18:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:22/2/2010 14:57:25:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:22/2/2010 15:00:16:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:22/2/2010 15:00:16:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-4] WEBORB ERROR:22/2/2010 15:12:44:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:22/2/2010 16:29:47:System.Exception: ClienteEndereco não encontrado. ID Cliente: 1
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 467
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1128
+[Thread-4] WEBORB ERROR:22/2/2010 16:30:14:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\duplicata.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 408
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1128
+[Thread-9] WEBORB ERROR:22/2/2010 16:48:22:System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 496
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1128
+[Thread-4] WEBORB ERROR:22/2/2010 17:06:16:System.Exception: Contato da Empresa não encontrado (Empresa). ID Cliente: 2
+   at SDE.PDF.ConstrutorPDF.duplicataAcoRio(Int32 idCorp, Int32 idEmp, List`1 listaFinanTituloItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 400
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_DuplicataEscrevePdf(Int32 idCorp, Int32 idEmp, List`1 listaFinanTitulo) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1128

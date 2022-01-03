@@ -1,0 +1,3 @@
+[Thread-8] WEBORB EXCEPTION:12/12/2009 08:55:20:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+   at Weborb.Protocols.ProtocolRegistry.BuildMessage(String contentType, Stream requestStream, NameValueCollection headers)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)

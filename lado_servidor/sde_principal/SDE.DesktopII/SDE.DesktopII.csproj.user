@@ -1,0 +1,17 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PublishUrlHistory>ftp://sistemadaempresa.com/programas/desktopII/|ftp://sistemadaempresa.com.br/programas/desktopII/|ftp://sistemadaempresa.com/programas/desktop/|ftp://sistemadaempresa.com.br/programas/desktop/|ftp://ftp.sistemadaempresa.com.br/programas/desktop/</PublishUrlHistory>
+    <InstallUrlHistory>http://www.sistemadaempresa.com/programas/desktopII/|http://www.sistemadaempresa.com.br/programas/desktopII/|http://www.sistemadaempresa.com/programas/desktop/|http://www.sistemadaempresa.com.br/programas/desktop/|http://www.sistemadaempresa.com.br/site/desktop/</InstallUrlHistory>
+    <SupportUrlHistory>
+    </SupportUrlHistory>
+    <UpdateUrlHistory>
+    </UpdateUrlHistory>
+    <BootstrapperUrlHistory>
+    </BootstrapperUrlHistory>
+    <ErrorReportUrlHistory>
+    </ErrorReportUrlHistory>
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>true</VerifyUploadedFiles>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
+</Project>

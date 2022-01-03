@@ -1,0 +1,16 @@
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\bin\Debug\SDEConfiguracoes.exe
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\bin\Debug\SDEConfiguracoes.pdb
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\ResolveAssemblyReference.cache
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.frmSDEConfig.resources
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.Properties.Resources.resources
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.csproj.GenerateResource.Cache
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.exe
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.pdb
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.frmLogin.resources
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.AboutBox1.resources
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\bin\Debug\FTP.dll
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\bin\Debug\SDEConfiguracoes.exe.manifest
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\bin\Debug\SDEConfiguracoes.application
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.TrustInfo.xml
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.exe.manifest
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDEConfiguracoes\SDEConfiguracoes\obj\Debug\SDEConfiguracoes.application

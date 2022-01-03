@@ -1,0 +1,3 @@
+[Thread-4] WEBORB ERROR:8/11/2009 20:38:54:System.MissingMethodException: unable to find method with name ValidaVersao. Type is null
+   at Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

@@ -1,0 +1,49 @@
+10
+
+dir
+175
+svn://localhost/lado_servidor_SDE/janelas/OrdemServico/CadastroOS/.metadata/.plugins
+svn://localhost/lado_servidor_SDE
+
+
+
+2010-05-17T22:49:03.328125Z
+1
+marcos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0fd58c5d-283b-6f4b-891f-0665cd6ff52b
+
+com.adobe.flexbuilder.editors.mxml
+dir
+
+org.eclipse.core.runtime
+dir
+
+com.adobe.flash.profiler
+dir
+
+com.adobe.flexbuilder.codemodel
+dir
+
+org.eclipse.ui.ide
+dir
+
+org.eclipse.ui.workbench
+dir
+
+org.eclipse.core.resources
+dir
+

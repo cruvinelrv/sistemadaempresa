@@ -1,0 +1,40 @@
+[Thread-4] WEBORB ERROR:22/1/2010 15:09:06:System.IO.FileNotFoundException: Could not load file or assembly 'Db4objects.Db4o, Version=7.10.96.13184, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb' or one of its dependencies. O sistema não pode encontrar o arquivo especificado.
+File name: 'Db4objects.Db4o, Version=7.10.96.13184, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb'
+   at SDE.CamadaServico.SuperServico..ctor()
+   at SDE.CamadaServico.SBancoDados..ctor()
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+[Thread-4] WEBORB ERROR:22/1/2010 15:09:21:System.IO.FileNotFoundException: Could not load file or assembly 'Db4objects.Db4o, Version=7.10.96.13184, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb' or one of its dependencies. O sistema não pode encontrar o arquivo especificado.
+File name: 'Db4objects.Db4o, Version=7.10.96.13184, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb'
+   at SDE.CamadaServico.SuperServico..ctor()
+   at SDE.CamadaServico.SBancoDados..ctor()
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+[Thread-4] WEBORB ERROR:22/1/2010 15:09:28:System.IO.FileNotFoundException: Could not load file or assembly 'Db4objects.Db4o, Version=7.10.96.13184, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb' or one of its dependencies. O sistema não pode encontrar o arquivo especificado.
+File name: 'Db4objects.Db4o, Version=7.10.96.13184, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb'
+   at SDE.CamadaServico.SuperServico..ctor()
+   at SDE.CamadaServico.SBancoDados..ctor()
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+[Thread-4] WEBORB ERROR:22/1/2010 15:09:36:System.IO.FileNotFoundException: Could not load file or assembly 'Db4objects.Db4o, Version=7.10.96.13184, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb' or one of its dependencies. O sistema não pode encontrar o arquivo especificado.
+File name: 'Db4objects.Db4o, Version=7.10.96.13184, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb'
+   at SDE.CamadaServico.SuperServico..ctor()
+   at SDE.CamadaServico.SLogin..ctor()
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+

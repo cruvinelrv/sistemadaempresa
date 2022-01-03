@@ -1,0 +1,18 @@
+[Thread-4] WEBORB EXCEPTION:20/11/2009 10:19:20:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+   at Weborb.Protocols.ProtocolRegistry.BuildMessage(String contentType, Stream requestStream, NameValueCollection headers)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-4] WEBORB ERROR:20/11/2009 10:19:20:System.MissingMethodException: unable to find method with name Lista_Notificacoes. Type is null
+   at Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:20/11/2009 10:19:20:Unable to find compression configuration, make sure you use the latest weborb.config. Compression is disabled.
+[Thread-4] WEBORB ERROR:20/11/2009 10:52:00:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-6] WEBORB ERROR:20/11/2009 17:19:36:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

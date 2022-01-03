@@ -1,0 +1,209 @@
+[Thread-12] WEBORB ERROR:2/3/2010 15:47:42:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at iTextSharp.text.pdf.BarcodeEAN.GetBarsEAN13(String _code)
+   at iTextSharp.text.pdf.BarcodeEAN.PlaceBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateTemplateWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateImageWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1071
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-12] WEBORB ERROR:2/3/2010 15:47:57:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\etiqueta.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1028
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-4] WEBORB ERROR:2/3/2010 15:48:04:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\etiqueta.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1028
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-12] WEBORB ERROR:2/3/2010 15:51:15:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at iTextSharp.text.pdf.BarcodeEAN.GetBarsEAN13(String _code)
+   at iTextSharp.text.pdf.BarcodeEAN.PlaceBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateTemplateWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateImageWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1071
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-12] WEBORB ERROR:2/3/2010 15:57:38:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at iTextSharp.text.pdf.BarcodeEAN.GetBarsEAN13(String _code)
+   at iTextSharp.text.pdf.BarcodeEAN.PlaceBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateTemplateWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateImageWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1070
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-12] WEBORB ERROR:2/3/2010 15:59:41:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:2/3/2010 15:59:41:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-12] WEBORB ERROR:2/3/2010 15:59:46:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at iTextSharp.text.pdf.BarcodeEAN.GetBarsEAN13(String _code)
+   at iTextSharp.text.pdf.BarcodeEAN.PlaceBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateTemplateWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateImageWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1070
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-12] WEBORB ERROR:2/3/2010 16:01:33:System.Exception:    at iTextSharp.text.pdf.BarcodeEAN.GetBarsEAN13(String _code)
+   at iTextSharp.text.pdf.BarcodeEAN.PlaceBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateTemplateWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateImageWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1073 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at iTextSharp.text.pdf.BarcodeEAN.GetBarsEAN13(String _code)
+   at iTextSharp.text.pdf.BarcodeEAN.PlaceBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateTemplateWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at iTextSharp.text.pdf.Barcode.CreateImageWithBarcode(PdfContentByte cb, BaseColor barColor, BaseColor textColor)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1073
+   --- End of inner exception stack trace ---
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1088
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-4] WEBORB ERROR:2/3/2010 16:15:54:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:2/3/2010 16:15:54:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-12] WEBORB ERROR:2/3/2010 16:15:59:System.IO.IOException: The document has no pages.
+   at iTextSharp.text.pdf.PdfPages.WritePageTree()
+   at iTextSharp.text.pdf.PdfWriter.Close()
+   at iTextSharp.text.pdf.PdfDocument.Close()
+   at iTextSharp.text.Document.Close()
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1091
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-4] WEBORB ERROR:2/3/2010 16:16:09:System.Exception:    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1030 ---> System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\etiqueta.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1030
+   --- End of inner exception stack trace ---
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1088
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-12] WEBORB ERROR:2/3/2010 16:17:19:System.Exception:    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1030 ---> System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\etiqueta.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1030
+   --- End of inner exception stack trace ---
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1088
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-12] WEBORB ERROR:2/3/2010 16:19:08:System.IO.IOException: The document has no pages.
+   at iTextSharp.text.pdf.PdfPages.WritePageTree()
+   at iTextSharp.text.pdf.PdfWriter.Close()
+   at iTextSharp.text.pdf.PdfDocument.Close()
+   at iTextSharp.text.Document.Close()
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1084
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-12] WEBORB ERROR:2/3/2010 16:19:14:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\etiqueta.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1028
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-8] WEBORB ERROR:2/3/2010 16:19:44:System.IO.IOException: The document has no pages.
+   at iTextSharp.text.pdf.PdfPages.WritePageTree()
+   at iTextSharp.text.pdf.PdfWriter.Close()
+   at iTextSharp.text.pdf.PdfDocument.Close()
+   at iTextSharp.text.Document.Close()
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1084
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-9] WEBORB ERROR:2/3/2010 16:47:43:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-9] WEBORB ERROR:2/3/2010 16:47:43:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-8] WEBORB ERROR:2/3/2010 17:35:21:System.IO.IOException: The document has no pages.
+   at iTextSharp.text.pdf.PdfPages.WritePageTree()
+   at iTextSharp.text.pdf.PdfWriter.Close()
+   at iTextSharp.text.pdf.PdfDocument.Close()
+   at iTextSharp.text.Document.Close()
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1108
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-8] WEBORB ERROR:2/3/2010 17:35:34:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\etiqueta.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1028
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-4] WEBORB ERROR:2/3/2010 17:35:52:System.IO.IOException: The document has no pages.
+   at iTextSharp.text.pdf.PdfPages.WritePageTree()
+   at iTextSharp.text.pdf.PdfWriter.Close()
+   at iTextSharp.text.pdf.PdfDocument.Close()
+   at iTextSharp.text.Document.Close()
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1108
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-4] WEBORB ERROR:2/3/2010 17:38:01:System.IO.IOException: The document has no pages.
+   at iTextSharp.text.pdf.PdfPages.WritePageTree()
+   at iTextSharp.text.pdf.PdfWriter.Close()
+   at iTextSharp.text.pdf.PdfDocument.Close()
+   at iTextSharp.text.Document.Close()
+   at SDE.PDF.ConstrutorPDF.EtiquetaSETE(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1108
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorMovSETE(Int32 idCorp, Int32 idEmp, Int32 idMov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 538
+[Thread-4] WEBORB ERROR:2/3/2010 17:45:07:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:2/3/2010 17:45:07:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-12] WEBORB ERROR:2/3/2010 17:52:12:System.Exception: Cliente Endereço (Empresa) não encontrado. ID CLIENTE: 2
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho, Boolean mostraZerados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 393
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario, Boolean mostraZerados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15

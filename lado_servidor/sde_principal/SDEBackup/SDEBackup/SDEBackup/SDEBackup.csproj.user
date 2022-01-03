@@ -1,0 +1,14 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PublishUrlHistory>ftp://sistemadaempresa.com/programas/sdebackup/|ftp://sistemadaempresa.com.br/programas/sdebackup/|publish\</PublishUrlHistory>
+    <InstallUrlHistory>http://www.sistemadaempresa.com/programas/sdebackup/|http://www.sistemadaempresa.com.br/programas/sdebackup/|http://sistemadaempresa.com.br/programas/sdebackup/</InstallUrlHistory>
+    <SupportUrlHistory>
+    </SupportUrlHistory>
+    <UpdateUrlHistory>
+    </UpdateUrlHistory>
+    <BootstrapperUrlHistory>
+    </BootstrapperUrlHistory>
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>true</VerifyUploadedFiles>
+  </PropertyGroup>
+</Project>

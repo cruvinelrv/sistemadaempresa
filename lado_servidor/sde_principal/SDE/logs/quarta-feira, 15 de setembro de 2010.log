@@ -1,0 +1,16 @@
+[Thread-9] WEBORB ERROR:15/9/2010 15:56:03:System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Weborb.Reader.StringType.adapt(Type type)
+   em Weborb.Reader.AnonymousObject.a(Object A_0, IDictionary A_1, ReferenceCache A_2)
+   em Weborb.Reader.AnonymousObject.adapt(Type type, ReferenceCache refCache)
+   em Weborb.Reader.NamedObject.adapt(Type type, ReferenceCache refCache)
+   em Weborb.Reader.NamedObject.adapt(Type type)
+   em Weborb.Util.Invocation.a(MethodInfo A_0, Object[] A_1)
+   em Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+[Thread-4] WEBORB ERROR:15/9/2010 15:57:34:System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Weborb.Reader.StringType.adapt(Type type)
+   em Weborb.Reader.AnonymousObject.a(Object A_0, IDictionary A_1, ReferenceCache A_2)
+   em Weborb.Reader.AnonymousObject.adapt(Type type, ReferenceCache refCache)
+   em Weborb.Reader.NamedObject.adapt(Type type, ReferenceCache refCache)
+   em Weborb.Reader.NamedObject.adapt(Type type)
+   em Weborb.Util.Invocation.a(MethodInfo A_0, Object[] A_1)
+   em Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)

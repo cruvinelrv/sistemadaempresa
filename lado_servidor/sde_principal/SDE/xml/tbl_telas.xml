@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabela>
+<menu id="menu-cad" label="CADASTRO" />
+<menu id="menu-est" label="ESTOQUE" />
+<menu id="menu-rel" label="RELATÓRIO" />
+<tela hash="cadpes1" menu="menu-cad"
+	label="PESSOA" url="modulos/cadastro/Cliente/MdlCadCliente.swf" />
+<tela hash="cadpes2" menu="menu-cad"
+	label="PESSOA" url="modulos/cadastro/Cliente/MdlCadCliente.swf" />
+<tela hash="cadpes3" menu="menu-cad"
+	label="PESSOA" url="modulos/cadastro/Cliente/MdlCadCliente.swf" />
+<tela hash="cadpes4" menu="menu-cad"
+	label="PESSOA" url="modulos/cadastro/Cliente/MdlCadCliente.swf" />
+
+</tabela>

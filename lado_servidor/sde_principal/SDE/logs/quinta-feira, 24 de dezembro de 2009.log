@@ -1,0 +1,8 @@
+[Thread-12] WEBORB ERROR:24/12/2009 17:44:07:System.Exception: [erro anotado 2] Item Empresa Entoque não encontrado. id: 0    at SDE.CamadaNuvem.NuvemModificacoes.NovaEntrada(Int32 idCorp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 48 ---> System.Exception: Item Empresa Entoque não encontrado. id: 0
+   at SDE.CamadaNuvem.NuvemModificacoes.NovaEntrada(Int32 idCorp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 48
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.NovaEntrada(Int32 idCorp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 86
+[Thread-4] WEBORB ERROR:24/12/2009 17:54:56:System.MissingMethodException: unable to find method with name NovaEntrada and the given argument types
+   at Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

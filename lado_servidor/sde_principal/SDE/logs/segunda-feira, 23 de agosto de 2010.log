@@ -1,0 +1,26 @@
+[Thread-10] WEBORB ERROR:23/8/2010 18:08:39:System.IO.IOException: The document has no pages.
+   em iTextSharp.text.pdf.PdfPages.WritePageTree()
+   em iTextSharp.text.pdf.PdfWriter.Close()
+   em iTextSharp.text.pdf.PdfDocument.Close()
+   em iTextSharp.text.Document.Close()
+   em SDE.PDF.ListaCasamento.ConstroiListaCasamento(Int32 idCorp, Int32 idListaCasamento) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\PDF\ListaCasamento.cs:linha 129
+   em SDE.CamadaNuvem.NuvemModificacoes.ListaCasamento_Imprime(Int32 idCorp, Int32 idListaCasamento) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes_ListaCasamento.cs:linha 24
+[Thread-10] WEBORB ERROR:23/8/2010 18:09:11:System.IO.IOException: O processo não pode acessar o arquivo 'C:\Inetpub\wwwroot\ftp\documentos\76\listaCasamento.pdf' porque ele está sendo usado por outro processo.
+   em System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   em System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   em System.IO.FileStream..ctor(String path, FileMode mode)
+   em SDE.PDF.ListaCasamento.ConstroiListaCasamento(Int32 idCorp, Int32 idListaCasamento) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\PDF\ListaCasamento.cs:linha 75
+   em SDE.CamadaNuvem.NuvemModificacoes.ListaCasamento_Imprime(Int32 idCorp, Int32 idListaCasamento) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes_ListaCasamento.cs:linha 24
+[Thread-4] WEBORB ERROR:23/8/2010 18:10:46:System.IO.IOException: The document has no pages.
+   em iTextSharp.text.pdf.PdfPages.WritePageTree()
+   em iTextSharp.text.pdf.PdfWriter.Close()
+   em iTextSharp.text.pdf.PdfDocument.Close()
+   em iTextSharp.text.Document.Close()
+   em SDE.PDF.ListaCasamento.ConstroiListaCasamento(Int32 idCorp, Int32 idListaCasamento) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\PDF\ListaCasamento.cs:linha 129
+   em SDE.CamadaNuvem.NuvemModificacoes.ListaCasamento_Imprime(Int32 idCorp, Int32 idListaCasamento) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes_ListaCasamento.cs:linha 24
+[Thread-9] WEBORB ERROR:23/8/2010 18:10:51:System.IO.IOException: O processo não pode acessar o arquivo 'C:\Inetpub\wwwroot\ftp\documentos\76\listaCasamento.pdf' porque ele está sendo usado por outro processo.
+   em System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   em System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   em System.IO.FileStream..ctor(String path, FileMode mode)
+   em SDE.PDF.ListaCasamento.ConstroiListaCasamento(Int32 idCorp, Int32 idListaCasamento) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\PDF\ListaCasamento.cs:linha 75
+   em SDE.CamadaNuvem.NuvemModificacoes.ListaCasamento_Imprime(Int32 idCorp, Int32 idListaCasamento) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes_ListaCasamento.cs:linha 24

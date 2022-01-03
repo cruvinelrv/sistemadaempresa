@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabela>
+<r id="1" nome="À VISTA"		isParcelas="false"	isData="false"	isUnico="false" />
+<r id="2" nome="CH À VISTA" 	isParcelas="false"	isData="false"	isUnico="false" />
+<r id="3" nome="CH PRÉ"			isParcelas="true"	isData="true"	isUnico="false" />
+<r id="4" nome="A PRAZO"		isParcelas="true"	isData="true"	isUnico="false" />
+<r id="5" nome="CARTÃO C"		isParcelas="true"	isData="false"	isUnico="false" />
+<r id="6" nome="CARTÃO D"		isParcelas="false"	isData="false"	isUnico="false" />
+<r id="7" nome="CONVÊNIO"		isParcelas="true"	isData="true"	isUnico="false" />
+<r id="8" nome="FINANCEIRA"		isParcelas="true"	isData="true"	isUnico="false" />
+<r id="9" nome="CONDICIONAL"	isParcelas="false"  isData="false"	isUnico="true"	/>
+<r id="10" nome="TRANSF"		isParcelas="false"  isData="false"	isUnico="true"	/>
+<r id="11" nome="HAVER"			isParcelas="false"  isData="false"	isUnico="false" />
+<r id="0" nome="OUTROS"			isParcelas="false"  isData="false"	isUnico="true"	/>
+</tabela>

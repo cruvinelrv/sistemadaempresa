@@ -1,0 +1,75 @@
+[Thread-10] WEBORB ERROR:15/5/2010 11:58:45:System.IndexOutOfRangeException: O índice estava fora dos limites da matriz.
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   em SDE.PDF.ConstrutorPDF.GeraCarne(Int32 idCorp, Int32 IdMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF_Carne.cs:linha 46
+   em SDE.CamadaNuvem.NuvemModificacoes.GeraCarne(Int32 idCorp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 683
+[Thread-9] WEBORB ERROR:15/5/2010 12:16:56:System.IndexOutOfRangeException: O índice estava fora dos limites da matriz.
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   em SDE.PDF.ConstrutorPDF.GeraCarne(Int32 idCorp, Int32 IdMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF_Carne.cs:linha 46
+   em SDE.CamadaNuvem.NuvemModificacoes.GeraCarne(Int32 idCorp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 683
+[Thread-9] WEBORB ERROR:15/5/2010 12:18:10:System.IndexOutOfRangeException: O índice estava fora dos limites da matriz.
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   em SDE.PDF.ConstrutorPDF.GeraCarne(Int32 idCorp, Int32 IdMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF_Carne.cs:linha 46
+   em SDE.CamadaNuvem.NuvemModificacoes.GeraCarne(Int32 idCorp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 683
+[Thread-4] WEBORB ERROR:15/5/2010 12:20:03:System.IndexOutOfRangeException: O índice estava fora dos limites da matriz.
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   em SDE.PDF.ConstrutorPDF.GeraCarne(Int32 idCorp, Int32 IdMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF_Carne.cs:linha 46
+   em SDE.CamadaNuvem.NuvemModificacoes.GeraCarne(Int32 idCorp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 683
+[Thread-4] WEBORB ERROR:15/5/2010 12:21:30:System.IndexOutOfRangeException: O índice estava fora dos limites da matriz.
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   em SDE.PDF.ConstrutorPDF.GeraCarne(Int32 idCorp, Int32 IdMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF_Carne.cs:linha 46
+   em SDE.CamadaNuvem.NuvemModificacoes.GeraCarne(Int32 idCorp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 683
+[Thread-10] WEBORB ERROR:15/5/2010 12:22:20:System.IndexOutOfRangeException: O índice estava fora dos limites da matriz.
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   em Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   em SDE.PDF.ConstrutorPDF.GeraCarne(Int32 idCorp, Int32 IdMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF_Carne.cs:linha 46
+   em SDE.CamadaNuvem.NuvemModificacoes.GeraCarne(Int32 idCorp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 683
+[Thread-4] WEBORB ERROR:15/5/2010 12:23:48:System.Exception: Referência de objeto não definida para uma instância de um objeto.
+   em SDE.PDF.ConstrutorPDF.GeraCarne(Int32 idCorp, Int32 IdMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF_Carne.cs:linha 402
+   em SDE.CamadaNuvem.NuvemModificacoes.GeraCarne(Int32 idCorp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 683
+[Thread-10] WEBORB ERROR:15/5/2010 12:30:10:System.Exception: Referência de objeto não definida para uma instância de um objeto.
+   em SDE.PDF.ConstrutorPDF.GeraCarne(Int32 idCorp, Int32 IdMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF_Carne.cs:linha 402
+   em SDE.CamadaNuvem.NuvemModificacoes.GeraCarne(Int32 idCorp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 683
+[Thread-9] WEBORB ERROR:15/5/2010 16:20:55:Referência de objeto não definida para uma instância de um objeto.    em System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   em System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   em Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   em Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:15/5/2010 16:20:55:Referência de objeto não definida para uma instância de um objeto.    em System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   em System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   em Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   em Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:15/5/2010 17:07:10:Referência de objeto não definida para uma instância de um objeto.    em System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   em System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   em Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   em Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-9] WEBORB ERROR:15/5/2010 17:07:10:System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   em System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   em Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   em b.a(Object A_0, IProtocolFormatter A_1)
+   em Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   em Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   em Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   em Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   em Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   em Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   em Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)

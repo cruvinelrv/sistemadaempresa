@@ -1,0 +1,70 @@
+[Thread-12] WEBORB ERROR:19/4/2010 19:14:10:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:19/4/2010 21:54:48:System.MissingMethodException: unable to find method with name Tecnico_CaixaAtualizacao and the given argument types
+   at Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:19/4/2010 22:23:39:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-12] WEBORB ERROR:19/4/2010 23:01:08:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:19/4/2010 23:01:08:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-12] WEBORB ERROR:19/4/2010 23:01:08:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-12] WEBORB ERROR:19/4/2010 23:01:13:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-11] WEBORB ERROR:19/4/2010 23:01:13:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:19/4/2010 23:06:15:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:19/4/2010 23:24:28:System.Exception: [erro anotado 56] Object reference not set to an instance of an object.    at SDE.CamadaNuvem.NuvemModificacoes.Caixa_Abertura(Int32 idCorp, Int32 idEmp, String data, Double valorAbertura, Boolean abertoPeloSistema) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1175 ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaNuvem.NuvemModificacoes.Caixa_Abertura(Int32 idCorp, Int32 idEmp, String data, Double valorAbertura, Boolean abertoPeloSistema) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1175
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Caixa_Abertura(Int32 idCorp, Int32 idEmp, String data, Double valorAbertura, Boolean abertoPeloSistema) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1203
+[Thread-10] WEBORB ERROR:19/4/2010 23:25:57:System.Exception: [erro anotado 56] Object reference not set to an instance of an object.    at SDE.CamadaNuvem.NuvemModificacoes.Caixa_Abertura(Int32 idCorp, Int32 idEmp, String data, Double valorAbertura, Boolean abertoPeloSistema) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1175 ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaNuvem.NuvemModificacoes.Caixa_Abertura(Int32 idCorp, Int32 idEmp, String data, Double valorAbertura, Boolean abertoPeloSistema) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1175
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Caixa_Abertura(Int32 idCorp, Int32 idEmp, String data, Double valorAbertura, Boolean abertoPeloSistema) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1203
+[Thread-10] WEBORB ERROR:19/4/2010 23:27:20:System.Exception: [erro anotado 56] Object reference not set to an instance of an object.    at SDE.CamadaNuvem.NuvemModificacoes.Caixa_Abertura(Int32 idCorp, Int32 idEmp, String data, Double valorAbertura, Boolean abertoPeloSistema) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1178 ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaNuvem.NuvemModificacoes.Caixa_Abertura(Int32 idCorp, Int32 idEmp, String data, Double valorAbertura, Boolean abertoPeloSistema) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1178
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Caixa_Abertura(Int32 idCorp, Int32 idEmp, String data, Double valorAbertura, Boolean abertoPeloSistema) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 1206

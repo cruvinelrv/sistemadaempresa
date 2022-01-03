@@ -1,0 +1,40 @@
+[Thread-4] WEBORB ERROR:30/4/2010 17:52:14:System.OutOfMemoryException: Exception of type 'System.OutOfMemoryException' was thrown.
+   at System.Globalization.NumberFormatInfo..ctor(CultureTableRecord cultureTableRecord)
+   at System.Globalization.CultureInfo.get_NumberFormat()
+   at System.Globalization.NumberFormatInfo.GetInstance(IFormatProvider formatProvider)
+   at System.Decimal.ToString(String format, IFormatProvider provider)
+   at System.Text.StringBuilder.AppendFormat(IFormatProvider provider, String format, Object[] args)
+   at System.String.Format(IFormatProvider provider, String format, Object[] args)
+   at Utils.formatMoney(Decimal d, Boolean mostra_cifra) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\Utils\Utils.cs:line 333
+   at SDE.PDF.ConstrutorPDF.EtiquetaCostaAzul(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1660
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorListaCostaAzul(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 132
+[Thread-4] WEBORB ERROR:30/4/2010 17:53:39:System.OutOfMemoryException: Exception of type 'System.OutOfMemoryException' was thrown.
+   at iTextSharp.text.pdf.PdfPTable.AddCell(PdfPCell cell)
+   at iTextSharp.text.pdf.PdfPTable.AddCell(Phrase phrase)
+   at SDE.PDF.ConstrutorPDF.EtiquetaCostaAzul(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1659
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorListaCostaAzul(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 132
+[Thread-4] WEBORB ERROR:30/4/2010 17:58:39:System.OutOfMemoryException: Exception of type 'System.OutOfMemoryException' was thrown.
+   at iTextSharp.text.pdf.PdfPCell..ctor(PdfPCell cell)
+   at iTextSharp.text.pdf.PdfPRow..ctor(PdfPRow row)
+   at iTextSharp.text.pdf.PdfPTable..ctor(PdfPTable table)
+   at iTextSharp.text.pdf.PdfPCell..ctor(PdfPCell cell)
+   at iTextSharp.text.pdf.PdfPTable.AddCell(PdfPCell cell)
+   at iTextSharp.text.pdf.PdfPTable.AddCell(PdfPTable table)
+   at SDE.PDF.ConstrutorPDF.EtiquetaCostaAzul(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 1661
+   at SDE.CamadaNuvem.NuvemModificacoes.escreveEtiquetaPorListaCostaAzul(Int32 idCorp, Int32 idEmp, List`1 listaMovItem) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Etiqueta.cs:line 132
+[Thread-4] WEBORB ERROR:30/4/2010 17:58:41:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:30/4/2010 18:04:01:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-10] WEBORB ERROR:30/4/2010 18:07:31:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

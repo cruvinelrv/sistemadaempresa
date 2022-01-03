@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SuperPopPesq xmlns="Componentes.PopUpPesquisa.*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="create()"
+	height="600"
+	close="PopUpManager.removePopUp(this);"
+	xmlns:controls="com.flexpernambuco.controls.*" xmlns:utils="com.connatserdev.utils.*" xmlns:CP="Componentes.CP.*">
+	
+	<states>
+		<mx:State name="ReferenciaPeso">
+			<mx:AddChild relativeTo="{placeHolderRfPeso}" position="lastChild">
+				<mx:HBox fontSize="14">
+					<mx:Label text="Referência Peso:"/>
+					<mx:Label id="lblRfPeso1"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="ObservacoesAplicacao">
+			<mx:AddChild relativeTo="{placeHolderObservacoesAplicacao}" position="lastChild">
+				<mx:VBox fontSize="14" width="100%">
+					<mx:Label text="Observações/Aplicação"/>
+					<mx:TextArea id="txtObservacoesAplicacao1" width="100%" height="100%" borderThickness="0" editable="false" selectable="false"/>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="ReferenciaPesoEObservacoesAplicacao">
+			<mx:AddChild relativeTo="{placeHolderRfPeso}" position="lastChild">
+				<mx:HBox fontSize="14">
+					<mx:Label text="Referência Peso:"/>
+					<mx:Label id="lblRfPeso2"/>
+				</mx:HBox>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{placeHolderObservacoesAplicacao}" position="lastChild">
+				<mx:VBox fontSize="14" width="100%">
+					<mx:Label text="Observações/Aplicação:"/>
+					<mx:TextArea id="txtObservacoesAplicacao2" width="100%" height="100%" borderThickness="0" editable="false" selectable="false"/>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+	</states>
+	
+	<transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize targets="{[placeHolder, placeHolderObservacoesAplicacao, placeHolderRfPeso]}"/>
+		</mx:Transition>
+	</transitions>
+	
+	<!--  -->
+	
+	<mx:VBox width="100%" height="100%" styleName="padding5">
+		
+		<mx:HBox fontSize="14" fontWeight="bold" width="100%">
+			<mx:Label text="Pesquisa:"/>
+			<CP:PesqItem id="cpItens" creationPolicy="all"
+				dropDownRowCount="5"
+				prompt=""
+				width="500"
+				keyUp="keyUpEvent(event)"
+				showBrowseButton="false"
+				/>
+		</mx:HBox>
+		
+		<mx:DataGrid
+			id="dgItens"
+			dataProvider="{dpItens}"
+			width="100%" rowCount="7"
+			fontSize="12"
+			themeColor="#3B5998"
+			keyDown="mostraReserva(event); mostraCustoCompra(event)"
+			change="dgItens_change(event)">
+			<mx:columns>
+				<mx:DataGridColumn width="1" dataField="item.id" headerText="Cód."/>
+				<mx:DataGridColumn width="3" dataField="item.nome" headerText="Item"/>
+				<mx:DataGridColumn width="1" dataField="estoque" headerText="Estoque"/>
+				<mx:DataGridColumn width="1" dataField="item.rfUnica" headerText="Rf. Única"/>
+				<mx:DataGridColumn width="2" dataField="item.rfAuxiliar" headerText="Rf. Auxiliar"/>
+				<mx:DataGridColumn width="1" dataField="item.unidMed" headerText="Un. Med."/>
+				<mx:DataGridColumn width="2" labelFunction="lbl_fn_valorCusto" headerText="Custo" visible="{mostrando_custo_compra}"/>
+				<mx:DataGridColumn width="2" labelFunction="lbl_fn_valorCompra" headerText="Compra" visible="{mostrando_custo_compra}"/>
+				<mx:DataGridColumn width="2" labelFunction="lbl_fn_valorVenda" headerText="Venda"/>
+				<mx:DataGridColumn width="2">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="Locação" toolTip="Locação" click="dispatchEvent(new Event('abrePopupLocacao',true))"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<mx:HBox id="placeHolderRfPeso"/>
+		
+		<mx:HBox id="placeHolder" verticalGap="0"
+			width="100%" height="100%" fontSize="14"
+			showEffect="{WipeDown}" hideEffect="{WipeUp}"/>
+		
+		<mx:HBox id="placeHolderObservacoesAplicacao" width="100%"/>
+		
+		<SuperPopPesq id="popupLocacao"
+			showCloseButton="true"
+			close="popupLocacao.parent.removeChild(popupLocacao)"
+			title="Locação do Produto"
+			width="700" height="380"
+			layout="vertical">
+			
+			<mx:VBox width="100%" height="100%" verticalAlign="middle" fontSize="14" fontWeight="bold">
+				<mx:DataGrid id="dgLocacao"
+					width="100%" rowCount="10"
+					themeColor="#3B5998"
+					dataProvider="{dpLocacao}">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Locação"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:VBox>
+			
+		</SuperPopPesq>
+			
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import org.idmedia.as3commons.lang.Throwable;
+			import mx.effects.WipeUp;
+			import mx.effects.WipeDown;
+			import mx.controls.VRule;
+			import mx.containers.VBox;
+			import mx.controls.Text;
+			import mx.core.Container;
+			import mx.controls.Label;
+			import mx.containers.HBox;
+			import com.connatserdev.utils.InfoBubble;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import Core.Utils.Formatadores;
+			import SDE.Entidade.ItemEmpPreco;
+			import SDE.Entidade.ItemEmpEstoque;
+			import SDE.Entidade.Item;
+			import Core.Alerta.AlertaSistema;
+			import mx.managers.PopUpManager;
+			import Core.App;
+			import mx.collections.ArrayCollection;
+			import img.Imagens;
+			
+			[Bindable] private var listaItens:ArrayCollection = new ArrayCollection();
+			[Bindable] private var dpItens:ArrayCollection;
+			[Bindable] private var dpEstoque:ArrayCollection;
+			[Bindable] private var mostrando_reserva:Boolean = false;
+			[Bindable] private var mostrando_custo_compra:Boolean = true;
+			
+			[Bindable] private var dpLocacao:ArrayCollection;
+			
+			private function create():void
+			{
+				mostrando_custo_compra = false;
+				title = "Pesquisa de Produtos";
+				titleIcon = Imagens.unica.icn_32_busca;
+				keyUpEvent(new Event('Event',true));
+				dgItens.setFocus();
+				dgItens.selectedIndex = 0;
+				dgItens.addEventListener('abrePopupLocacao', abrePopupLocacao);
+				popupLocacao.parent.removeChild(popupLocacao);
+			}
+			
+			public function popupAberto():void
+			{
+				listaItens = App.single.cache.arraycItem;
+			}
+			
+			public function lbl_fn_valorCusto(obj:Object, dgc:DataGridColumn):String{return Formatadores.unica.formataValor(obj.iep.custo, true);}
+			public function lbl_fn_valorCompra(obj:Object, dgc:DataGridColumn):String{return Formatadores.unica.formataValor(obj.iep.compra, true);}
+			public function lbl_fn_valorVenda(obj:Object, dgc:DataGridColumn):String{return Formatadores.unica.formataValor(obj.iep.venda, true);}
+			
+			private function dgItens_change(ev:Event):void
+			{
+				if (ev.target.selectedItem.item.rfPeso == 0 && (ev.target.selectedItem.item.complAplic == "" || ev.target.selectedItem.item.complAplic == null))
+					currentState = null;
+				else if (ev.target.selectedItem.item.rfPeso != 0 && (ev.target.selectedItem.item.complAplic != "" && ev.target.selectedItem.item.complAplic != null))
+				{
+					currentState = "ReferenciaPesoEObservacoesAplicacao";
+					lblRfPeso2.text = ev.target.selectedItem.item.rfPeso;
+					txtObservacoesAplicacao2.text = ev.target.selectedItem.item.complAplic;
+				}
+				else if (ev.target.selectedItem.item.rfPeso != 0 && (ev.target.selectedItem.item.complAplic == "" || ev.target.selectedItem.item.complAplic == null))
+				{
+					currentState = "ReferenciaPeso";
+					lblRfPeso1.text = ev.target.selectedItem.item.rfPeso;
+				}
+				else if (ev.target.selectedItem.item.rfPeso == 0 && (ev.target.selectedItem.item.complAplic != "" && ev.target.selectedItem.item.complAplic != null))
+				{
+					currentState = "ObservacoesAplicacao";
+					txtObservacoesAplicacao1.text = ev.target.selectedItem.item.complAplic;
+				}
+				
+				var vrule:VRule = new VRule();
+				vrule.percentHeight = 100;
+				
+				var linhas:Number = 0;
+				
+				placeHolder.removeAllChildren();
+				
+				var box:VBox = new VBox();
+				
+				box.addChild(cabecalhoEstoque());
+				
+				for each (var zzz:ItemEmpEstoque in ev.target.selectedItem.iee)
+				{
+					if (zzz.idEmp == App.single.ss.idEmp)
+					{
+						if (linhas == 6)
+						{
+							placeHolder.addChild(box);
+							placeHolder.addChild(vrule);
+							box = new VBox();
+							vrule = new VRule();
+							vrule.percentHeight = 100;
+							box.addChild(cabecalhoEstoque());
+							linhas = 0;
+						}
+						
+						var boxLinha:HBox = new HBox();
+						
+						var lblIdentificador:Label = new Label();
+						var lblQuantidade:Label = new Label();
+						
+						lblIdentificador.width = 190;
+						lblQuantidade.width = 80;
+						
+						lblIdentificador.text = zzz.identificador;
+						lblQuantidade.text = zzz.qtd.toString();
+						
+						boxLinha.addChild(lblIdentificador);
+						boxLinha.addChild(lblQuantidade);
+						
+						if (mostrando_reserva)
+						{
+							var lblReserva:Label = new Label();
+							var lblSaldo:Label = new Label();
+							
+							lblReserva.width = 80;
+							lblSaldo.width = 80;
+							
+							lblReserva.text = zzz.qtdReserva.toString();
+							lblSaldo.text = (zzz.qtd-zzz.qtdReserva).toString();
+							
+							boxLinha.addChild(lblReserva);
+							boxLinha.addChild(lblSaldo);
+						}
+						
+						box.addChild(boxLinha);
+						
+						linhas++;
+					}
+				}
+				
+				if (box.numChildren > 0)
+					placeHolder.addChild(box);
+			}
+			
+			private function cabecalhoEstoque():Container
+			{
+				var box:HBox = new HBox();
+				var lblIdentificador:Label = new Label();
+				var lblQuantidade:Label = new Label();
+				
+				lblIdentificador.text = "Grade/Ident.";
+				lblQuantidade.text = "Qtd";
+				
+				lblIdentificador.width = 190;
+				lblQuantidade.width = 80;
+				
+				box.addChild(lblIdentificador);
+				box.addChild(lblQuantidade);
+				
+				if (mostrando_reserva)
+				{
+					var lblReserva:Label = new Label();
+					var lblSaldo:Label = new Label();
+					
+					lblReserva.text = "Qtd Res";
+					lblSaldo.text = "Saldo";
+					
+					lblReserva.width = 80;
+					lblSaldo.width = 80;
+					
+					box.addChild(lblReserva);
+					box.addChild(lblSaldo);
+				}
+				
+				return box;
+			}
+			
+			public function keyUpEvent(ev:Event):void
+			{	
+				if (cpItens.dropDown)
+					cpItens.dropDown.visible = false;
+				
+				if (cpItens.textInput.text.length < 2)
+					return;
+				
+				listaItens.removeAll();
+				var source:Array = (cpItens.dataProvider as ArrayCollection).source;
+				for each (var itemPesq:Item in source){
+					if (!itemPesq.desuso){
+						var arrayStringPesquisas:Array = cpItens.textInput.text.split(' ');
+						var arrayValorPesquisas:Array = [
+							itemPesq.id.toString(), itemPesq.rfAuxiliar,
+							itemPesq.rfUnica, itemPesq.marca, itemPesq.secao, itemPesq.grupo,
+							itemPesq.complAplic, itemPesq.nome
+							];
+						var contador:Number = 0;
+						for each (var strPesq:String in arrayStringPesquisas){
+							for each (var strValor:String in arrayValorPesquisas){
+								if (strValor == null)
+									continue;
+								if (strValor.search(strPesq.toUpperCase()) > -1){
+									contador++;
+									break;
+								}
+							}
+						}
+	 					if (contador == arrayStringPesquisas.length)
+							listaItens.addItem(itemPesq);
+					}
+				}
+				
+				placeHolder.removeAllChildren();
+				
+				var iep:ItemEmpPreco;
+				var iee:ArrayCollection;
+				var obj:Object;
+				
+				//listaItens = cpItens.dataProvider as ArrayCollection;
+				
+				dpItens = new ArrayCollection();
+				
+				for each (var item:Item in listaItens)
+				{
+					obj = new Object();
+					iep = new ItemEmpPreco();
+					iee = new ArrayCollection();
+					var estoque:Number;
+					
+					for each (var xxx:ItemEmpPreco in App.single.cache.arrayItemEmpPreco)
+					{
+						if (xxx.idItem != item.id)
+							continue;
+							
+						iep = xxx;
+						break;
+					}
+					
+					estoque = 0;
+					for each (var yyy:ItemEmpEstoque in App.single.cache.arrayItemEmpEstoque)
+					{
+						if (yyy.idItem == item.id && yyy.idEmp == App.single.ss.idEmp)
+						{
+							iee.addItem(yyy);
+							estoque += yyy.qtd;
+						}
+					}
+					
+					obj.item = item;
+					obj.iep = iep;
+					obj.iee = iee;
+					obj.estoque = estoque;
+					dpItens.addItem(obj);
+				}
+			}
+			
+			private function mostraReserva(event:KeyboardEvent):void
+			{
+				if (event.ctrlKey && event.altKey)
+					mostrando_reserva = !mostrando_reserva;
+					
+				dgItens_change(event);
+			}
+			
+			private function mostraCustoCompra(event:KeyboardEvent):void
+			{
+				if (event.ctrlKey && event.shiftKey)
+					mostrando_custo_compra = !mostrando_custo_compra;
+					
+				
+			}
+			
+			private function abrePopupLocacao(ev:Event):void{
+				PopUpManager.addPopUp(popupLocacao, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupLocacao);
+				
+				var item:Item = ev.target.data.item;
+				
+				dpLocacao = new ArrayCollection();
+				
+				for (var i:Number = 0 ; i < 10 ; i++){
+					var campo:String = "locacao" + (i + 1).toString();
+					
+					if (item[campo] != null){
+						dpLocacao.addItem(item[campo]);
+					}
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+</SuperPopPesq>

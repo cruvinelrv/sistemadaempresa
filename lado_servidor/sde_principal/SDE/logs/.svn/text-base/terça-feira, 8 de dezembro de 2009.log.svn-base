@@ -1,0 +1,128 @@
+[Thread-4] WEBORB ERROR:8/12/2009 08:41:38:System.Exception: [erro anotado 2] Object reference not set to an instance of an object.    at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 258 ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 258
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 464
+[Thread-9] WEBORB ERROR:8/12/2009 08:45:16:System.Exception: [erro anotado 2] String was not recognized as a valid DateTime.    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.DateTime.Parse(String s)
+   at SDE.EntidadeNFE.EscreveItensNfeTXT.gerarDV(String codUF, String dtEmissao, String cnpj, String modelo, String serie, String numDoc, String codNumerico) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\EntidadeNFE\EscreveItensNfeTXT.cs:line 786
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 392 ---> System.FormatException: String was not recognized as a valid DateTime.
+   at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.DateTime.Parse(String s)
+   at SDE.EntidadeNFE.EscreveItensNfeTXT.gerarDV(String codUF, String dtEmissao, String cnpj, String modelo, String serie, String numDoc, String codNumerico) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\EntidadeNFE\EscreveItensNfeTXT.cs:line 786
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 392
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 464
+[Thread-4] WEBORB ERROR:8/12/2009 08:51:14:System.Exception: [erro anotado 2] String was not recognized as a valid DateTime.    at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.DateTime.Parse(String s)
+   at SDE.EntidadeNFE.EscreveItensNfeTXT.gerarDV(String codUF, String dtEmissao, String cnpj, String modelo, String serie, String numDoc, String codNumerico) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\EntidadeNFE\EscreveItensNfeTXT.cs:line 786
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 392 ---> System.FormatException: String was not recognized as a valid DateTime.
+   at System.DateTimeParse.Parse(String s, DateTimeFormatInfo dtfi, DateTimeStyles styles)
+   at System.DateTime.Parse(String s)
+   at SDE.EntidadeNFE.EscreveItensNfeTXT.gerarDV(String codUF, String dtEmissao, String cnpj, String modelo, String serie, String numDoc, String codNumerico) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\EntidadeNFE\EscreveItensNfeTXT.cs:line 786
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 392
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 464
+[Thread-4] WEBORB ERROR:8/12/2009 08:57:11:System.Exception: [erro anotado 2] Object reference not set to an instance of an object.    at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 396 ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 396
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 466
+[Thread-4] WEBORB ERROR:8/12/2009 09:00:51:System.Exception: [erro anotado 2] Object reference not set to an instance of an object.    at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 396 ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 396
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 466
+[Thread-4] WEBORB ERROR:8/12/2009 09:01:59:System.Exception: [erro anotado 2] Object reference not set to an instance of an object.    at SDE.EntidadeNFE.EscreveItensNfeTXT.Escreve_emit(StringBuilder sb, Cliente cli, ClienteEndereco ce) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\EntidadeNFE\EscreveItensNfeTXT.cs:line 143
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 408 ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.EntidadeNFE.EscreveItensNfeTXT.Escreve_emit(StringBuilder sb, Cliente cli, ClienteEndereco ce) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\EntidadeNFE\EscreveItensNfeTXT.cs:line 143
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 408
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 466
+[Thread-4] WEBORB ERROR:8/12/2009 11:17:18:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:8/12/2009 11:17:18:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)
+[Thread-4] WEBORB ERROR:8/12/2009 15:09:24:System.Exception: [erro anotado 8] Existem 2 clientes cadastrados para o cpf/cnpj 04233199000159    at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109 ---> System.Exception: Existem 2 clientes cadastrados para o cpf/cnpj 04233199000159
+   at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 152
+[Thread-4] WEBORB ERROR:8/12/2009 15:09:45:System.Exception: [erro anotado 8] Existem 2 clientes cadastrados para o cpf/cnpj 04233199000159    at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109 ---> System.Exception: Existem 2 clientes cadastrados para o cpf/cnpj 04233199000159
+   at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 152
+[Thread-4] WEBORB ERROR:8/12/2009 15:10:32:System.Exception: [erro anotado 8] Existem 2 clientes cadastrados para o cpf/cnpj 04233199000159    at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109 ---> System.Exception: Existem 2 clientes cadastrados para o cpf/cnpj 04233199000159
+   at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 152
+[Thread-4] WEBORB ERROR:8/12/2009 15:10:35:System.Exception: [erro anotado 8] Existem 2 clientes cadastrados para o cpf/cnpj 04233199000159    at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109 ---> System.Exception: Existem 2 clientes cadastrados para o cpf/cnpj 04233199000159
+   at ReaproveitamentoCodigo.Cliente_Load(IObjectContainer db, String cpf_cnpj) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 273
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 109
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Cliente_NovoAltera(Int32 idCorp, Cliente cliente) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Cliente.cs:line 152
+[Thread-4] WEBORB ERROR:8/12/2009 16:46:15:System.Exception: [erro anotado 8] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 131 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 131
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 265
+[Thread-4] WEBORB ERROR:8/12/2009 16:46:26:System.Exception: [erro anotado 8] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 131 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 131
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 265
+[Thread-4] WEBORB ERROR:8/12/2009 16:46:38:System.Exception: [erro anotado 8] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 131 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 131
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:line 265

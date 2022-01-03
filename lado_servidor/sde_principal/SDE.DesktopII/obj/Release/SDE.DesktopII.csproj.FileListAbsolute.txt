@@ -1,0 +1,16 @@
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\bin\SDE.DesktopII.exe.manifest
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\bin\SDE.DesktopII.application
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\bin\SDE.DesktopII.exe
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\bin\SDE.DesktopII.pdb
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\bin\AxInterop.ShockwaveFlashObjects.dll
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\bin\ExternalInterfaceProxy.dll
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\bin\Interop.ShockwaveFlashObjects.dll
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\obj\Release\ResolveAssemblyReference.cache
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\obj\Release\SDE.Desktop.FrmPrincipal.resources
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\obj\Release\SDE.DesktopII.Properties.Resources.resources
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\obj\Release\SDE.DesktopII.csproj.GenerateResource.Cache
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\obj\Release\SDE.DesktopII.TrustInfo.xml
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\obj\Release\SDE.DesktopII.exe.manifest
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\obj\Release\SDE.DesktopII.application
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\obj\Release\SDE.DesktopII.exe
+C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE.DesktopII\obj\Release\SDE.DesktopII.pdb

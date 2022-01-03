@@ -1,0 +1,5 @@
+[Thread-4] WEBORB ERROR:28/12/2009 08:34:46:System.Exception: [erro anotado 2] Object reference not set to an instance of an object.    at SDE.CamadaNuvem.NuvemModificacoes.NovaEntrada(Int32 idCorp, Int32 idEmp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 60 ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaNuvem.NuvemModificacoes.NovaEntrada(Int32 idCorp, Int32 idEmp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 60
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.NovaEntrada(Int32 idCorp, Int32 idEmp, Mov mov) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 97

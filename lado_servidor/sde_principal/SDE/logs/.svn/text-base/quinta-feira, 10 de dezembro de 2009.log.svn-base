@@ -1,0 +1,2 @@
+[Thread-8] WEBORB ERROR:10/12/2009 10:24:41:System.Exception: classe: TempMovNfeVeiculo
+   at SDE.CamadaNuvem.NuvemListagem.ListaDB(Int32 idCorp, String classe) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemListagem.cs:line 54

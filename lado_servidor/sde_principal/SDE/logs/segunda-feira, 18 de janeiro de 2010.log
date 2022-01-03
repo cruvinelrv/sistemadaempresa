@@ -1,0 +1,110 @@
+[Thread-4] WEBORB ERROR:18/1/2010 10:30:46:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:18/1/2010 11:01:34:System.Exception: [erro anotado 2] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 733
+[Thread-4] WEBORB ERROR:18/1/2010 11:04:58:System.Exception: [erro anotado 2] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 733
+[Thread-4] WEBORB ERROR:18/1/2010 11:05:05:System.Exception: [erro anotado 2] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 733
+[Thread-4] WEBORB ERROR:18/1/2010 11:06:59:System.Exception: [erro anotado 2] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 733
+[Thread-4] WEBORB ERROR:18/1/2010 11:07:01:System.Exception: [erro anotado 2] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 733
+[Thread-4] WEBORB ERROR:18/1/2010 11:07:12:System.Exception: [erro anotado 2] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 733
+[Thread-4] WEBORB ERROR:18/1/2010 11:07:32:System.Exception: [erro anotado 2] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 733
+[Thread-4] WEBORB ERROR:18/1/2010 11:08:09:System.Exception: [erro anotado 2] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 667
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Finan_ChequeBaixa(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Finan_Titulo finanTitulo, Finan_Conta finanConta) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:line 733

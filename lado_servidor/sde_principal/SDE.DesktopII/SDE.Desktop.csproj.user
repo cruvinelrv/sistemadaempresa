@@ -1,0 +1,17 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PublishUrlHistory>ftp://sistemadaempresa.com.br/programas/desktop/|ftp://sistemadaempresa.com/programas/desktop/|ftp://ftp.sistemadaempresa.com.br/programas/desktop/|ftp://ftp.sistemadaempresa.com.br/Web/site/desktop/|http://localhost/SDE.SmartDesktop/</PublishUrlHistory>
+    <InstallUrlHistory>http://www.sistemadaempresa.com.br/programas/desktop/|http://www.sistemadaempresa.com/programas/desktop/|http://www.sistemadaempresa.com.br/site/desktop/</InstallUrlHistory>
+    <SupportUrlHistory>
+    </SupportUrlHistory>
+    <UpdateUrlHistory>
+    </UpdateUrlHistory>
+    <BootstrapperUrlHistory>
+    </BootstrapperUrlHistory>
+    <ErrorReportUrlHistory>
+    </ErrorReportUrlHistory>
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>true</VerifyUploadedFiles>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
+</Project>

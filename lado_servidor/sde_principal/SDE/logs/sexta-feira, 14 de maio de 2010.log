@@ -1,0 +1,4 @@
+[Thread-8] WEBORB ERROR:14/5/2010 14:57:29:System.Exception: Endereço do cliente não encontrado.
+Id do endereço: 0
+   em SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:linha 104
+   em SDE.CamadaNuvem.NuvemModificacoes.MovEscrevePdf(Int32 idCorp, Int32 idEmp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 102

@@ -1,0 +1,5 @@
+[Thread-4] WEBORB ERROR:2/9/2010 11:33:52:Referência de objeto não definida para uma instância de um objeto.    em System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   em System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   em Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   em Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

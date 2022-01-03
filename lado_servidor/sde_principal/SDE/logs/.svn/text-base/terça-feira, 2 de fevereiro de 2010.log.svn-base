@@ -1,0 +1,56 @@
+[Thread-8] WEBORB ERROR:2/2/2010 09:30:50:System.MissingMethodException: unable to find method with name Tecnico_FuncaoTemporaria and the given argument types
+   at Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-8] WEBORB ERROR:2/2/2010 09:30:57:System.MissingMethodException: unable to find method with name Tecnico_FuncaoTemporaria and the given argument types
+   at Weborb.Util.MethodLookup.findMethod(Type type, String methodName, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:2/2/2010 17:06:08:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-4] WEBORB ERROR:2/2/2010 17:06:16:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-24] WEBORB ERROR:2/2/2010 17:06:17:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-4] WEBORB ERROR:2/2/2010 17:06:18:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-4] WEBORB ERROR:2/2/2010 17:06:19:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-4] WEBORB ERROR:2/2/2010 17:06:19:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-24] WEBORB ERROR:2/2/2010 17:06:20:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-4] WEBORB ERROR:2/2/2010 17:06:21:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-4] WEBORB ERROR:2/2/2010 17:06:22:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-4] WEBORB ERROR:2/2/2010 17:06:23:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-24] WEBORB ERROR:2/2/2010 17:06:24:System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ReaproveitamentoCodigo.AtualizaConfiguracoes(IObjectContainer dbX) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 103
+   at SDE.CamadaServico.SLogin.FazLogin2(String emp, String usu, String sen) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaServico\SLogin.cs:line 62
+[Thread-10] WEBORB ERROR:2/2/2010 17:13:11:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:2/2/2010 17:13:11:System.NullReferenceException: Object reference not set to an instance of an object.
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.set_Item(TKey key, TValue value)
+   at Weborb.Writer.ObjectWriter.write(Object obj, IProtocolFormatter writer)
+   at b.a(Object A_0, IProtocolFormatter A_1)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFBodyWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.Writer.AMFMessageWriter.write(Object obj, IProtocolFormatter writer)
+   at Weborb.Writer.MessageWriter.writeObject(Object obj, IProtocolFormatter formatter)
+   at Weborb.ORBHttpHandler.a(Request A_0, HttpRequest A_1, HttpResponse A_2, RequestContext A_3)
+   at Weborb.ORBHttpHandler.a(HttpContext A_0, HttpRequest A_1, HttpResponse A_2)

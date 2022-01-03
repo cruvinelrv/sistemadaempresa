@@ -1,0 +1,131 @@
+[Thread-12] WEBORB ERROR:26/2/2010 08:29:57:System.Exception: The document is not open.
+   at iTextSharp.text.pdf.PdfWriter.get_DirectContent()
+   at iTextSharp.text.pdf.PdfDocument.AddPTable(PdfPTable ptable)
+   at iTextSharp.text.pdf.PdfDocument.Add(IElement element)
+   at iTextSharp.text.Document.Add(IElement element)
+   at SDE.PDF.ConstrutorPDF.novaLinha(Document doc, PdfWriter writer) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 453
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 423
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-12] WEBORB ERROR:26/2/2010 08:30:01:System.Exception: The document is not open.
+   at iTextSharp.text.pdf.PdfWriter.get_DirectContent()
+   at iTextSharp.text.pdf.PdfDocument.AddPTable(PdfPTable ptable)
+   at iTextSharp.text.pdf.PdfDocument.Add(IElement element)
+   at iTextSharp.text.Document.Add(IElement element)
+   at SDE.PDF.ConstrutorPDF.novaLinha(Document doc, PdfWriter writer) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 453
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 423
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-12] WEBORB ERROR:26/2/2010 08:30:33:iTextSharp.text.DocumentException: The document has been closed. You can't add any Elements.
+   at iTextSharp.text.Document.Add(IElement element)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 433
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-12] WEBORB ERROR:26/2/2010 08:32:32:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:26/2/2010 08:32:33:iTextSharp.text.DocumentException: The document has been closed. You can't add any Elements.
+   at iTextSharp.text.Document.Add(IElement element)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 433
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 08:33:04:System.Exception: The document is not open.
+   at iTextSharp.text.pdf.PdfWriter.get_DirectContent()
+   at iTextSharp.text.pdf.PdfDocument.AddPTable(PdfPTable ptable)
+   at iTextSharp.text.pdf.PdfDocument.Add(IElement element)
+   at iTextSharp.text.Document.Add(IElement element)
+   at SDE.PDF.ConstrutorPDF.novaLinha(Document doc, PdfWriter writer) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 456
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 423
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 08:33:17:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-12] WEBORB ERROR:26/2/2010 08:33:18:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\inventario2.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.novaLinha(Document doc, PdfWriter writer) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 446
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 423
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 08:34:03:iTextSharp.text.DocumentException: The document has been closed. You can't add any Elements.
+   at iTextSharp.text.Document.Add(IElement element)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 433
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-8] WEBORB ERROR:26/2/2010 08:38:13:iTextSharp.text.DocumentException: The document has been closed. You can't add any Elements.
+   at iTextSharp.text.Document.Add(IElement element)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 433
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-8] WEBORB ERROR:26/2/2010 08:41:46:System.ObjectDisposedException: Cannot access a closed file.
+   at System.IO.__Error.FileNotOpen()
+   at System.IO.FileStream.Write(Byte[] array, Int32 offset, Int32 count)
+   at iTextSharp.text.pdf.OutputStreamCounter.Write(Byte[] buffer, Int32 offset, Int32 count)
+   at iTextSharp.text.pdf.intern.PdfVersionImp.WriteHeader(OutputStreamCounter os)
+   at iTextSharp.text.pdf.PdfWriter.Open()
+   at iTextSharp.text.pdf.PdfDocument.Open()
+   at iTextSharp.text.Document.Open()
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 430
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 09:34:07:System.Exception: Cliente Endereço não encontrado. ID CLIENTE: 2
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 393
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 09:37:22:System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Decimal.Parse(String s)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 465
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 09:37:41:System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Decimal.Parse(String s)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 465
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-10] WEBORB ERROR:26/2/2010 09:38:07:System.IO.IOException: The process cannot access the file 'C:\Inetpub\wwwroot\ftp\documentos\inventario.pdf' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 406
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 09:41:15:System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Decimal.Parse(String s)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 465
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-8] WEBORB ERROR:26/2/2010 09:42:53:System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Decimal.Parse(String s)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 477
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-8] WEBORB ERROR:26/2/2010 09:43:58:System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Decimal.Parse(String s)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 465
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 09:45:05:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:26/2/2010 09:46:58:System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Decimal.Parse(String s)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 468
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 09:51:19:System.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseDecimal(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Decimal.Parse(String s)
+   at SDE.PDF.ConstrutorPDF.relatorioInventario(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String textoCabecalho) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\PDF\ConstrutorPDF.cs:line 468
+   at SDE.CamadaNuvem.NuvemModificacoes.Estoque_InventarioEscrevePdf(Int32 idCorp, Int32 idEmp, Boolean porGrupo, String tipoPreco, Double pctSobreValor, String dataInventario, String cabecalhoInventario) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Estoque.cs:line 15
+[Thread-4] WEBORB ERROR:26/2/2010 09:51:47:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

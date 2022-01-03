@@ -1,0 +1,26 @@
+[Thread-8] WEBORB ERROR:7/7/2010 15:55:01:System.Exception: [erro anotado 8] Referência de objeto não definida para uma instância de um objeto.    em Utils.retiraCaracterEspecial(Object obj) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\Utils\Utils.cs:linha 282
+   em SDE.EntidadeNFE.EscreveItensNfe.Escreve_transp(XmlWriter writer, Cliente cli, ClienteEndereco ce, ClienteVeiculo veiculo, ClienteVeiculo reboque, MovNFE nfe) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\EntidadeNFE\EscreveItensNfe.cs:linha 606
+   em SDE.CamadaNuvem.NuvemModificacoes.GerarXml(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:linha 246 ---> System.NullReferenceException: Referência de objeto não definida para uma instância de um objeto.
+   em Utils.retiraCaracterEspecial(Object obj) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\Utils\Utils.cs:linha 282
+   em SDE.EntidadeNFE.EscreveItensNfe.Escreve_transp(XmlWriter writer, Cliente cli, ClienteEndereco ce, ClienteVeiculo veiculo, ClienteVeiculo reboque, MovNFE nfe) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\EntidadeNFE\EscreveItensNfe.cs:linha 606
+   em SDE.CamadaNuvem.NuvemModificacoes.GerarXml(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:linha 246
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\SuperNuvem.cs:linha 65
+   em SDE.CamadaNuvem.NuvemModificacoes.GerarXml(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes_Nfe.cs:linha 265
+[Thread-8] WEBORB ERROR:7/7/2010 16:29:05:System.Exception: Endereço do cliente não encontrado.
+Id do endereço: 0
+   em SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\PDF\ConstrutorPDF.cs:linha 104
+   em SDE.CamadaNuvem.NuvemModificacoes.MovEscrevePdf(Int32 idCorp, Int32 idEmp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 102
+[Thread-4] WEBORB ERROR:7/7/2010 16:30:11:System.Exception: Endereço do cliente não encontrado.
+Id do endereço: 0
+   em SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\PDF\ConstrutorPDF.cs:linha 104
+   em SDE.CamadaNuvem.NuvemModificacoes.MovEscrevePdf(Int32 idCorp, Int32 idEmp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 102
+[Thread-4] WEBORB ERROR:7/7/2010 16:33:29:System.Exception: Endereço do cliente não encontrado.
+Id do endereço: 0
+   em SDE.PDF.ConstrutorPDF.relatorioMov(Int32 idCorp, Int32 idEmp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\PDF\ConstrutorPDF.cs:linha 104
+   em SDE.CamadaNuvem.NuvemModificacoes.MovEscrevePdf(Int32 idCorp, Int32 idEmp, Int32 idMov) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\principal\lado_servidor\sde_principal\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 102
+[Thread-8] WEBORB ERROR:7/7/2010 16:54:23:Referência de objeto não definida para uma instância de um objeto.    em System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   em System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   em Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   em Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

@@ -1,0 +1,10 @@
+[Thread-4] WEBORB ERROR:7/12/2009 11:36:01:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-12] WEBORB ERROR:7/12/2009 18:15:13:System.Exception: [erro anotado 2] Object reference not set to an instance of an object.    at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 250 ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 250
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.GerarTXT(Int32 idCorp, Int32 idEmp, Mov mov_dados, MovNFE mov_nfe_dados, MovNfeVeiculo mov_nfe_vei_dados, List`1 mItens_dados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Balanco.cs:line 464

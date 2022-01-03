@@ -1,0 +1,58 @@
+[Thread-4] WEBORB ERROR:3/5/2010 10:34:51:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-13] WEBORB ERROR:3/5/2010 13:05:46:System.Exception: [erro anotado 20] O índice estava fora do intervalo. Ele deve ser não-negativo e menor que o tamanho da coleção.
+Nome do parâmetro: index    em System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   em System.ThrowHelper.ThrowArgumentOutOfRangeException()
+   em System.Collections.Generic.List`1.get_Item(Int32 index)
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 196 ---> System.ArgumentOutOfRangeException: O índice estava fora do intervalo. Ele deve ser não-negativo e menor que o tamanho da coleção.
+Nome do parâmetro: index
+   em System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   em System.ThrowHelper.ThrowArgumentOutOfRangeException()
+   em System.Collections.Generic.List`1.get_Item(Int32 index)
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 196
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:linha 65
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 409
+[Thread-9] WEBORB ERROR:3/5/2010 13:07:42:System.Exception: [erro anotado 56] O índice estava fora do intervalo. Ele deve ser não-negativo e menor que o tamanho da coleção.
+Nome do parâmetro: index    em System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   em System.ThrowHelper.ThrowArgumentOutOfRangeException()
+   em System.Collections.Generic.List`1.get_Item(Int32 index)
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 196 ---> System.ArgumentOutOfRangeException: O índice estava fora do intervalo. Ele deve ser não-negativo e menor que o tamanho da coleção.
+Nome do parâmetro: index
+   em System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   em System.ThrowHelper.ThrowArgumentOutOfRangeException()
+   em System.Collections.Generic.List`1.get_Item(Int32 index)
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 196
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:linha 65
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 409
+[Thread-4] WEBORB ERROR:3/5/2010 14:45:11:System.Exception: [erro anotado 20] Caixa Diário não encontrado. Data: 22/01/2010    em SDE.CamadaNuvem.NuvemModificacoes.Caixa_LancamentoDiario(IObjectContainer db, Int32 idEmp, String data, Double valor, Boolean isEntrada) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:linha 1266
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 226 ---> System.Exception: Caixa Diário não encontrado. Data: 22/01/2010
+   em SDE.CamadaNuvem.NuvemModificacoes.Caixa_LancamentoDiario(IObjectContainer db, Int32 idEmp, String data, Double valor, Boolean isEntrada) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:linha 1266
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 226
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:linha 65
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 415
+[Thread-4] WEBORB ERROR:3/5/2010 14:49:02:System.Exception: [erro anotado 20] Caixa Diário não encontrado. Data: 22/01/2010    em SDE.CamadaNuvem.NuvemModificacoes.Caixa_LancamentoDiario(IObjectContainer db, Int32 idEmp, String data, Double valor, Boolean isEntrada) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:linha 1266
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 226 ---> System.Exception: Caixa Diário não encontrado. Data: 22/01/2010
+   em SDE.CamadaNuvem.NuvemModificacoes.Caixa_LancamentoDiario(IObjectContainer db, Int32 idEmp, String data, Double valor, Boolean isEntrada) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:linha 1266
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 226
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:linha 65
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 415
+[Thread-9] WEBORB ERROR:3/5/2010 14:49:54:System.Exception: [erro anotado 20] Caixa Diário não encontrado. Data: 22/01/2010    em SDE.CamadaNuvem.NuvemModificacoes.Caixa_LancamentoDiario(IObjectContainer db, Int32 idEmp, String data, Double valor, Boolean isEntrada) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:linha 1266
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 226 ---> System.Exception: Caixa Diário não encontrado. Data: 22/01/2010
+   em SDE.CamadaNuvem.NuvemModificacoes.Caixa_LancamentoDiario(IObjectContainer db, Int32 idEmp, String data, Double valor, Boolean isEntrada) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes_Financeiro.cs:linha 1266
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 226
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:linha 65
+   em SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) na C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:linha 415
+[Thread-9] WEBORB ERROR:3/5/2010 17:06:14:Referência de objeto não definida para uma instância de um objeto.    em System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   em System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   em Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   em Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   em Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)

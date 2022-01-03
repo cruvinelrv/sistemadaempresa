@@ -1,0 +1,56 @@
+[Thread-4] WEBORB ERROR:9/2/2010 12:00:57:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-11] WEBORB ERROR:9/2/2010 12:00:57:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-4] WEBORB ERROR:9/2/2010 12:05:51:System.Exception: [erro anotado 54] Existem 0 estoques cadastrados para o id IEE 0    at ReaproveitamentoCodigo.Item_LoadEstoque(IObjectContainer db, Int32 idEmpEstoque, Boolean aceitaZeroResultados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 244
+   at SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 140 ---> System.Exception: Existem 0 estoques cadastrados para o id IEE 0
+   at ReaproveitamentoCodigo.Item_LoadEstoque(IObjectContainer db, Int32 idEmpEstoque, Boolean aceitaZeroResultados) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\ReaproveitamentoCodigo.cs:line 244
+   at SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 140
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 279
+[Thread-8] WEBORB ERROR:9/2/2010 12:08:03:An item with the same key has already been added.    at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-8] WEBORB ERROR:9/2/2010 12:08:08:System.Exception: [erro anotado 54] Index was outside the bounds of the array.    at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 143 ---> System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.GetId(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.IdListQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.Result.StatefulQueryResult.Get(Int32 index)
+   at Db4objects.Db4o.Internal.Query.ObjectSetFacade.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 143
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 279
+[Thread-11] WEBORB ERROR:9/2/2010 12:08:58:Object reference not set to an instance of an object.    at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
+   at Weborb.Util.License.LicenseManager.GetInstance(Int32 productID)
+   at Weborb.Util.Invocation.invoke(Object obj, MethodInfo method, Object[] arguments)
+   at Weborb.Handler.ObjectHandler.invoke(String typeName, String function, Object[] arguments, RequestContext context)
+[Thread-8] WEBORB ERROR:9/2/2010 12:09:02:System.Exception: [erro anotado 54] Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index    at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException()
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 186 ---> System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException()
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 186
+   --- End of inner exception stack trace ---
+   at SDE.CamadaNuvem.SuperNuvem.dbRollback(Exception ex, IObjectContainer[] dbList) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\SuperNuvem.cs:line 65
+   at SDE.CamadaNuvem.NuvemModificacoes.Mov_Salva(Int32 idCorp, Int32 idEmp, Int32 idClienteFuncionarioLogado, Mov mov, List`1 carrinho, List`1 valores) in C:\dev\sistemadaempresa\ambiente_desenvolvimento\marcos\lado_servidor\sde_marcos\SDE\code\CamadaNuvem\NuvemModificacoes.cs:line 279
