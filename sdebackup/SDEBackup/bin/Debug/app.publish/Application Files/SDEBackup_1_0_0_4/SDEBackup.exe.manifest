@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1">
+  <asmv1:assemblyIdentity name="SDEBackup.exe" version="1.0.0.4" publicKeyToken="e21ee2075fb91bcd" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="backup.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="SDEBackup" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="SDEBackup.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the 
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward 
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="4" minorVersion="10" buildNumber="0" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="2.0.50727.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="FTP.dll" size="4608">
+      <assemblyIdentity name="FTP" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>+bUVKBNLqrI147ZaF48ILKtSoW0=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Ionic.Utils.Zip.dll" size="244736">
+      <assemblyIdentity name="Ionic.Utils.Zip" version="1.6.3.18" publicKeyToken="C551E179877DA246" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>oSO0cox0U/gOxk/Thleb0g/YM28=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SDEBackup.exe" size="88576">
+      <assemblyIdentity name="SDEBackup" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>Y4lFvNTYiMV5iYnjehWcGY17wO8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="backup.ico" size="15086">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>n+v5oeLjZLUCuQYXLICnKwfKHOw=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=SERVERDEV1\autielis" issuerKeyHash="dc65630657d16dbb15d2ef5a281f68448caba8ca" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>J4TY6z9mfRGEpgOYWaXW63Lckro=</DigestValue></Reference></SignedInfo><SignatureValue>gltucIEtHbTCl4fef9T780NRN+ScZ64iCjQ8qgPXGFmp/BINxrPVo8aK4nQfSG5Ww6U2EvOBUZHUMC1pqHviGy3ZKli7SDCoToRiBe8jauDaAI0GEuXtcATQTIajP1t+Gp6u6y2vgIlCQ7izD1XSauly7EbFlC2fngrhfhDOKyA=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>yFGf6mWK82kepdYkMptb+VAdWeuL6/sIWtuHE9Mw+fPARcBcr+NNMFvN9HHL/iRvCAFVKyL6QjztuFQaxe58C++0Cl5HyRBELmNuOUMY8vAgZhjnWnPKybYxcPZ+36eivRkV4Nwpg3nHySz7b85coFMFqCB7xeccmWkh5eLIQAU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="ba92dc72ebd6a5599803a684117d663febd88427" Description="" Url=""><as:assemblyIdentity name="SDEBackup.exe" version="1.0.0.4" publicKeyToken="e21ee2075fb91bcd" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=SERVERDEV1\autielis</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>FGoF+cJRKP+BhhLaJ5nBiqPmJWs=</DigestValue></Reference></SignedInfo><SignatureValue>sPnS7B9rC1XGBv0vqV+Tp6t7GoFpHwf/uusHNyvQS/4nFUFt7xQRWdsnUsbn16S12mW9rGAHn7KdU9g7Hp3q2o4yahlZyO4/nxL99nyN1bJvJVN5GqsCQiVtEn9cqxbSU/VmW3bY/OeZFAFX+Qlm356Nbf71uXywU7HgDmjpv6w=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>yFGf6mWK82kepdYkMptb+VAdWeuL6/sIWtuHE9Mw+fPARcBcr+NNMFvN9HHL/iRvCAFVKyL6QjztuFQaxe58C++0Cl5HyRBELmNuOUMY8vAgZhjnWnPKybYxcPZ+36eivRkV4Nwpg3nHySz7b85coFMFqCB7xeccmWkh5eLIQAU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB3TCCAUqgAwIBAgIQ5SBvepTb875JbbQriDIhtzAJBgUrDgMCHQUAMDExLzAtBgNVBAMeJgBTAEUAUgBWAEUAUgBEAEUAVgAxAFwAYQB1AHQAaQBlAGwAaQBzMB4XDTEwMTEyNDExMzQwMFoXDTExMTEyNDE3MzQwMFowMTEvMC0GA1UEAx4mAFMARQBSAFYARQBSAEQARQBWADEAXABhAHUAdABpAGUAbABpAHMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMhRn+plivNpHqXWJDKbW/lQHVnri+v7CFrbhxPTMPnzwEXAXK/jTTBbzfRxy/4kbwgBVSsi+kI87bhUGsXufAvvtApeR8kQRC5jbjlDGPLwIGYY51pzysm2MXD2ft+nor0ZFeDcKYN5x8ks+2/OXKBTBagge8XnHJlpIeXiyEAFAgMBAAEwCQYFKw4DAh0FAAOBgQBxN+7/LkhPqEQcGjyVTOmcaPpL9CmBtnjD9sB/fcbUzNUZd4QPqUU7Q40iJx8O7KjXWKhH5OoMe69lt20oKrtkxang1wIT2Gs+LvusQrHEjGzHF12BGI908gy9mxRuRoZGwZYxypxeA192JGcaqUXcjDWpcdcQBqPLF9ggbcm0sg==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
