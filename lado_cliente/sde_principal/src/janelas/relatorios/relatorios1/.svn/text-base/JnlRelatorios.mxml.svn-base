@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	styleName="padding5" fontSize="12" fontWeight="bold" creationPolicy="all"
+	creationComplete="create(); createCmbRel();"
+	xmlns:SDE="Componentes.SDE.*" xmlns:comp="Componentes.comp.*" xmlns:Combo="SDE.Componentes.Combo.*"
+	xmlns:controls="com.flexpernambuco.controls.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*">
+	
+	<mx:states>
+		<mx:State name="stateTipoMovOculta">
+			<mx:AddChild relativeTo="{placeHolderTipoMovOculta}" position="lastChild">
+				<mx:HBox verticalAlign="middle">
+					<mx:CheckBox id="ckbTipoMovReserva" label="Reserva" width="150"/>
+					<mx:CheckBox id="ckbTipoMovPedido" label="Pedido" width="150"/>
+				</mx:HBox>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{placeHolderTipoImpressaoOculta}" position="lastChild">
+				<mx:HBox verticalAlign="middle">
+					<mx:CheckBox id="ckbTipoImpressaoReserva" label="Reserva" width="150"/>
+					<mx:CheckBox id="ckbTipoImpressaoPedido" label="Pedido" width="150"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize targets="{[placeHolderTipoMovOculta, placeHolderTipoImpressaoOculta]}"/>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:ArrayCollection id="arraycTipoMov">
+		<mx:Label text="Todos"/>
+		<mx:Label text="Ajuste de Estoque"/>
+		<mx:Label text="Balanço"/>
+		<mx:Label text="Compra"/>
+		<mx:Label text="Compra Cancelada"/>
+		<mx:Label text="Devolução"/>
+		<mx:Label text="NFS Preveitura RV (DMS)"/>
+		<mx:Label text="Orçamento"/>
+		<mx:Label text="Pedido"/>
+		<mx:Label text="Reserva"/>
+		<mx:Label text="Serviço"/>
+		<mx:Label text="Venda"/>
+		<mx:Label text="Venda Cancelada"/>
+	</mx:ArrayCollection>
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:HBox width="100%" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.icn_64_relatorio}"/>
+		<mx:Label text="Relatórios" fontSize="40" fontWeight="bold" color="#666666"/>
+	</mx:HBox>
+	
+	<mx:HBox width="100%" height="100%" styleName="padding5">
+		
+		<mx:LinkBar id="lbRelatorios" dataProvider="{vsRelatorios}" direction="vertical" height="100%" width="250" borderStyle="solid" cornerRadius="20" themeColor="#003B59"
+			keyDown="mudaState(event)"/>
+
+		<mx:ViewStack id="vsRelatorios" width="100%" height="100%">
+			
+			<!-- RELATÓRIO LISTA TELEFONE -->
+			<mx:VBox label="Lista de Telefones" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelListaTelefonePDF" groupName="rbRelListaTelefone" label="PDF" fontWeight="bold" selected="true" enabled="false"/>
+							<mx:RadioButton id="rbRelListaTelefoneWEB" groupName="rbRelListaTelefone" label="Página Web" fontWeight="bold" enabled="false"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelListaTelefone((rbRelListaTelefonePDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO FICHA DE CLIENTES -->
+			<mx:VBox label="Ficha de Clientes" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelFcihaClientePDF" groupName="rbRelFcihaCliente" label="PDF" fontWeight="bold" selected="true" enabled="false"/>
+							<mx:RadioButton id="rbRelFcihaClienteWEB" groupName="rbRelFcihaCliente" label="Página Web" fontWeight="bold" enabled="false"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelFichaCliente((rbRelFcihaClientePDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO DE ESTOQUE -->
+			<mx:VBox label="Estoque" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:Label text="Tipo do Estoque:"/>
+				<mx:HBox verticalAlign="middle" verticalGap="0">
+					<mx:RadioButton id="rbRelEstoqueComGrade" label="Estoque com grade" groupName="rbGrupoTipoEstoque" selected="true"/>
+					<mx:RadioButton id="rbRelEstoqueSemGrade" label="Estoque sem grade" groupName="rbGrupoTipoEstoque"/>
+				</mx:HBox>
+				<mx:CheckBox id="ckbRelEstoqueExibeItensSemEstoque" label="Exibe itens sem estoque"/>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelEstoquePDF" groupName="rbRelEstoque" label="PDF" fontWeight="bold" enabled="false"/>
+							<mx:RadioButton id="rbRelEstoqueWEB" groupName="rbRelEstoque" label="Página Web" fontWeight="bold" selected="true" enabled="false"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelEstoque((rbRelEstoquePDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO LISTA DE PREÇOS -->
+			<mx:VBox label="Lista de Preços" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Grupo:"/>
+					<Combo:CmbCad_Marca id="cmbRelListaPrecosMarca" labelField="marca" width="218"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelListaPrecoPDF" groupName="rbRelListaPreco" label="PDF" fontWeight="bold" selected="true"/>
+							<mx:RadioButton id="rbRelListaPrecoWEB" groupName="rbRelListaPreco" label="Página Web" fontWeight="bold"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelListaPrecos((rbRelListaPrecoPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO LISTAGEM PARA BALANÇO -->
+			<mx:VBox label="Listagem Para Balanço" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:Label text="Ordenação:"/>
+				<mx:HBox verticalAlign="middle">
+					<mx:RadioButton id="rbRelListagemBalancoNome" groupName="rbRelListagemBalancoOrdem" label="Por Nome" selected="true"/>
+					<mx:RadioButton id="rbRelListagemBalancoId" groupName="rbRelListagemBalancoOrdem" label="Por Código"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelListagemBalancoPDF" groupName="rbRelListagemBalanco" label="PDF" fontWeight="bold" selected="true"/>
+							<mx:RadioButton id="rbRelListagemBalancoWEB" groupName="rbRelListagemBalanco" label="Página Web" fontWeight="bold"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelListagemParaBalanco((rbRelListagemBalancoPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO ESPELHO DE MOVIMENTAÇÕES -->
+			<mx:VBox label="Espelho de Movimentações" width="100%" height="100%" verticalGap="5"
+				hide="escondeRelEspelhoMovimentacoes()"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data Inicial:"/>
+					<comp:DateFieldBR id="dfEspelhoMovDataInicial" yearNavigationEnabled="true"
+						valueCommit="setSelectedRange(dfEspelhoMovDataInicial, dfEspelhoMovDataFinal)"/>
+					<mx:Label text="Data Final:"/>
+					<comp:DateFieldBR id="dfEspelhoMovDataFinal" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Cliente/Forneced.:" width="110"/>
+					<SDE:CaixaPesquisa id="cpClienteRelEspelhoMovimentacoes" width="500"
+						clickPesquisar="pesquisaCliente(cpClienteRelEspelhoMovimentacoes.text)"/>
+					<SDE:Botao icon="{Imagens.unica.icn_32_deleta}" toolTip="Remover Selecionado" height="34"
+						click="removeCliente(cpClienteRelEspelhoMovimentacoes)"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Vendedor:" width="110"/>
+					<SDE:CaixaPesquisa id="cpFuncionarioRelEspelhoMovimentacoes" width="500"
+						clickPesquisar="pesquisaFuncionario(cpFuncionarioRelEspelhoMovimentacoes.text, cpFuncionarioRelEspelhoMovimentacoes, dgFuncionario)"/>
+					<SDE:Botao icon="{Imagens.unica.icn_32_deleta}" toolTip="Remover Selecionado" height="34"
+						click="removeFuncionario(cpFuncionarioRelEspelhoMovimentacoes)"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Produto:" width="110"/>
+					<SDE:CaixaPesquisa id="cpItemRelEspelhoMovimentacoes" width="500"
+						clickPesquisar="pesquisaItem(cpItemRelEspelhoMovimentacoes.text, cpItemRelEspelhoMovimentacoes, dgItem)"/>
+					<SDE:Botao icon="{Imagens.unica.icn_32_deleta}" toolTip="Remover Selecionado" height="34"
+						click="removeItem(cpItemRelEspelhoMovimentacoes)"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Movimentação:" width="110"/>
+					<SDE:CaixaPesquisa id="cpMovRelEspelhoMovimentacoes" width="500"
+						clickPesquisar="pesquisaMov(cpMovRelEspelhoMovimentacoes.text, cpMovRelEspelhoMovimentacoes, dgMov)"/>
+					<SDE:Botao icon="{Imagens.unica.icn_32_deleta}" toolTip="Remover Selecionado" height="34"
+						click="removeMov(cpMovRelEspelhoMovimentacoes)"/>
+				</mx:HBox>
+				<mx:Label text="Tipo de Movimentação:"/>
+				<mx:HBox verticalAlign="middle">
+					<mx:CheckBox id="ckbTipoMovTodos" label="Todos" width="150" click="ckbTipoMovTodos_click()"/>
+					<mx:CheckBox id="ckbTipoMovCompra" label="Compra" width="150"/>
+					<mx:CheckBox id="ckbTipoMovVenda" label="Venda" width="150"/>
+					<mx:CheckBox id="ckbTipoMovOrcamento" label="Orçamento" width="150"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:CheckBox id="ckbTipoMovCompraCancelada" label="Compra Cancelada" width="150"/>
+					<mx:CheckBox id="ckbTipoMovVendaCancelada" label="Venda Cancelada" width="150"/>
+					<mx:CheckBox id="ckbTipoMovAjusteEstoque" label="Ajuste Estoque" width="150"/>
+					<mx:CheckBox id="ckbTipoMovBalanco" label="Balanço" width="150"/>
+				</mx:HBox>
+				<mx:HBox id="placeHolderTipoMovOculta"/>
+				<mx:Label text="Tipo de Impressão:"/>
+				<mx:HBox verticalAlign="middle">
+					<mx:CheckBox id="ckbTipoImpressaoTodos" label="Todos" width="150" click="ckbTipoImpressaoTodos_click()"/>
+					<mx:CheckBox id="ckbTipoImpressaoSemImpressao" label="Sem Impressão" width="150"/>
+					<mx:CheckBox id="ckbTipoImpressaoNfe" label="NFe" width="150"/>
+					<mx:CheckBox id="ckbTipoImpressaoNf" label="NF" width="150"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:CheckBox id="ckbTipoImpressaoCupomFiscal" label="Cupom Fiscal" width="150"/>
+					<mx:CheckBox id="ckbTipoImpressaoOrcamento" label="Orçamento" width="150"/>
+					<mx:HBox id="placeHolderTipoImpressaoOculta"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelEspelhoMovimentacoesPDF" groupName="rbRelEspelhoMovimentacoes" label="PDF" fontWeight="bold" enabled="false"/>
+							<mx:RadioButton id="rbRelEspelhoMovimentacoesWEB" groupName="rbRelEspelhoMovimentacoes" label="Página Web" fontWeight="bold" selected="true" enabled="false"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelEspelhoMovimentacoes((rbRelEspelhoMovimentacoesPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO DE CAIXA -->
+			<mx:VBox label="Relatório de Caixa" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data do Caixa:"/>
+					<comp:DateFieldBR id="dfRelCaixa" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelCaixaPDF" groupName="rbRelCaixa" label="PDF" fontWeight="bold" enabled="false"/>
+							<mx:RadioButton id="rbRelCaixaWEB" groupName="rbRelCaixa" label="Página Web" fontWeight="bold" enabled="false" selected="true"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelCaixa((rbRelCaixaPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO PIS / COFINS -->
+			<mx:VBox label="Relatório PIS / COFINS" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data Inicial:" width="70"/>
+					<comp:DateFieldBR id="dfRelPisCofinsDataInicial" yearNavigationEnabled="true"
+						valueCommit="setSelectedRange(dfRelPisCofinsDataInicial, dfRelPisCofinsDataFinal)"/>
+					<mx:Label text="Data Final:"/>
+					<comp:DateFieldBR id="dfRelPisCofinsDataFinal" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelPisCofinsPDF" groupName="rbRelPisCofins" label="PDF" fontWeight="bold" enabled="false"/>
+							<mx:RadioButton id="rbRelPisCofinsWEB" groupName="rbRelPisCofins" label="Página Web" fontWeight="bold" enabled="false" selected="true"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelPisCofins((rbRelPisCofinsPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO EXTRATO CONTA CORRENTE CAIXA -->
+			<mx:VBox label="Relatório Extrato Conta Corrente Caixa" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data Inicial:" width="70"/>
+					<comp:DateFieldBR id="dfRelExtratoContaCorrenteCaixaDataInicial" yearNavigationEnabled="true"
+						valueCommit="setSelectedRange(dfRelExtratoContaCorrenteCaixaDataInicial, dfRelExtratoContaCorrenteCaixaDataFinal)"/>
+					<mx:Label text="Data Final:"/>
+					<comp:DateFieldBR id="dfRelExtratoContaCorrenteCaixaDataFinal" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				<mx:HBox>
+					<mx:Label text="Conta:" width="100"/>
+					<Combo:CmbFinan_Conta id="cmbRelExtratoContaCorrenteCaixaConta" width="220"/>
+				</mx:HBox>
+				<mx:HBox>
+					<mx:Label text="Centro de Custo:" width="100"/>
+					<Combo:CmbFinan_CentroCusto id="cmbRelExtratoContaCorrenteCaixaCentroCusto" width="220"/>
+				</mx:HBox>
+				<mx:HBox>
+					<mx:Label text="Plano de Conta:" width="100"/>
+					<Combo:CmbFinan_TipoLancamento id="cmbRelExtratoContaCorrenteCaixaPlanoConta" width="220"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelExtratoContaCorrenteCaixaPDF" groupName="rbRelExtratoContaCorrenteCaixa" label="PDF" fontWeight="bold" enabled="false"/>
+							<mx:RadioButton id="rbRelExtratoContaCorrenteCaixaWEB" groupName="rbRelExtratoContaCorrenteCaixa" label="Página Web" fontWeight="bold" enabled="false" selected="true"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelExtratoContaCorrenteCaixa((rbRelExtratoContaCorrenteCaixaPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO TÍTULOS A RECEBER / PAGAR -->
+			<mx:VBox label="Relatório Títulos a Receber / Pagar" width="100%" height="100%"
+				hide="escondeRelTitulosReceberPagar()"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data Inicial:"/>
+					<comp:DateFieldBR id="dfRelTitulosReceberPagarDataInicial" yearNavigationEnabled="true"
+						valueCommit="setSelectedRange(dfRelTitulosReceberPagarDataInicial, dfRelTitulosReceberPagarDataFinal)"/>
+					<mx:Label text="Data Final:"/>
+					<comp:DateFieldBR id="dfRelTitulosReceberPagarDataFinal" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Cliente/Forneced.:" width="110"/>
+					<SDE:CaixaPesquisa id="cpClienteRelTitulosReceberPagar" width="500"
+						clickPesquisar="pesquisaCliente(cpClienteRelTitulosReceberPagar.text)"/>
+					<SDE:Botao icon="{Imagens.unica.icn_32_deleta}" toolTip="Remover Selecionado" height="34"
+						click="removeCliente(cpClienteRelTitulosReceberPagar)"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Portador:" width="110"/>
+					<Combo:CmbFinan_Portador id="cmbRelTitulosReceberPagarPortador" width="202"/>
+				</mx:HBox>
+				<mx:Label text="Natureza do Titulo:"/>
+				<mx:HBox verticalAlign="middle">
+					<mx:CheckBox id="ckbRelTitulosReceberPagarContasPagar" label="A Pagar" width="95"/>
+					<mx:CheckBox id="ckbRelTitulosReceberPagarContasReceber" label="A Receber"/>
+				</mx:HBox>
+				<mx:Label text="Status do Titulo:"/>
+				<mx:HBox verticalAlign="middle">
+					<mx:CheckBox id="ckbRelTitulosReceberPagarEmAberto" label="Em Aberto" width="95"/>
+					<mx:CheckBox id="ckbRelTitulosReceberPagarRecebidoPago" label="Recebido / Pago"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelTitulosReceberPagarPDF" groupName="rbRelTitulosReceberPagar" label="PDF" fontWeight="bold" enabled="false"/>
+							<mx:RadioButton id="rbRelTitulosReceberPagarWEB" groupName="rbRelTitulosReceberPagar" label="Página Web" fontWeight="bold" enabled="false" selected="true"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelTitulosReceberPagar((rbRelTitulosReceberPagarPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO CHEQUES -->
+			<mx:VBox label="Relatório Cheques" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data Inicial:"/>
+					<comp:DateFieldBR id="dfRelChequeDataInicial" yearNavigationEnabled="true"
+						valueCommit="setSelectedRange(dfRelChequeDataInicial, dfRelChequeDataFinal)"/>
+					<mx:Label text="Data Final:"/>
+					<comp:DateFieldBR id="dfRelChequeDataFinal" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				
+				<mx:CheckBox id="ckbdfRelChequeReceber" label="Exibe Cheques a Receber"/>
+				<mx:CheckBox id="ckbdfRelChequeBaixados" label="Exibe Cheques Baixados"/>
+				<mx:CheckBox id="ckbdfRelChequeCompensados" label="Exibe Cheques Compensados"/>
+				<mx:CheckBox id="ckbdfRelChequeDevolvidos" label="Exibe Cheques Devolvidos"/>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelChequesPDF" groupName="rbRelCheques" label="PDF" fontWeight="bold" enabled="false"/>
+							<mx:RadioButton id="rbRelChequesWEB" groupName="rbRelCheques" label="Página Web" fontWeight="bold" enabled="false" selected="true"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelCheques((rbRelChequesPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO DE COMISSIONAMENTO DINÂMICO -->
+			<mx:VBox label="Relatório de Comissionamento Dinâmico" width="100%" height="100%"
+				hide="escondeRelComissionamentoDinamico()"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data Inicial:" width="75"/>
+					<comp:DateFieldBR id="dfRelComissionamentoDataInicial" yearNavigationEnabled="true"
+						valueCommit="setSelectedRange(dfRelComissionamentoDataInicial, dfRelComissionamentoDataFinal)"/>
+					<mx:Label text="Data Final:"/>
+					<comp:DateFieldBR id="dfRelComissionamentoDataFinal" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Funcionário:" width="75"/>
+					<SDE:CaixaPesquisa id="cpFuncionarioRelComissionamentoDinamico" width="500"
+						clickPesquisar="pesquisaFuncionario(cpFuncionarioRelComissionamentoDinamico.text, cpFuncionarioRelComissionamentoDinamico, dgFuncionario)"/>
+					<SDE:Botao icon="{Imagens.unica.icn_32_deleta}" toolTip="Remover Selecionado" height="34"
+						click="removeFuncionario(cpFuncionarioRelComissionamentoDinamico)"/>
+				</mx:HBox>
+				<mx:CheckBox id="ckbRelComissionamentoExibeMov" label="Exibir Movimentações"/>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelComissionamentoDinamicoPDF" groupName="rbRelComissionamentoDinamico" label="PDF" fontWeight="bold" enabled="false"/>
+							<mx:RadioButton id="rbRelComissionamentoDinamicoWEB" groupName="rbRelComissionamentoDinamico" label="Página Web" fontWeight="bold" enabled="false" selected="true"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelComissionamentoDinamico((rbRelComissionamentoDinamicoPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIOS PRODUTOS VENDIDOS NO PERÍODO -->
+			<mx:VBox label="Produtos Vendidos no Período" width="100%" height="100%"
+				hide="escondeRelProdutosVendidosPeriodo()"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data Inicial:" width="70"/>
+					<comp:DateFieldBR id="dfRelProdutosVendidosPeriodoDataInicial" yearNavigationEnabled="true"
+						valueCommit="setSelectedRange(dfRelProdutosVendidosPeriodoDataInicial, dfRelProdutosVendidosPeriodoDataFinal)"/>
+					<mx:Label text="Data Final:"/>
+					<comp:DateFieldBR id="dfRelProdutosVendidosPeriodoDataFinal" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Produto:" width="70"/>
+					<SDE:CaixaPesquisa id="cpItemRelProdutosVendidosPeriodo" width="500"
+						clickPesquisar="pesquisaItem(cpItemRelProdutosVendidosPeriodo.text, cpItemRelProdutosVendidosPeriodo, dgItem)"/>
+					<SDE:Botao icon="{Imagens.unica.icn_32_deleta}" toolTip="Remover Selecionado" height="34"
+						click="removeItem(cpItemRelProdutosVendidosPeriodo)"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelProdutosVendidosPeriodoPDF" groupName="rbRelProdutosVendidosPeriodo" label="PDF" fontWeight="bold" enabled="false"/>
+							<mx:RadioButton id="rbRelProdutosVendidosPeriodoWEB" groupName="rbRelProdutosVendidosPeriodo" label="Página Web" fontWeight="bold" enabled="false" selected="true"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelProdutosVendidosPeriodo((rbRelProdutosVendidosPeriodoPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO AGRODEFESA -->
+			<mx:VBox label="Agrodefesa" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data Inicial:" width="70"/>
+					<comp:DateFieldBR id="dfRelAgrodefesaDataInicial" yearNavigationEnabled="true"
+						valueCommit="setSelectedRange(dfRelAgrodefesaDataInicial, dfRelAgrodefesaDataFinal)"/>
+					<mx:Label text="Data Final:"/>
+					<comp:DateFieldBR id="dfRelAgrodefesaDataFinal" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Produto:" width="70"/>
+					<SDE:CaixaPesquisa width="500"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton label="PDF" fontWeight="bold"/>
+							<mx:RadioButton label="Página Web" fontWeight="bold"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="statusImplementacao()"/>
+				</mx:HBox>
+				
+				<mx:Label text="OBS: Este relatório se encontra em status de implementação e não será possível gerá-lo no momento." color="blue" fontWeight="bold" fontSize="14" textDecoration="underline"/>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO INVENTÁRIO -->
+			<mx:VBox label="Relatório Inventário" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Tipo de Valor:" width="160"/>
+					<mx:ComboBox id="cmbRelInventarioTipoValor" dataProvider="{['Compra', 'Custo', 'Venda']}"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Porcentagem Sobre Valor:" width="160"/>
+					<mx:NumericStepper id="nsRelInventarioPorcentagemValor" width="90"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Data do Inventário:" width="160"/>
+					<comp:DateFieldBR id="dfRelInventarioData" yearNavigationEnabled="true"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Cabeçalho do Inventário: 'Registro de nº"/>
+					<controls:MasterTextInput id="txtRelInventarioNumero" onlyRestrict="number" width="80"/>
+					<mx:Label text="'"/>
+				</mx:HBox>
+				<mx:CheckBox id="ckbRelInventarioExibeItensSemEstoque" label="Exibe Itens Sem Estoque"/>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton label="PDF" fontWeight="bold"/>
+							<mx:RadioButton label="Página Web" fontWeight="bold"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="statusImplementacao()"/>
+				</mx:HBox>
+				
+				<mx:Label text="OBS: Este relatório se encontra em status de implementação e não será possível gerá-lo no momento." color="blue" fontWeight="bold" fontSize="14" textDecoration="underline"/>
+				
+			</mx:VBox>
+			
+			<!-- RELATÓRIO LISTA DE PRODUTOS COM TRIBUTACAO -->
+			<mx:VBox label="Lista de Produtos/Tributacao" width="100%" height="100%"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Grupo:"/>
+					<Combo:CmbCad_Marca id="cmbRelListaProdMarcaTrib" labelField="marca" width="218"/>
+				</mx:HBox>
+				
+				<mx:HBox borderStyle="solid" cornerRadius="5" borderThickness="1" styleName="padding5">
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Tipo de Impressão:"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:RadioButton id="rbRelListaProdutoTribPDF" groupName="rbRelListaProdutoTrib" label="PDF" fontWeight="bold" selected="false"/>
+							<mx:RadioButton id="rbRelListaProdutoTribWEB" groupName="rbRelListaProdutoTrib" label="Página Web" fontWeight="bold"/>
+						</mx:HBox>
+					</mx:VBox>
+					<SDE:Botao label="Gerar" labelPlacement="bottom" icon="{Imagens.unica.icn_32_impressora}" width="100"
+						click="gerarRelListaProdutoTributacao((rbRelListaProdutoTribPDF.selected)?'PDF':'WEB')"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+		</mx:ViewStack>
+		
+	</mx:HBox>
+	
+	<mx:VBox id="popups">
+		
+		<PopUpPesquisa:SuperPopPesq id="popupCliente"
+			showCloseButton="true"
+			close="{removePopup(popupCliente)}"
+			titleIcon="{Imagens.unica.icn_64_pesquisa}"
+			width="900" height="500" styleName="padding5"
+			fontSize="14" fontWeight="bold" layout="vertical">
+			
+			<SDE:CaixaPesquisa id="cpClientePopUpCliente" width="100%"
+				clickPesquisar="pesquisaClientePopUp(cpClientePopUpCliente.text)"/>
+			
+			<SDE:DataGrid id="dgCliente"
+				width="100%" height="100%"
+				doubleClick="selecionaCliente((dgCliente.selectedItem as Cliente), popupCliente)">
+				<SDE:columns>
+					<mx:DataGridColumn width="75" dataField="nome" headerText="Nome"/>
+					<comp:MyDataGridColumn width="25" dataField="cpf_cnpj" headerText="CPF/CNPJ" tipo="CpfCnpj"/>
+				</SDE:columns>
+			</SDE:DataGrid>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<SDE:Botao label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+					click="selecionaCliente((dgCliente.selectedItem as Cliente), popupCliente)"/>
+			</mx:HBox>
+			
+		</PopUpPesquisa:SuperPopPesq>
+		
+		<PopUpPesquisa:SuperPopPesq id="popupFuncionario"
+			showCloseButton="true"
+			close="removePopup(popupFuncionario)"
+			titleIcon="{Imagens.unica.icn_64_pesquisa}"
+			width="900" height="500" styleName="padding5"
+			fontSize="14" fontWeight="bold" layout="vertical">
+			
+			<SDE:CaixaPesquisa id="cpFuncionarioPopUpFuncionario" width="100%"
+				clickPesquisar="pesquisaFuncionarioPopUp(cpFuncionarioPopUpFuncionario.text, dgFuncionario)"/>
+			
+			<SDE:DataGrid id="dgFuncionario"
+				width="100%" height="100%"
+				doubleClick="selecionaFuncionario((dgFuncionario.selectedItem as Cliente), popupFuncionario)">
+				<SDE:columns>
+					<mx:DataGridColumn width="75" dataField="nome" headerText="Nome"/>
+					<comp:MyDataGridColumn width="25" dataField="cpf_cnpj" headerText="CPF/CNPJ" tipo="CpfCnpj"/>
+				</SDE:columns>
+			</SDE:DataGrid>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<SDE:Botao label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+					click="selecionaFuncionario((dgFuncionario.selectedItem as Cliente), popupFuncionario)"/>
+			</mx:HBox>
+			
+		</PopUpPesquisa:SuperPopPesq>
+		
+		<PopUpPesquisa:SuperPopPesq id="popupItem"
+			showCloseButton="true"
+			close="removePopup(popupItem)"
+			titleIcon="{Imagens.unica.icn_64_pesquisa}"
+			width="900" height="500" styleName="padding5"
+			fontSize="14" fontWeight="bold" layout="vertical">
+			
+			<SDE:CaixaPesquisa id="cpItemPopUpItem" width="100%"
+				clickPesquisar="pesquisaItemPoUp(cpItemPopUpItem.text, dgItem)"/>
+			
+			<SDE:DataGrid id="dgItem"
+				width="100%" height="100%"
+				doubleClick="selecionaItem((dgItem.selectedItem as Item), popupItem)">
+				<SDE:columns>
+					<mx:DataGridColumn width="40" dataField="nome" headerText="Item"/>
+					<mx:DataGridColumn width="10" dataField="rfUnica" headerText="Rf. Única"/>
+					<mx:DataGridColumn width="10" dataField="rfAuxiliar" headerText="Rf. Auxiliar"/>
+					<mx:DataGridColumn width="8" dataField="unidMed" headerText="Un. Med."/>
+					<mx:DataGridColumn width="12" labelFunction="lblFn_PrecoVenda" headerText="Preço de Venda"/>
+				</SDE:columns>
+			</SDE:DataGrid>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<SDE:Botao label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+					click="selecionaItem((dgItem.selectedItem as Item), popupItem)"/>
+			</mx:HBox>
+			
+		</PopUpPesquisa:SuperPopPesq>
+		
+		<PopUpPesquisa:SuperPopPesq id="popupMov"
+			showCloseButton="true"
+			close="removePopup(popupMov)"
+			titleIcon="{Imagens.unica.icn_64_pesquisa}"
+			width="900" height="500" styleName="padding5"
+			fontSize="14" fontWeight="bold" layout="vertical">
+			
+			<SDE:CaixaPesquisa id="cpMovPopUpMov" width="100%"
+				clickPesquisar="pesquisaMovPoUp(cpMovPopUpMov.text, dgMov)"/>
+			
+			<SDE:DataGrid id="dgMov"
+				width="100%" height="100%"
+				doubleClick="selecionaMov((dgMov.selectedItem as Mov), cpMovRelEspelhoMovimentacoes, popupMov)">
+				<SDE:columns>
+					<mx:DataGridColumn width="40" dataField="cliente_nome" headerText="Cliente"/>
+					<comp:MyDataGridColumn width="20" dataField="cliente_cpf" headerText="CPF/CNPJ" tipo="CpfCnpj"/>
+					<mx:DataGridColumn width="20" dataField="dthrMovEmissao" headerText="Data"/>
+					<comp:MyDataGridColumn width="20" dataField="vlrTotal" headerText="Valor" tipo="Dinheiro"/>
+				</SDE:columns>
+			</SDE:DataGrid>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<SDE:Botao label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+					click="selecionaMov((dgMov.selectedItem as Mov), cpMovRelEspelhoMovimentacoes, popupMov)"/>
+			</mx:HBox>
+			
+		</PopUpPesquisa:SuperPopPesq>
+		
+	</mx:VBox>
+	
+	<mx:Script source="MdllJnlRelatorios_script.as"/>
+	<mx:Script source="MdllJnlRelatorios_scriptImprime.as"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import SDE.Entidade.Mov;
+			import SDE.Entidade.Item;
+			import SDE.Entidade.Cliente;
+			import Core.Sessao;
+			import mx.collections.SortField;
+			import mx.collections.Sort;
+			import SDE.Entidade.Finan_TipoLancamento;
+			import SDE.Entidade.Finan_CentroCusto;
+			import SDE.Entidade.Finan_Conta;
+			import Componentes.comp.DateFieldBR;
+			import Componentes.comp.DateFieldBR;
+			import mx.controls.Label;
+			import img.Imagens;
+			
+			private var sortConta:Sort;
+			private var sortCentroCusto:Sort;
+			private var sortPlanoConta:Sort;
+			private var sortPortador:Sort;
+			private var sortMarca:Sort;
+			private var sortMov:Sort;
+			
+			private var vars:URLVariables = new URLVariables();
+			private var url:URLRequest = new URLRequest();
+			
+			private var clienteSelecionado:Cliente;
+			private var funcionarioSelecionado:Cliente;
+			private var itemSelecionado:Item;
+			private var movSelecionada:Mov;
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:CP="Componentes.CaixaPesquisa.CP.*" xmlns:comp="Componentes.comp.*"
+	xmlns:template="janelas.mov.PDV.template.*" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	fontSize="14"
+	color="#333333" paddingTop="0" paddingBottom="0" xmlns:Parametro="SDE.Parametro.*"
+	creationPolicy="all"
+	creationComplete="create()">
+	
+	<!-- Visualização de Dados da NFE / dados de produtos -->
+	<mx:VBox width="100%" height="100%" verticalGap="5" show="show1()"
+		horizontalAlign="center" verticalAlign="middle"
+		styleName="padding10">			
+		<mx:VBox width="100%">
+			<mx:Label text="Pesquise a movimentação:"/>
+			<CP:CPesqMov id="cpMov"
+				widthBtn="32" widthTxt="200"
+				retorno="{retornaMov(event.retorno[0])}" cancela="cancelaPesquisaMov()" />
+		</mx:VBox>
+		<mx:VBox width="100%" height="100%">
+			<!-- DataGrid MovItens-->
+			<mx:DataGrid id="grid" width="100%" height="100%" backgroundColor="green"
+				themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+				<mx:columns>
+					<mx:DataGridColumn width="1" headerText="" dataField="contador"/>
+					<mx:DataGridColumn width="4" headerText="Produto" dataField="nome"/>
+					<mx:DataGridColumn width="1" headerText="Grade" dataField="grade"/>
+					<mx:DataGridColumn width="1" headerText="CFOP" dataField="cfop" textAlign="right"/>
+					<mx:DataGridColumn width="1" headerText="Quantidade" dataField="qtd" textAlign="right"/>
+					<mx:DataGridColumn width="1" headerText="Valor Unit" dataField="vlrUnit" textAlign="right"/>				
+					<mx:DataGridColumn width="1" headerText="Valor Total" dataField="vlrTotal" textAlign="right"/>
+				</mx:columns>
+			</mx:DataGrid>
+			
+			<!-- Totais da Nota-->
+			<mx:VBox width="100%" verticalGap="0">
+				<mx:HBox width="100%"
+					backgroundColor="#3B5998" borderColor="#3B5998"
+					color="black" styleName="padding0"
+					verticalGap="0" horizontalGap="0"
+					verticalAlign="middle" horizontalAlign="right"  
+					fontSize="12" fontWeight="bold">
+					<mx:Label width="60" text="ICMS:" />
+					<mx:Label width="100%" id="lblVlrIcms" />
+					<mx:Label width="60" text="ICMS ST:"/>
+					<mx:Label width="100%" id="lblVlrIcmsst"/>
+					<mx:Label width="60" text="PIS:"/>
+					<mx:Label width="100%" id="lblVlrPis"/>
+					<mx:Label width="80" text="COFINS:"/>
+					<mx:Label width="100%" id="lblVlrCofins"/>
+					<mx:Label width="100" text="Valor Produtos:" />
+					<mx:Label width="100%" id="lblVlrProd" />
+				</mx:HBox>
+				<mx:HBox width="100%"
+					backgroundColor="#3B5998" borderColor="#3B5998"
+					color="black" styleName="padding0"
+					verticalGap="0" horizontalGap="0"
+					verticalAlign="middle" horizontalAlign="right"  
+					fontSize="12" fontWeight="bold">
+					<mx:Label width="60" text="IPI:"/>
+					<mx:Label width="100%" id="lblVlrIPI"/>
+					<mx:Label width="60" text="Frete:"/>
+					<mx:Label width="100%" id="lblVlrFrete" />
+					<mx:Label width="60" text="Seguro:" />
+					<mx:Label width="100%" id="lblVlrSeguro" />
+					<mx:Label width="80" text="Desconto:" />
+					<mx:Label width="100%" id="lblVlrDesc" />
+					<mx:Label width="100" text="Valor Total:" />
+					<mx:Label width="100%" id="lblVlrTotal" />
+				</mx:HBox>
+			</mx:VBox>	
+		</mx:VBox>
+		
+		<mx:HBox width="100%" fontSize="20">
+			<comp:Botao2 id="btnEdita" icone="Salva" label="Edita e Finaliza" click="btnEdita_Click()" enabled="false"/>
+			<mx:Spacer width="100%"/>
+			<comp:Botao2 id="btnGerar" label="Gerar Arquivo" click="btnGerarTXT()"/>
+			
+			<!--
+			<comp:Botao2 id="btnImprime" icone="Adiciona" label="Imprime" click="btnImprime_Click()"/>
+			-->
+		</mx:HBox>
+	</mx:VBox>
+	
+	
+	
+	<mx:VBox width="100%" height="100%" fontSize="14" styleName="padding10" show="show2()"
+		horizontalAlign="center" verticalAlign="middle">
+		<mx:HBox width="100%">
+			<mx:Image source="{Imagens.unica.icn_32_config}" />
+			<mx:Label fontSize="16" fontWeight="bold" text="Finalizar Venda como NF-E" />
+			<comp:Botao1 icone="Atualiza" cor="Cinza" width="200" label="Recomeçar a Editar" click="{ show2() }" />
+		</mx:HBox>
+		<mx:LinkBar dataProvider="{vs}" height="30" direction="horizontal" />
+		
+		<mx:ViewStack id="vs" width="100%" height="100%"  right="100" left="150">
+			<!-- Dados da nota-->
+			<mx:VBox width="900" height="600" label="Nota Fiscal  / Remetente"				
+				borderColor="Black" borderStyle="solid" borderThickness="1"
+				verticalGap="0" top="10" left="10" right="10">
+					<mx:Label text="Nota Fiscal" fontSize="14" fontWeight="bold"/>
+					<mx:HBox width="400">
+						<mx:Label text="Finalidade" width="100"/>
+						<mx:ComboBox id="cmbFinalidade" width="100%"/>
+						<mx:Image width="40" source="{(cmbFinalidade.selectedIndex == 0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+					</mx:HBox>
+					<mx:HBox width="400">
+						<mx:Label text="Número Nota" width="100"/>					
+						<master:MasterTextInput width="100%" id="txtNumero" onlyRestrict="number"/>
+						<mx:Image width="40"  source="{(txtNumero.text.length==0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+					</mx:HBox>
+					<mx:HBox width="400">
+						<mx:Label text="Data Saída/Entrada" width="100"/>	
+						<comp:DateFieldBR id="dtf"
+								width="150" styleName="padding3"
+								fontSize="20" />		
+						
+					</mx:HBox>
+					<mx:HBox width="400">
+						<mx:Label text="Série" width="100"/>
+						<master:MasterTextInput width="100%" id="txtSerie" onlyRestrict="number"
+							initialize="{txtSerie.text = '001'}"/>
+						<mx:Image width="40" source="{(txtSerie.text.length==0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+					</mx:HBox>
+					<mx:HBox width="400">
+						<mx:Label text="Pagamento" width="100"/>
+						<mx:ComboBox id="cmbFormaPgto" width="100%" />
+						<mx:Image width="40" source="{(cmbFormaPgto.selectedIndex == 0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+					</mx:HBox>
+
+					<mx:Label text="Remetente" fontSize="14" fontWeight="bold"/>				
+					<mx:HBox width="500">
+						<mx:Label text="Empresa:" />
+						<mx:Label id="lblEmpresa" width="100%" fontSize="14" fontWeight="bold"/>
+					</mx:HBox>					
+					<mx:Label width="500" text="Endereço: {cmbEndEmpresa.selectedItem.campo+' '+cmbEndEmpresa.selectedItem.logradouro}" />
+					
+					<mx:HBox width="600">
+						<mx:ComboBox id="cmbEndEmpresa" fontSize="10" width="510" labelFunction="lblfn_fazenda" 
+							click="{ validaEndEmpresa() }" />
+						<mx:Image width="40" source="{(!isEndEmpValido) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+					</mx:HBox>
+					
+					<mx:Label width="600" text="Cliente: {clienteNome}" fontSize="14" fontWeight="bold" />
+					<mx:Label width="600" text="Endereço: {cmbEndCliente.selectedItem.campo+' '+cmbEndCliente.selectedItem.logradouro}" />
+					
+					<mx:HBox width="600">
+						<mx:ComboBox id="cmbEndCliente" width="510" fontSize="10" labelFunction="lblfn_fazenda"
+							click="{ validaEndCliente() }" />
+						<mx:Image width="40" source="{ (!isEndCliValido) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+					</mx:HBox>
+				
+					<mx:ComboBox width="400" id="cmbClienteSituacaoInscrEst" fontSize="10" dataProvider="{['contribuinte do icms','isento do icms']}" />		
+				
+			</mx:VBox>
+			
+			<!-- Dados transporte  -->
+			<mx:HBox width="900" height="600" label="Transporte"				
+				borderColor="Black" borderStyle="solid" borderThickness="1"
+				top="10" left="10" right="10">
+				<mx:VBox verticalGap="0">
+					<mx:Label text="Transporte / Frete" fontSize="14" fontWeight="bold"/>
+					<!-- Grid dados da Transportadora-->
+					<mx:HBox width="400">
+						<mx:Label text="Frete" width="100" />
+						<mx:ComboBox width="100%" id="cmbModalidade"/>
+						<mx:Image width="40" source="{(cmbModalidade.selectedIndex == 0 ) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+					</mx:HBox>
+					<mx:HBox width="400">
+						<mx:Label text="Transportador"  width="100" />
+						<CP:CPesqCliente id="cpTransporte" widthBtn="30" widthTxt="200"
+						 	retorno="{retornaTransporte(event)}"/>
+					</mx:HBox>
+					<mx:HBox width="400">
+						<mx:Label id="lblTransp" fontSize="14" fontWeight="bold" width="100%"/>
+					</mx:HBox>					
+					<mx:HBox width="600">
+						<mx:Label text="Endereco" width="100"/>
+						<mx:ComboBox width="450" id="cmbEndTransp" labelField="logradouro" 
+							click="{validaEndTransp()}"/>
+					</mx:HBox>									
+					<mx:HBox width="600">
+						<mx:Label text="Veículo" width="100"/>
+						<mx:ComboBox width="450" id="cmbVeiculo" labelFunction="lblfn_veiculo"/>
+					</mx:HBox>		
+					<mx:HBox width="600">
+						<mx:Label text="Transportador Reboque" width="100"/>
+						 <CP:CPesqCliente id="cpTransporteReboque" widthBtn="30" widthTxt="200"
+						 	retorno="{retornaTransporteReboque(event)}" />
+					</mx:HBox>	
+					<mx:HBox width="600">
+						<mx:Label id="lblTranspReboque" fontSize="14" fontWeight="bold"/>
+					</mx:HBox>		
+					<mx:HBox width="600">
+						<mx:Label text="Reboque" width="100" />
+						<mx:ComboBox width="450" id="cmbReboque" labelFunction="lblfn_veiculo"/>
+					</mx:HBox>										
+				</mx:VBox>
+				
+				<mx:VRule width="100%" height="100%"/>
+				
+				<mx:VBox verticalGap="0">
+					<mx:HBox width="300">
+							<mx:Label text="Volume Transportado" fontSize="14" fontWeight="bold"/>
+					</mx:HBox>
+					<mx:HBox width="300">					
+							<mx:Label text="Quantidade"  width="100"/>
+							<mx:NumericStepper id="nsQtd" width="100" stepSize="1" maximum="999999"/>
+					</mx:HBox>
+					<mx:HBox width="300">
+							<mx:Label text="Espécie" width="100" />
+							<master:MasterTextInput width="100" id="txtVolEspecie" capsType="upercase"/>
+					</mx:HBox>
+					<mx:HBox width="300">
+							<mx:Label text="Marca" width="100"/>
+							<master:MasterTextInput width="100" id="txtVolMarca" capsType="upercase"/>
+					</mx:HBox>					
+					<mx:HBox width="300">
+							<mx:Label text="Numeração" width="100"/>					
+							<master:MasterTextInput width="100" id="txtVolNum" onlyRestrict="number"/>
+					</mx:HBox>		
+					<mx:HBox width="300">
+							<mx:Label text="Peso Liq." width="100"/>					
+							<mx:NumericStepper width="100" id="nsVolPesoL" maximum="9999999" stepSize="0.01"/>
+					</mx:HBox>	
+					<mx:HBox width="300">
+							<mx:Label text="Peso Bruto" width="100"/>						
+							<mx:NumericStepper width="100" id="nsVolPesoB" maximum="9999999" stepSize="0.01"/>
+					</mx:HBox>
+					
+				</mx:VBox>
+			</mx:HBox>	
+			
+			<!-- Dados Adicionais -->
+			<mx:VBox width="900" height="600" label="Adicionais"				
+				borderColor="Black" borderStyle="solid" borderThickness="1"
+				verticalGap="0" top="10" left="10" right="10">
+				<mx:Label text="Dados Adicionais" />
+				<mx:TextArea id="txtInfAdicional" width="400" height="100" fontSize="10" fontWeight="bold" />
+				
+				<mx:Label text="Dados Faturamento" />
+				<mx:TextArea id="txtFaturamento" width="400" height="100" fontSize="10" fontWeight="bold" />
+				
+			</mx:VBox>
+			
+			<mx:VBox width="900" height="600" label="Venda de Veículos"				
+				borderColor="Black" borderStyle="solid" borderThickness="1"
+				top="10" left="10" right="10">
+				<mx:CheckBox id="ckbVeiculo" label="Venda Veículos" fontSize="10" selected="{(ckbVeiculo.selected)?false:true}"/>
+				<mx:VBox id="vbVeiculos" visible="{ckbVeiculo.selected}"
+					verticalGap="5">
+					<mx:HBox width="800">
+						<mx:Label text="Tipo de Operação" width="120"/>
+						<mx:ComboBox id="cmbVeicOperacao" width="230"/>
+					</mx:HBox>
+					<mx:HBox width="800">
+						<mx:Label text="Chassi" width="140"/>					
+						<master:MasterTextInput width="230" id="txtVeicChassi" capsType="upercase" maxChars="17"/>
+						<mx:Label text="Número Motor" width="140"/>					
+						<master:MasterTextInput width="230" id="txtVeicNumMotor" capsType="upercase" maxChars="21"/>
+					</mx:HBox>
+					<mx:HBox width="800">
+						<mx:Label text="Série" width="140"/>					
+						<master:MasterTextInput width="230" id="txtVeicSerie" onlyRestrict="number" maxChars="3" 
+							initialize="{txtVeicSerie.text = '001'}"/>
+						<mx:Label text="CMKG" width="140"/>					
+						<mx:NumericStepper id="nsVeicCMKG" width="230" stepSize="1" minimum="0" maximum="99999"/>												
+					</mx:HBox>
+					<mx:HBox width="800">
+						<mx:Label text="Potência" width="140"/>	
+						<mx:NumericStepper id="nsVeicPotencia" width="230" stepSize="1" minimum="0" maximum="99999"/>				
+						<mx:Label text="CM3 -Potência " width="140"/>					
+						<mx:NumericStepper id="nsVeicCM3" width="230" stepSize="1" minimum="0" maximum="99999"/>						
+					</mx:HBox>
+					<mx:HBox width="800">
+						<mx:Label text="Peso Liq." width="140"/>					
+						<mx:NumericStepper id="nsVeicPesoL" width="230" stepSize="0.01" minimum="0" maximum="9999"/>
+						<mx:Label text="Peso Bruto" width="140"/>					
+						<mx:NumericStepper id="nsVeicPesoB" width="230" stepSize="0.01" minimum="0" maximum="9999"/>						
+					</mx:HBox>
+					<mx:HBox width="800">
+						<mx:Label text="Tipo de Combustível" width="140"/>
+						<mx:ComboBox id="cmbVeicCombustivel" width="230"/>
+						<mx:Label text="Distância Eixos" width="140"/>					
+						<mx:NumericStepper id="nsVeicDistEixos" width="230" stepSize="1" minimum="0" maximum="9999" maxChars="4"/>						
+					</mx:HBox>
+					<mx:HBox width="800">
+						<mx:Label text="Cód marca/modelo" width="140"/>
+						<master:MasterTextInput id="txtVeicCodModelo" width="230" text="0" maxChars="8" onlyRestrict="number" />
+						<mx:Label text="Ano Modelo" width="140"/>
+						<mx:NumericStepper id="nsVeicAnoModelo" width="70" stepSize="1" minimum="1900" maximum="9999" maxChars="4"/>
+						<mx:Label text="Ano Fab." width="80"/>					
+						<mx:NumericStepper id="nsVeicAnoF" width="70" stepSize="1" minimum="1900" maximum="9999" maxChars="4"/>						
+					</mx:HBox>
+					<mx:HBox width="800">
+						<mx:Label text="Tipo de Veículo" width="140"/>
+						<mx:ComboBox id="cmbVeicTipo" width="230"/>
+						<mx:Label text="Espécie" width="140"/>
+						<mx:ComboBox id="cmbVeicEspecie" width="230"/>
+					</mx:HBox>
+					<mx:HBox width="800">
+						<mx:Label text="Tipo de Pintura" width="140"/>
+						<mx:ComboBox id="cmbVeicPintura" width="110"/>
+						<mx:Label text="Cód Cor" width="60"/>
+						<mx:NumericStepper id="nsVeicCodCor" width="50" stepSize="1" minimum="0" maximum="9999"/>
+						<mx:Label text="Descrição da COR" width="140"/>					
+						<master:MasterTextInput width="230" id="txtVeicCor" capsType="upercase"/>						
+					</mx:HBox>
+					<mx:HBox width="800">
+						<mx:Label text="Condição VIN" width="140"/>
+						<mx:ComboBox id="cmbVeicCondVIN" width="230"/>
+						<mx:Label text="Condição Veículo" width="140"/>
+						<mx:ComboBox id="cmbVeicCond" width="230"/>						
+					</mx:HBox>
+					
+				</mx:VBox>
+			</mx:VBox>
+					
+		</mx:ViewStack>
+		
+		<mx:HBox width="100%">
+			<comp:Botao2 width="120" label="Cancelar"				
+				cor="Branco" icone="Deleta"
+				click="{ fechaPopupNovo() }"/>
+			<!-- bottom="10" right="140" -->
+			<comp:Botao2 width="120" label="Concluir"				
+				cor="Branco" icone="Aceita"
+				click="{ SalvaNFE() }"/>
+				<!-- bottom="10" right="10" -->
+		</mx:HBox>
+		
+	</mx:VBox>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EMovTipo;
+			import SDE.Entidade.ClienteEndereco;
+			import SDE.Entidade.ClienteVeiculo;
+			import mx.controls.Alert;
+			import SDE.Entidade.Cliente;
+			import SDE.Entidade.MovNFE;
+			import SDE.Parametro.ParamLoadMov;
+			import SDE.Parametro.ParamLoadCliente;
+			import SDE.Parametro.ParamFiltroCliente;
+			import SDE.Entidade.Empresa;
+			import SDE.Entidade.Mov;			
+			import mx.managers.PopUpManager;
+			import img.Imagens;
+			import Core.Alerta.AlertaSistema;
+			
+			private var nfe:MovNFE = null;
+			private var mov:Mov = null;
+			
+			private var arMI:Array = null;
+			
+			private var empresa:Empresa =  null;
+			private var cliente:Cliente = null;
+			private var transportadora:Cliente =  null;
+			private var transportadoraReboque:Cliente = null;
+			
+			private var plTransp:ParamLoadCliente = null;
+			private var pfTransp:ParamFiltroCliente = null;
+			private var plMov:ParamLoadMov = null;
+			
+			private var idMovNFE: Number = 0;
+			private var cfop:String = "";
+			
+			[Bindable]private var isEndEmpValido:Boolean = false;
+			[Bindable]private var isEndCliValido:Boolean = false;
+			[Bindable]private var isEndTranspValido:Boolean = false;
+			
+			private function create():void
+			{
+				cpMov.pFiltro.tipos = EMovTipo.saida_venda + ''+EMovTipo.entrada_compra + ''+EMovTipo.entrada_devolucao;
+				
+				cpTransporte.pFiltro.transportador = true;
+				cpTransporteReboque.pFiltro.transportador = true;
+				btnEdita.enabled = false;
+				btnGerar.enabled = false;
+			}
+			
+			private function validaEndEmpresa():void{
+				 isEndEmpValido = ValidaEndereco(cmbEndEmpresa.selectedItem);
+			}
+			private function validaEndCliente():void{
+				var obj:Object = cmbEndCliente.selectedItem;
+				isEndCliValido = ValidaEndereco(obj); 
+			}
+			
+			private function validaEndTransp():void{
+				if( transportadora != null && cmbEndTransp.selectedItem >= 1)
+				{
+					isEndTranspValido = ValidaEndereco(cmbEndTransp.selectedItem);					
+				}
+			}
+			private function lblfn_veiculo(xxx:ClienteVeiculo):String
+			{
+				if(xxx == null)
+				{
+					return "";
+				}
+				if(xxx.id == 0){
+					return xxx.nome;
+				}
+				
+				return xxx.placaNumero+" "+xxx.nome;
+			}
+			
+			private function lblfn_fazenda(xxx:ClienteEndereco):String
+			{
+				if(xxx == null){
+					return "";
+				}
+				if(xxx.id == 0){
+					return xxx.logradouro;
+				}
+				return xxx.campo+" "+xxx.logradouro +" | inscr: "+xxx.inscr;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Script source="ImpressaoNFE1_script.as"/>
+	<mx:Script source="ImpressaoNFE1_script2.as"/>
+	
+</mx:ViewStack>

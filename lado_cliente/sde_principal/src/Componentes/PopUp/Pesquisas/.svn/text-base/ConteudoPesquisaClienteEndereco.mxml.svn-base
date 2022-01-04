@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	styleName="padding3"
+	label="PESQUISA DE PESSOAS"
+	creationComplete="create()" xmlns:controls="com.flexpernambuco.controls.*">
+	
+	<mx:Script source="ConteudoPesquisaClienteEndereco_script.as"/>
+	
+	<mx:HBox width="100%" fontSize="10">
+		<controls:MasterTextInput id="txt"
+			x="5" y="25" capsType="upercase"
+			width="40%"
+			fontSize="20" enter="txt_KEnter()"
+			styleName="padding3"/>
+			<!--
+		<mx:Canvas width="100%" height="100%">
+			<mx:CheckBox label="FISICA"  id="cbFisica"
+				click="checkbox_Click(event)"/>
+			<mx:CheckBox label="JURIDICA"  x="0" y="19" id="cbJuridica"
+				click="checkbox_Click(event)"/>
+			
+			<mx:CheckBox label="FUNCIONARIO"  y="0" x="82" id="cbFuncionario"
+				click="checkbox_Click(event)"/>
+			<mx:CheckBox label="PARCEIRO"  x="82" y="19" id="cbParceiro"
+				click="checkbox_Click(event)"/>
+			
+			<mx:CheckBox label="FORNECEDOR"  x="179" y="0" id="cbFornecedor"
+				click="checkbox_Click(event)"/>
+			<mx:CheckBox label="TRANSPORTADOR"  x="179" y="19" id="cbTransportador"
+				click="checkbox_Click(event)"/>
+			
+			<mx:CheckBox label="MASCULINO"  x="295" y="0" id="cbMasculino"
+				enabled="{cbFisica.selected}"
+				click="checkbox_Click(event)"/>
+			<mx:CheckBox label="FEMININO"  x="295" y="19" id="cbFeminino"
+				enabled="{cbFisica.selected}"
+				click="checkbox_Click(event)"/>
+		</mx:Canvas>
+		-->
+	</mx:HBox>
+	
+	<mx:DataGrid id="gridRet"
+		themeColor="#3B5998"
+		width="100%" height="100%"
+		doubleClickEnabled="true" doubleClick="grid_dclick()"
+		keyDown="grid_kdown(event)"
+		styleName="dtgrid">
+		<mx:columns>
+			<mx:DataGridColumn width="50" headerText="Cód" dataField="idCliente" textAlign="right"/>
+			<mx:DataGridColumn width="300" headerText="Nome" dataField="nome" fontWeight="bold" />
+			<mx:DataGridColumn width="200" headerText="Apelido / Raz. Social" dataField="apelido"/>
+			<mx:DataGridColumn width="100" headerText="CPF / CNPJ" dataField="cpf"/>
+			<mx:DataGridColumn width="100" headerText="Nasc" dataField="dtNasc"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	
+</mx:VBox>

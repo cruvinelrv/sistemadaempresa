@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()" xmlns:comp="Componentes.comp.*"
+	fontSize="14">
+	
+	<mx:Label text="Grade Mãe / Referência" />
+	<mx:HBox>
+		<master:MasterTextInput id="txtMae" capsType="upercase" width="200" enterPressed="{txtMaeRF.setFocus()}"/>
+		<master:MasterTextInput id="txtMaeRF" width="100" maxLength="4" capsType="upercase" enterPressed="{inserirMae()}" />
+		<comp:Botao1 label="Criar" icone="Adiciona" cor="Cinza" click="{inserirMae()}" />
+	</mx:HBox>
+	<mx:Label text="Grade Filha / Referência" />
+	<mx:HBox>
+		<mx:ComboBox id="cmbMaes" width="200" labelField="mae_rf" />
+		<master:MasterTextInput id="txtFilha" width="200" capsType="upercase" enterPressed="{txtFilhaRF.setFocus()}" />
+		<master:MasterTextInput id="txtFilhaRF" width="100" maxLength="4" capsType="upercase" enterPressed="{inserirFilha()}" />
+		<comp:Botao1 label="Criar" icone="Adiciona" cor="Cinza" click="{inserirFilha()}" />
+	</mx:HBox>
+	
+	<mx:DataGrid id="grid" width="100%" height="100%"
+		themeColor="#3B5998">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="Id Interna"/>
+			<mx:DataGridColumn id="colunaMae" headerText="Mãe" labelFunction="lblfn_grid"/>
+			<mx:DataGridColumn id="colunaFilha" headerText="Filha" labelFunction="lblfn_grid"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao1 cor="Cinza" icone="Cancela" label="Desfazer" click="{resetar()}"/>
+		<comp:Botao1 cor="Cinza" icone="Salva" label="Salvar" click="{salvar()}"/>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.MyArrayUtils;
+			import SDE.Entidade.Cad_Grade;
+			
+			private var objetos:Array;
+			private var maes:Array;
+			
+			private function create():void
+			{
+				resetar();
+			}
+			
+			public function resetar():void
+			{
+				objetos = App.single.cache.arrayCad_Grade;
+				maes = ["*"];//cria um primeiro item, para forçar o usuário a escolher opção
+				for each (var o:Cad_Grade in objetos)
+				{
+					if (o.filha_rf=="")
+						maes.push(o);
+					o.__orderBy = o.mae_rf+o.filha_rf;
+				}
+				objetos.sortOn("__orderBy");
+				cmbMaes.dataProvider = maes;
+				preencheGrid();
+			}
+			
+			private function lblfn_grid(grade:Cad_Grade, coluna:DataGridColumn):String
+			{
+				if (coluna==colunaMae)
+					return grade.mae_rf+" ("+grade.mae+")";
+				else if (grade.filha=="")
+					return "";
+				else
+					return grade.filha_rf+" ("+grade.filha+")";
+			}
+			
+			private function preencheGrid():void
+			{
+				txtMae.text = "";
+				txtMaeRF.text = "";
+				txtFilha.text = "";
+				txtFilhaRF.text = "";
+				grid.dataProvider = objetos;
+			}
+			
+			private function inserirMae():void
+			{
+				txtMae.setFocus();
+				if(txtMae.text.length<2){
+					AlertaSistema.mensagem('Digite a Grade Mãe');
+					return;
+				}
+				if(txtMaeRF.text.length<2){
+					AlertaSistema.mensagem('Digite uma referencia para a Grade Mãe');
+					txtMaeRF.setFocus();
+					return;
+				}
+				var xxx:Cad_Grade;
+				for each(xxx in objetos)
+				{
+					if(xxx.mae == txtMae.text || xxx.mae_rf == txtMaeRF.text)
+					{
+						AlertaSistema.mensagem("Esta Grade Mãe já existe.");
+						return;
+					}
+				}
+				xxx = new Cad_Grade();
+				//xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.mae = txtMae.text;
+				xxx.mae_rf = txtMaeRF.text;
+				xxx.filha = "";
+				xxx.filha_rf = "";
+				
+				objetos.push(xxx);
+				preencheGrid();
+			}
+			
+			private function inserirFilha():void
+			{
+				txtFilha.setFocus();
+				if(txtFilha.text.length<2){
+					AlertaSistema.mensagem('Digite a Grade Filha');
+					return;
+				}
+				if(txtFilhaRF.text.length<2){
+					AlertaSistema.mensagem('Digite uma referencia para a Grade Filha');
+					txtFilhaRF.setFocus();
+					return;
+				}
+				var xxx:Cad_Grade;
+				for each(xxx in objetos)
+				{
+					if(cmbMaes.selectedItem.mae_rf==xxx.mae_rf && (xxx.filha == txtFilha.text || xxx.filha_rf == txtFilhaRF.text))
+					{
+						AlertaSistema.mensagem("Esta Grade Mãe já existe.");
+						return;
+					}
+				}
+				xxx = new Cad_Grade();
+				//xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.mae = cmbMaes.selectedItem.mae;
+				xxx.mae_rf = cmbMaes.selectedItem.mae_rf;
+				xxx.filha = txtFilha.text;
+				xxx.filha_rf = txtFilhaRF.text;
+				
+				objetos.push(xxx);
+				preencheGrid();
+			}
+			
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				for each(var xxx:Cad_Grade in objetos)
+					if(xxx.id ==0)
+						arSalvar.push(xxx);
+				
+				Sessao.unica.nuvens.modificacoes.Cad_Generico_Novos(Cad_Grade.CLASSE, arSalvar,
+					function():void
+					{
+						//AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+			}
+			
+		]]>
+	</mx:Script>
+		
+</mx:VBox>

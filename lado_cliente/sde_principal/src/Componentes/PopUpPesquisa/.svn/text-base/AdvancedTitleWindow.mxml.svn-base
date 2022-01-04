@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" creationPolicy="all" creationComplete="onCreationComplete()" 
+	showCloseButton="true" close="{onCloseClick()}" showEffect="{myWD}" hideEffect="{myWU}">
+	
+	<mx:Parallel id="myWD" duration="1000">
+		<mx:WipeDown />
+		<mx:Fade alphaFrom="0" alphaTo="1" />
+	</mx:Parallel>
+	<mx:Parallel id="myWU" duration="1000">
+		<mx:WipeUp />
+		<mx:Fade alphaFrom="1" alphaTo="0" />
+	</mx:Parallel>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import flash.utils.setTimeout;
+		    import mx.core.UIComponent;
+		    import mx.core.SpriteAsset;
+		    import mx.events.FlexEvent;
+		    import flash.events.MouseEvent;
+		    import flash.events.Event;
+		    
+			private var xOffset:Number;
+			private var yOffset:Number;
+			
+			private var origWidth:int;
+			private var origHeight:int;
+        	
+        	
+        	
+        	
+        	
+        	private function onCloseClick():void
+        	{
+        		this.visible = false;
+        		/*
+        		setTimeout(
+        			function():void
+        			{
+        				visible = true;
+        			},
+        			3000
+        		);
+        		*/
+        	}
+        	
+        	
+        	
+        	
+        	
+        	
+			private function onCreationComplete():void {
+				this.addEventListener(MouseEvent.MOUSE_DOWN, onResize);
+				this.titleBar.addEventListener(MouseEvent.MOUSE_DOWN, onTitleBarMouseDown);
+				this.titleBar.addEventListener(MouseEvent.MOUSE_UP, onTitleBarMouseUp);
+			}
+			
+			private function onTitleBarMouseDown(event:MouseEvent):void {
+				this.xOffset = event.currentTarget.mouseX;
+				this.yOffset = event.currentTarget.mouseY;
+				parent.addEventListener(MouseEvent.MOUSE_MOVE, onTitleBarMouseMove);
+				parent.setChildIndex(this, parent.numChildren-1);
+			}
+			
+			private function onTitleBarMouseUp(event:MouseEvent):void {
+				parent.removeEventListener(MouseEvent.MOUSE_MOVE, onTitleBarMouseMove);
+			}
+			
+			private function onTitleBarMouseMove(event:MouseEvent):void {
+				var tempX:int = parent.mouseX - this.xOffset;
+				var tempY:int = parent.mouseY - this.yOffset;
+				
+				x = tempX;
+				y = tempY;
+			}
+			
+			private function onResize(event:MouseEvent):void {
+	            var lowerLeftX:Number = x + width; 
+	            var lowerLeftY:Number = y + height;
+	            
+	            var upperLeftX:Number = lowerLeftX-7;
+	            var upperLeftY:Number = lowerLeftY-7;
+	            
+	            var panelRelX:Number = event.localX + x;
+	            var panelRelY:Number = event.localY + y;
+				
+	            if (upperLeftX <= panelRelX && panelRelX <= lowerLeftX)
+	            {
+	                if (upperLeftY <= panelRelY && panelRelY <= lowerLeftY)
+	                {
+	                    event.stopPropagation();        
+	                    
+	                    origWidth = width;
+	                    origHeight = height;
+	                    this.xOffset = parent.mouseX;
+	                    this.yOffset = parent.mouseY;
+	                    parent.addEventListener(MouseEvent.MOUSE_MOVE, resizePanel);
+	                    parent.addEventListener(MouseEvent.MOUSE_UP, stopResizePanel);
+	                    
+	                }
+	            }
+			}
+			
+			private function resizePanel(event:MouseEvent):void {
+	            if ((origWidth + (parent.mouseX - xOffset)) > 250){
+	                width = origWidth + (parent.mouseX - xOffset);    
+	            }
+	            
+	            if ((origHeight + (parent.mouseY - yOffset)) > titleBar.height){
+	                height = origHeight + (parent.mouseY - yOffset);
+	            }
+			}
+			
+			private function stopResizePanel(event:MouseEvent):void {
+				parent.removeEventListener(MouseEvent.MOUSE_MOVE, resizePanel);
+			}
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+				graphics.clear()
+				graphics.lineStyle(2);
+				graphics.moveTo(unscaledWidth - 6, unscaledHeight - 1)
+				graphics.curveTo(unscaledWidth - 3, unscaledHeight - 3, unscaledWidth - 1, unscaledHeight - 6);                        
+				graphics.moveTo(unscaledWidth - 6, unscaledHeight - 4)
+				graphics.curveTo(unscaledWidth - 5, unscaledHeight - 5, unscaledWidth - 4, unscaledHeight - 6);  
+			}
+		]]>
+	</mx:Script>
+	
+</mx:TitleWindow>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	paddingRight="10" paddingBottom="20" paddingTop="20"
+	xmlns:AbasReimpressao="janelas.relatorios.relatorios1.AbasReimpressao.*">
+	<mx:Script>
+		<![CDATA[
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	<mx:Style>
+		.btnMenu
+		{
+			label-placement: right;
+			label-align:right;
+			text-align:left;
+			font-size:16;
+			font-weight: bold;
+		}
+	</mx:Style>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="top">
+		<mx:LinkBar dataProvider="{vs}" height="100%" direction="vertical" linkButtonStyleName="btnMenu"/>
+	
+		<mx:ViewStack id="vs" width="100%" height="100%"
+			styleName="padding10">
+			
+			<AbasReimpressao:AbaMovimentacao label="Movimentação" icon="{Imagens.unica.icn_32_orcamento}"/>
+			<AbasReimpressao:AbaOrdemServico label="Ordem de Serviço" icon="{Imagens.unica.icn_32_ordem_servico}"/>
+			
+		</mx:ViewStack>
+	</mx:HBox>
+	
+</mx:VBox>

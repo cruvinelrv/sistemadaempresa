@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:abas="janelas.financeiro.FinCadastros.abas.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	themeColor="#3B5998"
+	creationComplete="create()" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*">
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.Cliente;
+			import Core.App;
+			import SDE.Nuvens;
+			import mx.controls.Alert;
+			import mx.core.Application;
+			import SDE.CamadaNuvem.NuvemModificacoes;
+			import SDE.FachadaServico.FcdLogin;
+			import mx.controls.CheckBox;
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+			import SDE.FachadaServico.FcdTecnico;
+			import SDE.FachadaServico.FcdCorp;
+			import img.Imagens;
+			
+			private var nuvMod:NuvemModificacoes = Application.application.sessao.nuvens.modificacoes;
+			
+			private function create():void
+			{
+				/*
+				var t:LoginTelas = Sessao.unica.login.telas;
+				for each (var sCampo:String in LoginTelas.getCampos())
+				{
+					if (sCampo.indexOf("id")==0 || sCampo.indexOf("tec")==0)//id...
+						continue;
+					
+					var cb:CheckBox = new CheckBox();
+					//cb.width = 200;
+					cb.label = sCampo;
+					cb.selected = t[sCampo];
+					vboxPlaceHolder.addChild( cb );
+				}
+				*/
+			}
+			private function RedefineLoginTelas():void
+			{
+				/*
+				var l:Login = Sessao.unica.login;
+				var t:LoginTelas = l.telas;
+				for each (var cb:CheckBox in vboxPlaceHolder.getChildren())
+				{
+					var sCampo:String = cb.label;
+					t[sCampo] = cb.selected;
+					if (sCampo.indexOf("tec")==0)
+						t[sCampo] = false;
+				}
+				FcdLogin.unica.AtualizaLoginTelas(
+					l.empresa, l.usuario, t,
+					function():void
+					{
+						AlertaSistema.mensagem( "ok" );
+					}
+				);
+				*/
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:TabNavigator width="100%" height="100%">
+		<mx:VBox width="100%" height="100%" label="Escolher Modulos">
+			<!--
+			<mx:VBox id="vboxPlaceHolder" width="100%" height="100%" />
+			<comp:Botao1 label="Redefine Telas Autorizadas"
+				cor="Vermelho" icone="Confirma"
+				click="RedefineLoginTelas()" />
+			-->
+			
+			
+	<PopUpPesquisa:PopPesquisa_Vendas id="popup" />
+			
+			
+			
+		</mx:VBox>
+		
+		
+		<mx:VBox width="100%" height="100%" label="Ações de Suporte">
+		
+		<mx:HBox>
+			<comp:Botao2 label="zerar estoques dessa corporacao"
+				click="{
+					nuvMod.Tecnico_ResetaEstoque(
+						function():void { AlertaSistema.mensagem('ok'); }
+					);
+				}" />
+		</mx:HBox>
+		<mx:HBox>
+			<comp:Botao2 label="zerar preços dessa corporação"
+				click="{
+					nuvMod.Tecnico_ResetaPreco(
+						function():void { AlertaSistema.mensagem('OK'); }
+					);
+				}"
+				/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:NumericStepper id="nsQtdEstoque" maximum="999999999" width="150"/>
+			<comp:Botao2 label="definir quantidade de estoque dessa empresa"
+				click="{
+					nuvMod.Tecnico_defineQuantidadeEstoqueTodos(nsQtdEstoque.value,
+						function():void { AlertaSistema.mensagem('ok'); }
+					);
+				}"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:NumericStepper id="nsQtdEstoqueParaZerados" maximum="9999999" minimum="0" stepSize="0.001" width="150"/>
+			<comp:Botao2 label="Setar Quantidade Para Estoques Zerados da Empresa"
+				click="{
+					nuvMod.Tecnico_LancaQuantidadeProdutosZerados(nsQtdEstoqueParaZerados.value,
+						function():void { AlertaSistema.mensagem('ok'); }
+					);
+				}"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:NumericStepper id="nsVlrDescMax" maximum="100" width="150"/>
+			<comp:Botao2 label="setar valor do desconto máximo a todos os itens"
+				click="{
+					nuvMod.Tecnico_DefineDescontoMaximo(nsVlrDescMax.value,
+						function():void { AlertaSistema.mensagem('ok'); }
+					);
+				}"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:NumericStepper id="nsPctComissao" maximum="100" minimum="0" stepSize="0.01" width="150"/>
+			<comp:Botao2 label="Define Comissão Todos Itens"
+				click="{
+					nuvMod.Tecnico_InsereComissaoProdutoMov( nsPctComissao.value,
+					function():void { AlertaSistema.mensagem('OK'); } );
+				}"/>
+		</mx:HBox>
+		<comp:Botao2 label="Certifica ItemEmpAliquotas"
+			click="{
+				nuvMod.Tecnico_CertificaItemEmpAliquotas( 
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"/>
+			
+		<comp:Botao2 label="Certifica Id ItemEmpAliquotas"
+			click="{
+				nuvMod.Tecnico_CertificaIdItemEmpAliquotas(
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"/>
+					
+		<comp:Botao2 label="Certifica ItemEmpresaEstoque"
+			click="{
+				nuvMod.Tecnico_CertificaItemEmpEstoque(
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"/>
+		<comp:Botao2 label="Certifica ItemEmpPreco"
+			click="{
+				nuvMod.Tecnico_CertificaItemEmpPreco(
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"
+			/>
+			
+		<comp:Botao2 label="Cria Nome Etiqueta"
+			click="{
+				nuvMod.Tecnico_nomeEtiqueta( 
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"/>
+		<comp:Botao2 label="Todos Produtos Maiúsculo"
+			click="{
+				nuvMod.Tecnico_ItensTodosMaiusculo(
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"
+			/>
+		<comp:Botao2 label="Todos Produtos em Desuso"
+			click="{
+				nuvMod.Tecnico_ProdutosDesuso(
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"/>
+		<comp:Botao2 label="Atualizar Balanços"
+			click="{
+				nuvMod.Tecnico_AtualizacaoBalanco(
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"/>
+		<comp:Botao2 label="Certifica idEmp Cx_Lancamento"
+			click="{
+				nuvMod.Tecnico_CertificaIdEmpCxLancamento(
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"/>
+		<comp:Botao2 label="Atualiza Caixa"
+			click="{
+				nuvMod.Tecnico_CaixaAtualizacao(
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"/>
+		<!--<comp:Botao2 label="Verifica Seção/Grupo/Sub-Grupo todas corporações"
+			click="{
+				nuvMod.Tecnico_VerificaGrade_Grupo_Subgrupo(
+				function():void {Alert.show('OK')} );
+			}"
+			/>-->
+		<comp:Botao2 label="Verifica espaços vazios todas corporações"
+			click="{
+				nuvMod.Tecnico_VerificaEspacosVaziosInicioFim(
+				function():void {Alert.show('OK')} );
+			}"/>
+		<comp:Botao2 label="Metodo Corretivo (Não Clique)"
+			click="{
+				nuvMod.Tecnico_FuncaoTemporaria(
+				function():void { AlertaSistema.mensagem('OK'); } );
+			}"/>
+		<comp:Botao2 label="Atualização Controle de Usuário"
+			click="{
+				nuvMod.Tecnico_AtualizacaoControleUsuario(
+					function():void 
+					{
+						Alert.show('Funciona! =]', 'Mensagem SDE', 4, null, null, Imagens.unica.icn_32_aceita);
+					}
+				);
+			}"
+			/>
+				<!--
+			<comp:Botao2 label="REMOVER TODOS CLIENTES" click="
+		
+						FcdTecnico.unica.ClientesRemoveTodos(
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+			<comp:Botao2 label="RESETAR CORP LISTAS"/>
+			<comp:Botao2 label="RESETAR EMP LISTAS"/>
+			<comp:Botao2 label="(cuidado) APAGAR ITENS, ESTOQUES, MOV, BALANÇO" click="
+						FcdTecnico.unica.ItemRemoverTudo(
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+			<comp:Botao2 label="(cuidado) APAGAR CLIENTES" click="
+						FcdTecnico.unica.ClientesResetaTodos(
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+				
+			<comp:Botao2 label="(todos) REDEFINE REFERENCIAS PARA ID ITEM" click="
+						FcdTecnico.unica.ItemRedefineCodUnicoComIdItem(true,
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+			<comp:Botao2 label="(necessarios) REDEFINE REFERENCIAS PARA ID ITEM" click="
+						FcdTecnico.unica.ItemRedefineCodUnicoComIdItem(false,
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+			<comp:Botao2 label="(necessarios) REDEFINE grade e barras DE ESTOQUE" click="
+						FcdTecnico.unica.EstoqueCorrecaoGradeBarras(
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+				-->
+		</mx:VBox>
+	</mx:TabNavigator>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.Base64Encoder;
+				
+			private function ohYeah():void
+			{
+				var urlStr:String;	
+				var url:URLRequest = new URLRequest("Imprime.swf");
+				//var url:URLRequest = new URLRequest("Default.aspx");
+				var vars:URLVariables = new URLVariables();
+				url.data = vars;
+				
+				vars.idCorp = Sessao.unica.idCorp;
+				vars.idEmp = Sessao.unica.idEmp;
+				vars.tipo_impressao = "relatorio";
+				vars.relatorio = "Insere Tipo Lancamento";
+				
+				var enc:Base64Encoder = new Base64Encoder();
+				enc.encodeUTFBytes("corp"+vars.idCorp);
+				vars.hash = enc.toString();
+				
+				url.url = "imprime.aspx";
+				navigateToURL(url, "_blank");
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

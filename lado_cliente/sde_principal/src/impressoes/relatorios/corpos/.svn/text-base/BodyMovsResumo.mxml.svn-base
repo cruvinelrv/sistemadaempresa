@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Body xmlns="org.print.*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="create()">
+	
+	<ReportDataGrid width="100%" height="100%" dataProvider="{dados}" fontSize="9"
+		rowHeight="17">
+		<columns>
+			<mx:DataGridColumn width="1" headerText="MOV" dataField="id"/>
+			<mx:DataGridColumn width="1" headerText="NÚM. NOTA" dataField="nota"/>
+			<mx:DataGridColumn width="2" headerText="TIPO" dataField="tipo"/>
+			<mx:DataGridColumn width="2" headerText="DATA" dataField="dthrMov"/>
+			<mx:DataGridColumn width="2" headerText="VALOR" dataField="vlrTotal"/>
+		</columns>
+	</ReportDataGrid>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.formatters.CurrencyFormatter;
+			import impressoes.relatorios.modelos.ModeloMov;
+			import SDE.Entidade.Mov;
+			import SDE.Enumerador.EMovTipo;
+			public override function converteDados(origem:Array):Array
+			{
+				origem.sortOn("id");
+				var retorno:Array = [];
+				var fmtRS: CurrencyFormatter = new CurrencyFormatter();
+				fmtRS.currencySymbol = '';
+				fmtRS.precision = 2;
+				for each(var mov:Mov in origem)
+				{
+					var mm:ModeloMov = new ModeloMov;
+					mm.id = mov.id;
+					mm.nota =  mov.numeroNF.toString();
+					mm.tipo = buscaTipo(mov.tipo);
+					mm.dthrMov = mov.dthrMovEmissao;
+					mm.vlrTotal = fmtRS.format(mov.vlrTotal);
+					retorno.push(mm);	
+				}
+				return retorno;
+			}
+			
+			private function create():void
+			{
+				var a:Object = dados;
+			}
+			
+			
+			private function buscaTipo(tipo:String ):String
+			{
+				var msg:String = "";
+				//Entrada
+				if(tipo == EMovTipo.entrada_compra)
+					msg = "ENTRADA DE MERCADORIA";
+				if(tipo == EMovTipo.entrada_devolucao)
+					msg = "DEVOLUÇÃO DE MERCADORIA";
+				if(tipo == EMovTipo.entrada_cancel)
+					msg = "CANCELAMENTO DE ENTRADA";
+				//Saida de mercadoria
+				if(tipo == EMovTipo.saida_venda)
+					msg = "VENDA DE MERCADORIA";
+				if(tipo == EMovTipo.saida_devolucao)
+					msg = "DEVOLUÇÃO DE VENDA";
+				if(tipo == EMovTipo.saida_cancel)
+					msg = "CANCELAMENTO DE VENDA";
+				//Orçamento
+				if(tipo == EMovTipo.outros_orcamento)
+					msg = "ORÇAMENTO";
+				if(tipo == EMovTipo.outros_reserva)
+					msg = "RESERVA DE ESTOQUE";
+				if(tipo == EMovTipo.outros_cancel)
+					msg = "CANCELAMENTO RESERVA";
+				//ambos
+				if(tipo == EMovTipo.ambos_balan)
+					msg = "BALANÇO DE ESTOQUE";
+				if(tipo == EMovTipo.ambos_cancel)
+					msg = "CANCELAMENTO DE AMBOS";					
+				return msg;					
+			}
+		
+		]]>
+	</mx:Script>
+	
+</Body>

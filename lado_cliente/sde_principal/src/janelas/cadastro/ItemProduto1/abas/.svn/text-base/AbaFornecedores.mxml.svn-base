@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.adobe.flex.extras.controls.*" xmlns:comp="Componentes.comp.*" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Button label="BUSCAR" click="load()" icon="{Imagens.unica.icn_64_Atualiza}" labelPlacement="bottom" />
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.swf_loading}" scaleX="5" scaleY="5" />
+	</mx:HBox>
+	<mx:VBox>
+		
+		<mx:HBox verticalAlign="middle" styleName="padding10">
+			<mx:Label text="Adicionar Fornecedores:"/>
+			<mx:ComboBox id="cmbTodosFornecedores" labelField="nome" />
+			<comp:Botao2 width="120" label="Inserir"
+				cor="Branco" icone="Adiciona"
+				click="{adicionar()}" />
+		</mx:HBox>
+		
+		<mx:DataGrid id="gridFornecedoresDesteItem"
+			themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+			editable="false">
+			<mx:columns>
+				<mx:DataGridColumn dataField="idCliente" headerText="Codigo" />
+				<mx:DataGridColumn dataField="nome" headerText="Nome"/>
+				<mx:DataGridColumn headerText=" " width="100">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="{(data.isDeletado) ? 'removido':''}"
+								width="80%" labelPlacement="right" color="#840000"
+								icon="@Embed(source='../../../../img/icones/16/cancela1.png')"
+								click="dispatchEvent(new Event('deleteRow', true))" />
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import janelas.cadastro.ItemProduto1.JanelaCadItemProduto;
+			import SDE.Entidade.Cliente;
+			import Core.Utils.MyArrayUtils;
+			import mx.utils.ArrayUtil;
+			import SDE.Entidade.ItemFornecedor;
+			import mx.controls.Alert;
+			import SDE.Parametro.ParamLoadItem;
+			import img.Imagens;
+			import SDE.Entidade.ItemEmpPreco; 
+			import Core.Sessao;
+			import Core.Utils.Constantes;
+			import SDE.FachadaServico.FcdItem;
+			import SDE.Entidade.Item;
+			import SDE.FachadaServico.FcdCliente;
+			import mx.formatters.DateFormatter;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.Funcoes;
+			
+			[Bindable] public var mdlPai:JanelaCadItemProduto;
+			private var arTodosFornecedores:Array;
+			
+			private function get it():Item
+			{
+				return mdlPai.item;
+			}
+			
+			private function create():void
+			{
+				mdlPai.addEventListener(JanelaCadItemProduto.EV_MUDA_ITEM, mudaItem);
+				gridFornecedoresDesteItem.addEventListener('deleteRow', deleteRowHandler);
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				selectedIndex = 0;
+			}
+			private function load():void
+			{
+				var pl:ParamLoadItem = new ParamLoadItem();
+				pl.ignorar=true;
+				pl.fornecedores = true;
+				
+				selectedIndex = 1;
+				//preenche combo
+				/*
+				Sessao.unica.cache.getFornecedores(
+					function(retornoCliFor:Array):void
+					{
+						//deixar os itens visualmente fáceis no combobox
+						arTodosFornecedores = [];
+						for each(var cli:Cliente in retornoCliFor)
+						{
+							arTodosFornecedores.push({cliente:cli, idCliente:cli.id, nome:cli.nome});
+						}
+						cmbTodosFornecedores.dataProvider = arTodosFornecedores;
+					}
+				);*/
+				//preenche datagrid
+				FcdItem.unica.Load(
+					Sessao.unica.idEmp,
+					it.id, pl,
+					function(retornoIFo:Item):void
+					{
+						it.__fornecedores = retornoIFo.__fornecedores;
+						gridFornecedoresDesteItem.dataProvider = it.__fornecedores;
+						selectedIndex = 2;
+					}
+				);
+			}
+			
+			private function adicionar():void
+			{
+				//variavel de atalho
+				var obj:Object = cmbTodosFornecedores.selectedItem;
+				//validando
+				var existente:* = MyArrayUtils.getItemByField(mdlPai.item.__fornecedores, "idCliente", obj.idCliente);
+				if (existente)//not null == true
+					return;
+				//inserindo
+				var novo:ItemFornecedor = new ItemFornecedor();
+				novo.idCliente = obj.idCliente;
+				novo.nome = obj.nome;
+				it.__fornecedores.push(novo);
+				//atualiza na tela
+				gridFornecedoresDesteItem.dataProvider = it.__fornecedores;
+			}
+			
+            private function deleteRowHandler(event:Event):void
+            {
+            	var xxx:ItemFornecedor = event.target.data;
+            	xxx.isDeletado = !xxx.isDeletado;
+            	
+            	if (xxx.isDeletado)
+            	{
+            		if (xxx.idItem==0)
+            		{
+		            	var index:int = it.__fornecedores.indexOf(xxx);
+		            	it.__fornecedores.splice(index, 1);//returns removed items
+	            	}
+            	}
+				gridFornecedoresDesteItem.dataProvider = it.__fornecedores;
+            }
+			
+		]]>
+	</mx:Script>
+</mx:ViewStack>

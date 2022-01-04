@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	initialize="init()"
+	xmlns:comp="Componentes.comp.*" xmlns:CP="Componentes.CP.*">
+	
+	<mx:states>
+		<mx:State name="stateCaixa">
+			<mx:AddChild position="lastChild" relativeTo="{placeHolder}">
+				<mx:DataGrid id="gridCaixa"
+					width="100%" height="100%"
+					themeColor="#3B5998"
+					dataProvider="{arraycCaixa}"
+					showEffect="{Fade}" hideEffect="{Fade}"
+					fontSize="12">
+					<mx:columns>
+						<mx:DataGridColumn width="4" headerText="Documento" dataField="nome"/>
+						<mx:DataGridColumn width="2" headerText="Forma" dataField="tipoPagamento_nome"/>
+						<mx:DataGridColumn width="2" headerText="Valor" dataField="valorCobrado" labelFunction="fn_lb_toCurrencyFormat_cx"/>
+						<mx:DataGridColumn width="2" headerText="Previsão" dataField="dtPagamento"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateDetalhe">
+			<mx:AddChild position="lastChild" relativeTo="{placeHolder}">
+				<mx:VBox width="100%" height="100%" fontSize="16" fontWeight="bold">
+					<mx:Label text="Valor Sem Desconto: {Formatadores.unica.formataValor(mov.vlrItensInicial, true)}"/>
+					<mx:Label text="Valor do Desconto: {Formatadores.unica.formataValor(-mov.vlrAcrescimo, true)}"/>
+					<mx:Label text="Valor Com Desconto: {Formatadores.unica.formataValor(mov.vlrTotal, true)}"/>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateCarrinho">
+			<mx:AddChild position="lastChild" relativeTo="{placeHolder}">
+				<mx:DataGrid id="gridCarrinho"
+					width="100%" height="100%"
+					themeColor="#3B5998"
+					dataProvider="{arraycCarrinho}"
+					showEffect="{Fade}" hideEffect="{Fade}"
+					fontSize="12">
+					<mx:columns>
+						<mx:DataGridColumn width="6" headerText="Item" dataField="item_nome"/>
+						<mx:DataGridColumn width="2" headerText="Estoque" dataField="estoque_identificador"/>
+						<mx:DataGridColumn width="1" headerText="Quant" dataField="qtd"/>
+						<mx:DataGridColumn width="1" headerText="Valor" dataField="vlrUnitVendaFinalQtd" labelFunction="fn_lb_toCurrencyFormat_mi"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	
+	<mx:HBox verticalAlign="middle" fontSize="14" fontWeight="bold">
+		<mx:Label text="Nº:" fontWeight="bold"/>
+		<mx:TextInput id="txtNumMovPesquisa" width="50"
+			keyDown="{
+				if (event.keyCode==Keyboard.ENTER)
+					filtraBuscaMov();
+			}"/>
+		<mx:Label text="Data:" fontWeight="bold"/>
+		<comp:DateFieldBR id="dfDataPesquisa" editable="true" width="100"
+			keyDown="{
+				if (event.keyCode==Keyboard.ENTER)
+					filtraBuscaMov();
+			}"/>
+		<mx:Label text="Cliente:" fontWeight="bold"/>
+		<CP:PesqCliente id="cpClientePesquisa" prompt="" showBrowseButton="false" width="350"
+			change="filtraBuscaMov()"/>
+		<mx:Button label="Filtrar" width="90"
+			fontSize="14" fontWeight="bold" textAlign="center"
+			buttonMode="true" mouseChildren="true" useHandCursor="true"
+			click="filtraBuscaMov()"/>
+		<mx:Button label="Limpar" width="90"
+			fontSize="14" fontWeight="bold" textAlign="center"
+			buttonMode="true" mouseChildren="true" useHandCursor="true"
+			click="limpaBuscaMov()"/>
+		<mx:HBox>
+			<mx:Canvas width="15" height="15" left="0"
+				click="{
+					if (botoesEscondidos==0)botoesEscondidos=1;
+					else botoesEscondidos=-1;
+					verificaVisualizacao();
+				}"/>
+			<mx:Canvas width="15" height="15" right="0"
+				click="{
+					if (botoesEscondidos==1)botoesEscondidos=2;
+					else botoesEscondidos=0;
+					verificaVisualizacao();
+				}"/>
+		</mx:HBox>
+	</mx:HBox>
+	
+	<mx:DataGrid id="gridPrincipal"
+		width="100%" rowCount="10"
+		themeColor="#3B5998"
+		dataProvider="{dp}"
+		fontSize="12">
+		<mx:columns>
+			<mx:DataGridColumn dataField="cliente_nome" headerText="Cliente"/>
+			<mx:DataGridColumn dataField="cliente_cpf" headerText="CPF/CNPJ"/>
+			<mx:DataGridColumn dataField="cliente_contato" headerText="Contato"/>
+			<mx:DataGridColumn dataField="dthrMovEmissao" headerText="Data"/>
+			<mx:DataGridColumn labelFunction="fn_lb_tipoMov" headerText="Tipo Mov"/>
+			<mx:DataGridColumn dataField="impressao"/>
+			<mx:DataGridColumn width="25">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button label="" icon="{Imagens.unica.icn_16_seta_bai}" toolTip="Detalhe"
+							click="{dispatchEvent(new Event('detalhe', true))}">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="25">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button label="" icon="{Imagens.unica.icn_16_carrinho}" toolTip="Itens Venda"
+							click="{dispatchEvent(new Event('carrinho', true))}">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="25">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button label="" icon="{Imagens.unica.icn_16_dollar}" toolTip="Formas Pagamento"
+							click="{dispatchEvent(new Event('caixa', true))}">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:VBox id="placeHolder" width="100%" height="100%"/>
+	<mx:HBox width="100%" horizontalAlign="right">
+		<mx:Button label="Gerar Impressão" icon="{Imagens.unica.icn_32_impressora}"
+			fontSize="14" fontWeight="bold" enabled="{gridPrincipal.selectedItem}"
+			click="imprime()"/>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EMovImpressao;
+			import SDE.Constantes.Variaveis_SdeConfig;
+			import mx.utils.Base64Encoder;
+			import mx.core.Application;
+			import Core.Sessao;
+			import Core.Utils.Formatadores;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import SDE.Enumerador.EMovTipo;
+			import SDE.Entidade.Cliente;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Entidade.Cx_Lancamento;
+			import SDE.Entidade.MovItem;
+			import mx.effects.Fade;
+			import mx.effects.WipeDown;
+			import mx.effects.WipeUp;
+			import mx.controls.Alert;
+			import mx.effects.Resize;
+			import SDE.Entidade.Mov;
+			import Core.App;
+			import mx.collections.ArrayCollection;
+			import img.Imagens;
+			
+			[Bindable] private var mov:Mov;
+			[Bindable] private var dp:ArrayCollection;
+			[Bindable] private var arraycCarrinho:ArrayCollection;
+			[Bindable] private var arraycCaixa:ArrayCollection;
+			[Bindable] private var botoesEscondidos:Number;
+			private var mov_filtradas:ArrayCollection;
+			
+			private function init():void
+			{
+				arraycCaixa = new ArrayCollection();
+				arraycCarrinho = new ArrayCollection();
+				dp = new ArrayCollection();
+				mov_filtradas = new ArrayCollection();
+				for each (var mov:Mov in App.single.cache.arraycMov)
+				{
+					if (mov.tipo != EMovTipo.outros_pedido && mov.tipo != EMovTipo.outros_reserva)
+						mov_filtradas.addItem(mov);
+				}
+				dp = mov_filtradas;
+				
+				gridPrincipal.addEventListener('detalhe', fn_ev_detalhe);
+				gridPrincipal.addEventListener('carrinho', fn_ev_carrinho);
+				gridPrincipal.addEventListener('caixa', fn_ev_caixa);
+			}
+			private function fn_lb_toCurrencyFormat_mi(mi:MovItem, dgc:DataGridColumn):String
+			{
+				return Formatadores.unica.formataValor(mi.vlrUnitVendaFinalQtd, true);
+			}
+			private function fn_lb_toCurrencyFormat_cx(cx:Cx_Lancamento, dgc:DataGridColumn):String
+			{
+				return Formatadores.unica.formataValor(cx.valorCobrado, true);
+			}
+			
+			private function fn_ev_detalhe(e:Event):void
+			{
+				currentState = "stateDetalhe";
+				mov = e.target.data;
+			}
+			private function fn_ev_carrinho(e:Event):void
+			{
+				mov = e.target.data;
+				//Alert.show("mostra itens de mov "+mov.id);
+				currentState = "stateCarrinho";
+				arraycCarrinho.removeAll();
+				for each(var mi:MovItem in App.single.cache.arrayMovItem)
+				{
+					if (mi.idMov == mov.id)
+						arraycCarrinho.addItem( mi );
+				}
+			}
+			private function fn_ev_caixa(e:Event):void
+			{
+				mov = e.target.data;
+				//Alert.show("mostra caixa de mov "+mov.id);
+				currentState = "stateCaixa";
+				arraycCaixa.removeAll();
+				for each(var clx:Cx_Lancamento in App.single.cache.arrayCx_Lancamento)
+				{
+					if (clx.idOperacao == mov.idOperacao)
+						arraycCaixa.addItem( clx );
+				}
+			}
+			private function fn_lb_tipoMov(mov:Mov, dgc:DataGridColumn):String
+			{
+				if (mov.tipo == EMovTipo.ambos_balan)
+					return "Balanço";
+				if (mov.tipo == EMovTipo.ambos_cancel)
+					return "Cancelada";
+				if (mov.tipo == EMovTipo.entrada_cancel)
+					return "Entrada Cancelada";
+				if (mov.tipo == EMovTipo.entrada_compra)
+					return "Compra";
+				if (mov.tipo == EMovTipo.entrada_devolucao)
+					return "Devolução";
+				if (mov.tipo == EMovTipo.nfs_prefeitura)
+					return "NFS Prefeitura (DMS)";
+				if (mov.tipo == EMovTipo.outros_cancel)
+					return "Cancelada";
+				if (mov.tipo == EMovTipo.outros_orcamento)
+					return "Orçamento";
+				if (mov.tipo == EMovTipo.outros_pedido)
+					return "Pedido";
+				if (mov.tipo == EMovTipo.outros_reserva)
+					return "Reserva";
+				if (mov.tipo == EMovTipo.outros_servicos)
+					return "Serviço";
+				if (mov.tipo == EMovTipo.saida_cancel)
+					return "Saida Cancelada";
+				if (mov.tipo == EMovTipo.saida_condi)
+					return "Saída Condicional";
+				if (mov.tipo == EMovTipo.saida_devolucao)
+					return "Devolução";
+				if (mov.tipo == EMovTipo.saida_venda)
+					return "Venda";
+				else
+					return "Não Tratado";
+			}
+			private function verificaVisualizacao():void
+			{
+				if (botoesEscondidos == 2)
+					dp = App.single.cache.arraycMov;
+				else
+				{
+					dp = mov_filtradas;
+				}
+			}
+			
+			private function filtraBuscaMov():void
+			{
+				dp = App.single.cache.arraycMov;
+				var listaMovFiltrada:ArrayCollection = new ArrayCollection(dp.source);
+				var listaTemporaria:Array = [];
+				if (cpClientePesquisa.selectedItem != null)
+				{
+					var cli:Cliente = cpClientePesquisa.selectedItem;
+					listaTemporaria = [];
+					for each (var mov_porCliente:Mov in listaMovFiltrada)
+					{
+						if (mov_porCliente.cliente_nome == cli.nome)
+							listaTemporaria.push(mov_porCliente);
+					}
+					listaMovFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				if (dfDataPesquisa.text != "")
+				{
+					listaTemporaria = [];
+					for each (var mov_porData:Mov in listaMovFiltrada)
+					{
+						var dataPesquisa:String = mov_porData.dthrMovEmissao.substr(0,10);
+						AlertaSistema.mensagem("Data: " + dataPesquisa, true);
+						if (dataPesquisa == dfDataPesquisa.text)
+							listaTemporaria.push(mov_porData);
+					}
+					listaMovFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				if (txtNumMovPesquisa.text != "")
+				{
+					listaTemporaria = [];
+					for each (var mov_porNumero:Mov in listaMovFiltrada)
+					{
+						if (mov_porNumero.id.toString() == txtNumMovPesquisa.text)
+							listaTemporaria.push(mov_porNumero);
+					}
+					listaMovFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				dp = listaMovFiltrada;
+			}
+			private function limpaBuscaMov():void
+			{
+				cpClientePesquisa.selectedItems.removeAll();
+				dfDataPesquisa.text = "";
+				txtNumMovPesquisa.text = "";
+				filtraBuscaMov();
+			}
+			
+			private function imprime():void
+			{
+				var mov:Mov= gridPrincipal.selectedItem as Mov;
+				var ss:Sessao = Application.application.sessao;
+		        
+		        ss.nuvens.modificacoes.MovEscrevePdf(mov.id,
+            		function():void{
+            			if (Application.application.gerenteConexaoDesktop){
+	                		Application.application.gerenteConexaoDesktop.imprimeMovPdf(ss.idCorp, ss.idEmp, mov.id, defineTipoMov(mov));
+	                	}
+	                	else{
+	                		AlertaSistema.mensagem("É necessário estar conectado ao SDE Desktop para a impressão");
+	                	}
+            		}
+        		);
+		        
+				/*var enc:Base64Encoder = new Base64Encoder();
+				enc.encodeUTFBytes("corp"+ss.idCorp);
+                var hash:String = enc.toString();
+                
+                if (ss.parametrizacao.getParametro(Variaveis_SdeConfig.RELATORIO_ABREIMPRESSAO_IE) == "1"
+                	&& Application.application.gerenteConexaoDesktop!=null)
+                {
+                	var url:String = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+                	url+="?idCorp="	+ss.idCorp;
+                    url+="&idEmp="	+ss.idEmp;
+                    url+="&hash="	+hash;
+                    url+="&tipo_impressao=relatorio";
+                    url+="&relatorio=movimentacao";
+                    url+="&idMov="+(gridPrincipal.selectedItem as Mov).id;
+                    
+                    url = "\""+url+"\"";
+                    Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer", url);
+                    return;
+                }
+                
+                var urlR:URLRequest = new URLRequest("imprime.aspx");
+                urlR.method = URLRequestMethod.GET;
+                
+                var vars:URLVariables = new URLVariables();
+                vars.idMov  = (gridPrincipal.selectedItem as Mov).id;
+                vars.idCorp = ss.idCorp;
+                vars.idEmp  = ss.idEmp;
+                
+                vars.tipo_impressao = "relatorio";
+                vars.relatorio = "movimentacao";
+                
+				vars.hash = hash;
+                
+                urlR.data = vars;
+                navigateToURL(urlR, "_blank");*/
+			}
+			
+			private function defineTipoMov(mov:Mov):String{
+				if (mov.tipo == EMovTipo.outros_orcamento)
+					return "Orçamento";
+				else if (mov.tipo == EMovTipo.outros_reserva)
+					return "Reserva de Estoque";
+				else
+					return "Venda";
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

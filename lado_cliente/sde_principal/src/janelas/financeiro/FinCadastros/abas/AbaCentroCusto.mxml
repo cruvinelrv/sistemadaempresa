@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	fontSize="14"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%">
+		<mx:VBox>
+			<mx:Label text="CENTRO" width="100%"/>
+			<mx:HBox>
+				<master:MasterTextInput id="txtCentro" capsType="upercase" width="100%"/>
+				<comp:Botao1 width="250" label="Criar Centro de Custo" icone="Adiciona" cor="Cinza" click="inserir()" />
+			</mx:HBox>
+		</mx:VBox>		
+	</mx:HBox>
+	
+	<mx:DataGrid id="gridCentros" width="100%" height="100%"
+		themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="Código"/>
+			<mx:DataGridColumn dataField="nome" headerText="Nome"/>
+		</mx:columns>				
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao1 cor="Cinza" icone="Cancela" width="220" label="Resetar Centros" click="{resetar()}"/>
+		<comp:Botao1 cor="Cinza" icone="Salva" width="220" label="Salvar Centros" click="{salvar()}"/>
+	</mx:HBox>
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import flash.net.sendToURL;
+			import SDE.Entidade.Finan_Conta;
+			import SDE.CamadaNuvem.NuvemModificacoes;
+
+			import SDE.Entidade.Finan_CentroCusto;
+			import img.Imagens;
+			
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+			
+			private var centros:Array;
+			
+			private function create():void
+			{
+				resetar();
+			}
+			
+			public function resetar():void
+			{
+				centros = App.single.cache.cloneFinan_CentroCusto;
+				preencheGrid();
+			}
+			
+			private function preencheGrid():void
+			{
+				centros.sortOn("nome");
+				gridCentros.dataProvider =  centros;
+			}
+			
+			private function inserir():void
+			{
+				txtCentro.setFocus();
+				if(txtCentro.text == ''){
+					AlertaSistema.mensagem('Digite o Centro de Custo');
+					return;
+				}
+				var xxx:Finan_CentroCusto;
+				for each(xxx in centros)
+				{
+					if(xxx.nome == txtCentro.text)
+					{
+						AlertaSistema.mensagem("Este Centro de Custo já existe.");
+						return;
+					}					
+				}				
+				xxx = new Finan_CentroCusto();				
+				xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.nome = txtCentro.text;				
+				txtCentro.text = "";				
+
+				centros.push(xxx);
+				preencheGrid();
+			}
+			
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				
+				for each(var xxx:Finan_CentroCusto in centros)
+					if(xxx.id ==0)
+						arSalvar.push(xxx);
+				
+				Sessao.unica.nuvens.modificacoes.Finan_CentroCusto_Novos(arSalvar,
+					function(retorno:Array):void
+					{
+						AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+								
+			}			
+
+				
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

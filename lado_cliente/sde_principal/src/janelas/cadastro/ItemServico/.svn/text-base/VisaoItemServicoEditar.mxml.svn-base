@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	backgroundColor="#EFEFEF" fontSize="12"
+	creationComplete="create()" xmlns:controls="com.flexpernambuco.controls.*" 
+	xmlns:comp="Componentes.comp.*"
+	 xmlns:abas="janelas.cadastro.ItemServico.abas.*">
+	
+	<mx:HBox width="100%">
+		<mx:Label id="lblTitulo" width="100%" selectable="true" fontSize="14" fontWeight="bold"/>
+	</mx:HBox>
+	
+	<mx:Canvas width="100%" height="160">
+		
+		<mx:HBox>
+			<mx:VBox>
+				<mx:Label text="Unid Med:"/>
+				<mx:ComboBox id="cmbUM" width="75" labelField="um" dataProvider="{Constantes.unica.UM}" />
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Seção:"/>
+				<mx:ComboBox id="cmbSecao" width="350" labelField="__orderBy"/>	
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Desuso:"/>
+				<mx:CheckBox id="ckbDesuso"/>
+			</mx:VBox>
+		</mx:HBox>
+		<mx:HBox verticalCenter="0">
+			<mx:VBox>
+				<mx:Label text="Descrição:"/>
+				<controls:MasterTextInput id="txtDescricao" width="330" capsType="upercase"/>
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Cód Único:"/>
+				<controls:MasterTextInput id="txtCodUnico" width="145" capsType="upercase"/>
+			</mx:VBox>
+		</mx:HBox>
+		
+		<mx:HBox horizontalGap="5" bottom="0">
+		</mx:HBox>
+		
+		<mx:VBox right="0" bottom="0">
+			<comp:Botao1 label="Não Salvar" cor="Vermelho" icone="Cancela" click="cancelar()"/>
+			<comp:Botao1 label="Salvar e Fechar" cor="Amarelo" icone="Salva" click="salvar(false)"/>
+			<comp:Botao1 label="Salvar e Continuar" cor="Verde" icone="Salva" click="(true)"/>
+		</mx:VBox>
+		
+	</mx:Canvas>
+	
+	<mx:LinkBar width="100%" dataProvider="{vs}"
+		backgroundColor="#D5D5D5"
+		borderColor="#D5D5D5" borderThickness="0" borderStyle="solid" cornerRadius="5"/>
+	
+	<mx:ViewStack id="vs" width="100%" height="100%"
+		borderColor="#cccccc" borderStyle="inset" borderThickness="1">
+		<mx:VBox width="100%" height="100%" label="Obs">
+			<mx:Label
+				fontWeight="bold" fontSize="14" 
+				text="Observações sobre o serviço"/>
+			<mx:TextArea id="boundObsTextInput" width="80%" height="80%"/>
+		</mx:VBox>
+		
+		<abas:AbaItemServicoPreco mdlPai="{mdlPai}" label="Preços"/>
+		<abas:AbaItemServicoTributacao mdlPai="{mdlPai}" label="Tributação"/>
+	</mx:ViewStack>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.Utils.MyArrayUtils;
+			import Core.Utils.Constantes;
+			import Core.Utils.Funcoes;
+			import Core.Sessao;
+			import SDE.FachadaServico.FcdItem;
+			import Core.Alerta.AlertaSistema;
+			import mx.controls.Alert;
+			import SDE.Entidade.Item;
+			
+			[Bindable] public var mdlPai:JanelaCadItemServico;
+			
+			public function get it():Item
+			{
+				return mdlPai.item;
+			}
+			
+			public function create():void
+			{
+				mdlPai.addEventListener(JanelaCadItemServico.EV_MUDA_ITEM, mudaItem);
+				cmbSecao.dataProvider = mdlPai.secoes;
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				if (mdlPai.item==null)
+					return;
+				
+				preencherParaEdicao();
+				doBinding();
+				vs.selectedIndex = 0;
+				lblTitulo.text = "Código do Serviço:" + it.id;
+			}
+			
+			private function salvar(continuarEditando:Boolean):void
+			{
+				//Inicio Validação
+				var msg:String = null;
+				if (it.nome.length < 3)
+					msg += "Digite uma DESCRIÇÃO\n";
+				if (it.rfUnica.length < 2)
+					msg += "Digite uma REFERÊNCIA\n";
+				if (it.__ie.__preco != null)
+				{
+					if (it.__ie.__preco.venda == 0)
+						msg += "digite o PREÇO DO SERVIÇO\n";
+					if (it.__ie.__preco.custo >= it.__ie.__preco.venda)
+						msg = "CUSTO deve ser menor que PREÇO DO SERVIÇO";
+				}			
+				
+				if (msg != null)
+				{
+					AlertaSistema.mensagem(msg);
+					return;
+				}
+				//Fim Validação
+				
+				/** ATUALIZAR AS COMBOBOX'ES AQUI*/
+				updateListas();
+				var fcd:FcdItem = new FcdItem();
+				fcd.Atualizar(
+					Sessao.unica.idEmp,
+					it, continuarEditando,
+					function(retorno:Item):void
+					{
+						mdlPai.item = (continuarEditando) ? retorno : null;
+					}
+				);
+			}	
+			
+			private function doBinding():void
+			{
+				Funcoes.myBind(txtDescricao, "text", it, "nome");
+				Funcoes.myBind(txtCodUnico, "text", it, "rfUnica");
+				Funcoes.myBind(ckbDesuso, "selected", it, "desuso");
+				Funcoes.myBind(boundObsTextInput, "text", it, "complAplic");
+				Funcoes.myBind(cmbUM, "selectedItem", it, "unidMed");
+			}
+			
+			private function preencherParaEdicao():void
+			{
+				if (it.idSecao>0)
+				{
+					var dictSecoes:Array = MyArrayUtils.asDictionary(mdlPai.secoes);
+					cmbSecao.selectedItem = dictSecoes[ it.idSecao ];
+				}
+			}
+			
+			private function updateListas():void
+			{
+				if (mdlPai.item==null)
+					return;
+				
+				it.idSecao = cmbSecao.selectedItem.id;
+				it.secao = cmbSecao.selectedItem.secao;
+				it.grupo = cmbSecao.selectedItem.grupo;
+				it.subgrupo = cmbSecao.selectedItem.subgrupo;
+			}
+			
+			private function cancelar():void
+			{
+				mdlPai.item = null;
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

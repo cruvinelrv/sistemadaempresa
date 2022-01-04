@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	styleName="padding5" fontSize="14" fontWeight="bold"
+	initialize="init()"
+	xmlns:SDE="Componentes.SDE.*">
+	
+	<mx:HBox width="100%" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.icn_64_pesquisa}"/>
+		<mx:Label text="Pesquisa" fontSize="40" color="#666666" fontWeight="bold"/>
+	</mx:HBox>
+	
+	<mx:HBox width="100%" verticalAlign="middle">
+		<SDE:CaixaPesquisa id="cpUsuario" width="100%"
+			clickPesquisar="dpUsuariosSistema=usuarioScript.pesquisaUsuario(cpUsuario.text)"/>
+		<SDE:Botao label="Novo Usuário" labelPlacement="right" icon="{Imagens.unica.icn_32_adiciona}"
+			click="usuarioScript.mudaTela(mdlPai.vs, mdlPai.formCadastro)"/>
+	</mx:HBox>
+	
+	<SDE:DataGrid id="dgUsuarioPesquisa"
+		width="100%" height="100%" editable="false"
+		dataProvider="{dpUsuariosSistema}">
+		<SDE:columns>
+			<mx:DataGridColumn width="1" headerText="Cód." dataField="cod"/>
+			<mx:DataGridColumn width="6" headerText="Nome Usuário" dataField="nome"/>
+			<mx:DataGridColumn width="2" headerText="Login" dataField="login"/>
+			<mx:DataGridColumn width="1" headerText="Usuário Tecnico" dataField="tecnico" itemRenderer="{checkBoxFac}" textAlign="center"/>
+		</SDE:columns>
+	</SDE:DataGrid>
+	
+	<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+		<SDE:Botao label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+			click="usuarioScript.usuarioSelecionado(dgUsuarioPesquisa.selectedItem, mdlPai)"/>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.CheckBox;
+			import janelas.tecnico.Usuario.UsuarioScript;
+			import pesquisas.PesquisaUsuario;
+			import janelas.tecnico.Usuario.JnlTecUsuario;
+			import mx.collections.ArrayCollection;
+			import Core.Alerta.AlertaSistema;
+			import img.Imagens;
+			
+			public var mdlPai:JnlTecUsuario;
+			private var usuarioScript:UsuarioScript = new UsuarioScript();
+			
+			private var _dpUsuariosSistema:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var checkBoxFac:ClassFactory;
+			
+			private function init():void
+			{
+				checkBoxFac = new ClassFactory(CheckBox);
+				checkBoxFac.properties =
+				{
+					enabled:false
+				};
+			}
+			
+			[Bindable]
+			public function get dpUsuariosSistema():ArrayCollection{return this._dpUsuariosSistema;}
+			public function set dpUsuariosSistema(valor:ArrayCollection):void{this._dpUsuariosSistema = valor;}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

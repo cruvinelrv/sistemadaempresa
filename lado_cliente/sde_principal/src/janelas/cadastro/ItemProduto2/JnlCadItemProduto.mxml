@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	xmlns:ItemProduto2="janelas.cadastro.ItemProduto2.*"
+	creationPolicy="all" xmlns:CP="Componentes.CP.*"
+	styleName="padding5" xmlns:controls="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*"
+	xmlns:controls1="com.adobe.flex.extras.controls.*"
+	initialize="init()" creationComplete="create()"
+	xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*">
+	
+	<mx:Script source="MdllJnlCadItemProduto_scriptConsulta.as"/>
+	<mx:Script source="MdllJnlCadItemProduto_scriptNovo.as"/>
+	<mx:Script source="MdllJnlCadItemProduto_scriptEdita.as"/>
+	
+	<mx:Style>
+		.btnAbaAliq
+		{
+			label-placement: right;
+			label-align:right;
+			text-align:left;
+			font-weight: bold;
+		}
+	</mx:Style>
+	
+	<mx:ViewStack id="vsMain" width="100%" height="100%" creationPolicy="all">
+	
+		<!-- TELA DE CONSULTA -->
+		<mx:VBox id="telaConsulta" width="100%" height="100%" verticalAlign="middle"
+			fontSize="14" fontWeight="bold"
+			showEffect="{WipeDown}" hideEffect="{WipeUp}">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Image source="{Imagens.unica.icn_64_lapis}"/>
+				<mx:Label text="Pesquisa / Altera" fontSize="40" color="#666666" fontWeight="bold"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:HBox width="100%" borderStyle="solid" backgroundColor="#3B5998" cornerRadius="3" styleName="padding3">
+					<controls:MasterTextInput id="txtItemPesquisa" width="100%" capsType="upercase" keyDown="txtItemPesquisa_KeyDown(event)"/>
+					<mx:Button label="Pesquisar" click="btnPesquisar_Click()"/>
+				</mx:HBox>
+				<mx:Button label="Novo Produto" icon="{Imagens.unica.icn_32_adiciona}" labelPlacement="right"
+					click="mudaTela(telaNovo)"/>
+			</mx:HBox>
+			
+			<!--<mx:HBox width="{telaConsulta.width}" backgroundColor="red" verticalAlign="middle">
+				<CP:CPesqItem width="100%"/>
+				<mx:Button label="Novo Produto" icon="{Imagens.unica.icn_32_adiciona}" labelPlacement="right"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<CP:PesqItem id="cpItem" width="100%" showBrowseButton="false" keyUp="cpCliente_KeyUp()"/>
+				<mx:Button label="Novo Produto" icon="{Imagens.unica.icn_32_adiciona}" labelPlacement="right"
+					click="mudaTela(telaNovo)"/>
+			</mx:HBox>-->
+			
+			<mx:DataGrid id="dgItem"
+				width="100%" height="100%"
+				themeColor="#3B5998"
+				doubleClick="btnSeleciona_Click()"
+				keyDown="dgItem_KeyDown(event)"
+				dataProvider="{dpItem}">
+				<mx:columns>
+					<mx:DataGridColumn width="1" dataField="cod" headerText="Cód."/>
+					<mx:DataGridColumn width="6" dataField="nome" headerText="Item"/>
+					<mx:DataGridColumn width="2" dataField="rfUnica" headerText="Rf. Única"/>
+					<mx:DataGridColumn width="2" dataField="rfAuxiliar" headerText="Rf. Auxiliar"/>
+					<mx:DataGridColumn width="2" dataField="unidMed" headerText="Un. Med."/>
+					<mx:DataGridColumn width="3" dataField="venda" headerText="Preço Venda" labelFunction="fn_valorVenda"/>
+				</mx:columns>
+			</mx:DataGrid>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<mx:Button label="Selecionar" icon="{Imagens.unica.icn_32_aceita}" labelPlacement="right" click="btnSeleciona_Click()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		<!-- TELA DE NOVO CADASTRO -->
+		<mx:VBox id="telaNovo" width="100%" height="100%" verticalAlign="middle"
+			fontSize="14" fontWeight="bold"
+			creationComplete="createNovo()"
+			preinitialize="iniciaNovo()"
+			showEffect="{WipeDown}" hideEffect="{WipeUp}">
+			
+			<mx:VBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+				<mx:VBox width="95%" height="95%" verticalAlign="middle" styleName="padding10">
+					<mx:HBox width="95%" verticalAlign="bottom">
+						<mx:Image source="{Imagens.unica.icn_64_adiciona}"/>
+						<mx:Label text="Cadastro" fontSize="40" color="#666666" fontWeight="bold"/>
+					</mx:HBox>
+					<mx:HBox width="100%" verticalAlign="middle" visible="{App.single.ss.idCorp==53}">
+						<mx:Label text="Fornecedor:" width="135"/>
+						<CP:PesqFornecedor id="cpFornecedor" width="100%"/>
+					</mx:HBox>
+					<mx:HBox width="100%" verticalAlign="middle">
+						<mx:Label text="Descrição:" width="135"/>
+						<controls:MasterTextInput id="txtCadDescricao" capsType="upercase" width="100%" maxChars="120"/>
+					</mx:HBox>
+					<mx:HBox width="100%" verticalAlign="middle">
+						<mx:Label text="Seção:" width="135"/>
+						<mx:ComboBox id="cmbCadSecao" width="360" labelField="__orderBy"/>
+						<mx:Label text="Marca:" width="70"/>
+						<mx:ComboBox id="cmbCadMarca" width="360" labelField="__orderBy"/>
+					</mx:HBox>
+					<mx:HBox width="100%" verticalAlign="middle">
+						<mx:Label text="Código Único:" width="135"/>
+						<controls:MasterTextInput id="txtCadCodUnico" capsType="upercase" width="185"/>
+						<mx:Button icon="{Imagens.unica.icn_16_return}" height="25" width="25" toolTip="Gerar Código Único" visible="{App.single.ss.idCorp==53}" click="txtCadCodUnico.text=geraCodigoUnico()"/>
+						<mx:Label text="Código Auxiliar:" width="125"/>
+						<controls:MasterTextInput id="txtCadCodAuxiliar" capsType="upercase" width="185"/>
+						<mx:Label text=" " width="25"/>
+						<mx:Label text="Unidade Medida:" width="135"/>
+						<mx:ComboBox id="cmbCadUn" width="100%" dataProvider="{Constantes.unica.UM}"/>
+					</mx:HBox>
+					<mx:HBox width="100%" verticalAlign="middle">
+						<mx:Label text="Tipo Identificador:" width="135"/>
+						<mx:ComboBox id="cmbCadTipoIdent" width="185" dataProvider="{EItemTipoIdent.getCampos()}" labelFunction="fn_ComboTipoIdentCad_Label"/>
+						<mx:Label text=" " width="25"/>
+						<mx:Label text="Comissão(%):" width="125"/>
+						<mx:NumericStepper id="nsCadComissao" width="185" minimum="0" maximum="100" stepSize="0.01"/>
+						<mx:Label text=" " width="25"/>
+						<mx:Label text="Des. Máximo(%):" width="135"/>
+						<mx:NumericStepper id="nsCadDescMaximo" width="100%" minimum="0" maximum="100" stepSize="0.01"/>
+					</mx:HBox>
+					<mx:HRule width="100%"/>
+					<mx:Button label="Formação de Preços" click="btnConfigurarPreco_Click()"/>
+					<mx:HBox width="100%" verticalAlign="middle">
+						<mx:Label text="Preço de Compra:" width="135"/>
+						<controls:MasterTextInput id="txtCadPrecoCompra" width="185" editable="false"/>
+						<mx:Label text="Preço de Custo:" width="135"/>
+						<controls:MasterTextInput id="txtCadPrecoCusto" width="185" editable="false"/>
+						<mx:Label text="Preço de Venda:" width="135"/>
+						<controls:MasterTextInput id="txtCadPrecoVenda" width="100%" editable="false"/>
+					</mx:HBox>
+					
+				</mx:VBox>
+				
+			</mx:VBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<mx:Button label="Cancelar" icon="{Imagens.unica.icn_32_deleta}" labelPlacement="right" click="btnCancela_Click()"/>
+				<mx:Button label="Salvar" icon="{Imagens.unica.icn_32_aceita}" labelPlacement="right" click="btnSalva_Click()"/>
+			</mx:HBox>
+			
+			<PopUpPesquisa:SuperPopPesq id="popupConfiguraPreco"
+				showCloseButton="false"
+				title="Formação de Preços"
+				titleIcon="{Imagens.unica.icn_32_money}"
+				layout="vertical"
+				fontSize="14"
+				width="100%" height="100%">
+				
+				<mx:VBox width="100%" height="100%">
+					
+					<mx:HBox>
+						<mx:VBox verticalAlign="middle" width="150">
+							<mx:Label text="Preço de Compra:"/>
+							<mx:NumericStepper id="nsCadPrecoCompra" minimum="0" maximum="9999999" stepSize="0.01"/>
+						</mx:VBox>
+						<mx:VBox verticalAlign="middle" width="150">
+							<mx:Label text="IPI(%):"/>
+							<mx:NumericStepper id="nsCadIPIperc" value="0" minimum="0" maximum="100" stepSize="0.01"/>
+						</mx:VBox>
+						<mx:VBox verticalAlign="middle" width="150">
+							<mx:Label text="Outros Custos(%):"/>
+							<mx:NumericStepper id="nsCadOutrosCustos" value="0" minimum="0" maximum="100" stepSize="0.01"/>
+						</mx:VBox>
+					</mx:HBox>
+					
+					<mx:HBox>
+						<mx:VBox verticalAlign="middle" width="150">
+							<mx:Label text="Preço de Custo:"/>
+							<mx:NumericStepper id="nsCadPrecoCusto" width="150" maximum="99999" stepSize="0.01"/>
+							<mx:Button id="btCalc" label="Calcular" click="calculaPrecoIPICUSTO()" />
+						</mx:VBox>
+					</mx:HBox>
+					
+					<mx:HRule width="95%" horizontalCenter="0"/>
+					
+					<mx:Label text="Por Margem de Lucro:" fontWeight="bold"/>
+					
+					<mx:HBox width="100%">
+						<mx:VBox verticalAlign="middle" width="150">
+							<mx:Label text="Margem de Lucro:"/>
+							<mx:NumericStepper id="nsCadConfMargemLucro" minimum="0" maximum="9999999" stepSize="0.01" valueCommit="calculaPrecoVenda()" keyDown="if(nsCadConfMargemLucro.value>0)btn_ConfirmaMargemLucro.enabled"/>
+						</mx:VBox>
+						<mx:VBox verticalAlign="middle" width="150">
+							<mx:Label text="Preço de Venda:"/>
+							<mx:NumericStepper id="nsCadConfProPrecoVenda" minimum="0" maximum="9999999" stepSize="0.01" enabled="false"/>
+						</mx:VBox>
+						<mx:VBox height="100%" width="100%" verticalAlign="bottom" horizontalAlign="middle">
+							<mx:Button id="btn_ConfirmaMargemLucro" label="Confirmar" icon="{Imagens.unica.icn_32_aceita}"
+								click="btnConfirmaMargemLucro_Click()" keyDown="if(event.keyCode==Keyboard.ENTER)btnConfirmaMargemLucro_Click()"/>
+						</mx:VBox>
+					</mx:HBox>
+					
+					<mx:HRule width="95%" horizontalCenter="0"/>
+					
+					<mx:Label text="Por Preço de Venda:" fontWeight="bold"/>
+					
+					<mx:HBox width="100%">
+						<mx:VBox verticalAlign="middle" width="150">
+							<mx:Label text="Preço de Venda:"/>
+							<mx:NumericStepper id="nsCadConfPrecoVenda" minimum="0" maximum="9999999" stepSize="0.01" valueCommit="calculaMargemLucro()" keyDown="if(nsCadConfPrecoVenda.value>nsCadPrecoCusto.value)btn_ConfirmaPrecoVenda.enabled"/>
+						</mx:VBox>
+						<mx:VBox verticalAlign="middle" width="150">
+							<mx:Label text="Margem de Lucro:"/>
+							<mx:NumericStepper id="nsCadConfProMargemLucro" minimum="0" maximum="9999999" stepSize="0.01" enabled="false"/>
+						</mx:VBox>
+						<mx:VBox height="100%" width="100%" verticalAlign="bottom" horizontalAlign="middle">
+							<mx:Button id="btn_ConfirmaPrecoVenda" label="Confirmar" icon="{Imagens.unica.icn_32_aceita}"
+							click="btnConfirmaPrecoVenda_Click()" keyDown="if(event.keyCode==Keyboard.ENTER)btnConfirmaPrecoVenda_Click()"/>
+						</mx:VBox>
+					</mx:HBox>
+					
+					<mx:HRule width="95%" horizontalCenter="0"/>
+					
+					<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="middle">
+						<mx:Button label="Cancelar" icon="{Imagens.unica.icn_32_deleta}" width="{btn_ConfirmaMargemLucro.width}"
+						click="PopUpManager.removePopUp(popupConfiguraPreco); limpaConfPreco()"/>
+					</mx:HBox>
+					
+				</mx:VBox>
+				
+			</PopUpPesquisa:SuperPopPesq>
+			
+		</mx:VBox>
+		
+		<!-- TELA DE EDIÇÃO DE CADSTRO -->
+			<mx:VBox id="telaEdita" width="100%" height="100%" verticalAlign="middle"
+				fontSize="12" fontWeight="normal" backgroundColor="#EFEFEF"
+				creationComplete="createEdita()"
+				preinitialize="iniciaEdita()"
+				showEffect="{WipeDown}" hideEffect="{WipeUp}">
+				
+				<mx:HBox width="100%">
+					<mx:Label id="lblEdiTitulo" width="100%" selectable="true" fontSize="14" fontWeight="bold"/>
+				</mx:HBox>
+				
+				<mx:Canvas width="100%" height="160" >
+					<mx:VBox width="100%" height="100%" 
+						verticalGap="0" paddingLeft="5">
+						<mx:HBox>
+							<mx:VBox verticalGap="0">
+								<mx:Label text="Unid Med:"/>
+								<mx:ComboBox id="cmbEdiUn" width="75" dataProvider="{Constantes.unica.UM}"/>
+							</mx:VBox>
+							<mx:VBox verticalGap="0">
+								<mx:Label text="Seção:"/>
+								<mx:ComboBox id="cmbEdiSecao" width="300" labelField="__orderBy"/>	
+							</mx:VBox>
+							<mx:VBox verticalGap="0">
+								<mx:Label text="Marca:"/>
+								<mx:ComboBox id="cmbEdiMarca" width="225" labelField="__orderBy"/>
+							</mx:VBox>
+							<mx:VBox verticalGap="0">
+								<mx:Label text="Tipo Ident:"/>
+								<mx:ComboBox id="cmbEdiTipoIdent" width="216" dataProvider="{EItemTipoIdent.getCampos()}" labelFunction="fn_ComboTipoIdentEdi_Label"/>
+							</mx:VBox>
+						</mx:HBox>
+						
+						<mx:HBox horizontalGap="5" verticalCenter="0">
+							<mx:VBox verticalGap="0">
+								<mx:Label text="Nome:"/>
+								<controls:MasterTextInput id="txtEdiNome" width="550" capsType="upercase"
+									 styleName="padding3" maxChars="120"/>
+							</mx:VBox>
+							<mx:VBox verticalGap="0">
+								<mx:Label text="Cód Único:"/>
+								<controls:MasterTextInput id="txtEdiCodUnico" width="140" capsType="upercase"
+									 maxChars="20" styleName="padding3"/>
+							</mx:VBox>
+							<mx:VBox verticalGap="0">
+								<mx:Label text="Cód Auxiliar:"/>
+								<controls:MasterTextInput id="txtEdiCodAux" width="140" capsType="upercase"
+									 maxChars="20" styleName="padding3"/>
+							</mx:VBox>
+						</mx:HBox>
+						
+						<mx:HBox horizontalGap="5" verticalCenter="0" width="840">
+							<mx:VBox verticalGap="0">
+								<mx:Label text="Rf. Peso: "/>
+								<mx:NumericStepper id="nsEdiRfPeso" width="145" stepSize="0.01" minimum="0" maximum="999999"/>
+							</mx:VBox>
+							<mx:HBox verticalAlign="middle" height="50" width="100%" horizontalAlign="right">
+								<mx:CheckBox id="ckbEdiDesuso" label="Produto em Desuso"/>
+							</mx:HBox>
+						</mx:HBox>
+						
+					</mx:VBox>
+					<mx:VBox right="10" bottom="10">
+						<comp:Botao1 id="btn1" label="Não Salvar" cor="Vermelho" icone="Cancela" click="btnNaoSalvar_Click()"/>
+						<comp:Botao1 id="btn2" label="Salvar e Fechar" cor="Amarelo" icone="Salva" click="btnSalvaAlteracao_Click(false)"/>
+						<comp:Botao1 id="btn3" label="Salvar e Continuar" cor="Verde" icone="Salva" click="btnSalvaAlteracao_Click(true)"/>
+					</mx:VBox>
+				</mx:Canvas>
+				
+				<mx:LinkBar width="100%" dataProvider="{vsProduto}"
+					backgroundColor="#D5D5D5"
+					borderColor="#D5D5D5" borderThickness="0" borderStyle="solid" cornerRadius="5"/>
+					
+				<mx:ViewStack id="vsProduto" width="100%" height="100%"
+					borderColor="#cccccc" borderStyle="inset" borderThickness="1">
+					
+					<!-- ABA OBSERVAÇÕES -->
+					<mx:VBox width="100%" height="100%" label="Obs"
+						styleName="padding10" verticalGap="5">
+						<mx:Label
+							fontWeight="bold" fontSize="14" 
+							text="Observações sobre o produto"/>
+						<mx:TextArea id="txtEdiObs" width="80%" height="80%"/>
+					</mx:VBox>
+					
+					<!-- ABA PREÇOS -->
+					<mx:VBox width="100%" height="100%" label="Preços"
+						styleName="padding10" verticalGap="5">
+						<mx:HBox>
+							<mx:VBox>
+								<mx:Label text="Preco Compra"/>
+								<mx:NumericStepper id="nsEdiCompra" width="100" minimum="0" maximum="999999" stepSize="0.01" styleName="padding3"/>
+							</mx:VBox>
+							<mx:VBox>
+								<mx:Label text="IPI(%):"/>
+								<mx:NumericStepper id="nsEdiIPIperc" value="0" minimum="0" maximum="100" stepSize="0.01"/>
+							</mx:VBox>
+							<mx:VBox>
+								<mx:Label text="Outros Custos(%):"/>
+								<mx:NumericStepper id="nsEdiOutrosCustos" value="0" minimum="0" maximum="100" stepSize="0.01"/>
+							</mx:VBox>
+							<mx:VBox>		
+								<mx:Label text="Preco Custo"/>
+								<mx:NumericStepper id="nsEdiCusto" width="150" maximum="99999" stepSize="0.01"/>
+								<mx:Button id="btCalc2" label="Calcular" click="calculaPrecoIPICUSTO2()" />
+							
+							
+							</mx:VBox>
+							<mx:VBox>
+								<mx:Label text="Margem Lucro"/>
+								<mx:NumericStepper id="nsEdiMargemLucro" width="100" minimum="0" maximum="999999" stepSize="0.01" styleName="padding3" enabled="false"/>
+							</mx:VBox>
+							<mx:VBox>		
+								<mx:Label text="Preco Venda"/>
+								<mx:NumericStepper id="nsEdiVenda" width="100" minimum="0" maximum="999999" stepSize="0.01" styleName="padding3"/>
+							</mx:VBox>
+							<mx:VBox>		
+								<mx:Label text="Preco Atacado"/>
+								<mx:NumericStepper id="nsEdiAtac" width="100" minimum="0" maximum="999999" stepSize="0.01" styleName="padding3"/>
+							</mx:VBox>
+							<mx:VBox>
+								<mx:Label text="Desconto Maximo"/>
+								<mx:NumericStepper id="nsEdiDescontoMaximo" width="100" minimum="0" maximum="999999" stepSize="0.01" styleName="padding3"/>
+							</mx:VBox>
+							<mx:VBox>
+								<mx:Label text="% Comissão"/>
+								<mx:NumericStepper id="nsEdiComissao" width="100" maximum="100" minimum="0" stepSize="0.1" styleName="padding3"/>
+							</mx:VBox>
+						</mx:HBox>
+						
+						<mx:HRule horizontalCenter="0" width="99%"/>
+						
+						<mx:Label text="Alterar Margem de Lucro:" fontWeight="bold"/>
+						<mx:HBox>
+							<mx:VBox width="160">
+								<mx:Label text="Nova Margem de Lucro:"/>
+								<mx:NumericStepper id="nsEdiNovaMargemLucro" minimum="0" maximum="999999" stepSize="0.01" valueCommit="calculaProjecaoPrecoVenda()"/>
+							</mx:VBox>
+							<mx:VBox width="160">
+								<mx:Label text="Projeção Preço de Venda:"/>
+								<mx:NumericStepper id="nsEdiProPrecoVenda" minimum="0" maximum="999999" stepSize="0.01" enabled="false"/>
+							</mx:VBox>
+							<mx:VBox height="100%" verticalAlign="bottom">
+								<mx:Button label="Confirmar Alteração" enabled="{nsEdiNovaMargemLucro.value > 0}" fontWeight="bold" click="btnConfirmaMargemLucro()"/>
+							</mx:VBox>
+						</mx:HBox>
+						
+						<mx:HRule horizontalCenter="0" width="99%"/>
+						
+						<mx:Label text="Alterar Preço de Venda:" fontWeight="bold"/>
+						<mx:HBox>
+							<mx:VBox width="160">
+								<mx:Label text="Novo Preço de Venda:"/>
+								<mx:NumericStepper id="nsEdiNovoPrecoVenda" minimum="0" maximum="999999" stepSize="0.01" valueCommit="calculaProjecaoMargemLucro()"/>
+								<mx:NumericStepper id="nsEdiNovoPrecoAtac" minimum="0" maximum="999999" stepSize="0.01"/>
+								<!--Vinicius preco atacado-->															
+							</mx:VBox>
+							<mx:VBox width="160">
+								<mx:Label text="Projeção Margem de Lucro:"/>
+								<mx:NumericStepper id="nsEdiProMargemLucro" minimum="0" maximum="999999" stepSize="0.01" enabled="false"/>
+							</mx:VBox>
+							<mx:VBox height="100%" verticalAlign="bottom">
+								<mx:Button label="Confirmar Alteração" enabled="{nsEdiNovoPrecoVenda.value > 0}" fontWeight="bold" click="btnConfirmaPrecoVenda()"/>
+							</mx:VBox>
+						</mx:HBox>
+						
+					</mx:VBox>
+					
+					<!-- ABA LOCAÇÃO -->
+					<mx:VBox width="100%" height="100%" label="Locação"
+						styleName="padding10" verticalGap="5">
+						
+						<comp:Botao2 label="Adicionar Local"
+							cor="Branco" icone="Adiciona" click="btnAdicionaLocacao_Click()"/>
+							
+						<mx:DataGrid id="gridLocacao" width="100%" height="100%"
+							themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+							editable="false" dataProvider="{dpLocacao}">
+							<mx:columns>
+								<mx:DataGridColumn width="6" dataField="valor" headerText="Locação"/>
+								<mx:DataGridColumn width="2">
+									<mx:itemRenderer>
+										<mx:Component>
+											<mx:Button label="Alterar"
+												labelPlacement="right" color="#008800"
+												click="dispatchEvent(new Event('editRow', true))"/>
+										</mx:Component>
+									</mx:itemRenderer>
+								</mx:DataGridColumn>
+								<mx:DataGridColumn width="2">
+									<mx:itemRenderer>
+										<mx:Component>
+											<mx:Button label="Remover"
+												labelPlacement="right" icon="{Imagens.unica.icn_16_cancela}"
+												click="dispatchEvent(new Event('deleteRow', true))">
+												<mx:Script>
+													<![CDATA[
+														import img.Imagens;
+													]]>
+												</mx:Script>
+											</mx:Button>
+										</mx:Component>
+									</mx:itemRenderer>
+								</mx:DataGridColumn>
+							</mx:columns>
+						</mx:DataGrid>
+						
+						<PopUpPesquisa:SuperPopPesq id="popupLocacao"
+							title=""
+							titleIcon="{null}"
+							showCloseButton="false"
+							width="600" height="145"
+							fontWeight="bold" fontSize="16"
+							layout="vertical">
+							
+							<mx:VBox width="100%" height="100%" verticalAlign="middle">
+								<mx:HBox width="100%" verticalAlign="middle">
+									<mx:Label text="Locação:"/>
+									<controls:MasterTextInput id="txtEdiLocacao" width="100%" capsType="upercase" keyDown="{if(event.keyCode == Keyboard.ENTER)btnSalvarLocal_Click()}"/>
+								</mx:HBox>
+								<mx:HBox horizontalAlign="right" width="100%">
+									<mx:Button label="Cancelar" icon="{Imagens.unica.icn_32_deleta}" labelPlacement="right" click="{popupLocacao.parent.removeChild(popupLocacao)}"/>
+									<mx:Button label="Salvar" icon="{Imagens.unica.icn_32_aceita}" labelPlacement="right" click="btnSalvarLocal_Click()"/>
+								</mx:HBox>
+							</mx:VBox>
+							
+						</PopUpPesquisa:SuperPopPesq>
+						
+					</mx:VBox>
+					
+					<!-- ABA TRIBUTAÇÃO -->
+					<mx:HBox width="100%" height="100%" label="Tributação"
+						styleName="padding10" verticalGap="5">
+						<mx:LinkBar dataProvider="{vsTributacao}" height="100%" direction="vertical" linkButtonStyleName="btnAbaAliq" />
+						
+						<mx:ViewStack id="vsTributacao" width="100%" height="100%">
+						
+							<mx:VBox icon="{Imagens.unica.icn_32_money}" label="ICMS" width="100%" height="100%" styleName="padding3">
+								<mx:HBox>
+									<mx:VBox verticalGap="0" backgroundColor="white" styleName="padding3">
+										<mx:HBox width="100%">	
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="%ICMS Padrão:"/>
+												<mx:NumericStepper id="nsEdiICMSPadraoED" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="%ICMS:"/>
+												<mx:NumericStepper id="nsEdiICMSReduzidoED" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+											<mx:Label text="Entrada Dentro do Estado" fontWeight="bold" fontSize="12" textDecoration="underline"/>
+										</mx:HBox>
+										<mx:HBox>
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="CST:"/>
+												<mx:ComboBox id="cmbEdiCSTED" width="425" fontSize="10"
+													dataProvider="{ icmsCSTCodigo }" labelFunction="fn_ComboCST_ICMS_Label"/>
+											</mx:VBox>
+										</mx:HBox>
+										<mx:HBox paddingTop="3">
+											<mx:Label text="Obs:"/>
+											<controls:MasterTextInput id="txtEdiObsED" capsType="upercase" width="388"/>
+										</mx:HBox>
+									</mx:VBox>
+									<mx:VBox verticalGap="0" backgroundColor="white" styleName="padding3">
+										<mx:HBox width="100%">
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="%ICMS Padrão:"/>
+												<mx:NumericStepper id="nsEdiICMSPadraoSD" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="%ICMS:"/>
+												<mx:NumericStepper id="nsEdiICMSReduzidoSD" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+											<mx:Label text="Saida Dentro do Estado" fontWeight="bold" fontSize="12" textDecoration="underline"/>
+										</mx:HBox>
+										<mx:HBox>
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="CST:"/>
+												<mx:ComboBox id="cmbEdiCSTSD" width="425" fontSize="10"
+													dataProvider="{ icmsCSTCodigo }" labelFunction="fn_ComboCST_ICMS_Label"/>
+											</mx:VBox>
+										</mx:HBox>
+										<mx:HBox paddingTop="3">
+											<mx:Label text="Obs:"/>
+											<controls:MasterTextInput id="txtEdiObsSD" capsType="upercase" width="388"/>
+										</mx:HBox>
+								</mx:VBox>
+								</mx:HBox>
+								<mx:HBox>
+									<mx:VBox verticalGap="0" backgroundColor="white" styleName="padding3">
+										<mx:HBox width="100%">
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="%ICMS Padrão:"/>
+												<mx:NumericStepper id="nsEdiICMSPadraoEF" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="%ICMS:"/>
+												<mx:NumericStepper id="nsEdiICMSReduzidoEF" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+											<mx:Label text="Entrada Fora do Estado" fontWeight="bold" fontSize="12" textDecoration="underline"/>
+										</mx:HBox>
+										<mx:Box>
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="CST:"/>
+												<mx:ComboBox id="cmbEdiCSTEF" width="425" fontSize="10"
+													dataProvider="{ icmsCSTCodigo }" labelFunction="fn_ComboCST_ICMS_Label"/>
+											</mx:VBox>
+										</mx:Box>
+										<mx:HBox paddingTop="3">
+											<mx:Label text="Obs:"/>
+											<controls:MasterTextInput id="txtEdiObsEF" capsType="upercase" width="388"/>
+										</mx:HBox>
+									</mx:VBox>
+									<mx:VBox verticalGap="0" backgroundColor="white" styleName="padding3">
+										<mx:HBox width="100%">
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="%ICMS Padrão:"/>
+												<mx:NumericStepper id="nsEdiICMSPadraoSF" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="%ICMS:"/>
+												<mx:NumericStepper id="nsEdiICMSReduzidoSF" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+											<mx:Label text="Saida Fora do Estado" fontWeight="bold" fontSize="12" textDecoration="underline"/>
+										</mx:HBox>
+										<mx:HBox>
+											<mx:VBox paddingLeft="2" verticalGap="0">
+												<mx:Label text="CST:"/>
+												<mx:ComboBox id="cmbEdiCSTSF" width="425" fontSize="10"
+													dataProvider="{ icmsCSTCodigo }" labelFunction="fn_ComboCST_ICMS_Label"/>
+											</mx:VBox>
+										</mx:HBox>
+										<mx:HBox paddingTop="3">
+											<mx:Label text="Obs:"/>
+											<controls:MasterTextInput id="txtEdiObsSF" capsType="upercase" width="388"/>
+										</mx:HBox>
+									</mx:VBox>
+								</mx:HBox>
+							</mx:VBox>
+							
+							<mx:VBox icon="{Imagens.unica.icn_32_money}" label="PIS/COFINS" width="100%" height="100%">
+								<mx:Grid width="100%">
+									<mx:GridRow>
+										<mx:GridItem>
+											<mx:VBox>
+												<mx:Label text="CST/PIS:"/>
+												<mx:ComboBox id="cmbEdiCSTPIS" width="660"
+													dataProvider="{ pis_cofinsCSTCodigo }" labelFunction="fn_ComboPIS_COFINS_Label"/>
+											</mx:VBox>
+										</mx:GridItem>
+										<mx:GridItem>
+											<mx:VBox>
+												<mx:Label text="%Aliq Padrão:"/>
+												<mx:NumericStepper id="nsEdiAliqPadraoCSTPIS" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+										</mx:GridItem>
+										<mx:GridItem>
+											<mx:VBox>
+												<mx:Label text="%Aliq Reduzida:"/>
+												<mx:NumericStepper id="nsEdiAliqReduzidaCSTPIS" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+										</mx:GridItem>
+									</mx:GridRow>
+									<mx:GridRow>
+										<mx:GridItem>
+											<mx:VBox>
+												<mx:Label text="CST/COFINS:"/>
+												<mx:ComboBox id="cmbEdiCSTCOFINS" width="660"
+													dataProvider="{ pis_cofinsCSTCodigo }" labelFunction="fn_ComboPIS_COFINS_Label"/>
+											</mx:VBox>
+										</mx:GridItem>
+										<mx:GridItem>
+											<mx:VBox>
+												<mx:Label text="%Aliq Padrão:"/>
+												<mx:NumericStepper id="nsEdiAliqPadraoCSTCOFINS" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+										</mx:GridItem>
+										<mx:GridItem>
+											<mx:VBox>
+												<mx:Label text="%Aliq Reduzida:"/>
+												<mx:NumericStepper id="nsEdiAliqReduzidaCSTCOFINS" width="65" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:VBox>
+										</mx:GridItem>
+									</mx:GridRow>
+								</mx:Grid>
+							</mx:VBox>
+							
+							<mx:VBox icon="{Imagens.unica.icn_32_money}" label="IPI" width="100%" height="100%">
+								<mx:HBox>
+									<mx:VBox>
+										<mx:Label text="CST:"/>
+										<mx:ComboBox id="cmbEdiCSTIPI" width="280"
+											dataProvider="{ ipiCSTCodigo }" labelFunction="fn_ComboCST_IPI_Label"/>
+									</mx:VBox>
+									<mx:VBox>
+										<mx:Label text="CNPJ do Fabricante:"/>
+										<controls1:MaskedTextInput id="txtEdiCNPJ" inputMask='##/.###/.###//####-##' width="170"/>
+									</mx:VBox>
+								</mx:HBox>
+								<mx:HBox>
+									<mx:VBox>
+										<mx:Label text="Classe de Enquadramento:"/>
+										<controls:MasterTextInput id="txtEdiClasseEnquadramento" capsType="upercase" width="170"/>
+									</mx:VBox>
+									<mx:VBox>
+										<mx:Label text="Código de Enquadramento:"/>
+										<controls:MasterTextInput id="txtEdiCodigoEnquadramento" capsType="upercase" width="170"/>
+									</mx:VBox>
+									<mx:VBox>
+										<mx:Label text="Código do Selo de Controle:"/>
+										<controls:MasterTextInput id="txtEdiCodigoSeloControle" capsType="upercase" width="170"/>
+									</mx:VBox>
+								</mx:HBox>
+								<mx:HBox>
+									<mx:VBox>
+										<mx:Label text="Tipo de Calculo:"/>
+										<mx:ComboBox id="cmbEdiTipoCauculo" width="170"
+											dataProvider="{ECalculoIpiTipo.getCampos()}" labelFunction="fn_ComboTipoCalculo_Label"/>
+									</mx:VBox>
+									<mx:VBox>
+										<mx:Label text="{(cmbEdiTipoCauculo.selectedItem=='percentual')?'Aliquota do IPI':'Valor do IPI'}"/>
+											<mx:HBox>
+												<mx:Label text="Padrão:"/>
+												<mx:NumericStepper id="nsEdiAliquotaPadraoIPI" width="110" stepSize="0.01" minimum="0" maximum="999999"/>
+												<mx:Label text="Reduzida:"/>
+												<mx:NumericStepper id="nsEdiAliquotaReduzidaIPI" width="110" stepSize="0.01" minimum="0" maximum="999999"/>
+											</mx:HBox>
+									</mx:VBox>
+								</mx:HBox>
+							</mx:VBox>
+							
+							<mx:VBox icon="{Imagens.unica.icn_32_money}" label="Outros" width="100%" height="100%">
+								<mx:Label text="Origem (Para Tributação do ICMS):"/>
+								<mx:ComboBox id="cmbEdiOrigem" width="300"
+									dataProvider="{EItemOrigem.getCampos()}" labelFunction="fn_ComboOrigem_Label"/>
+								<mx:Label text="Classificação Fiscal:"/>
+								<controls:MasterTextInput id="txtEdiClassFiscal" capsType="upercase" width="300"/>
+							</mx:VBox>
+							
+						</mx:ViewStack>
+					</mx:HBox>
+					
+					<!-- ABA ETIQUETA -->
+					<mx:VBox width="100%" height="100%" label="Etiqueta"
+						styleName="padding10" verticalGap="5">
+						<mx:Label text="Nome de exibição na etiqueta:"/>
+						<controls:MasterTextInput id="txtNomeEtiqueta" width="400" capsType="upercase"
+							maxChars="{Funcoes.numeroCaracteresEtiqueta(App.single.idCorp)}"
+							enabled="{Funcoes.numeroCaracteresEtiqueta(App.single.idCorp) != 0}"/>
+					</mx:VBox>
+					
+				</mx:ViewStack>
+				
+			</mx:VBox>
+			
+	</mx:ViewStack>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.Funcoes;
+			import SDE.Enumerador.ECalculoIpiTipo;
+			import SDE.Enumerador.EItemOrigem;
+			import SDE.Enumerador.EItemTipoIdent;
+			import SDE.Entidade.Cad_Marca;
+			import Core.App;
+			import SDE.Entidade.Cad_Secao;
+			import Core.Utils.Constantes;
+			import mx.core.Container;
+			import img.Imagens;
+			import mx.effects.WipeUp;
+			import mx.effects.WipeDown;
+			
+			[Bindable] public var marcas:Array = null;
+			[Bindable] public var secoes:Array = null;
+			
+			private function init():void{
+				secoes = [];
+				for each (var o:Cad_Secao in App.single.cache.arrayCad_Secao)
+				{
+					secoes.push(o);
+					o.__orderBy = o.secao;
+					if (o.grupo!="")
+						o.__orderBy+=", "+o.grupo;
+					if (o.subgrupo!="")
+						o.__orderBy+=", "+o.subgrupo;
+				}
+				secoes.sortOn("__orderBy");
+				marcas = [];
+				for each (var o2:Cad_Marca in App.single.cache.arrayCad_Marca)
+				{
+					marcas.push(o2);
+					o2.__orderBy = o2.marca;
+					if (o2.modelo!="")
+						o2.__orderBy+=", "+o2.modelo;
+				}
+				marcas.sortOn("__orderBy");
+				
+				popupLocacao.parent.removeChild(popupLocacao);
+			}
+			
+			private function create():void{
+				gridLocacao.addEventListener('editRow', editRowHandler);
+				gridLocacao.addEventListener('deleteRow', deleteRowHandler);
+			}
+			
+			public function mudaTela(container:Container):void{
+				if (container == telaConsulta){
+					//cpItem.dataProvider = cpItem.atualiza();
+					//cpItem.text = "";
+					//cpItem.searchText = "";
+					//cpItem.search();
+					//btnPesquisar_Click();
+					dpItem.removeAll();
+					txtItemPesquisa.text = "";
+				}
+				vsMain.selectedChild = container;
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

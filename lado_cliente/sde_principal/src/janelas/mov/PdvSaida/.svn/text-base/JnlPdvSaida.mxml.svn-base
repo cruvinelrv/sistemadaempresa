@@ -1,0 +1,1199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:CP="Componentes.CP.*" xmlns:comp="Componentes.comp.*" xmlns:Combo="SDE.Componentes.Combo.*"
+	width="100%" height="100%"
+	verticalGap="0"
+	color="#333333"
+	styleName="padding3"
+	keyDown="botoesOcultos(event)"
+	preinitialize="init()"
+	creationComplete="create(); cliente_selecionado = cache.getCliente(1).clone();cpCliente.setFocus();"
+	xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*" xmlns:Combo1="Componentes.Combo.*" xmlns:CP1="Componentes.CaixaPesquisa.CP.*" xmlns:ns="Componentes.CP.CP_Rend.*"
+	xmlns:master="com.flexpernambuco.controls.*" xmlns:SDE="Componentes.SDE.*">
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:DateValidator id="validadorData"
+		source="{popupDataPedido_data}" property="text"
+		inputFormat="DD/MM/YYYY"
+		allowedFormatChars="/"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.formatters.Formatter;
+			import SDE.Enumerador.EMovImpressao;
+			import mx.events.CloseEvent;
+			import com.hillelcoren.components.CloseableTitleWindow;
+			import SDE.Entidade.SdeConfig;
+			import SDE.Entidade.Cliente;
+			import SDE.Constantes.Variaveis_SdeConfig;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import Core.App;
+			import SDE.Entidade.ClienteEndereco;
+			import SDE.Enumerador.EItemTipoIdent;
+			import SDE.Enumerador.EItemTipo;
+			import Core.Utils.Formatadores;
+			import Core.Utils.Funcoes;
+			import mx.controls.Alert;
+			import SDE.Entidade.MovItem;
+			import Core.Alerta.AlertaSistema;
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+	<mx:Script source="script1.as"/>
+	<mx:Script source="JnlPdvSaida_script_dadoscliente.as"/>
+	<mx:Script source="JnlPdvSaida_script_formaspagamento.as"/>
+	<mx:Script source="JnlPdvSaida_script_finalizacao.as"/>
+	<mx:Script source="JnlPdvSaida_script_importar_mov.as"/>
+	<mx:Script source="JnlPdvSaida_script_importar_os.as"/>
+	<mx:Script source="JnlPdvSaida_script_notaFiscal.as"/>
+	
+	<mx:CurrencyFormatter id="cfReal"
+		precision="2"
+		rounding="none"
+		decimalSeparatorTo="."
+		thousandsSeparatorTo=","
+		useThousandsSeparator="true"
+		currencySymbol="R$"
+		alignSymbol="left"
+		useNegativeSign="true"
+		/>
+		
+	<mx:CurrencyFormatter id="cfPorcentagem"
+		precision="2"
+		rounding="none"
+		decimalSeparatorTo="."
+		thousandsSeparatorTo=","
+		useThousandsSeparator="true"
+		currencySymbol="%"
+		alignSymbol="right"
+		useNegativeSign="true"
+		/>
+	
+	<PopUpPesquisa:PopPesquisa_Vendas
+		id="popup_importar_venda"
+		retorna="{ usuario_retorna_popup_importa_mov(event) }"
+		close="{ usuario_fecha_popup_importa_mov() }"
+		/>
+		
+	<PopUpPesquisa:PopPesquisa_OrdemServico
+		id="popup_importar_ordemServico"
+		retorna="{ usuario_retorna_popup_importa_os(event) }"
+		close="{ usuario_fecha_popup_importa_os() }"
+		/>
+	
+	<mx:HBox width="100%"
+		backgroundColor="#3B5998" color="white" fontSize="16"
+		fontWeight="bold" styleName="padding0"
+		horizontalAlign="right">
+		
+		<mx:Grid>
+			<mx:GridRow horizontalAlign="right">
+				<mx:GridItem>
+					<mx:Label fontSize="14" text="Qtde: "/>
+					<mx:Label fontSize="17" text="{indicador_itenscarrinho_qtd}" />
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Label fontSize="14" text="Bruto: " />
+					<mx:Label fontSize="17" text="{Formatadores.unica.formataValor(indicador_itenscarrinho_valor_bruto,true)}" />
+				</mx:GridItem>
+				<mx:GridItem visible="{indicador_itenscarrinho_valor_desconto != 0}">
+					<mx:Label id="lbDesconto" fontSize="14" text="Desconto: " />
+					<mx:Label fontSize="17" text="{Formatadores.unica.formataValor(indicador_itenscarrinho_valor_desconto,true)}" />
+				</mx:GridItem>
+				<mx:GridItem visible="{indicador_itenscarrinho_valor_juro != 0}">
+					<mx:Label fontSize="14" text="Juro: " />
+					<mx:Label fontSize="17" text="{Formatadores.unica.formataValor(indicador_itenscarrinho_valor_juro,true)}" />
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Label fontSize="14" text="Liq: "/>
+					<mx:Label fontSize="17" text="{Formatadores.unica.formataValor(indicador_venda_valor_final,true)}" />
+				</mx:GridItem>
+				<mx:GridItem id="gridItemFinal" visible="false">
+					<mx:Label fontSize="14" text="Final: " />
+					<mx:Label fontSize="17" text="{Formatadores.unica.formataValor(indicador_venda_valor_final,true)}" />
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+	</mx:HBox>
+	
+	<mx:HBox verticalAlign="middle" visible="{vs.selectedIndex==0}">
+		<mx:Label fontSize="14" fontWeight="bold" text="Produto Selecionado:" />
+		<mx:Label minWidth="200" fontSize="20" fontWeight="bold" text="{item_para_carrinho.nome}"/>
+	</mx:HBox>
+	<mx:HBox horizontalAlign="center" themeColor="#3B5998" width="100%">
+		<mx:HRule width="90%"/>
+	</mx:HBox>
+
+	<mx:ViewStack id="vs" creationPolicy="all"
+		width="100%" height="100%">
+		
+		<mx:HBox id="etapa1"
+			width="100%" height="100%"
+			showEffect="{quickFade}"
+			hideEffect="{quickFade}">					
+			
+			<mx:VBox id="caixa"
+				width="100%" height="100%"
+				fontSize="14" fontWeight="bold">
+				
+				<mx:Label text="Cliente:" />
+				<CP:PesqCliente id="cpCliente" width="100%" change="{cliente_selecionado = cpCliente.selectedItem as Cliente; change_cpCliente();}"
+					keyDown="if(proximoFoco(event)){cpVendedor.setFocus();}" enabled="{!isImportadoOS}"/>
+				
+				<mx:Label text="Vendedor:" />
+				<CP:PesqCliente id="cpVendedor" width="100%" change="{ change_cpVendedor() }"
+					keyDown="if(proximoFoco(event)){cpItem.txtPesquisaBox.setFocus();}" enabled="{!isImportadoOS}"/>
+				
+				<mx:TabNavigator id="tabNav" width="{caixa.width}" height="330"
+					creationPolicy="all">
+					
+					<mx:VBox 
+						icon="{Imagens.unica.icn_32_estoque}"
+						label="Busca Produtos"
+						width="100%" height="100%"
+						enabled="{!isImportadoOS}">
+		
+	<mx:HBox width="100%" horizontalAlign="right">
+		<mx:Label text="Produto:" width="100%"/>
+		<mx:Button id="btnEscolheEstoque" visible="false" label="Estoque" click="{ abrepopup_estoques() }" width="90"/>
+	</mx:HBox>			
+	
+	<CP:CPesqItem width="100%" id="cpItem" change="{ usuario_escolheu_item_para_carrinho() }"/>
+	
+	<mx:Label text="Estoque:" />
+	
+	<SDE:CaixaPesquisa id="cpEstoque" icone="{null}" width="100%" keyDown="cpEstoque_KeyDown(event)" clickPesquisar="usuario_escolheu_estoque_para_carrinho()"/>
+	
+		<mx:Grid verticalAlign="middle">
+			<mx:GridRow width="100%" height="100%" enabled="{item_para_carrinho!=null}">
+				<mx:GridItem>
+					<mx:Label text="Quant (max: {(estoque_para_carrinho!=null)?estoque_para_carrinho.qtd:0})" />
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:NumericStepper id="nsQtd" width="100%" maximum="9999999" stepSize="0.01"
+							keyDown="{
+								if(event.keyCode==Keyboard.ENTER)
+									usuario_define_quantidade();
+							}"
+						/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Label text="Impostos:" />
+				</mx:GridItem>
+				<mx:GridItem>
+					<comp:Botao width="{nsQtd.width}" height="{nsQtd.height}" icon="{Imagens.unica.icn_16_dollar}" label="Impostos" click="usuario_abre_popup_impostos()"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" enabled="{preco_para_carrinho!=null}">
+				<mx:GridItem>
+					<mx:Label text="Valor Unitário:" />
+				</mx:GridItem>
+				<mx:GridItem >
+					<mx:NumericStepper id="nsVlrUnit" width="100%" maximum="9999999" stepSize="0.01"
+						keyDown="{
+							if (event.keyCode==Keyboard.ENTER)
+								usuario_lanca_item_para_carrinho();
+						}"
+						valueCommit="{ nsVlrTotal.value = nsVlrUnit.value * nsQtd.value; }"
+						/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Label text="Valor Total:" />
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:NumericStepper id="nsVlrTotal" width="100%" maximum="9999999" stepSize="0.01"
+						valueCommit="{}"
+						keyDown="if(proximoFoco(event)){cpItem.txtPesquisaBox.setFocus();}"
+						/>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+	<mx:HBox width="100%">
+		<mx:Label text="CFOP:" />
+		<CP:PesqCFOP id="cpCFOP" width="100%" showBrowseButton="false" fontSize="10" change="cpCFOP_Change()"/>
+	</mx:HBox>		
+	<comp:Botao2 label="LANÇAR"
+		click="{ usuario_lanca_item_para_carrinho() }"
+		enabled="{preco_para_carrinho!=null}"
+		keyDown="if(proximoFoco(event)){cpItem.txtPesquisaBox.setFocus();}"/>				
+	</mx:VBox>
+	<mx:VBox
+		icon="{Imagens.unica.icn_32_carrinho}"
+		label="Importar"
+		horizontalAlign="center"
+		textAlign="center" width="100%" height="100%">	
+					<SDE:Botao
+						height="85" width="95%" cornerRadius="0"
+						icon="{Imagens.unica.icn_64_orcamento}" label="Pesquisar Movimentações" fontSize="22"
+						click=
+						"{
+							usuario_abre_popup_importa_mov();
+							popup_importar_venda.currentState = null;
+						}"
+					/>
+					<SDE:Botao
+						visible="{mostraImportarOS}"
+						height="85" width="95%" cornerRadius="0"
+						icon="{Imagens.unica.icn_64_ordem_servico}" label="Pesquisar Ordem de Serviço" fontSize="22"
+						click=
+						"{
+							usuario_abre_popup_importa_os();
+							popup_importar_ordemServico.currentState = null;
+						}"
+					/>							
+					<SDE:Botao
+						visible="{isImportadoOS}"
+						height="85" width="95%" cornerRadius="0"
+						icon="{Imagens.unica.icn_64_fecha}" label="Cancelar Importação de OS" fontSize="22"
+						click="sistema_resetar_tela()"
+					/>
+				</mx:VBox>
+				<mx:VBox
+					icon="{Imagens.unica.icn_32_config}"
+					label="Opções"
+					horizontalAlign="center" verticalAlign="middle"
+					textAlign="center" width="100%"
+					enabled="{arraycItensCarrinho.length > 0}">
+				<mx:VBox width="100%" fontSize="12" styleName="padding3">
+					<mx:Grid width="100%" height="100%" fontSize="12" verticalAlign="middle">
+						<mx:GridRow width="100%" height="100%">
+							<mx:GridItem width="100%" height="100%">
+								<mx:Label text="VALOR BRUTO R$ " fontWeight="bold" />
+							</mx:GridItem>
+							<mx:GridItem width="100%" height="100%" horizontalAlign="center">
+								<mx:Label id="desc_valorbruto" text="{Formatadores.unica.formataValor(indicador_itenscarrinho_valor_bruto,false)}" fontWeight="bold" />
+							</mx:GridItem>
+						</mx:GridRow>
+						<mx:GridRow width="100%" height="100%">
+							<mx:GridItem width="100%" height="100%">
+								<mx:Label text="DESCONTO EM R$ " fontWeight="bold" />
+							</mx:GridItem>
+							<mx:GridItem width="100%" height="100%">
+								<mx:NumericStepper id="popupDesconto_emvalor" width="200" fontWeight="bold" maximum="9999999" stepSize=".01"
+									focusOut=
+									"{
+										popupDesconto_comdesconto.value = indicador_itenscarrinho_valor_bruto - popupDesconto_emvalor.value;
+										popupDesconto_empct.value = popupDesconto_emvalor.value / indicador_itenscarrinho_valor_bruto * 100;
+									}"
+									keyDown=
+									"{
+										if (event.keyCode==Keyboard.ENTER)
+											popupDesconto_empct.setFocus();
+									}"
+								/>
+							</mx:GridItem>
+						</mx:GridRow>
+						<mx:GridRow width="100%" height="100%">
+							<mx:GridItem width="100%" height="100%">
+								<mx:Label text="DESCONTO EM %" fontWeight="bold" />
+							</mx:GridItem>
+							<mx:GridItem width="100%" height="100%">
+								<mx:NumericStepper id="popupDesconto_empct" width="200" fontWeight="bold" maximum="9999999" stepSize=".01"
+									focusOut=
+									"{
+										popupDesconto_emvalor.value = popupDesconto_empct.value * indicador_itenscarrinho_valor_bruto / 100;
+										popupDesconto_comdesconto.value = indicador_itenscarrinho_valor_bruto - popupDesconto_emvalor.value;
+									}"
+									keyDown=
+									"{
+										if (event.keyCode==Keyboard.ENTER)
+											popupDesconto_comdesconto.setFocus();
+									}"
+								/>
+							</mx:GridItem>
+						</mx:GridRow>
+						<mx:GridRow width="100%" height="100%">
+							<mx:GridItem width="100%" height="100%">
+								<mx:Label text="VALOR FINAL R$" fontWeight="bold" />
+							</mx:GridItem>
+							<mx:GridItem width="100%" height="100%">
+								<mx:NumericStepper id="popupDesconto_comdesconto" width="200" fontWeight="bold" maximum="9999999" stepSize=".01"
+									focusOut=
+									"{
+										popupDesconto_emvalor.value = indicador_itenscarrinho_valor_bruto - popupDesconto_comdesconto.value;
+										popupDesconto_empct.value = popupDesconto_emvalor.value / indicador_itenscarrinho_valor_bruto * 100;
+									}"
+									keyDown=
+									"{
+										if (event.keyCode==Keyboard.ENTER)
+											popupDesconto_emvalor.setFocus();
+									}"
+								/>
+							</mx:GridItem>
+						</mx:GridRow>
+					</mx:Grid>
+					<mx:HBox width="100%">
+						<mx:VBox>
+							<mx:Label fontSize="10" text="Desconto Maximo {Formatadores.unica.formataValor(indicadoroculto_itenscarrinho_valor_desconto_maximo,true)}" />
+							<mx:Label fontSize="10" text="Comissão {Formatadores.unica.formataValor(indicadoroculto_itenscarrinho_valor_comissao,true)}" />
+						</mx:VBox>
+						<mx:VBox width="100%" horizontalAlign="right">
+							<mx:Button icon="{Imagens.unica.icn_32_salva}" click="{ usuario_no_popup_desconto_salva() }" />
+						</mx:VBox>
+					</mx:HBox>
+				</mx:VBox>	
+			</mx:VBox>
+		</mx:TabNavigator>
+	</mx:VBox>
+		
+			<mx:VBox
+				width="100%" height="100%">
+				
+				<mx:Label fontSize="14" fontWeight="bold" text="Produtos Vendidos" />
+				<mx:DataGrid id="dtGridMI" dataProvider="{arraycItensCarrinho}" width="100%" height="100%"
+					themeColor="#3B5998">
+					<mx:columns>
+						<mx:DataGridColumn width="0.8" dataField="qtd" headerText="Qtde"/>
+						<mx:DataGridColumn width="4" dataField="item_nome" headerText="Produto"/>
+						<comp:MyDataGridColumn width="1.5" dataField="vlrUnitVendaFinal" headerText="R$ Unit" tipo="Dinheiro"/>
+						<comp:MyDataGridColumn width="1.5" dataField="vlrUnitVendaFinalQtd" headerText="R$ Total" tipo="Dinheiro"/>
+						<mx:DataGridColumn width="1" dataField="icmsAliq" headerText="icms"/>
+						<mx:DataGridColumn width="0.8" dataField="cfop" headerText="CFOP"/>
+						<mx:DataGridColumn width="1" headerText=" ">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button
+										width="22" themeColor="#840000"
+										label="" icon="{Imagens.unica.icn_16_cancela}"
+										click="dispatchEvent(new Event('deleteRow', true))">
+										<mx:Script>
+											<![CDATA[
+												import img.Imagens;
+											]]>
+										</mx:Script>
+									</mx:Button>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:VBox>
+			<mx:VBox horizontalAlign="left" verticalAlign="middle" height="100%">
+				<mx:Button label="Forma de Pagto" icon="{Imagens.unica.icn_64_seta_dir}" labelPlacement="bottom"
+					width="100" fontSize="9" click="vs.selectedChild = etapa2" />
+			</mx:VBox>
+		</mx:HBox>
+			
+		<mx:HBox id="etapa2"
+			width="100%" height="100%"
+			fontSize="20" show="{ nsVlrFatiaTitulo.setFocus();}"
+			showEffect="{quickFade}"
+			hideEffect="{quickFade}">
+			<mx:VBox height="100%" verticalAlign="middle">
+				<mx:Button label="Venda" icon="{Imagens.unica.icn_64_seta_esq}" labelPlacement="bottom"
+					width="100" fontSize="9" click="{vs.selectedChild = etapa1, usuario_reseta_titulos() }"/>
+			</mx:VBox>
+			<mx:VBox width="100%" height="100%">
+				<mx:HBox width="100%">
+					<mx:VBox>
+						<mx:HBox>
+							<mx:Label text="Total" width="100" />
+							<mx:Label text="R$" />
+							<mx:Label text="{Formatadores.unica.formataValor(indicador_itenscarrinho_valor_liquido,true)}" />
+							<mx:Label text="Juro de Parcelamento" />
+							<mx:Label text="R$" />
+							<mx:Label text="{Formatadores.unica.formataValor(indicador_venda_valor_juro_parcelamento,true)}" />
+						</mx:HBox>	
+						<mx:HBox>
+							<mx:Label text="Parte" width="100" />
+							<mx:Label text="R$" />
+							<mx:NumericStepper width="100" id="nsVlrFatiaTitulo"
+								keyDown="{
+									if (event.keyCode==Keyboard.ENTER)
+									{
+										if(nsVlrFatiaTitulo.value>0)
+										{								
+											cmbTiposPgto.setFocus();
+										}
+									}
+									if (event.keyCode==Keyboard.ENTER)
+									{
+										if(nsVlrFatiaTitulo.value==0)
+										{
+											btFinalizacao.setFocus();
+										}
+									}
+								}"
+								maximum="{indicador_itenscarrinho_valor_liquido}"
+								minimum="0.00" stepSize="0.01"
+								enabled="{ nsVlrFatiaTitulo.value > 0 }"/>
+							<Combo:CmbFinan_TipoPagamento id="cmbTiposPgto" minWidth="250"
+								enabled="{nsVlrFatiaTitulo.value > 0 }"
+								keyDown="{ if (event.keyCode==Keyboard.ENTER) btnLancaTituloParaEdicao.setFocus(); }"/>
+							<comp:Botao2 width="120" id="btnLancaTituloParaEdicao" cor="Azul" label="Lançar"
+								click="{ usuario_lanca_fatia_pagamento() }"
+								enabled="{ nsVlrFatiaTitulo.value > 0 }"
+								keyDown="{
+									if(nsVlrFatiaTitulo.value>0)
+										if (event.keyCode==Keyboard.ENTER)
+											usuario_lanca_fatia_pagamento();}"/>
+							<comp:Botao2 width="120" cor="Azul" label="Recomeçar"
+								click="{ usuario_reseta_titulos() }"
+								keyDown="{
+									if (event.keyCode==Keyboard.ENTER)
+										usuario_reseta_titulos()}"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:HBox>
+				<mx:DataGrid id="dtGridTitulosGerados"
+					width="100%" height="100%"
+					themeColor="#3B5998"
+					rowHeight="30"
+					dataProvider="{ arraycLancamentosCaixa }">
+					<mx:columns>
+						<mx:DataGridColumn width="1.5" dataField="tipoPagamento_nome" headerText="Tipo"/>
+						<mx:DataGridColumn width="1.5" dataField="dtPagamento" headerText="Vencimento"/>
+						<comp:MyDataGridColumn width="1.5" dataField="valorOriginal" headerText="Original" tipo="Dinheiro"/>
+						<comp:MyDataGridColumn width="1.5" dataField="valorCobrado" headerText="Cobrado" tipo="Dinheiro"/>
+						<mx:DataGridColumn width="3" dataField="observacoes" headerText="Observacoes"/>
+						<mx:DataGridColumn width="1">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button
+										width="22" color="#840000"
+										label="remover" fontSize="12"
+										click="dispatchEvent(new Event('deleteRow', true))" />
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:VBox>
+			<mx:VBox height="100%" verticalAlign="middle">
+				<mx:Button id="btFinalizacao" label="Finalização" icon="{Imagens.unica.icn_64_seta_dir}" labelPlacement="bottom"
+					width="100" fontSize="9"
+					keyDown=
+					"{
+						if(event.keyCode==Keyboard.ENTER)
+						{
+							mostraValorFinal();
+							if(proximoFoco(event))
+							{
+								cmbClienteContato.setFocus();
+							}
+						}
+					}"
+					click="{mostraValorFinal()}"/>
+			</mx:VBox>
+		</mx:HBox>
+			
+		<mx:Canvas id="etapa3"
+			show="etapa3.setFocus()"
+			click="etapa3.setFocus()"
+			width="100%" height="100%"
+			showEffect="{quickFade}"
+			hideEffect="{quickFade}">
+			
+			<mx:HBox width="100%" height="100%">
+				<mx:HBox width="100%" height="100%">
+					<mx:VBox height="100%" verticalAlign="middle">
+						<mx:Button label="Forma de Pagto" icon="{Imagens.unica.icn_64_seta_esq}" labelPlacement="bottom"
+							width="100" fontSize="9" click="{ocultaValorFinal()}" />
+					</mx:VBox>			
+				<mx:VBox width="100%" height="100%"
+					fontWeight="bold" fontSize="16">
+					<mx:HBox verticalAlign="middle">
+						<mx:Image source="{Imagens.unica.icn_64_telefone}"/>
+						<mx:Image source="{Imagens.unica.icn_64_endereco}"/>
+						<mx:Label fontSize="24" text="Contato e Endereços:"/>
+					</mx:HBox>
+					
+					<mx:Label text="Contato:" />
+					<Combo1:CmbClienteContato id="cmbClienteContato" width="100%" change="{cmbClienteContato_change()}" />
+					
+					<mx:Label text="Endereço de Faturamento:" />
+					<Combo1:CmbClienteEndereco id="cmbClienteEndereco_Faturamento" width="100%" change="{cmbEndereco_change()}" />
+					<mx:Label text="Endereço de Cobrança:" />
+					<Combo1:CmbClienteEndereco id="cmbClienteEndereco_Cobranca" width="100%" change="{cmbEndereco_change()}" />
+					<mx:Label text="Endereço de Entrega:" />
+					<Combo1:CmbClienteEndereco id="cmbClienteEndereco_Entrega" width="100%" change="{cmbEndereco_change()}" />
+					
+					<mx:Button icon="{Imagens.unica.icn_64_funcionario}" fontWeight="bold" label="Alterar Dados do Cliente" click="{popupDadosCliente_mostra()}" styleName="padding3" />
+					
+				</mx:VBox>
+				<mx:VBox width="100%" height="100%"
+					horizontalAlign="center" verticalAlign="middle"
+					fontWeight="bold" fontSize="14">
+										
+					<mx:Button id="etapa3_btn_nf"
+						width="200"
+						icon="{Imagens.unica.icn_32_nfe}"
+						labelPlacement="bottom"
+						label="NF"
+						click=
+						"{
+							isNF = true;
+							isNFe = false;
+							usuario_chama_notaFiscal();
+							limpa_aba_desconto();
+						}"
+					/>
+					<mx:Button id="etapa3_btn_nfe"
+						width="200"
+						icon="{Imagens.unica.icn_32_nfe}"
+						labelPlacement="bottom"
+						label="NF-e"
+						click=
+						"{
+							isNFe = true;
+							isNF = false;
+							usuario_chama_notaFiscal();
+							limpa_aba_desconto();
+						}"
+					/>
+					<mx:Button id="etapa3_btn_tef"
+						width="200"
+						icon="{Imagens.unica.icn_32_ecf}"
+						labelPlacement="bottom"
+						label="Cupom Fiscal"
+						click=
+						"{
+							usuario_invoca_tef();
+							limpa_aba_desconto();
+						}"
+					/>
+					<mx:Button
+						width="200"
+						icon="{Imagens.unica.icn_32_orcamento}"
+						labelPlacement="bottom"
+						label="Orçamento"
+						click="{
+							usuario_abre_popupEmiteOrcamento();
+							limpa_aba_desconto();
+						}"
+					/>
+					<mx:Button
+						width="200"
+						icon="{Imagens.unica.icn_32_email}"
+						labelPlacement="bottom"
+						label="Enviar Orçamento"
+						click=
+						"{
+							usuario_abre_popup_enviaEmail();
+							limpa_aba_desconto();
+						}"
+					/>
+					<mx:Button id="etapa3_btn_reserva"
+						width="200"
+						icon="{Imagens.unica.icn_32_reservaestoque}"
+						labelPlacement="bottom"
+						label="Reservar Para Cliente"
+						click=
+						"{
+							usuario_salva_reserva();
+							limpa_aba_desconto();
+						}"
+					/>
+					<mx:Button id="etapa3_btn_vendasimples"
+						width="200"
+						icon="{Imagens.unica.icn_32_lapis}"
+						labelPlacement="bottom"
+						label="Pedido"
+						click=
+						"{
+							usuario_salva_pedido();
+							limpa_aba_desconto();
+						}"
+					/>
+					</mx:VBox>
+				</mx:HBox>
+			</mx:HBox>		
+		</mx:Canvas>
+		
+		<mx:HBox id="etapa4"
+			width="100%" height="100%">
+			
+			<mx:VBox height="100%" verticalAlign="middle">
+				<mx:Button label="Finalização" icon="{Imagens.unica.icn_64_seta_esq}" labelPlacement="bottom"
+					width="100" fontSize="9" click="vs.selectedChild = etapa3" />
+			</mx:VBox>
+			<mx:VBox>
+				<mx:LinkBar dataProvider="{vsNf}" height="30" direction="horizontal" themeColor="#3B5998"/>
+				<mx:ViewStack id="vsNf" width="100%" height="100%" fontSize="14" fontWeight="bold" themeColor="#3B5998">
+					
+					<!--DADOS DA NOTA-->
+					<mx:VBox width="100%" height="100%" label="NotaFiscal / Remetente"
+						fontSize="14" fontWeight="bold" verticalGap="2">
+						
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Número Nota:" width="100"/>
+							<master:MasterTextInput id="txtNumNota" onlyRestrict="number" width="160"/>
+							<mx:Image source="{(txtNumNota.text.length==0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }"/>
+							<mx:Label text="Série Nota:" width="100"/>
+							<master:MasterTextInput id="txtSerieNota" onlyRestrict="number" width="160"/>
+							<mx:Image source="{(txtSerieNota.text.length==0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita}"/>
+							<mx:Label text="Data Saída/Entrada:" width="150"/>
+							<comp:DateFieldBR id="dtfDataSE" width="160"/>
+							<mx:Image source="{(dtfDataSE.text.length==0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita}"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Pagamento:" width="100"/>
+							<mx:ComboBox id="cmbPagamento" width="160"/>
+							<mx:Image source="{(cmbPagamento.selectedIndex==0)? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }"/>
+							<mx:Label text="Finalidade:" width="100" visible="{isNFe}"/>
+							<mx:ComboBox id="cmbFinalidade" width="160" visible="{isNFe}"/>
+							<mx:Image source="{(cmbFinalidade.selectedIndex == 0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita}" visible="{isNFe}"/>
+							<mx:Label text="Hora Saída:" width="150"/>
+							<master:MasterTextInput id="txtHoraSaida"/>
+						</mx:HBox>
+						
+						<mx:VBox width="100%" horizontalAlign="center">
+							<mx:HRule width="90%" strokeColor="#3B5998"/>
+						</mx:VBox>
+						
+						<mx:HBox verticalAlign="middle">
+							<mx:Label text="Empresa:" width="100"/>
+							<mx:Label id="lblEmpresa"/>
+						</mx:HBox>
+						
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Endereço:" width="100"/>
+							<mx:ComboBox id="cmbEndEmpresa" width="475" labelFunction="fn_lbl_endereco" click="{isEndEmpValido =  validaEndereco(cmbEndEmpresa.selectedItem as ClienteEndereco)}"/>
+							<mx:Image source="{(isEndEmpValido)?Imagens.unica.icn_32_aceita:Imagens.unica.icn_32_deleta}"/>
+						</mx:HBox>
+						
+						<mx:VBox width="100%" horizontalAlign="center">
+							<mx:HRule width="90%" strokeColor="#3B5998"/>
+						</mx:VBox>
+						
+						<mx:HBox verticalAlign="middle">
+							<mx:Label text="Cliente:" width="100"/>
+							<mx:Label id="lblCliente"/>
+						</mx:HBox>
+						
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Endereço:" width="100"/>
+							<mx:ComboBox id="cmbEndCliente" width="475" labelFunction="fn_lbl_endereco" click="isEndCliValido = validaEndereco(cmbEndCliente.selectedItem as ClienteEndereco)"/>
+							<mx:Image source="{(isEndCliValido)?Imagens.unica.icn_32_aceita:Imagens.unica.icn_32_deleta}"/>
+						</mx:HBox>
+						
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="ICMS:" width="100"/>
+							<mx:ComboBox id="cmbClienteSituacaoInscrEst"  top="10" width="250"
+								dataProvider="{['Contribuinte do ICMS','Isento do ICMS']}"/>
+						</mx:HBox>
+						
+						<mx:Label text="Fatura/Duplicata:"/>
+						<master:MasterTextInput id="txtFaturaDuplicata" capsType="upercase" width="850"/>
+						
+						<mx:Label text="Dados Adicionais:"/>
+						<mx:TextArea id="txtDadosAdicionais" change="{txtDadosAdicionais.text = txtDadosAdicionais.text.toUpperCase()}" width="850" height="70"/>
+						
+					</mx:VBox>
+					
+					<!--TRANSPORTE/FRETE-->
+					<mx:VBox width="100%" height="100%" label="Transporte / Frete"
+						fontSize="14" fontWeight="bold">
+						
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:VBox width="50%">
+								<mx:HBox width="100%">
+									<mx:Label text="Transportador:" width="130"/>
+									<CP:PesqTransportador id="cpTransportador" width="380" change="preencheTransportador()"/>
+								</mx:HBox>
+								<mx:HBox width="100%">
+									<mx:Label text="Endereço:" width="130"/>
+									<mx:ComboBox id="cmbEndTranportador" labelFunction="fn_lbl_endereco" width="380"/>
+								</mx:HBox>
+								<mx:HBox width="100%">
+									<mx:Label text="Veículo:" width="130"/>
+									<mx:ComboBox id="cmbVeiTransportador" labelFunction="fn_lbl_veiculo" width="380"/>
+								</mx:HBox>
+							</mx:VBox>
+							<mx:VBox width="50%" verticalAlign="top">
+								<mx:HBox width="100%">
+									<mx:Label text="Reboque:" width="80"/>
+									<CP:PesqTransportador id="cpTransportadorReboque" width="380" change="preencheTransportadorReboque()"/>
+								</mx:HBox>
+								<mx:HBox width="100%">
+									<mx:Label text="Veículo:" width="80"/>
+									<mx:ComboBox id="cmbRebTranportadorReboque" labelFunction="fn_lbl_veiculo" width="380"/>
+								</mx:HBox>
+							</mx:VBox>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Frete:" width="130"/>
+							<mx:ComboBox id="cmbModalidade"/>
+							<mx:Image source="{(cmbModalidade.selectedIndex == 0 ) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }"/>
+						</mx:HBox>
+						<mx:VBox width="100%" horizontalAlign="center">
+							<mx:HRule width="90%" strokeColor="#3B5998"/>
+						</mx:VBox>
+						<mx:Label text="Volume Transportado"/>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Quantidade:" width="130"/>
+							<mx:NumericStepper id="nsQtdtransportado" stepSize="0.1" minimum="0" maximum="999999" width="120"/>
+							<mx:Label text="Espécie:" width="130"/>
+							<master:MasterTextInput id="txtEspecie" capsType="upercase" width="120"/>
+							<mx:Label text="Marca:" width="130"/>
+							<master:MasterTextInput id="txtMarca" capsType="upercase" width="120"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Numeração:" width="130"/>
+							<master:MasterTextInput id="txtNumeracao" capsType="upercase" width="120"/>
+							<mx:Label text="Peso Liq.:" width="130"/>
+							<mx:NumericStepper id="nsPesoLiquido" stepSize="0.01" minimum="0" maximum="999999" width="120"/>
+							<mx:Label text="Peso Bruto:" width="130"/>
+							<mx:NumericStepper id="nsPesoBruto" stepSize="0.01" minimum="0" maximum="999999" width="120"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Valor Frete:" width="130"/>
+							<mx:NumericStepper id="nsValorFrete" stepSize="0.01" minimum="0" maximum="999999" width="120"/>
+							<mx:Label text="Valor Seguro:" width="130"/>
+							<mx:NumericStepper id="nsValorSeguro" stepSize="0.01" minimum="0" maximum="99999" width="120"/>
+							<mx:Label text="Outras Despesas:" width="130"/>
+							<mx:NumericStepper id="nsValorOutrasDespesas" stepSize="0.01" minimum="0" maximum="999999" width="120"/>
+						</mx:HBox>
+					</mx:VBox>
+					<mx:VBox id="vendaVeiculos"  width="100%" height="100%"
+						fontSize="14" fontWeight="bold">
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Tipo da Operação:" width="160"/>
+							<mx:ComboBox id="cmbVeicOperacao" width="300"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Chassi:" width="160"/>
+							<master:MasterTextInput id="txtVeicChassi" capsType="upercase" maxChars="17" width="300"/>
+							<mx:Label text="Número do Motor:" width="160"/>
+							<master:MasterTextInput id="txtVeicNumMotor" capsType="upercase" maxChars="21" width="300"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Série:" width="160"/>
+							<master:MasterTextInput width="300" id="txtVeicSerie" onlyRestrict="number" maxChars="3" 
+								initialize="{txtVeicSerie.text = '001'}"/>
+							<mx:Label text="CMKG:" width="160"/>
+							<mx:NumericStepper id="nsVeicCMKG" width="300" stepSize="1" minimum="0" maximum="99999"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Potência:" width="160"/>	
+							<mx:NumericStepper id="nsVeicPotencia" width="300" stepSize="1" minimum="0" maximum="99999"/>				
+							<mx:Label text="CM3 - Potência:" width="160"/>					
+							<mx:NumericStepper id="nsVeicCM3" width="300" stepSize="1" minimum="0" maximum="99999"/>						
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Peso Liq.:" width="160"/>					
+							<mx:NumericStepper id="nsVeicPesoL" width="300" stepSize="0.01" minimum="0" maximum="9999"/>
+							<mx:Label text="Peso Bruto:" width="160"/>					
+							<mx:NumericStepper id="nsVeicPesoB" width="300" stepSize="0.01" minimum="0" maximum="9999"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Tipo de Combustível:" width="160"/>
+							<mx:ComboBox id="cmbVeicCombustivel" width="300"/>
+							<mx:Label text="Distância Eixos" width="160"/>					
+							<mx:NumericStepper id="nsVeicDistEixos" width="300" stepSize="1" minimum="0" maximum="9999" maxChars="4"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Cód Marca/Modelo:" width="160"/>
+							<master:MasterTextInput id="txtVeicCodModelo" width="300" text="0" maxChars="8" onlyRestrict="number" />
+							<mx:Label text="Ano Modelo:" width="160"/>
+							<mx:NumericStepper id="nsVeicAnoModelo" width="100" stepSize="1" minimum="1900" maximum="9999" maxChars="4"/>
+							<mx:Label text="Ano Fab.:" width="85"/>					
+							<mx:NumericStepper id="nsVeicAnoF" width="100" stepSize="1" minimum="1900" maximum="9999" maxChars="4"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Tipo de Veículo:" width="160"/>
+							<mx:ComboBox id="cmbVeicTipo" width="300"/>
+							<mx:Label text="Espécie:" width="160"/>
+							<mx:ComboBox id="cmbVeicEspecie" width="300"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Tipo de Pintura:" width="160"/>
+							<mx:ComboBox id="cmbVeicPintura" width="150"/>
+							<mx:Label text="Cód Cor:" width="75"/>
+							<mx:NumericStepper id="nsVeicCodCor" width="60" stepSize="1" minimum="0" maximum="9999"/>
+							<mx:Label text="Descrição da Cor:" width="160"/>					
+							<master:MasterTextInput width="300" id="txtVeicCor" capsType="upercase"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Condição VIN:" width="160"/>
+							<mx:ComboBox id="cmbVeicCondVIN" width="300"/>
+							<mx:Label text="Condição Veículo:" width="160"/>
+							<mx:ComboBox id="cmbVeicCond" width="300"/>
+						</mx:HBox>
+					</mx:VBox>
+					<mx:VBox id="vendaCombustivel"  width="100%" height="100%"
+						fontSize="14" fontWeight="bold">
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Código ANP:" width="210"/>
+							<master:MasterTextInput id="txtCombANP" width="200" capsType="upercase"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Base de Cálculo do ICMS:" width="210"/>
+							<mx:NumericStepper id="nsCombBaseCalculoICMS" width="200" stepSize="0.01" minimum="0" maximum="100"/>
+							<mx:Label text="Valor do ICMS:" width="150"/>
+							<mx:NumericStepper id="nsCombValorICMS" width="200" stepSize="0.01" minimum="0" maximum="100"/>
+						</mx:HBox>
+						<mx:HBox width="100%" verticalAlign="middle">
+							<mx:Label text="Base de Cálculo do ICMS ST:" width="210"/>
+							<mx:NumericStepper id="nsCombBaseCalculoICMSST" width="200" stepSize="0.01" minimum="0" maximum="100"/>
+							<mx:Label text="Valor do ICMS ST:" width="150"/>
+							<mx:NumericStepper id="nsCombValorICMSST" width="200" stepSize="0.01" minimum="0" maximum="100"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:ViewStack>
+				<mx:VBox width="100%" horizontalAlign="center">
+					<mx:HRule width="90%" strokeColor="#3B5998"/>
+				</mx:VBox>
+				<mx:VBox height="100%" verticalAlign="top">
+					<mx:Button label="Concluir" labelPlacement="right"
+						icon="{Imagens.unica.icn_32_aceita}"
+						fontSize="16" fontWeight="bold"
+						click="usuario_salva_venda_com_nf()"/>
+				</mx:VBox>
+			</mx:VBox>
+		</mx:HBox>
+	</mx:ViewStack>
+	<mx:Panel id="popupTEF"
+		width="500" height="300"
+		horizontalCenter="0" verticalCenter="0"
+		layout="vertical" horizontalAlign="center" verticalAlign="middle"
+		borderAlpha="1"
+		fontSize="20"
+		headerHeight="10">
+		<mx:VBox horizontalAlign="left" verticalAlign="top">
+			<mx:Label fontWeight="bold" text="Qual o COO desde Cupom Fiscal?"/>
+			<master:MasterTextInput id="popupTEF_coo" width="200" restrict="0-9" enterPressed="{usuario_popup_tef_salva()}" />
+			<mx:Button icon="{Imagens.unica.icn_32_aceita}" label="Salva" click="{usuario_popup_tef_salva()}" />
+			<mx:Button icon="{Imagens.unica.icn_32_deleta}" label="Cancela" click="{usuario_popup_tef_cancela()}" />
+		</mx:VBox>
+	</mx:Panel>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupDadosCliente"
+		close="popupDadosCliente.parent.removeChild(popupDadosCliente)"
+		titleIcon="{Imagens.unica.icn_32_funcionario}"
+		title="Dados do Cliente"
+		width="550" height="485"
+		fontSize="14"
+		layout="vertical">
+		<mx:VBox x="10" y="50" width="100%" height="100%">
+			<mx:Label text="CPF/CNPJ:"/>
+			<master:MasterTextInput id="popupDadosCliente_cpf"
+				capsType="upercase" width="200"/>
+			<mx:Label text="Nome:"/>
+			<master:MasterTextInput id="popupDadosCliente_nome"
+				capsType="upercase" width="100%"/>
+			<mx:Label text="Contato: "/>
+			<master:MasterTextInput id="popupDadosCliente_contato"
+				capsType="upercase" width="100%"/>
+			<mx:Label text="Endereço de Faturamento:"/>
+			<master:MasterTextInput id="popupDadosCliente_endereco_faturamento"
+				capsType="upercase" width="100%"/>
+			<mx:Label text="Endereço de Cobrança:"/>
+			<master:MasterTextInput id="popupDadosCliente_endereco_cobranca"
+				capsType="upercase" width="100%"/>
+			<mx:Label text="Endereço de Entrega:"/>
+			<master:MasterTextInput id="popupDadosCliente_endereco_entrega"
+				capsType="upercase" width="100%"/>
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<comp:Botao2 width="120" label="Voltar"
+					bottom="10" right="140"
+					cor="Branco" icone="Deleta"
+					click="popupDadosCliente_cancela()"/>
+				<comp:Botao2 width="120" label="OK"
+					bottom="10" right="10"
+					cor="Branco" icone="Aceita"
+					click="popupDadosCliente_salva()"/>
+			</mx:HBox>
+		</mx:VBox>
+	</PopUpPesquisa:SuperPopPesq>
+		
+	<PopUpPesquisa:SuperPopPesq id="popupEstoque"
+		titleIcon="{Imagens.unica.icn_32_estoque}"
+		title="Escolha Seu Estoque"
+		close="{ usuario_fecha_popup_estoques() }"
+		width="720" height="430"
+		layout="absolute"
+		fontSize="14">
+		<mx:VBox x="10" y="50" width="100%" height="100%"
+			right="10" left="10" bottom="10" top="10">
+			<mx:DataGrid id="dtGridEstoques"
+				width="100%" height="100%"
+				themeColor="#3B5998"
+				dataProvider="{ arraycEstoques }"
+				keyDown="{ if(event.keyCode==Keyboard.ENTER)usuario_escolheu_estoque(); }">
+				<mx:columns>
+					<mx:DataGridColumn dataField="idItem" headerText="Item" />
+					<mx:DataGridColumn dataField="identificador" headerText="Grade/Ident." visible="{item_para_carrinho.tipoIdent != EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="codBarras" headerText="Barras" />
+					<mx:DataGridColumn dataField="lote" headerText="Lote" visible="{item_para_carrinho.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="dtFab" headerText="Fab" visible="{item_para_carrinho.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="dtVal" headerText="Val" visible="{item_para_carrinho.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="qtd" headerText="Qtd" />
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:VBox>		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupTituloDetalhe"
+		titleIcon="{Imagens.unica.icn_32_money}"
+		showCloseButton="false"
+		title="Demonstrativo do Parcelamento"
+		width="600" height="330"
+		layout="vertical"
+		fontSize="16"
+		fontWeight="bold">
+		<mx:HBox width="100%" horizontalAlign="right">
+			<mx:Button id="btFecha" icon="{Imagens.unica.icn_32_fecha}" click="{ usuario_fecha_popup_titulo() }" />
+			<mx:Button id="btSalva" icon="{Imagens.unica.icn_32_salva}" click="{ usuario_no_popup_escolhe_detalhes_titulo() }"
+				keyDown="{usuario_no_popup_escolhe_detalhes_titulo()}"/>
+		</mx:HBox>
+		<mx:VBox width="100%" height="100%" verticalAlign="middle">
+			<mx:HBox>
+				<mx:Label text="Data Base:" width="180"/>
+				<comp:DateFieldBR id="popupTituloDetalhe_dt" textAlign="center" width="110"/>
+			</mx:HBox>
+			<mx:HBox>
+				<mx:Label text="Número de Parcelas:" width="180"/>
+				<mx:NumericStepper id="popupTituloDetalhe_qtdParcelas" fontWeight="bold" maximum="120" width="110"
+					keyDown="if(proximoFoco(event)){popupTituloDetalhe_juroParcela.setFocus();}"/>
+			</mx:HBox>
+			<mx:HBox>
+				<mx:Label text="Juros por Parcela:" width="180"/>
+				<mx:NumericStepper id="popupTituloDetalhe_juroParcela" fontWeight="bold" maximum="120" width="110"
+					keyDown="if(proximoFoco(event)){popupTituloDetalhe_periodo.setFocus();}"/>
+				<mx:Label text="(%)"/>
+			</mx:HBox>
+			<mx:HBox>
+				<mx:Label text="Período:" width="180"/>
+				<mx:NumericStepper id="popupTituloDetalhe_periodo" fontWeight="bold" maximum="120" width="110"
+					keyDown="if(proximoFoco(event)){popupTituloDetalhe_obs.setFocus();}"/>
+				<mx:Label text="(zero para período de 1 mês)"/>
+			</mx:HBox>
+			<mx:Label text="Observações:"/>
+			<master:MasterTextInput id="popupTituloDetalhe_obs" fontWeight="bold" maxChars="53" capsType="upercase" width="100%"
+				keyDown="if(proximoFoco(event)){btSalva.setFocus();}"/>
+		</mx:VBox>
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupImpostos"
+		close="usuario_fecha_popup_impostos()"
+		titleIcon="{Imagens.unica.icn_32_money}"
+		title="Impostos"
+		width="600" height="400"
+		layout="vertical"
+		fontSize="14"
+		showCloseButton="true">	
+		<mx:TabNavigator width="100%" height="100%" creationPolicy="all">
+			<mx:VBox label="ICMS" width="100%" height="100%" verticalGap="0" paddingLeft="5" paddingRight="5">
+				<mx:Grid width="100%" height="100" fontSize="12" fontWeight="bold" verticalAlign="middle" >
+					<mx:GridRow width="100%" borderSides="bottom" borderThickness="1" borderColor="gray" borderStyle="solid">
+						<mx:GridItem width="90">
+							<mx:Label text="Sai dendro UF" />
+						</mx:GridItem>
+						<mx:GridItem>
+							<mx:Label text="CST: { impostos_para_carrinho.icmsCST_SD }" />
+						</mx:GridItem>
+						<mx:GridItem>
+							<mx:Label text="Aliq: { impostos_para_carrinho.icmsAliqPadrao_SD }%" />
+						</mx:GridItem>
+						<mx:GridItem>
+							<mx:Label text="Reduzida para: { impostos_para_carrinho.icmsAliq_SD }%" />
+						</mx:GridItem>
+						<mx:GridItem horizontalAlign="right" width="100%">
+							<comp:Botao
+								width="25" height="25" icon="{Imagens.unica.icn_16_seta_bai}" toolTip="Selecionar" cornerRadius="0"
+								click="{ usuario_seleciona_icms(true) }" />
+						</mx:GridItem>
+					</mx:GridRow>
+					<mx:GridRow width="100%" borderSides="bottom" borderThickness="1" borderColor="gray" borderStyle="solid">
+						<mx:GridItem>
+							<mx:Label text="Sai fora UF" />
+						</mx:GridItem>
+						<mx:GridItem>
+							<mx:Label text="CST: { impostos_para_carrinho.icmsCST_SD }" />
+						</mx:GridItem>
+						<mx:GridItem>
+							<mx:Label text="Aliq: { impostos_para_carrinho.icmsAliqPadrao_SD }%" />
+						</mx:GridItem>
+						<mx:GridItem>
+							<mx:Label text="Reduzida para: { impostos_para_carrinho.icmsAliq_SD }%" />
+						</mx:GridItem>
+						<mx:GridItem horizontalAlign="right" width="100%">
+							<comp:Botao
+								width="25" height="25" icon="{Imagens.unica.icn_16_seta_bai}" toolTip="Selecionar" cornerRadius="0"
+								click="{ usuario_seleciona_icms(false) }" />
+						</mx:GridItem>
+					</mx:GridRow>
+				</mx:Grid>
+				<mx:VBox width="100%" height="100%" fontSize="12" fontWeight="bold" verticalAlign="middle">
+					<mx:HBox>
+						<mx:VBox>
+							<mx:Label text="Aliquota:"/>
+							<mx:NumericStepper id="nsAliq"
+								width="100" minimum="0" maximum="100"/>
+						</mx:VBox>						
+						<mx:VBox>
+							<mx:Label text="Reduzida Para:"/>
+							<mx:NumericStepper id="nsReduzidaPara"
+								width="100" minimum="0" maximum="100"/>
+						</mx:VBox>
+					</mx:HBox>
+					<mx:Label text="CST:"/>
+					<mx:ComboBox id="cmbCST" dataProvider="{ icmsCSTCodigo }" labelFunction="fn_ComboCST_ICMS_Label" width="540"/>
+				</mx:VBox>
+			</mx:VBox>
+			<mx:VBox label="IPI" width="100%" height="100%" paddingLeft="5" paddingRight="5">
+			</mx:VBox>
+			<mx:VBox label="PIS/COFINS" width="100%" height="100%" paddingLeft="5" paddingRight="5">
+			</mx:VBox>
+			<mx:HBox label="Outros" width="100%" height="100%" paddingLeft="5" paddingRight="5">
+				<mx:VBox>
+					<mx:Label text="Frete:" />
+					<mx:NumericStepper id="nsVlrFrete" width="150" maximum="9999999" stepSize="0.01" />
+				</mx:VBox>
+				<mx:VBox>
+					<mx:Label text="Seguro:" />
+					<mx:NumericStepper id="nsVlrSeguro" width="150" maximum="9999999" stepSize="0.01" />
+				</mx:VBox>				
+			</mx:HBox>
+		</mx:TabNavigator>
+		<mx:HBox width="100%" horizontalAlign="right">
+			<mx:Button click="usuario_confirma_impostos()"
+				fontSize="20" fontWeight="bold" label="OK" icon="{Imagens.unica.icn_32_aceita}" labelPlacement="left"/>
+		</mx:HBox>
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupConfirmaArquivo"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_32_alerta}"
+		title="Confirmar Operação"
+		width="400" height="200"
+		layout="vertical"
+		fontSize="16"
+		fontWeight="bold">
+		<mx:VBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+			<mx:Label id="lblMensagemPopupConfirmaArquivoMessage"/>
+			<mx:Label id="lblMensagemPopupConfirmaArquivoFile"/>
+			<mx:HBox>
+				<mx:Button label="Sim" click="popupConfirma(popupConfirmaArquivo,true)"/>
+				<mx:Button label="Não" click="popupConfirma(popupConfirmaArquivo,false)"/>
+			</mx:HBox>
+		</mx:VBox>
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupConfirmaImpressao"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_32_alerta}"
+		title="Confirmar Operação"
+		width="400" height="150"
+		layout="vertical"
+		fontSize="16"
+		fontWeight="bold">
+		<mx:VBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+			<mx:Label text="A impressão da NF foi concluída?"/>
+			<mx:HBox>
+				<mx:Button label="Sim" click="popupConfirma(popupConfirmaImpressao, true)"/>
+				<mx:Button label="Não" click="popupConfirma(popupConfirmaImpressao, false)"/>
+			</mx:HBox>
+		</mx:VBox>	
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupEmiteOrcamento"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_64_orcamento}"
+		title="Emite Orçamento"
+		width="800" height="325"
+		layout="vertical"
+		fontSize="14"
+		fontWeight="bold">
+		<mx:VBox id="popupEmiteOrcamento_placeHolder" width="100%" height="100%"/>
+		<mx:HBox width="100%" horizontalAlign="right">
+			<mx:Button label="Cancelar" click="PopUpManager.removePopUp(popupEmiteOrcamento)"/>
+			<mx:Button label="Emitir Orçamento" click="usuario_salva_orcamento(); removePopup(popupEmiteOrcamento)"/>
+		</mx:HBox>
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupEnviaEmailOrcamento"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_64_email}"
+		title="Enviar Orçamento por Email"
+		width="800" height="500"
+		layout="vertical"
+		fontSize="14"
+		fontWeight="bold">
+		<mx:LinkBar dataProvider="{vsEmail}" styleName="bar"/>
+		<mx:ViewStack id="vsEmail" width="100%" height="100%" creationPolicy="all">
+			<mx:HBox width="100%" height="100%" label="1.Dados do Orçamento">
+				<mx:VBox id="popupEnviaEmailOrcamento_placeHolder" width="100%" height="100%"/>
+			</mx:HBox>
+			<mx:HBox width="100%" height="100%" label="2.Dados de Email">
+				<mx:VBox width="100%" height="100%" verticalAlign="middle">
+					<mx:VBox width="100%" cornerRadius="3" borderColor="#3B5998" borderStyle="solid" styleName="padding5">
+						<mx:Label text="De:"/>
+						<mx:HBox width="100%">
+							<mx:Label text="Email:"/>
+							<master:MasterTextInput id="txtDeEmail" width="310" editable="false"/>
+							<mx:Label text="Nome:"/>
+							<master:MasterTextInput id="txtDeNome" width="310" capsType="upercase"/>
+						</mx:HBox>
+					</mx:VBox>
+					<mx:VBox width="100%" cornerRadius="3" borderColor="#3B5998" borderStyle="solid" styleName="padding5">
+						<mx:Label text="Para:"/>
+						<mx:HBox width="100%">
+							<mx:Label text="Email:"/>
+							<CP:PesqEmail id="cpEmail" showBrowseButton="false" width="310"/>
+							<mx:Label text="Nome:"/>
+							<master:MasterTextInput id="txtParaNome" width="310" capsType="upercase"/>
+						</mx:HBox>	
+					</mx:VBox>
+					<mx:HBox width="100%">
+						<mx:Label text="Assunto: "/>
+						<master:MasterTextInput id="txtAssuntoEmail" width="100%" capsType="upercase"/>
+					</mx:HBox>
+					<mx:Label text="Mensagem:"/>
+					<mx:TextArea id="txtMenssagemEmail" width="100%" height="95%"/>
+				</mx:VBox>
+			</mx:HBox>
+		</mx:ViewStack>
+		<mx:HBox horizontalAlign="right" width="100%">
+			<mx:Button label="Cancelar" click="PopUpManager.removePopUp(popupEnviaEmailOrcamento)"/>
+			<mx:Button label="Enviar Email" click="isEnviaEmail = true; usuario_salva_orcamento();"/>
+		</mx:HBox>
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<mx:VBox width="100%" height="100%" id="vboxDadosOrcamento">
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Cliente:" width="120"/>
+			<mx:Label id="popupEmiteOrcamento_lblCliente"/>
+		</mx:HBox>
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Vendedor:" width="120"/>
+			<mx:Label id="popupEmiteOrcamento_lblVendedor"/>
+		</mx:HBox>
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Pagamento:" width="120"/>
+			<mx:Label id="popupEmiteOrcamento_lblPagamento"/>
+		</mx:HBox>
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Validade:" width="120"/>
+			<master:MasterTextInput id="popupEmiteOrcamento_txtValidadeDias" width="80" onlyRestrict="number" keyUp="popupEmiteOrcamento_txtValidadeDias_Change()"/>
+			<mx:Label id="popupEmiteOrcamento_lblValidade"/>
+		</mx:HBox>
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Entrega:" width="120" visible="{orcamentoEmail}"/>
+			<master:MasterTextInput id="popupEmiteOrcamento_txtEntrega" capsType="upercase" width="100%" visible="{orcamentoEmail}"/>
+		</mx:HBox>
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Frete:" width="120" visible="{orcamentoEmail}"/>
+			<master:MasterTextInput id="popupEmiteOrcamento_txtFrete" capsType="upercase" width="100%" visible="{orcamentoEmail}"/>
+		</mx:HBox>
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Impostos:" width="120" visible="{orcamentoEmail}"/>
+			<master:MasterTextInput id="popupEmiteOrcamento_txtImpostos" capsType="upercase" width="100%" visible="{orcamentoEmail}"/>
+		</mx:HBox>
+	</mx:VBox>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupDataPedido"
+		showCloseButton="true"
+		close="PopUpManager.removePopUp(popupDataPedido)"
+		titleIcon="{Imagens.unica.icn_32_calendario}"
+		title="Data da Venda"
+		width="300" height="130"
+		layout="vertical" fontSize="22">	
+		<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+			<comp:DateFieldBR id="popupDataPedido_data" width="180" selectedDate="{new Date()}" editable="true" textAlign="center"/>
+			<mx:Button icon="{Imagens.unica.icn_32_aceita}" verticalCenter="0" horizontalCenter="0" click="usuario_salva_baixa()"/>
+		</mx:HBox>
+	</PopUpPesquisa:SuperPopPesq>	
+</mx:VBox>

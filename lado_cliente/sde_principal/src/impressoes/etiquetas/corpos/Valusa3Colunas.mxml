@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:BarCode="BarCode.*"
+	horizontalGap="-5" verticalGap="0" 
+	paddingTop="5" paddingBottom="5" paddingLeft="8" paddingRight="5"
+	verticalScrollPolicy="off" horizontalScrollPolicy="off"
+	borderColor="#ffffff" borderStyle="solid" borderThickness="0"
+	width="180" height="91.3"
+	creationComplete="create()">
+	
+	<mx:Spacer id="espacador"/>
+	
+	<mx:HBox width="100%" horizontalGap="-5">
+		<mx:Label id="lblRfUnica" width="50" fontSize="9" height="10"/>
+		<mx:Label id="lblNome" width="130" fontSize="9" height="10"/>
+	</mx:HBox>
+	<mx:HBox width="100%" horizontalGap="-5">
+		<mx:Label id="lblRf" width="120" fontSize="9" height="10"/>
+		<mx:Label id="lblGrade" width="50" fontSize="9" height="10"/>
+	</mx:HBox>
+	<mx:HBox width="100%" horizontalGap="-5">
+		<mx:Label id="lblVista" width="100%"  fontSize="10" height="12"/>
+	</mx:HBox>
+	
+	<mx:HBox width="100%" horizontalGap="-5">
+		<mx:Label id="lblParcelas" width="100%" fontSize="10" height="12"/>
+	</mx:HBox>
+	<mx:HBox width="100%" horizontalGap="-5">
+		<mx:Label id="lblPrazo" width="100%" fontSize="10" height="12"/>
+	</mx:HBox>
+	<mx:HBox width="90%" height="15" horizontalGap="0" paddingLeft="-10">
+		<BarCode:Code39 id="barCode" width="90%" />
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.Alerta.AlertaSistema;
+			import impressoes.etiquetas.ModeloEtiqueta;
+			[Bindable] public var coluna:String;
+			
+			private function create():void
+			{
+				espacador.height=75;
+				var etiq:ModeloEtiqueta = data[coluna];
+				if (etiq==null)
+					return;
+					
+				espacador.height=0;
+				
+				//AlertaSistema.mensagem("desenhando etiq "+etiq.rfUnica, false, 15000);
+				
+				lblRfUnica.text = etiq.rfUnica;
+				lblNome.text = etiq.nome;
+				
+				lblRf.text = etiq.rfUnica;
+				lblGrade.text = etiq.grade;
+				
+				lblVista.text = "À Vista: "+etiq.vlrVista;
+				lblParcelas.text = "À Prazo 3x: "+etiq.vlrParcelas;
+				lblPrazo.text = "Total a prazo: "+etiq.vlrPrazo;
+				
+				barCode.barCodeHeight=15;
+				barCode.barCodeText=etiq.codBarras;	
+							
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.adobe.flex.extras.controls.*" 
+	xmlns:comp="Componentes.comp.*" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Button label="BUSCAR" click="load()" icon="{Imagens.unica.icn_64_Atualiza}" labelPlacement="bottom" />
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.swf_loading}" scaleX="5" scaleY="5" />
+	</mx:HBox>
+	<mx:VBox > 
+		<mx:HBox>
+			<mx:VBox>		
+				<mx:Label text="Tipo Veículo"/>
+				<mx:ComboBox id="cmbTipoVeiculo" width="150"/>
+					<!-- dataProvider="{ icmsCSTCodigo }" labelFunction="fn_ComboCST_ICMS_Label" /> -->
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Espécie"/>
+				<mx:ComboBox id="cmbEspecie" width="150"/>		
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Combústivel"/>
+				<mx:ComboBox id="cmbCombutivel" width="150"/>		
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Pintura"/>
+				<mx:ComboBox id="cmbPintura" width="150"/>		
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Condição VIN"/>
+				<mx:ComboBox id="cmbCondicaoVIN" width="150"/>		
+			</mx:VBox>
+		</mx:HBox>
+		
+		<mx:HBox>
+			<mx:VBox>	
+				<mx:Label text="Ano Modelo"/>
+				<master:MasterTextInput id="txtAnoModelo" onlyRestrict="number" maxChars="4" 
+					width="150" initialize="{txtAnoModelo.text = '2009'}" />
+			</mx:VBox>
+			<mx:VBox>		
+				<mx:Label text="Ano Fabricação"/>
+				<master:MasterTextInput id="txtAnoFabricacao" onlyRestrict="number" maxChars="4"
+					width="150" initialize="{txtAnoFabricacao.text = '2009'}"/>
+			</mx:VBox>
+			<mx:VBox>		
+				<mx:Label text="Série"/>
+				<master:MasterTextInput id="txtSerie" onlyRestrict="number" maxChars="3"
+					width="150" initialize="{txtSerie.text  ='001'}"/>		
+			</mx:VBox>
+			
+			<mx:VBox>		
+				<mx:Label text="Distância entre eixos"/>
+				<mx:NumericStepper id="nsDistEixos" stepSize="1" maximum="9999" 
+					width="150" initialize="{nsDistEixos.value = 0}"/>
+			</mx:VBox>
+			<mx:VBox>		
+				<mx:Label text="Peso Liquido"/>
+				<mx:NumericStepper id="nsPesoL" stepSize="0.01" maximum="9999"
+					width="150" initialize="{nsPesoL.value = 0}"/>
+			</mx:VBox>
+			<mx:VBox>		
+				<mx:Label text="Peso Bruto"/>
+				<mx:NumericStepper id="nsPesoB" stepSize="0.01" maximum="9999" 
+					width="150" initialize="{nsPesoB.value = 0}"/>
+			</mx:VBox>
+		</mx:HBox>
+		
+		<mx:HBox>
+			<mx:VBox>		
+				<mx:Label text="Potência"/>
+				<master:MasterTextInput id="txtPotencia" onlyRestrict="number" maxChars="4"
+					width="150" initialize="{txtPotencia.text = '0'}"/>
+			</mx:VBox>
+			<mx:VBox>		
+				<mx:Label text="CMKG"/>
+				<master:MasterTextInput id="txtCMKG" onlyRestrict="number" maxChars="4"
+					width="150" initialize="{txtPotencia.text = '0'}"/>
+			</mx:VBox>
+			<mx:VBox>		
+				<mx:Label text="CM3"/>
+				<master:MasterTextInput id="txtCM3" onlyRestrict="number" maxChars="4"
+					width="150" initialize="{txtPotencia.text = '0'}"/>
+			</mx:VBox>
+		</mx:HBox>
+			
+	</mx:VBox>	
+	
+	<mx:Script>
+		<![CDATA[
+			import janelas.cadastro.ItemProduto1.JanelaCadItemProduto;
+			import janelas.cadastro.ItemServico.JanelaCadItemServico;
+			import SDE.Parametro.ParamLoadItem;
+			import img.Imagens;
+			import SDE.Entidade.ItemEmpPreco; 
+			import Core.Sessao;
+			import Core.Utils.Constantes;
+			import SDE.FachadaServico.FcdItem;
+			import SDE.Entidade.Item;
+			import SDE.FachadaServico.FcdCliente;
+			import mx.formatters.DateFormatter;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.Funcoes;
+			
+			[Bindable] public var mdlPai:JanelaCadItemProduto;
+			[Bindable] public var iep: ItemEmpPreco;
+			
+			
+            
+			private function create():void
+			{
+				mdlPai.addEventListener(JanelaCadItemProduto.EV_MUDA_ITEM, mudaItem);
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				selectedIndex = 0;
+			}
+			
+			private function load():void
+			{
+				var pl:ParamLoadItem = new ParamLoadItem();
+				pl.precos = true;				
+				selectedIndex = 1;
+				selectedIndex = 2;
+				/*
+				FcdItem.unica.Load(
+					Sessao.unica.idEmp,
+					mdlPai.item.id, pl,
+					function(retorno:Item):void
+					{
+						mdlPai.item.__ie.__preco = retorno.__ie.__preco;
+						iep = mdlPai.item.__ie.__preco;
+						doBinding();
+						selectedIndex = 2;
+					}
+				);
+				*/
+			}
+			
+			private function doBinding():void
+			{
+				/*
+				Funcoes.myBind(nsCompra, "value", iep, "compra");
+				Funcoes.myBind(nsCusto, "value", iep, "custo");
+				Funcoes.myBind(nsVenda, "value", iep, "venda");
+				*/
+			}
+			
+		]]>
+	</mx:Script>
+</mx:ViewStack>
+

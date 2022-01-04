@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	creationPolicy="all" styleName="padding5"
+	preinitialize="init()"
+	xmlns:SDE="Componentes.SDE.*" xmlns:controls="com.flexpernambuco.controls.*" xmlns:Combo="SDE.Componentes.Combo.*" xmlns:comp="Componentes.comp.*">
+	
+	<mx:Script source="MdllJnlCadItemServico_scriptConsulta.as"/>
+	<mx:Script source="MdllJnlCadItemServico_scriptEdita.as"/>
+	<mx:Script source="MdllJnlCadItemServico_scriptNovo.as"/>
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:ViewStack id="vsPrincipal" width="100%" height="100%" creationPolicy="all" fontSize="14" fontWeight="bold">
+		
+		<!-- TELA DE CONSULTA -->
+		<mx:VBox id="telaConsulta" width="100%" height="100%" verticalAlign="middle"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Image source="{Imagens.unica.icn_64_ordem_servico}"/>
+				<mx:Label text="Pesquisa / Altera" fontSize="40" color="#666666" fontWeight="bold"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<SDE:CaixaPesquisa id="cpServicoPesquisa" width="100%"
+					clickPesquisar="PesquisarServico()"/>
+				<SDE:Botao label="Novo Serviço" labelPlacement="right" icon="{Imagens.unica.icn_32_adiciona}"
+					click="MudaTela(telaCadastro)"/>
+			</mx:HBox>
+			
+			<SDE:DataGrid id="dgServicoPesquisa"
+				dataProvider="{dpServico}"
+				width="100%" height="100%"
+				doubleClick="ServicoSelecionado()">
+				<SDE:columns>
+					<mx:DataGridColumn width="10" dataField="cod" headerText="Cód."/>
+					<mx:DataGridColumn width="50" dataField="nome" headerText="Nome"/>
+					<mx:DataGridColumn width="10" dataField="codUnico" headerText="Cód. Único"/>
+					<mx:DataGridColumn width="10" dataField="unMed" headerText="Un. Med."/>
+					<comp:MyDataGridColumn width="20" dataField="valor" headerText="Valor Serviço" tipo="Dinheiro"/>
+				</SDE:columns>
+			</SDE:DataGrid>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<mx:Button label="Selecionar" icon="{Imagens.unica.icn_32_aceita}" labelPlacement="right"
+					click="ServicoSelecionado()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		<!-- TELA DE ADIÇÃO -->
+		<mx:VBox id="telaCadastro" width="100%" height="100%" verticalAlign="middle" horizontalAlign="center"
+			show="ShowNovo()"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:VBox width="1015" height="100%" verticalAlign="middle">
+				
+				<mx:HBox width="100%" verticalAlign="bottom">
+					<mx:Image source="{Imagens.unica.icn_64_adiciona}"/>
+					<mx:Label text="Cadastro" fontSize="40" color="#666666" fontWeight="bold"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%">
+					<mx:Label text="Descrição:" width="120"/>
+					<controls:MasterTextInput id="txtDescricaoCad" capsType="upercase" width="100%"/>
+				</mx:HBox>
+				<mx:HBox>
+					<mx:Label text="Cod. Único:" width="120"/>
+					<controls:MasterTextInput id="txtCodUnicoCad" capsType="upercase" width="150"/>
+					<mx:Label text="Unidade de Medida:" width="150"/>
+					<mx:ComboBox id="cmbUnidMedCad" dataProvider="{Constantes.unica.UM}" width="80"/>
+					<mx:Label text="Seção:" paddingLeft="70" width="195"/>
+					<mx:ComboBox id="cmbSecaoCad" fontSize="12" labelField="__orderBy" width="280"/>
+				</mx:HBox>
+				<mx:HBox>
+					<mx:Label text="Preço de Custo:" width="120"/>
+					<mx:NumericStepper id="nsPrecoCustoCad" width="150" minimum="0" maximum="9999999" stepSize="0.01"/>
+					<mx:Label text="Preço do Serviço:" width="150"/>
+					<mx:NumericStepper id="nsPrecoServicoCad" width="150" minimum="0" maximum="9999999" stepSize="0.01"/>
+					<mx:Label text="Desc. Máximo(%):"/>
+					<mx:NumericStepper id="nsDescontoMaximoCad" width="150" minimum="0" maximum="100" stepSize="0.01"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+					<mx:Button label="Cancelar" icon="{Imagens.unica.icn_32_deleta}" labelPlacement="right"
+						click="MudaTela(telaConsulta)"/>
+					<mx:Button label="Salvar" icon="{Imagens.unica.icn_32_aceita}" labelPlacement="right"
+						click="SalvaNovo()"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+		</mx:VBox>
+		
+		<!-- TELA DE EDIÇÃO -->
+		<mx:VBox id="telaEdicao" width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" backgroundColor="#EFEFEF"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:HBox horizontalAlign="left" width="100%">
+				<mx:Label text="Código do Serviço:"/>
+				<mx:Label id="lblCodServico" text="{itemEditando.id}"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%">
+				<mx:VBox horizontalAlign="left" width="100%">
+				
+					<mx:HBox>
+						<mx:VBox>
+							<mx:Label text="Unid. Med.:"/>
+							<mx:ComboBox id="cmbUnidMedEdi" dataProvider="{Constantes.unica.UM}"/>
+						</mx:VBox>
+						<mx:VBox>
+							<mx:Label text="Seção:"/>
+							<mx:ComboBox id="cmbSecaoEdi" fontSize="12" labelField="__orderBy" width="310"/>
+						</mx:VBox>
+					</mx:HBox>
+					
+					<mx:HBox>
+						<mx:VBox>
+							<mx:Label text="Descrição:"/>
+							<controls:MasterTextInput id="txtDescricaoEdi" capsType="upercase"/>
+						</mx:VBox>
+						<mx:VBox>
+							<mx:Label text="Cód. Único:"/>
+							<controls:MasterTextInput id="txtCodUnicoEdi"/>
+						</mx:VBox>
+						<mx:VBox>
+							<mx:Label text="Situação:"/>
+							<mx:CheckBox id="ckbDesusoEdi" label="Serviço em Desuso"/>
+						</mx:VBox>
+					</mx:HBox>
+					
+				</mx:VBox>
+				<mx:VBox horizontalAlign="right">
+					<comp:Botao1 label="Não Salvar" cor="Vermelho" icone="Cancela" width="180"
+						click="CancelaEdicao()"/>
+					<comp:Botao1 label="Salvar e Fechar" cor="Amarelo" icone="Salva" width="180"
+						click="SalvaEdicao(false)"/>
+					<comp:Botao1 label="Salvar e Continuar" cor="Verde" icone="Salva" width="180"
+						click="SalvaEdicao(true)"/>
+				</mx:VBox>
+			</mx:HBox>
+			
+			<mx:LinkBar width="100%" dataProvider="{vsServico}"
+				backgroundColor="#D5D5D5"
+				borderColor="#D5D5D5" borderThickness="0" borderStyle="solid" cornerRadius="5"/>
+			
+			<mx:ViewStack id="vsServico" width="100%" height="100%"
+				borderColor="#cccccc" borderStyle="inset" borderThickness="1">
+				
+				<!-- ABA OBSERVAÇÕES -->
+				<mx:VBox width="100%" height="100%" label="Observação">
+					<mx:Label text="Obsevações Sobre o Serviço:"/>
+					<mx:TextArea id="txtObservacaoAplicacaoEdi" width="80%" height="80%"/>
+				</mx:VBox>
+				
+				<!-- ABA PREÇOS -->
+				<mx:VBox width="100%" height="100%" label="Preços">
+					<mx:HBox>
+						<mx:VBox>
+							<mx:Label text="Preço Custo:"/>
+							<mx:NumericStepper id="nsPrecoCustoEdi" width="135" minimum="0" stepSize="0.01" maximum="999999"/>
+						</mx:VBox>
+						<mx:VBox>
+							<mx:Label text="Preço Serviço:"/>
+							<mx:NumericStepper id="nsPrecoServicoEdi" width="135" minimum="0" stepSize="0.01" maximum="999999"/>
+						</mx:VBox>
+					</mx:HBox>
+					<mx:HBox>
+						<mx:VBox>
+							<mx:Label text="Desc Máximo(%):"/>
+							<mx:NumericStepper id="nsDescontoMaximoEdi" width="135" minimum="0" stepSize="0.01" maximum="100"/>
+						</mx:VBox>
+						<mx:VBox>
+							<mx:Label text="Porcentagem Lucro:"/>
+							<mx:TextInput width="135" editable="false"
+								text="{(((itemEmpPrecoEditando.venda * 100) / itemEmpPrecoEditando.custo) - 100).toFixed(2)}"/>
+						</mx:VBox>
+						<mx:VBox>
+							<mx:Label text="Valor Lucro:"/>
+							<mx:TextInput width="135" editable="false"
+								text="{(itemEmpPrecoEditando.venda - itemEmpPrecoEditando.custo).toFixed(2)}"/>
+						</mx:VBox>
+					</mx:HBox>
+				</mx:VBox>
+				
+				<!-- ABA TRIBUTAÇÃO -->
+				<mx:VBox width="100%" height="100%" label="Tributação">
+					<mx:HBox>
+						<mx:VBox>
+							<mx:Label text="ISSQN(%)"/>
+							<mx:NumericStepper id="nsISSQNEdi" width="135" minimum="0" stepSize="0.01" maximum="100"/>
+						</mx:VBox>
+						<mx:VBox>
+							<mx:Label text="INSS(%)"/>
+							<mx:NumericStepper id="nsINSSEdi" width="135" minimum="0" stepSize="0.01" maximum="100"/>
+						</mx:VBox>
+					</mx:HBox>
+				</mx:VBox>
+				
+			</mx:ViewStack>
+			
+		</mx:VBox>
+		
+	</mx:ViewStack>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.ItemEmpAliquotas;
+			import SDE.Entidade.ItemEmpPreco;
+			import SDE.Entidade.Item;
+			import mx.collections.ArrayCollection;
+			import Core.Utils.Constantes;
+			import SDE.Entidade.Cad_Marca;
+			import Core.App;
+			import SDE.Entidade.Cad_Secao;
+			import mx.core.Container;
+			import img.Imagens;
+			
+			[Bindable] private var itemEditando:Item;
+			[Bindable] private var itemEmpPrecoEditando:ItemEmpPreco;
+			private var itemEmpAliquotasEditando:ItemEmpAliquotas;
+			
+			[Bindable] private var dpServico:ArrayCollection = new ArrayCollection();
+			
+			[Bindable] public var secoes:Array = null;
+			
+			private function init():void{
+				secoes = [];
+				for each (var o:Cad_Secao in App.single.cache.arrayCad_Secao)
+				{
+					secoes.push(o);
+					o.__orderBy = o.secao;
+					if (o.grupo!="")
+						o.__orderBy+=", "+o.grupo;
+					if (o.subgrupo!="")
+						o.__orderBy+=", "+o.subgrupo;
+				}
+				secoes.sortOn("__orderBy");
+			}
+			
+			public function MudaTela(container:Container):void
+			{
+				vsPrincipal.selectedChild = container;
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

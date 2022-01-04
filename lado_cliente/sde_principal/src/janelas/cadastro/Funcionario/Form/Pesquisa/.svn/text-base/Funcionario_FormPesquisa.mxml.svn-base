@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	initialize="init()"
+	styleName="padding5" fontSize="14" fontWeight="bold" xmlns:SDE="Componentes.SDE.*">
+	
+	<mx:HBox width="100%" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.icn_64_pesquisa}"/>
+		<mx:Label text="Pesquisa" fontSize="40" color="#666666" fontWeight="bold"/>
+	</mx:HBox>
+	
+	<SDE:CaixaPesquisa id="cpFuncionario" width="100%" clickPesquisar="dpFuncionario=funcionarioScript.buscaFuncionario(cpFuncionario.text)"/>
+	
+	<SDE:DataGrid id="dgFuncionarioPesquisa"
+		width="100%" height="100%" editable="false"
+		dataProvider="{dpFuncionario}">
+		<SDE:columns>
+			<mx:DataGridColumn width="0.5" headerText="Cód." dataField="cod"/>
+			<mx:DataGridColumn width="5" headerText="Nome" dataField="nome"/>
+			<mx:DataGridColumn width="2" headerText="Cargo" dataField="nomeCargo"/>
+			<mx:DataGridColumn width="1" headerText="Comissionado" dataField="comissionado" itemRenderer="{checkBoxFac}" textAlign="center"/>
+			<mx:DataGridColumn width="1.5" headerText="Ususário do Sistema" dataField="acessaSistema" itemRenderer="{checkBoxFac}" textAlign="center"/>
+		</SDE:columns>
+	</SDE:DataGrid>
+	
+	<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+		<SDE:Botao label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+			click="funcionarioScript.carregaFuncionarioSelecionado(dgFuncionarioPesquisa.selectedItem, mdlPai)"/>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.CheckBox;
+			import janelas.cadastro.Funcionario.FuncionarioScript;
+			import mx.collections.ArrayCollection;
+			import janelas.cadastro.Funcionario.JnlCadFuncionario;
+			import img.Imagens;
+			
+			public var mdlPai:JnlCadFuncionario;
+			private var funcionarioScript:FuncionarioScript = new FuncionarioScript();
+			
+			private var _dpFuncionario:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var checkBoxFac:ClassFactory;
+			
+			private function init():void
+			{
+				checkBoxFac = new ClassFactory(CheckBox);
+				checkBoxFac.properties =
+				{
+					enabled:false
+				};
+			}
+			
+			[Bindable]
+			public function get dpFuncionario():ArrayCollection{return this._dpFuncionario;}
+			public function set dpFuncionario(valor:ArrayCollection):void{this._dpFuncionario = valor;}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

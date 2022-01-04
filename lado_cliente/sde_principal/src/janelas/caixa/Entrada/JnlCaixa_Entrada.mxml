@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	
+	<mx:Script source="MdllCaixa_Entrada_script.as"/>
+	
+	<mx:VBox horizontalCenter="0" verticalCenter="0"
+		fontSize="14" fontWeight="bold"
+		moveEffect="{Move}">
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_32_centroCusto}"/>
+			<mx:Label text="Entrada de Caixa" fontSize="16"/>
+		</mx:HBox>
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Valor da Entrada:" width="130"/>
+			<mx:NumericStepper id="nsValorEntrada" minimum="0" maximum="999999" stepSize="0.01" width="150"/>
+		</mx:HBox>
+		
+		<mx:Label text="Histórico:"/>
+		<mx:TextArea id="txtHistContaCaixa" width="600" height="180"/>
+		
+		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+			<mx:Button label="Lançar Entrada" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="btnLancarEntrada_Click()"/>
+		</mx:HBox>
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Move;
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

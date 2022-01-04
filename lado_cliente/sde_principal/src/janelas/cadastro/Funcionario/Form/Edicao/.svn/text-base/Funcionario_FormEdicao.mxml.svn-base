@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	styleName="padding5" fontSize="14" fontWeight="bold"
+	verticalAlign="middle" horizontalAlign="center"
+	initialize="init()"
+	xmlns:SDE="Componentes.SDE.*" xmlns:Combo="Componentes.Combo.*" xmlns:Paginacao="Componentes.Paginacao.*" xmlns:comp="Componentes.comp.*">
+	<mx:states>
+		<mx:State name="stateFuncionarioComissionado">
+			<mx:AddChild relativeTo="{funcionarioComissionadoPlaceHolder}" position="lastChild" target="{boxComssionameto}"/>
+		</mx:State>
+		<mx:State name="stateFuncionarioAcessaSistema">
+			<mx:AddChild relativeTo="{funcionarioAcessaSistemaPlaceHolder}" position="lastChild" target="{boxPermissoesSistema}"/>
+		</mx:State>
+		<mx:State name="stateFuncionarioComissionadoAcessaSistema">
+			<mx:AddChild relativeTo="{funcionarioComissionadoPlaceHolder}" position="lastChild" target="{boxComssionameto}"/>
+			<mx:AddChild relativeTo="{funcionarioAcessaSistemaPlaceHolder}" position="lastChild" target="{boxPermissoesSistema}"/>
+		</mx:State>
+	</mx:states>
+	
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize targets="{[funcionarioAcessaSistemaPlaceHolder, funcionarioComissionadoPlaceHolder]}"/>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:VBox width="85%" height="100%" verticalAlign="middle">
+		
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_64_edita}"/>
+			<mx:Label text="Edição" fontSize="40" color="#666666" fontWeight="bold"/>
+		</mx:HBox>
+		
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Funcionário:" width="100"/>
+			<mx:Label id="lblFuncionario"/>
+		</mx:HBox>
+		
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Cargo:" width="100"/>
+			<Combo:CmbCargo id="cmbCargo" width="341" height="{teste.height}"/>
+			<SDE:Botao id="teste" label="Carregar Configurações do Cargo Selecionado" labelPlacement="right" icon="{Imagens.unica.icn_32_refresh}"
+				click="funcionarioScript.carregaConfiguracoesCargo(cmbCargo.selectedItem as Cargo, mdlPai)"/>
+		</mx:HBox>
+		
+		<mx:CheckBox id="ckbFuncionarioComissionado" label="Funcionáiro Comissionado"
+			click="currentState = funcionarioScript.defineState(ckbFuncionarioComissionado.selected, (currentState=='stateFuncionarioComissionadoAcessaSistema'||currentState=='stateFuncionarioAcessaSistema'))"/>
+		<mx:VBox id="funcionarioComissionadoPlaceHolder"/>
+		
+		<mx:VBox id="funcionarioAcessaSistemaPlaceHolder" width="100%"/>
+		
+		<mx:HBox verticalAlign="middle" horizontalAlign="right" width="100%">
+			<SDE:Botao label="Cancelar Edição" labelPlacement="right" icon="{Imagens.unica.icn_32_deleta}"
+				click="funcionarioScript.mudaTela(mdlPai.vs, mdlPai.formPesquisa); funcionarioScript.limpaFormEdicao(mdlPai.formEdicao)"/>
+			<SDE:Botao label="Salvar" labelPlacement="right" icon="{Imagens.unica.icn_32_salva}"
+				click="funcionarioScript.salvaFuncionario(mdlPai, this)"/>
+		</mx:HBox>
+		
+	</mx:VBox>
+	
+	<!-- FORMULÁRIOS EXIBIDOS DE ACORDO COM O STATE DO FORM -->
+	<mx:VBox id="boxComssionameto" width="100%">
+		<mx:HBox verticalAlign="middle">
+			<mx:CheckBox id="ckbMaoDeObra" label="Mão de Obra:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMaoDeObra" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMaoDeObra.selected}"/>
+			<mx:Spacer width="50"/>
+			<mx:CheckBox id="ckbMaoDeObraGarantia" label="Mão de Obra Garantia:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMaoDeObraGarantia" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMaoDeObraGarantia.selected}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:CheckBox id="ckbMaoDeObraGeral" label="Mão de Obra Geral:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMaoDeObraGeral" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMaoDeObraGeral.selected}"/>
+			<mx:Spacer width="50"/>
+			<mx:CheckBox id="ckbMaoDeObraGeralEmGarantia" label="Mão de Obra Geral em Garantia:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMaoDeObraGeralEmGarantia" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMaoDeObraGeralEmGarantia.selected}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:CheckBox id="ckbProdutos" label="Produtos:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsProdutos" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbProdutos.selected}"/>
+			<mx:Spacer width="50"/>
+			<mx:CheckBox id="ckbProdutosEmGarantia" label="Produtos em Garantia:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsProdutosEmGarantia" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbProdutosEmGarantia.selected}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:CheckBox id="ckbMontanteTotal" label="Montante Total:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMontanteTotal" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMontanteTotal.selected}"/>
+		</mx:HBox>
+	</mx:VBox>
+	<mx:VBox id="boxPermissoesSistema" width="100%" height="100%">
+		<SDE:DataGrid id="dgPermissoes" editable="true"
+			width="100%" height="100%"
+			dataProvider="{dpPermissoesSistema}">
+			<SDE:columns>
+				<mx:DataGridColumn width="1" headerText="Cód." dataField="cod" editable="false"/>
+				<mx:DataGridColumn width="8.5" headerText="Menu" dataField="menu" editable="false"/>
+				<mx:DataGridColumn width="1.5" headerText="Acesso Permitido" dataField="permitido" editable="true"
+					textAlign="center" itemRenderer="mx.controls.CheckBox" itemEditor="mx.controls.CheckBox" editorDataField="selected"/>
+			</SDE:columns>
+		</SDE:DataGrid>
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.Cargo;
+			import janelas.tecnico.Usuario.UsuarioScript;
+			import mx.controls.Image;
+			import mx.collections.ArrayCollection;
+			import janelas.cadastro.Funcionario.FuncionarioScript;
+			import janelas.cadastro.Funcionario.JnlCadFuncionario;
+			import img.Imagens;
+			
+			public var mdlPai:JnlCadFuncionario;
+			private var funcionarioScript:FuncionarioScript = new FuncionarioScript();
+			
+			private var _dpPermissoesSistema:ArrayCollection = new ArrayCollection();
+			
+			private var _idClienteFuncionario:Number = 0;
+			private var _idClienteFuncionarioComissionamento:Number = 0;
+			
+			private function init():void
+			{
+				funcionarioScript.removeComponente(boxComssionameto);
+				funcionarioScript.removeComponente(boxPermissoesSistema);
+			}
+			
+			[Bindable]
+			public function get dpPermissoesSistema():ArrayCollection{return this._dpPermissoesSistema;}
+			public function set dpPermissoesSistema(valor:ArrayCollection):void{this._dpPermissoesSistema = valor;}
+			
+			public function get idClienteFuncionario():Number{return this._idClienteFuncionario;}
+			public function set idClienteFuncionario(valor:Number):void{this._idClienteFuncionario = valor;}
+			
+			public function get idClienteFuncionarioComissionamento():Number{return this._idClienteFuncionarioComissionamento;}
+			public function set idClienteFuncionarioComissionamento(valor:Number):void{this._idClienteFuncionarioComissionamento = valor;}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

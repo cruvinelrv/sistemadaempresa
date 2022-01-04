@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:comp="Componentes.comp.*"
+	creationComplete="create()">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import SDE.Entidade.Item;
+			import mx.collections.ArrayCollection;
+			import img.Imagens;
+			
+			[Bindable] private var arcItensPesquisando:ArrayCollection = new ArrayCollection();
+			[Bindable] private var arcItensEditando:ArrayCollection = new ArrayCollection();
+			
+			private function create():void
+			{
+				listPesquisa.addEventListener('lanca',fn_lanca_item);
+				listEdicao.addEventListener('retira',fn_retira_item);
+			}
+			
+			private function fn_lanca_item(e:Event):void
+			{
+				//de uma lista para outra
+				var o:Object = e.target.data;
+				var i:int = arcItensPesquisando.getItemIndex(o);
+				arcItensPesquisando.removeItemAt(i);
+				arcItensEditando.addItem(o);
+			}
+			private function fn_retira_item(e:Event):void
+			{
+				//retira da segunda lista
+				var o:Object = e.target.data;
+				var i:int = arcItensEditando.getItemIndex(o);
+				arcItensEditando.removeItemAt(i);
+				arcItensPesquisando.addItem(o);
+			}
+			
+			private var ix:int = 0;
+			private function pesquisaItens():void
+			{
+				ix++;
+				arcItensPesquisando.addItem( new Item({nome:'teste'+ix}) );
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Image x="10" y="10" source="{Imagens.unica.icn_64_lapis}" />
+	<mx:Label x="80" y="10" fontSize="40" color="#666666" fontWeight="bold" text="Edição em Massa" />
+	
+	<mx:VBox left="10" top="80" bottom="50" width="400">
+		<mx:HBox width="100%">
+			<mx:TextInput id="txtPesquisa" width="100%" fontSize="16" styleName="padding3" />
+			<comp:Botao2 icone="Pesquisa" click="pesquisaItens()" />
+		</mx:HBox>
+		<mx:List id="listPesquisa" width="100%"
+			itemRenderer="janelas.cadastro.ItemProdutoEditarLista.template.ItemProSer_PesquisaItemRend"
+			dataProvider="{arcItensPesquisando}">
+		</mx:List>
+		<mx:Label fontSize="14" text="LISTA DE ITENS A SEREM EDITADOS" />
+		<mx:List id="listEdicao" width="100%"
+			itemRenderer="janelas.cadastro.ItemProdutoEditarLista.template.ItemProSer_EdicaoItemRend"
+			dataProvider="{arcItensEditando}">
+		</mx:List>
+		
+	</mx:VBox>
+	
+	<mx:VBox left="420" top="80" bottom="50" right="10">
+		
+		
+		
+	</mx:VBox>
+	
+</mx:Canvas>

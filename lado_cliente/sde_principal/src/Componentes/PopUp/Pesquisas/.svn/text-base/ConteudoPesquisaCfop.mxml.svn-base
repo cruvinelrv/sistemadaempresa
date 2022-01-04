@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	styleName="padding3"
+	label="PESQUISA DE CFOP"
+	xmlns:controls="com.flexpernambuco.controls.*"
+	creationComplete="create()">
+	
+	<mx:Script source="ConteudoPesquisaCfop_script.as"/>
+	
+	<mx:HBox width="100%" fontSize="10" verticalAlign="middle">
+		<controls:MasterTextInput id="txt"
+			x="5" y="25" capsType="upercase"
+			width="40%"
+			fontSize="20" enter="txt_KEnter()"
+			styleName="padding3"
+			keyUp="txt_keyUp()"/>
+	</mx:HBox>
+	
+	<mx:DataGrid id="gridRet"
+		width="100%" height="100%"
+		themeColor="#3B5998"
+		doubleClickEnabled="true" doubleClick="grid_dclick()"
+		keyDown="grid_kdown(event)"
+		styleName="dtgrid">
+		<mx:columns>
+			<mx:DataGridColumn width="20" headerText="CFOP" dataField="codigo"/>
+			<mx:DataGridColumn width="80" headerText="Descrição" dataField="descricao"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+</mx:VBox>

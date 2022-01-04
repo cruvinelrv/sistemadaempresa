@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SuperDefineDetalheEstoque xmlns="Componentes.DefineDetalheEstoque.*" xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="Componentes.comp.*" xmlns:controls="com.flexpernambuco.controls.*">
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:VBox width="50%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		
+		<mx:VBox horizontalAlign="left" fontSize="16" fontWeight="bold">
+			
+			<mx:HBox>
+				<mx:VBox>
+					<mx:Label text="Data Fabricação:"/>
+					<comp:DateFieldBR id="dfDtFabricacao"/>
+				</mx:VBox>
+				<mx:VBox>
+					<mx:Label text="Data Validade:"/>
+					<comp:DateFieldBR id="dfDtValidade"/>
+				</mx:VBox>
+			</mx:HBox>
+			<mx:HBox>
+				<mx:VBox>
+					<mx:Label text="Qtd:"/>
+					<mx:NumericStepper id="nsQtd" minimum="0" maximum="999999" stepSize="1"/>
+				</mx:VBox>
+				<mx:VBox>
+					<mx:Label text="Lote:"/>
+					<controls:MasterTextInput id="txtLote"
+						capsType="upercase" fontSize="16" fontWeight="bold" width="300"/>
+				</mx:VBox>
+			</mx:HBox>
+			
+			<comp:Botao2 cor="Verde" label="Mover Estoque" click="define()"/>
+			
+		</mx:VBox>
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.Alerta.AlertaSistema;
+			import Core.Ev.EvRetornaArray;
+			
+			protected override function getResultado_impl():String
+			{
+				return new String();
+			}
+			
+			private function define():void
+			{
+				var msg:String = '';
+				if (dfDtFabricacao.text=='')
+					msg += 'Informe a data de fabricação\n';
+				if (dfDtValidade.text == '')
+					msg += 'Informe a data de validade\n';
+				if (nsQtd.value == 0)
+					msg += 'Quantidade não pode ser 0\n';
+				if (txtLote.text == '')
+					msg += 'Informe o lote';
+				if (msg != '')
+				{
+					AlertaSistema.mensagem(msg);
+					return;
+				}
+				
+				var ev:EvRetornaArray = new EvRetornaArray([nsQtd.value, txtLote.text, "", dfDtFabricacao.text, dfDtValidade.text]);
+				dispatchEvent(ev);
+				limpaTela();
+			}
+			
+			private function limpaTela():void
+			{
+				dfDtFabricacao.text = '';
+				dfDtValidade.text = '';
+				nsQtd.value = 0;
+				txtLote.text = "";
+				txtLote.setFocus();
+			}
+		]]>
+	</mx:Script>
+	
+</SuperDefineDetalheEstoque>

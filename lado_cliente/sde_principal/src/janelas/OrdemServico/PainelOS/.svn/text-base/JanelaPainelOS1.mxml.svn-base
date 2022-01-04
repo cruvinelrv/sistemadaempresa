@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	preinitialize="init()"
+	xmlns:comp="Componentes.comp.*" xmlns:CP="Componentes.CP.*">
+	<mx:Script>
+		<![CDATA[
+			import Core.Utils.Funcoes;
+		]]>
+	</mx:Script>
+	
+	<mx:Script source="MdllJanelaPainelOS_script.as"/>
+	
+	<mx:VBox fontSize="14" styleName="padding5" width="100%">
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Nº:" fontWeight="bold"/>
+		<mx:TextInput id="txtNumOSPesquisa" width="50"
+			keyDown="{
+				if (event.keyCode==Keyboard.ENTER)
+					filtraBuscaOrdemServico();
+			}"/>
+		<mx:Label text="Data:" fontWeight="bold"/>
+		<comp:DateFieldBR id="dfDataPesquisa" editable="true" width="100"
+			keyDown="{
+				if (event.keyCode==Keyboard.ENTER)
+					filtraBuscaOrdemServico();
+			}"/>
+		<mx:Label text="Cliente:" fontWeight="bold"/>
+		<CP:PesqCliente id="cpClientePesquisa" prompt="" showBrowseButton="false"
+			change="filtraBuscaOrdemServico()"/>
+		<mx:Button label="Filtrar" width="90"
+			fontSize="14" fontWeight="bold" textAlign="center"
+			buttonMode="true" mouseChildren="true" useHandCursor="true"
+			click="filtraBuscaOrdemServico()"/>
+		<mx:Button label="Limpar" width="90"
+			fontSize="14" fontWeight="bold" textAlign="center"
+			buttonMode="true" mouseChildren="true" useHandCursor="true"
+			click="limpaBuscaOrdemServico()"/>
+		</mx:HBox>
+		
+		<mx:DataGrid width="100%" dataProvider="{arraycOrdemServico}"
+			themeColor="#3B5998">
+			<mx:columns>
+				<mx:DataGridColumn dataField="cliente_nome" headerText="Cliente"/>
+				<mx:DataGridColumn dataField="cliente_cpf" headerText="CPF/CNPJ"/>
+				<mx:DataGridColumn dataField="cliente_contato" headerText="Contato"/>
+				<mx:DataGridColumn dataField="dthrLancamento" headerText="Data"/>
+			</mx:columns>
+		</mx:DataGrid>
+		
+	</mx:VBox>
+	
+</mx:VBox>

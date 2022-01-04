@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:abas="janelas.cadastro.Outros1.abas.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	xmlns:comp="Componentes.comp.*"
+	themeColor="#3B5998"
+	paddingRight="10" paddingBottom="20" paddingTop="20" xmlns:CP="Componentes.CP.*">
+	<mx:Script>
+		<![CDATA[
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+	<mx:LinkBar textAlign="left" dataProvider="{vs}" fontSize="14" direction="vertical" height="100%" verticalAlign="top" />
+	
+	<mx:ViewStack id="vs" width="100%" height="100%" creationPolicy="all"
+		borderColor="#2D24C8" borderStyle="solid" borderThickness="2"
+		cornerRadius="5"
+		styleName="padding10">
+		
+		<abas:AbaMarcas label="Marcas" icon="{Imagens.unica.icn_32_lapis}"/>
+		<abas:AbaSecoes label="Seções" icon="{Imagens.unica.icn_32_lapis}"/>
+		<abas:AbaGrades label="Grades" icon="{Imagens.unica.icn_32_lapis}"/>
+		<abas:AbaTiposOrdem label="Tipos OS" icon="{Imagens.unica.icn_32_lapis}"/>
+		<!--
+		<mx:VBox width="100%" height="100%" label="TESTE" icon="{Imagens.unica.icn_32_pesquisa}">
+			
+			<CP:PesqCliente />
+			
+			<CP:PesqCFOP />
+			
+		</mx:VBox>
+		-->
+	</mx:ViewStack>
+	
+</mx:HBox>

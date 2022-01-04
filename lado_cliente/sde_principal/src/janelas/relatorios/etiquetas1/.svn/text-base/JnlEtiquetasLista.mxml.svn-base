@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	styleName="padding10" fontSize="14" fontWeight="bold"
+	xmlns:CP="Componentes.CP.*" xmlns:controls="com.flexpernambuco.controls.*"
+	xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*" xmlns:comp="Componentes.comp.*"
+	creationComplete="create()">
+	
+	<mx:HBox verticalAlign="middle">
+		<mx:Label text="Item:" width="60"/>
+		<CP:PesqItem id="cpItem" width="500" change="cpItem_Change()"/>
+		<mx:Label text="Quantidade:"/>
+		<mx:NumericStepper id="nsQtd" minimum="0" maximum="999999" stepSize="1" keyDown="nsQtd_KeyDown(event)"/>
+		<mx:Button label="Lançar" fontSize="16" click="btnLancar_Click()"/>
+	</mx:HBox>
+	
+	<mx:DataGrid id="dgItens"
+		width="100%" height="100%"
+		themeColor="#3B5998"
+		dataProvider="{arraycItens}">
+		<mx:columns>
+			<mx:DataGridColumn width="1" dataField="cod" headerText="Cod"/>
+			<mx:DataGridColumn width="2" dataField="codUnico" headerText="Cod Único"/>
+			<mx:DataGridColumn width="4" dataField="itemNome" headerText="Item"/>
+			<mx:DataGridColumn width="1" dataField="gradeIdent" headerText="Grade/Identificador"/>
+			<mx:DataGridColumn width="1" dataField="qtd" headerText="Quantidade"/>
+			<mx:DataGridColumn width="1">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button themeColor="#840000"
+							icon="{Imagens.unica.icn_16_cancela}"
+							click="dispatchEvent(new Event('deleteRow', true))">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%">
+	
+		<mx:HBox width="100%" height="60" verticalAlign="middle" backgroundColor="#3B5998" color="white" fontSize="16" visible="false">
+			<mx:Label text="Etiquetas para impressão:"/>
+			<controls:MasterTextInput text="{etiquetasImpressao}" width="100"
+				backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white"/>
+			<mx:Label text="Número de linhas:"/>
+			<controls:MasterTextInput text="{numeroLinhas}" width="100"
+				backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white"/>
+			<mx:Label text="Etiquetas restantes:"/>
+			<controls:MasterTextInput text="{etiquetasRestantes}" width="100"
+				backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white"/>
+		</mx:HBox>
+		
+		<mx:Button label="Imprimir" labelPlacement="bottom" height="65" fontSize="18" icon="{Imagens.unica.icn_32_impressora}"
+			click="btnImprimir_Click()"/>
+		<!--<mx:Button label="Imprimir" labelPlacement="right" height="60" fontSize="22" click="btnImprimir_Click()"/>-->
+		
+		<PopUpPesquisa:SuperPopPesq id="popupEstoque"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_32_estoque}"
+		title="Escolha o Estoque"
+		width="700" height="400"
+		layout="vertical"
+		fontSize="14">
+		
+		<mx:VBox x="10" y="10" width="100%" height="100%" horizontalAlign="right">
+			<mx:DataGrid id="dgEstoques"
+				width="100%" height="100%"
+				keyDown="if(event.keyCode==Keyboard.ENTER)dgEstoques_keyDown();">
+				<mx:columns>
+					<mx:DataGridColumn dataField="Cod" headerText="Item" />
+					<mx:DataGridColumn labelFunction="fn_ItemNome" headerText="Item" />
+					<mx:DataGridColumn dataField="identificador" headerText="Grade/Ident." />
+					<mx:DataGridColumn dataField="codBarras" headerText="Barras" />
+				</mx:columns>
+			</mx:DataGrid>
+			<comp:Botao2 cor="Azul" label="Selecionar"
+				click="dgEstoques_keyDown()"
+				keyDown="if(event.keyCode==Keyboard.ENTER)dgEstoques_keyDown();"/>
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+		
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.StringUtil;
+			import com.hillelcoren.utils.StringUtils;
+			import SDE.Constantes.Variaveis_SdeConfig;
+			import mx.charts.chartClasses.NumericAxis;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import img.Imagens;
+			import SDE.Entidade.MovItemEstoque;
+			import mx.core.Container;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import SDE.Enumerador.EItemTipoIdent;
+			import SDE.Entidade.ItemEmpEstoque;
+			import Core.App;
+			import Core.Utils.MeuFiltroWhere;
+			import SDE.Entidade.Item;
+			import SDE.Entidade.MovItem;
+			import Core.Alerta.AlertaSistema;
+			import mx.collections.ArrayCollection;
+			
+			[Bindable] private var arraycItens:ArrayCollection = new ArrayCollection();
+			[Bindable] private var item:Item = null;
+			[Bindable] private var iee:ItemEmpEstoque = null;
+			
+			[Bindable] private var etiquetasImpressao:Number = 0;
+			[Bindable] private var numeroLinhas:Number = 0;
+			[Bindable] private var etiquetasRestantes:Number = 0;
+			
+			private function create():void
+			{
+				dgItens.addEventListener("deleteRow", removeItem);
+				removePopup(popupEstoque);
+			}
+			
+			private function abrePopupEstoque():void
+			{
+				PopUpManager.addPopUp(popupEstoque, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupEstoque);
+				dgEstoques.setFocus();
+			}
+			
+			private function removePopup(popup:Container):void
+			{
+				popup.parent.removeChild(popup);
+			}
+			
+			private function fn_ItemNome(iee:ItemEmpEstoque, dgc:DataGridColumn):String
+			{
+				return App.single.cache.getItem(iee.idItem).nome;
+			}
+			
+			private function removeItem(ev:Event):void
+			{
+				var pos:int = arraycItens.getItemIndex(ev.target.data);
+				arraycItens.removeItemAt(pos);
+				atualizaValores();
+			}
+			
+			private function cpItem_Change():void
+			{
+				nsQtd.setFocus();
+			}
+			
+			private function nsQtd_KeyDown(ev:KeyboardEvent):void
+			{
+				if (ev.keyCode == Keyboard.ENTER)
+					btnLancar_Click();	
+			}
+			
+			private function btnLancar_Click():void
+			{
+				if (cpItem.selectedItem == null)
+					return;
+					
+				var it:Item = cpItem.selectedItem;
+				
+				var mfw:MeuFiltroWhere =
+					new MeuFiltroWhere(App.single.cache.arrayItemEmpEstoque)
+					.andEquals(it.id, ItemEmpEstoque.campo_idItem)
+					.andEquals(App.single.ss.idEmp, ItemEmpEstoque.campo_idEmp);
+					
+				var estoques:Array = mfw.getResultadoArraySimples();
+				
+				if (estoques.length == 1)
+				{
+					iee = estoques[0];
+					item = App.single.cache.getItem(iee.idItem);
+					lancaItem();
+				}
+				else
+				{
+					dgEstoques.dataProvider = estoques;
+					abrePopupEstoque();
+				}
+			}
+			
+			private function dgEstoques_keyDown():void
+			{
+				iee = dgEstoques.selectedItem as ItemEmpEstoque;
+				item = App.single.cache.getItem(iee.idItem);
+				PopUpManager.removePopUp(popupEstoque);
+				lancaItem();
+			}
+			
+			private function lancaItem():void
+			{
+				var mi:MovItem = new MovItem();
+				mi.idItem = item.id;
+				mi.idIEE = iee.id;
+				mi.qtd = nsQtd.value;
+				
+				var obj:Object = new Object();
+				obj.mi = mi;
+				obj.cod = item.id;
+				obj.codUnico = item.rfUnica;
+				obj.itemNome = item.nome;
+				obj.gradeIdent = iee.identificador;
+				obj.qtd = mi.qtd;
+				arraycItens.addItem(obj);
+				
+				limpaLancamento();
+				atualizaValores();
+			}
+			
+			private function atualizaValores():void
+			{
+				etiquetasImpressao = 0;
+				numeroLinhas = 0;
+				etiquetasRestantes = 0;
+				
+				if (App.single.idCorp == 44)
+				{
+					for each (var obj44:Object in arraycItens)
+						etiquetasImpressao += obj44.mi.qtd;
+						
+					if (etiquetasImpressao % 3 == 0)
+						numeroLinhas = etiquetasImpressao / 3;
+					else
+						numeroLinhas = (Math.floor(etiquetasImpressao / 3)) + 1;
+						
+					if (etiquetasImpressao < 3)
+						etiquetasRestantes = 3 - etiquetasImpressao;
+					else
+						etiquetasRestantes = etiquetasImpressao % 3;
+				}
+				else if (App.single.idCorp == 56)
+				{
+					for each (var obj56:Object in arraycItens)
+						etiquetasImpressao += obj56.mi.qtd;
+					
+					if (etiquetasImpressao % 5 == 0)
+						numeroLinhas = etiquetasImpressao / 5;
+					else
+						numeroLinhas = (Math.floor(etiquetasImpressao / 5)) + 1;
+					
+					if (etiquetasImpressao < 5)
+						etiquetasRestantes = 5 - etiquetasImpressao;
+					else
+						etiquetasRestantes = etiquetasImpressao % 5;
+				}
+				else if (App.single.idCorp == 5)
+				{
+					for each (var obj5:Object in arraycItens)
+						etiquetasImpressao += obj5.mi.qtd;
+					
+					if (etiquetasImpressao % 6 == 0)
+						numeroLinhas = etiquetasImpressao / 6;
+					else
+						numeroLinhas = (Math.floor(etiquetasImpressao / 6)) + 1;
+					
+					if (etiquetasImpressao < 6)
+						etiquetasRestantes = 6 - etiquetasImpressao;
+					else
+						etiquetasRestantes = etiquetasImpressao % 6;
+				}
+			}
+			
+			private function limpaLancamento():void
+			{
+				cpItem.selectedItems.removeAll();
+				nsQtd.value = 0;
+				item = null;
+				iee = null;
+				cpItem.setFocus();
+			}
+			
+			private function limpaTela():void
+			{
+				limpaLancamento();
+				arraycItens.removeAll();
+				atualizaValores();
+			}
+			
+			private function btnImprimir_Click():void
+			{
+				var portaCOM:String;
+				
+				var arrayItens:Array = [];
+				for each (var obj:Object in arraycItens)
+				{
+					var mi:MovItem = obj.mi;
+					arrayItens.push(mi);
+				}
+				
+				if (App.single.idCorp == 44)
+				{
+					portaCOM = App.single.ss.parametrizacao.getParametro(Variaveis_SdeConfig.EMPRESA_ETIQUETA_PORTACOM);
+					if (!StringUtils.beginsWith(portaCOM, "COM"))
+					{
+						AlertaSistema.mensagem("Porta de comunicação com a impressora não configurada adequadamente, contate o suporte para configuração da mesma");
+						return;
+					}
+					App.single.mod.EscreveEtiquetaPorListaEMB(arrayItens, portaCOM,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+							limpaTela();
+						}
+					);	
+				}
+				else if (App.single.idCorp == 56)
+				{
+					App.single.mod.escreveEtiquetaPorListaSETE(arrayItens,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+							limpaTela();
+						}
+					);
+				}
+				else if (App.single.idCorp == 68)
+				{
+					App.single.mod.escreveEtiquetaPorListaWembley(arrayItens,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+							limpaTela();
+						}
+					);
+				}
+				else if (App.single.idCorp == 53)
+				{
+					portaCOM = App.single.ss.parametrizacao.getParametro(Variaveis_SdeConfig.EMPRESA_ETIQUETA_PORTACOM);
+					if (!StringUtils.beginsWith(portaCOM, "COM"))
+					{
+						AlertaSistema.mensagem("Porta de comunicação com a impressora não configurada adequadamente, contate o suporte para realizar a configuração.");
+						return;
+					}
+					App.single.mod.EscreveEtiquetaPorListaObraDensa(arrayItens, portaCOM,
+					function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+							limpaTela();
+						}
+					);
+				}
+				else if (App.single.idCorp == 20)
+				{
+					App.single.mod.escreveEtiquetaPorListaCostaAzul(arrayItens,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+							limpaTela();
+						}
+					);
+				}else if (App.single.idCorp == 64)
+				{
+					App.single.mod.escreveEtiquetaPorListaModaMorena(arrayItens,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+							limpaTela();
+						}
+					);
+				}
+				else if (App.single.idCorp == 76)
+				{
+					App.single.mod.escreveEtiquetaPorListaAntonietaCasa(arrayItens,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+							limpaTela();
+						}
+					);
+				}
+				else
+					AlertaSistema.mensagem("Empresa sem opção de impressão de etiqueta");
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

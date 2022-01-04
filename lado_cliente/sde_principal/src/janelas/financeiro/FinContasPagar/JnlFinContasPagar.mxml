@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:controls="com.flexpernambuco.controls.*"
+	xmlns:comp="Componentes.comp.*" xmlns:CP="Componentes.CP.*" xmlns:Combo="SDE.Componentes.Combo.*"
+	initialize="init()">
+	
+	<mx:Script source="MdllJnlFinContasPagar_scriptCadastro.as"/>
+	<mx:Script source="MdllJnlFinContasPagar_scriptBaixa.as"/>
+	
+	<mx:states>
+		<mx:State name="statePagamentoParcelado">
+			<mx:AddChild relativeTo="{placeHolderPagamentoParcelado}" position="lastChild">
+				<mx:VBox width="100%" fontSize="14" fontWeight="bold">
+					<mx:HBox verticalAlign="middle">
+						<mx:Label text="Número de Parcelas:" width="155"/>
+						<mx:NumericStepper id="nsNumeroParcelas" minimum="0" maximum="999999" stepSize="1"/>
+						<mx:Label text="Juros por Parcela:"/>
+						<mx:NumericStepper id="nsJuros" minimum="0" maximum="999999" stepSize="0.01"/>
+						<mx:Label text="Período:"/>
+						<mx:NumericStepper id="nsPeriodo" minimum="0" maximum="999999" stepSize="1"/>
+						<mx:Label text="(zero para período de 1 mês)"/>
+					</mx:HBox>
+					<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+						<mx:Button label="Limpar Parcelas" labelPlacement="right" icon="{Imagens.unica.icn_16_cancela}" click="btnLimparParcelas_Click()"/>
+						<mx:Button label="Lançar Parcelas" labelPlacement="right" icon="{Imagens.unica.icn_16_confirma}" click="btnLancarParcelas_Click()"/>
+					</mx:HBox>
+					<mx:DataGrid id="dgPacelas"
+						width="100%" rowCount="5"
+						themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+						editable="true"
+						dataProvider="{dpParcelas}">
+						<mx:columns>
+							<mx:DataGridColumn width="1" dataField="parcela" headerText="Parcela" editable="false"/>
+							<mx:DataGridColumn width="2" dataField="dtPagamento" labelFunction="lblFnction_dataPagamento" headerText="Data Pagamento"
+								editorDataField="selectedDate" itemEditor="Componentes.comp.DateFieldBR" editable="true"/>
+							<mx:DataGridColumn width="2" dataField="valorCobrado" headerText="Valor Parcela"
+								editorDataField="value" itemEditor="{numericStepperFac}" editable="true"/>
+							<mx:DataGridColumn width="6" dataField="obs" headerText="Observações" editable="false"/>
+						</mx:columns>
+					</mx:DataGrid>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateContaCaixaBanco">
+			<mx:AddChild relativeTo="{placeHolderContaCaixaBanco}" position="lastChild">
+			<mx:VBox width="100%">
+				<mx:HBox width="100%" verticalAlign="middle">
+					<mx:Label text="Conta Destino:" width="150"/>
+					<CP:PesqFinanConta id="cpFinanConta" width="550" change="cpFinanConta_Change()"/>
+				</mx:HBox>
+				<mx:HBox>
+					<mx:Label text="Centro de Custo:" width="150"/>
+					<Combo:CmbFinan_CentroCusto id="cmbCentroCusto" width="215"/>
+					<mx:Label text="Tipo de Conta:"/>
+					<Combo:CmbFinan_TipoLancamento id="cmbTipoLancamento" width="215"/>
+				</mx:HBox>
+			</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State  basedOn="stateContaCaixaBanco" name="stateContaBancoDetalhe">
+			<mx:AddChild relativeTo="{placeHolderContaBancoDetalhe}" position="lastChild">
+				<mx:HBox width="100%" verticalAlign="middle" fontSize="14" fontWeight="bold">
+					<mx:Label text="Banco:"/>
+					<mx:Label id="lblBanco" width="100"/>
+					<mx:Label text="Agência:"/>
+					<mx:Label id="lblAgencia" width="100"/>
+					<mx:Label text="Conta:"/>
+					<mx:Label id="lblConta" width="100"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize targets="{[placeHolderPagamentoParcelado, placeHolderContaCaixaBanco, placeHolderContaBancoDetalhe]}"/>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:ViewStack id="vsPrincipal" width="100%" height="100%" creationPolicy="all" fontSize="14" fontWeight="bold" styleName="padding5">
+		
+		<!-- TELA MENU -->
+		<mx:HBox id="telaMenu" width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" fontSize="30" fontWeight="bold"
+			showEffect="{Fade}" hideEffect="{Fade}">
+			
+			<mx:Button label="Cadastro" textAlign="center" width="240" height="80" click="mudaTela(telaCadastro)"/>
+			<mx:Button label="Baixa" textAlign="center" width="240" height="80" click="mudaTela(telaBaixa)"/>
+			
+		</mx:HBox>
+		
+		<!-- TELA CADASTRO -->
+		<mx:Canvas id="telaCadastro" width="100%" height="100%"
+			showEffect="{Fade}" hideEffect="{Fade}">
+			
+			<mx:VBox horizontalCenter="0" verticalCenter="0"
+				fontSize="14" fontWeight="bold"
+				width="900">
+				
+				<mx:HBox verticalAlign="middle">
+					<mx:Image source="{Imagens.unica.icn_32_money}"/>
+					<mx:Label text="Contas a Pagar" fontSize="16"/>
+				</mx:HBox>
+				
+				<mx:HBox verticalAlign="middle" width="100%">
+					<mx:Label text="Fornecedor:" width="155"/>
+					<CP:PesqFornecedor id="cpFornecedorCad" width="100%"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle" width="100%">
+					<mx:Label text="Descrição:" width="155"/>
+					<controls:MasterTextInput id="txtDescricao" capsType="upercase" width="100%"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="{(chkbPagamentoParcelado.selected) ? 'Data Base:' : 'Data Pagamento:' }" width="155"/>
+					<comp:DateFieldBR id="dtfDataPagamento"/>
+					<mx:Label text="Valor:"/>
+					<mx:NumericStepper id="nsValor" minimum="0" maximum="999999" stepSize="0.01" width="175"/>
+				</mx:HBox>
+				
+				<mx:Label text="Observações:"/>
+				<mx:TextArea id="txtObs" width="100%" height="40"/>
+				
+				<mx:CheckBox id="chkbPagamentoParcelado" label="Pagamento Parcelado" fontSize="14" fontWeight="bold" click="chkbPagamentoParcelado_Click()"/>
+				
+				<mx:VBox id="placeHolderPagamentoParcelado" width="100%"/>
+				
+				<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+					<mx:Button label="Voltar" labelPlacement="right" icon="{Imagens.unica.icn_32_seta_esquerda}" click="mudaTela(telaMenu); limpaTelaCadastro()"/>
+					<mx:Button label="Confirmar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="btnConfirmar_Click()"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+		</mx:Canvas>
+		
+		<!-- TELA BAIXA -->
+		<mx:VBox id="telaBaixa" width="100%" height="100%"
+			creationComplete="createBaixa()"
+			showEffect="{Fade}" hideEffect="{Fade}">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Label text="Fornecedor:" width="100"/>
+				<CP:PesqFornecedor id="cpFornecedorBax" width="600"/>
+			</mx:HBox>
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Label text="Lançamento:" width="100"/>
+				<controls:MasterTextInput id="txtFinanTituloItem"  width="600"/>
+			</mx:HBox>
+			
+			<mx:HBox width="710" verticalAlign="middle">
+				<mx:Label text="Data Início:" width="100"/>
+				<comp:DateFieldBR id="dtfDataInicio"/>
+				<mx:Label text="Data Limite:"/>
+				<comp:DateFieldBR id="dtfDataLimite"/>
+				<mx:Button label="Limpar Data" click="btnLimparData_Click()"/>
+				<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+					<mx:Button label="Pesquisar" labelPlacement="right" icon="{Imagens.unica.icn_16_pesquisa}" click="btnPesquisar_Click()"/>
+				</mx:HBox>
+			</mx:HBox>
+			
+			<mx:DataGrid id="dgTituloItens"
+				width="100%" height="100%"
+				themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+				dataProvider="{dpLancamentoCaixa}">
+				<mx:columns>
+					<mx:DataGridColumn width="1" dataField="cod" headerText="Cod"/>
+					<mx:DataGridColumn width="3" dataField="numeroTitulo" headerText="Número Titulo"/>
+					<mx:DataGridColumn width="10" dataField="fornecedor" headerText="Fornecedor"/>
+					<mx:DataGridColumn width="3" dataField="dataVencimento" headerText="Data Vencimento"/>
+					<mx:DataGridColumn width="3" dataField="valorCobrado" headerText="Valor" labelFunction="fn_valorPagamento"/>
+					<mx:DataGridColumn width="1" dataField="baixar" editorDataField="baixar" rendererIsEditor="true" headerText="Baixar">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Canvas>
+									<mx:CheckBox
+										horizontalCenter="0" verticalCenter="0"
+										selected="{data.baixar}"
+										click="{dispatchEvent(new Event('baixarChecked', true))}"/>
+								</mx:Canvas>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+			
+			<mx:HBox verticalAlign="middle">
+				<mx:CheckBox id="chkbContaOrigem" label="Informar Conta Caixa/Banco de Origem" change="chkbContaOrigem_Change()"/>
+			</mx:HBox>
+			
+			<mx:HBox id="placeHolderContaCaixaBanco" width="100%"/>
+			<mx:HBox id="placeHolderContaBancoDetalhe" width="100%"/>
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Label text="Tipo de Pagamento:" width="150"/>
+				<mx:ComboBox id="cmbTipoPagamento" dataProvider="{['DINHEIRO', 'CHEQUE A VISTA']}"/>
+			</mx:HBox>
+						
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<mx:Button label="Voltar" labelPlacement="right" icon="{Imagens.unica.icn_32_seta_esquerda}" click="mudaTela(telaMenu); limpaTelaBaixa()"/>
+				<mx:Button label="Baixar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="btnBaixa_Click()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</mx:ViewStack>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Container;
+			import mx.effects.Fade;
+			import img.Imagens;
+			import mx.effects.Move;
+			
+			[Bindable]
+			private var numericStepperFac:ClassFactory;
+			
+			private function init():void
+			{
+				numericStepperFac = new ClassFactory(NumericStepper);
+				numericStepperFac.properties =
+				{
+					stepSize:0.01,
+					minimum:0,
+					maximum:999999
+				};
+			}
+			
+			private function mudaTela(container:Container):void{
+				vsPrincipal.selectedChild = container;
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

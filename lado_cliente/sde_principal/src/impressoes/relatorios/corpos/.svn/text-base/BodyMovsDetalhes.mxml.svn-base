@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Body xmlns="org.print.*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="create()">
+	
+	<mx:Repeater id="rptr" dataProvider="{dados}"
+		width="100%" height="100%"  >
+		
+		<mx:Label text="{rptr.currentItem.tipo}" width="100%" fontSize="12"/>
+		<mx:HBox  width="100%">
+			<mx:Label text="NÚMERO:{rptr.currentItem.id}"/>	
+			<mx:Label text="DATA:{rptr.currentItem.dthrMov}"/>
+			<mx:Label text="FUNCIONÁRIO:{rptr.currentItem.funcionario}"/>
+		</mx:HBox>
+		<mx:HBox  width="100%">
+			<mx:Label text="CLIENTE:{rptr.currentItem.cliente.id} - "/>	
+			<mx:Label text="{rptr.currentItem.cliente.nome} - "/>
+			<mx:Label text="{Funcoes.MascaraCPF(rptr.currentItem.cliente.cpf_cnpj)}"/>
+		</mx:HBox>
+		<mx:HBox  width="100%">
+			<mx:Label text="ENDEREÇO:{rptr.currentItem.cliente.logradouro} - "/>	
+			<mx:Label text="nº: {rptr.currentItem.cliente.numero}"/>
+			<mx:Label text="{rptr.currentItem.cliente.bairro}"/>
+			<mx:Label text="{rptr.currentItem.cliente.cidade} - "/>
+			<mx:Label text="{rptr.currentItem.cliente.uf} - "/>
+			<mx:Label text="{rptr.currentItem.cliente.cep}"/>
+		</mx:HBox>
+		<ReportDataGrid width="100%" dataProvider="{ rptr.currentItem.itens }"
+			fontSize="9" borderStyle="none" rowHeight="17">
+			<columns>
+				<mx:DataGridColumn width="2" headerText="CÓD" dataField="id"/>
+				<mx:DataGridColumn width="2" headerText="RF" dataField="rfUnica"/>
+				<mx:DataGridColumn width="10" headerText="PRODUTO" dataField="item"/>
+				<mx:DataGridColumn width="2" headerText="GRADE" dataField="grade"/>
+				<mx:DataGridColumn width="2" headerText="UNID" dataField="um"/>
+				<mx:DataGridColumn width="2" headerText="QTD" dataField="qtd"/>
+				<mx:DataGridColumn width="3" headerText="VLR. UNIT" dataField="vlrUnit"/>
+				<mx:DataGridColumn width="3" headerText="VLR. TOTAL" dataField="vlrTotal"/>
+				<mx:DataGridColumn width="2" headerText="VEND." dataField="idVendedor"/>
+			</columns>
+		</ReportDataGrid>
+		
+		<mx:HBox width="100%">
+			<mx:Label text="VLR. PRODUTO: {rptr.currentItem.vlrProduto}" width="25%"/>	
+			<mx:Label text="DESC.(%):{rptr.currentItem.percDesc}" width="25%"/>
+			<mx:Label text="DESC.(R$):{rptr.currentItem.vlrDesc}" width="25%"/>
+			<mx:Label text="VLR. TOTAL: {rptr.currentItem.vlrTotal}" width="25%"/>
+		</mx:HBox>
+		
+	</mx:Repeater>
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.ClienteEndereco;
+			import mx.formatters.CurrencyFormatter;
+			import Core.Utils.Funcoes;
+			import mx.formatters.Formatter;
+			import org.alivepdf.layout.Format;
+			import mx.validators.StringValidator;
+			import org.idmedia.as3commons.util.StringUtils;
+			import mx.utils.StringUtil;
+			import SDE.Entidade.Empresa;
+			import SDE.Entidade.MovItemEstoque;
+			import SDE.Enumerador.EMovResumo;
+			import SDE.Enumerador.EMovTipo;
+			import impressoes.relatorios.modelos.ModeloCliente;
+			import impressoes.relatorios.modelos.ModeloMovItem;
+			import impressoes.relatorios.modelos.ModeloMov;
+			import mx.controls.Alert;
+			import SDE.Entidade.MovItem;
+			import SDE.Entidade.Mov;
+			import SDE.Enumerador.EMovTipo;
+			import mx.managers.PopUpManager;
+			import mx.containers.VBox;
+			
+			public override function converteDados(origem:Array):Array
+			{
+				var retorno:Array = [];
+				
+				var fmtRS: CurrencyFormatter = new CurrencyFormatter();
+				fmtRS.currencySymbol = '';
+				fmtRS.precision = 2;
+				
+				for each (var mov:Mov in origem)
+				{
+					var emp: Empresa = new Empresa();
+					//movimentação	
+					var mm:ModeloMov = new ModeloMov();
+					mm.id = mov.id;
+					mm.dthrMov = mov.dthrMovEmissao;
+					mm.tipo =  buscaTipo(mov.tipo);
+					mm.vlrTotal = fmtRS.format(mov.vlrTotal);
+					mm.vlrProduto = fmtRS.format( mov.vlrItensFinal);
+					mm.vlrDesc = fmtRS.format( mov.vlrAcrescimo);
+					//desconto
+					if(mov.vlrItensFinal != 0)
+						mm.percDesc = fmtRS.format( (mov.vlrAcrescimo * 100)/ mov.vlrItensFinal );
+					//funcionarios
+					if(mov.__cliFuncionario)
+						if(mov.__cliFuncionario != null)
+							mm.funcionario = mov.__cliFuncionario.nome;
+					//Clientes
+					if(mov.__cli !=  null){
+						mm.cliente = new ModeloCliente();
+						mm.cliente.nome = mov.__cli.nome;
+						mm.cliente.id = mov.__cli.id;
+						mm.cliente.cpf_cnpj = Core.Utils.Funcoes.MascaraCPF(mov.__cli.cpf_cnpj);
+						
+						//endereco
+						if(mov.__cli.__enderecos.length >0){
+							var pe:ClienteEndereco = mov.__cli.__enderecos[0];
+	 						mm.cliente.logradouro = pe.logradouro;
+	 						mm.cliente.numero = pe.numero;
+	 						mm.cliente.bairro = pe.bairro;
+	 						mm.cliente.cidade = pe.cidade;
+	 						mm.cliente.uf = pe.uf;
+	 						mm.cliente.cep = pe.cep;
+						}
+					}	
+					//itens
+					mm.itens = [];
+					for each (var mi:MovItem in mov.__mItens)
+					{
+						for	each(var mie:MovItemEstoque in mi.__mIEstoques)
+						{
+							var mmi:ModeloMovItem = new ModeloMovItem();
+							var vlrUnit:Number = 0;
+							if(mov.resumo == EMovResumo.entrada)
+								vlrUnit = mi.vlrUnitCompra;
+							else
+								vlrUnit = mi.vlrUnitVendaFinal;
+							mmi.id =  mi.idItem;
+							mmi.item = mi.__item.nome;
+							mmi.rfUnica =  mi.__item.rfUnica;
+							mmi.grade =  mie.identificador;
+							mmi.qtd =  fmtRS.format(mie.qtd);
+							mmi.vlrUnit =  fmtRS.format(vlrUnit);
+							mmi.vlrTotal =  fmtRS.format(vlrUnit * mie.qtd);
+							mmi.um = mi.__item.unidMed.toString();
+							mmi.idVendedor = mi.idClienteFuncionario;
+							mmi.grade = mie.identificador;
+							mm.itens.push(mmi);
+						}
+					}
+					retorno.push(mm);
+				}
+				
+				retorno.sortOn("id");
+				return retorno;
+			}
+			private function create():void
+			{
+				var a:Object = dados;
+			}
+			
+			
+			private function buscaTipo(tipo:String ):String
+			{
+				var msg:String = "";
+				//Entrada
+				if(tipo == EMovTipo.entrada_compra)
+					msg = "ENTRADA DE MERCADORIA";
+				if(tipo == EMovTipo.entrada_devolucao)
+					msg = "DEVOLUÇÃO DE MERCADORIA";
+				if(tipo == EMovTipo.entrada_cancel)
+					msg = "CANCELAMENTO DE ENTRADA";
+				//Saida de mercadoria
+				if(tipo == EMovTipo.saida_venda)
+					msg = "VENDA DE MERCADORIA";
+				if(tipo == EMovTipo.saida_devolucao)
+					msg = "DEVOLUÇÃO DE VENDA";
+				if(tipo == EMovTipo.saida_cancel)
+					msg = "CANCELAMENTO DE VENDA";
+				//Orçamento
+				if(tipo == EMovTipo.outros_orcamento)
+					msg = "ORÇAMENTO";
+				if(tipo == EMovTipo.outros_reserva)
+					msg = "RESERVA DE ESTOQUE";
+				if(tipo == EMovTipo.outros_cancel)
+					msg = "CANCELAMENTO RESERVA";
+				//ambos
+				if(tipo == EMovTipo.ambos_balan)
+					msg = "BALANÇO DE ESTOQUE";
+				if(tipo == EMovTipo.ambos_cancel)
+					msg = "CANCELAMENTO DE AMBOS";					
+				return msg;					
+			}
+			
+		]]>
+	</mx:Script>
+</Body>

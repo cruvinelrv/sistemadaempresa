@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	initialize="{ init() }"
+	creationComplete="{ create() }"
+	horizontalScrollPolicy="off"
+	xmlns:CP="Componentes.CP.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*" xmlns:comp="Componentes.comp.*" xmlns:controls="com.flexpernambuco.controls.*" xmlns:Paginacao="Componentes.Paginacao.*">
+	<mx:states>
+		<mx:State name="state1">
+			<mx:SetStyle target="{tela0}" name="horizontalCenter" value="-2000"/>
+			<mx:SetStyle target="{tela1}" name="horizontalCenter" value="0"/>
+			<mx:SetStyle target="{tela2}" name="horizontalCenter" value="2000"/>
+		</mx:State>
+		<mx:State name="state2">
+			<mx:SetStyle target="{tela0}" name="horizontalCenter" value="-4000"/>
+			<mx:SetStyle target="{tela1}" name="horizontalCenter" value="-2000"/>
+			<mx:SetStyle target="{tela2}" name="horizontalCenter" value="0"/>
+		</mx:State>
+		<mx:State name="state3">
+			<mx:SetStyle target="{tela0}" name="horizontalCenter" value="0"/>
+			<mx:SetStyle target="{tela1}" name="horizontalCenter" value="2000"/>
+			<mx:SetStyle target="{tela2}" name="horizontalCenter" value="4000"/>
+		</mx:State>
+	</mx:states>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import Core.App;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Enumerador.EBalancoSituacao;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EBalancoSituacao;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EBalancoSituacao;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EItemTipoIdent;
+			import mx.managers.PopUpManager;
+			import SDE.Enumerador.EBalancoSituacao;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EBalancoSituacao;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EBalancoSituacao;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EBalancoSituacao;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EBalancoSituacao;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EBalancoSituacao;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Zoom;
+			import mx.effects.Move;
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+	<mx:Script source="script.as"/>
+	
+	<mx:VBox id="tela0" moveEffect="{Move}"
+		width="800" height="400"
+		horizontalCenter="0" verticalCenter="0"
+		borderColor="gray" borderStyle="solid" borderThickness="0" cornerRadius="5"
+		styleName="padding0">
+		
+		<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center"
+			fontSize="26" fontWeight="bold">
+			<mx:Button label="Itens Balanço" height="60" click="btnItensBalanco_click()"/>
+			<mx:Button label="Estoque na Data" height="60" click="btnEstoqueNaData()"/>
+			<mx:Button label="Verificação de Balanço" height="60" click="btnVerificacaoBalanco(); chkbSomenteDivergencias.selected = true"/>
+		</mx:HBox>
+		
+		<mx:HBox width="100%" horizontalAlign="right"
+			fontSize="22" fontWeight="bold">
+			<mx:Button label="Voltar" click="{currentState = 'state1'}" labelPlacement="left"
+				icon="{Imagens.unica.icn_32_direita_desenho}"/>
+		</mx:HBox>
+		
+	</mx:VBox>	
+	
+	<mx:VBox id="tela1" moveEffect="{Move}"
+		width="900" height="500"
+		horizontalCenter="0" verticalCenter="0"
+		borderColor="gray" borderStyle="solid" borderThickness="0" cornerRadius="5"
+		styleName="padding0"
+		fontWeight="bold">
+		
+		<!--headerColors="[#efefef,#cccccc]"-->
+		
+		<mx:DataGrid id="gridBalancos"
+			width="100%" height="100%"
+			themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+			<mx:columns>
+				<mx:DataGridColumn id="colunaBalancoNome" width="4" labelFunction="gridBalancos_labelfunction" headerText="Nome" />
+				<mx:DataGridColumn id="colunaBalancoSituacao" width="2" labelFunction="gridBalancos_labelfunction" headerText="Situação"/>
+				<mx:DataGridColumn width="1" headerText="Abrir">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="Abrir" styleName="padding3"
+								click="{ dispatchEvent( new Event('abrir', true) ) }"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="1" headerText="Concluir">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="Concluir" styleName="padding3" enabled="{(data.situacao==EBalancoSituacao.em_andamento)}" paddingLeft="5"
+								click="{ dispatchEvent( new Event('concluir', true) ) }"
+								>
+								<mx:Script>
+									import SDE.Enumerador.EBalancoSituacao;
+								</mx:Script>
+							</mx:Button>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="1" headerText="Cancelar">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="Cancelar" styleName="padding3" enabled="{(data.situacao==EBalancoSituacao.em_andamento)}" paddingLeft="5"
+								click="{ dispatchEvent( new Event('cancelar', true) ) }"
+								>
+								<mx:Script>
+									import SDE.Enumerador.EBalancoSituacao;
+								</mx:Script>
+							</mx:Button>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="1" headerText="Relatório">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="Relatório" styleName="padding3" enabled="{(data.situacao==EBalancoSituacao.efetuado)}" paddingLeft="5"
+								click="{ dispatchEvent( new Event('relatorio', true) ) }">
+								<mx:Script>
+									<![CDATA[
+										import SDE.Enumerador.EBalancoSituacao;
+									]]>
+								</mx:Script>
+							</mx:Button>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<mx:HBox width="100%" height="50" verticalAlign="middle">
+			<mx:Button icon="{Imagens.unica.icn_32_adiciona}" label="Novo" click="{usuario_cria_balanco()}" />
+		</mx:HBox>
+	</mx:VBox>
+		
+	<mx:VBox id="tela2" moveEffect="{Move}"
+		width="900" height="500"
+		horizontalCenter="0" verticalCenter="0"
+		borderColor="gray" borderStyle="solid" borderThickness="0" cornerRadius="5"
+		styleName="padding0">
+		
+		<mx:VBox width="100%" verticalAlign="middle" backgroundColor="#3B5998" color="white" fontSize="14">
+			<mx:HBox verticalAlign="middle" width="100%">
+				<mx:Label text="Valor Parcial Balanço - (Preço de Custo):"/>
+				<mx:Label id="lblPrecoTotalCusto"/>
+				<mx:HBox width="100%" horizontalAlign="right" paddingTop="3" paddingRight="3">
+					<mx:Button label="Atualizar Valores" color="black" width="150" click="btnAtualizarValores_Click()"/>
+				</mx:HBox>
+			</mx:HBox>
+			<mx:HBox verticalAlign="middle" width="100%">
+				<mx:Label text="Valor Parcial Balanço - (Preço de Venda):"/>
+				<mx:Label id="lblPrecoTotalVenda"/>
+				<mx:HBox width="100%" horizontalAlign="right" paddingBottom="3" paddingRight="3">
+					<mx:Button label="Relatório Parcial" color="black" width="150" visible="{balanco_selecionado.situacao == EBalancoSituacao.em_andamento}" click="btnRelatorioParcial_Click()"/>
+				</mx:HBox>
+			</mx:HBox>
+		</mx:VBox>
+		
+		<mx:DataGrid id="gridBalancoItens"
+			width="100%" height="100%" fontSize="14"
+			themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+			headerHeight="30"
+			dataProvider="{arraycBalancoItens}">
+			<mx:columns>
+				<!--<mx:DataGridColumn width="1" dataField="id" headerText="" />-->
+				<mx:DataGridColumn width="5" dataField="item_nome" headerText="Item" />
+				<!--<mx:DataGridColumn width="1" dataField="rf_un" headerText="Cod. Un."/>
+				<mx:DataGridColumn width="1" dataField="rf_aux" headerText="Cod. Aux."/>-->
+				<mx:DataGridColumn width="3" dataField="estoque_identificador" headerText="Identificador" />
+				<mx:DataGridColumn width="1" dataField="qtdAnterior" headerText="Qtd. Ant." />
+				<mx:DataGridColumn width="1" dataField="qtdLancada" headerText="Qtd. Lanc." />
+				<mx:DataGridColumn width="1" visible="{(balanco_selecionado.situacao==EBalancoSituacao.em_andamento)}">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button styleName="padding3" icon="{Imagens.unica.icn_16_cancela}"
+								click="{ dispatchEvent( new Event('remover', true) ) }">
+								<mx:Script>
+									import img.Imagens;
+								</mx:Script>
+							</mx:Button>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<mx:HBox width="100%" verticalAlign="middle" fontSize="14" visible="{balanco_selecionado.situacao==EBalancoSituacao.em_andamento}">
+			
+			<mx:VBox width="100%" verticalGap="0">
+				<mx:Label text="Produto:" />
+				<CP:CPesqItem id="cpItem" width="100%" change="usuario_escolheu_item()"/>
+				<!--<CP:PesqItem id="cpItem" width="100%" change="{ usuario_escolheu_item() }"/>-->
+			</mx:VBox>
+			<mx:VBox width="100%" verticalGap="0">
+				<mx:Label text="Estoque:" />
+				<CP:PesqEstoque id="cpEstoque" width="100%" change="{ usuario_escolheu_estoque() }" />
+			</mx:VBox>
+		</mx:HBox>
+		
+		<mx:HBox width="100%" verticalAlign="middle" backgroundColor="#3B5998" color="white" fontSize="14">
+			<mx:Label text="Item Selecionado:"/>
+			<mx:Label id="lblItemSelecionado" text="{(item_selecionado) ? item_selecionado.nome : '' }"/>
+		</mx:HBox>
+		
+		<mx:HBox width="100%" height="50" verticalAlign="middle" fontSize="14">
+			<mx:Button icon="{Imagens.unica.icn_32_esquerda_desenho}" label="Voltar" click="{resetar()}" styleName="padding3" />
+			
+			<mx:Spacer width="100%"/>
+			
+			<mx:HBox enabled="{estoque_lancado!=null}" verticalAlign="middle" visible="{balanco_selecionado.situacao==EBalancoSituacao.em_andamento}">
+				<mx:Label text="QUANT:" />
+				<mx:NumericStepper id="nsQtd" width="150" maximum="9999999" stepSize="0.001"
+					keyDown="{
+						if(event.keyCode==Keyboard.ENTER)
+							usuario_define_quantidade();
+					}"
+					/>
+				<mx:Button icon="{Imagens.unica.icn_32_janela}" label="Lançar" click="{ usuario_define_quantidade() }" />
+			</mx:HBox>
+			
+		</mx:HBox>
+		
+	</mx:VBox>
+	
+	<!--<PopUpPesquisa:SuperPopPesq id="popupProduto"
+		close="PopUpManager.removePopUp(popupProduto)"
+		titleIcon="{Imagens.unica.icn_32_pesquisa}"
+		title="Escolha o Produto"
+		width="900" height="400"
+		layout="vertical"
+		fontSize="14"
+		showCloseButton="true">
+		
+		<mx:VBox width="100%" height="100%">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Label text="Produto:"/>
+				<controls:MasterTextInput id="popupProdutoTxtBusca" capsType="upercase" width="100%"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>-->
+	
+	<PopUpPesquisa:SuperPopPesq id="popupEstoque"
+		close="{PopUpManager.removePopUp(popupEstoque)}"
+		titleIcon="{Imagens.unica.icn_32_estoque}"
+		title="Escolha o Estoque"
+		width="700" height="400"
+		layout="vertical"
+		fontSize="14"
+		showCloseButton="true">
+		
+		<mx:VBox x="10" y="10" width="100%" height="100%" horizontalAlign="right">
+			<mx:DataGrid id="dtGridEstoques"
+				headerColors="[#efefef,#3B5998]"
+				width="100%" height="100%"
+				dataProvider="{arraycEstoques}"
+				keyDown="{ if(event.keyCode==Keyboard.ENTER)popupEstoque_usuario_escolheu_estoque(); }">
+				<mx:columns>
+					<mx:DataGridColumn dataField="idItem" headerText="Item" />
+					<mx:DataGridColumn dataField="identificador" headerText="Grade/Ident." visible="{item_selecionado.tipoIdent != EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="codBarras" headerText="Barras" />
+					<mx:DataGridColumn dataField="lote" headerText="Lote" visible="{item_selecionado.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="dtFab" headerText="Fab" visible="{item_selecionado.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="dtVal" headerText="Val" visible="{item_selecionado.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="qtd" headerText="Qtd" />
+				</mx:columns>
+			</mx:DataGrid>
+			<comp:Botao2 cor="Azul" label="Selecionar"
+				click="popupEstoque_usuario_escolheu_estoque()"
+				keyDown="if(event.keyCode==Keyboard.ENTER)popupEstoque_usuario_escolheu_estoque();"/>
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupRelatorioVerificacaoBalanco"
+		width="520" height="160"
+		titleIcon="{Imagens.unica.icn_32_alerta}"
+		title="Pergunta do Sistema"
+		layout="vertical"
+		showCloseButton="false"
+		fontSize="22" fontWeight="bold">
+		
+		<mx:VBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+			
+			<mx:HBox verticalAlign="middle">
+				<mx:CheckBox id="chkbSomenteDivergencias" selected="true" enabled="true"/>
+				<mx:Label text="Mostrar Somente Divergências de Balanço?"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" horizontalAlign="center">
+				<mx:Button label="OK" click="relVerificacaoBalanco()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+		
+</mx:Canvas>

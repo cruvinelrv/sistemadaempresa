@@ -1,0 +1,39 @@
+package SDE.Outros
+{
+    [Bindable]
+    [RemoteClass(alias='SDE.Outros.PagamentoDigital')]
+    public final class PagamentoDigital
+    {
+        public static function get CLASSE():String{return 'PagamentoDigital';}
+        public static function getCampos():Array{return['id','secao','grupo','subgrupo','marca','modelo','rfUnica','rfMultipla','classificacaoFiscal','locacao','unidMed']};
+        
+        public static var campo_id:String = 'id';
+        public static var campo_secao:String = 'secao';
+        public static var campo_grupo:String = 'grupo';
+        public static var campo_subgrupo:String = 'subgrupo';
+        public static var campo_marca:String = 'marca';
+        public static var campo_modelo:String = 'modelo';
+        public static var campo_rfUnica:String = 'rfUnica';
+        public static var campo_rfMultipla:String = 'rfMultipla';
+        public static var campo_classificacaoFiscal:String = 'classificacaoFiscal';
+        public static var campo_locacao:String = 'locacao';
+        public static var campo_unidMed:String = 'unidMed';
+        public function clone():PagamentoDigital { return new PagamentoDigital(this); }
+        public function PagamentoDigital(obj:Object=null)
+        {
+            if (obj==null)return;
+            for each(var campo:String in getCampos())this[campo]=obj[campo];
+        }
+        public var id:Number = 0;
+        public var secao:String = '';
+        public var grupo:String = '';
+        public var subgrupo:String = '';
+        public var marca:String = '';
+        public var modelo:String = '';
+        public var rfUnica:String = '';
+        public var rfMultipla:String = '';
+        public var classificacaoFiscal:String = '';
+        public var locacao:String = '';
+        public var unidMed:String = 'UN';
+    }
+}

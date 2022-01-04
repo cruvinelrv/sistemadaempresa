@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+	creationComplete="{create()}" backgroundColor="#efefef">
+	
+	<mx:Button label="ping web" click="{proxyPingaWeb();}" />
+	<mx:Button label="ping desktop" click="{proxyPingaDesktop();}" />
+	
+	<mx:Script>
+		<![CDATA[
+			import flash.utils.setTimeout;
+			import flash.utils.clearTimeout;
+			import flash.utils.setInterval;
+			import flash.utils.clearInterval;
+			import SDE.Entidade.Cliente;
+			import janelas.cadastro.Cliente1.JanelaCadCliente;
+			import mx.core.Container;
+			import mx.controls.Alert;
+			//C:\Inetpub\Web\site\sde2\DesktopEmbutido.swf
+			
+			private var LCReceiver:LocalConnection;
+			private var LCSender:LocalConnection;
+			private var LCReceiverConnectionName:String;
+			private var LCSenderConnectionName:String;
+			/*
+			[Bindable] private var externalIsReady:Boolean;
+			public var isConectado:Boolean=false;
+			*/
+			private function create():void
+			{
+				if (parameters["proxy"]==null)
+					return;
+				
+				var receiverweb:String = parameters["receiverweb"];
+				var receiverproxy:String = parameters["receiverproxy"];
+				//aqui é o proxy, vou receber no 'proxy' e enviar para a 'web'
+				LCReceiverConnectionName = "_sde"+receiverproxy;
+				LCSenderConnectionName = "_sde"+receiverweb;
+				
+				//enviador de dados
+				LCSender = new LocalConnection();
+				LCSender.addEventListener( StatusEvent.STATUS, function(event:StatusEvent):void{} );
+				//Comunicação Flex Web
+				LCReceiver = new LocalConnection();
+				LCReceiver.client = this;
+				LCReceiver.allowDomain("*");
+				LCReceiver.connect(LCReceiverConnectionName);
+				
+				//Comunicação C# Desktop
+				ExternalInterface.addCallback("desktop_chama_proxy_executar",ExternalInterface_DesktopChamaProxyExecutar);
+				ExternalInterface.addCallback("ping", ExternalInterface_DesktopPingouProxy);
+				
+				//proxyChamaWebExecutar("proxy_chama_web_proxyabriu");
+				//proxyChamaDesktopExecutar("proxy_chama_desktop_proxyabriu");
+				
+				proxyPingaDesktop();
+				proxyPingaWeb();
+				Alert.show("proxy habilitado\nsender: "+LCSenderConnectionName+"\nreceiver:"+LCReceiverConnectionName);
+			}
+			
+			
+			
+			private function ExternalInterface_DesktopPingouProxy():void
+			{
+				Alert.show("Desktop pingou proxy");
+			}
+			public function web_pinga_proxy():void
+			{
+				Alert.show("Web pingou proxy");
+				proxyPingaWeb();
+			}
+			/*
+			private function lc_Status(ev:StatusEvent):void
+			{
+				if (ev.code!="error")
+					return;
+				Alert.show("desconectado da web");
+				localConnReceiver.close();
+			}
+			
+			private var idIntervaloDesktopProxy:uint = 0;
+			private var idIntervaloProxyDesktop:uint = 0;
+			private function ExternalInterface_DesktopPingouProxy():void
+			{
+				//isso vai gerar um ping-pong infinito entre proxy e desktop
+				//quando desktop parar de responder, o proxy vai cair na função 'liberaRecursosProxy'
+				//liberando recursos utilizados
+				if (idIntervaloDesktopProxy>0)
+					clearTimeout(idIntervaloDesktopProxy);
+				proxyChamaDesktopExecutar("ping");
+				idIntervaloDesktopProxy = setTimeout( liberaLocalConnectionProxyWeb, 5000 );
+			}
+			private function liberaLocalConnectionProxyWeb():void
+			{
+				localConnReceiver.close();
+				localConnReceiver = null;
+				//localConnSender = null;
+				Alert.show('morri');
+			}
+			*/
+			
+			
+				/*
+			private function webPingouProxy():void
+			{
+				if (idIntervaloProxyDesktop>0)
+					clearTimeout(idIntervaloProxyDesktop);
+				//proxyChamaDesktopExecutar("ping"); em 3seg
+				setTimeout(proxyChamaWebExecutar, 3000, "ping");
+				//se essa função for repetinda em menos de 10seg, a função abaixo não ocorrerá
+				idIntervaloProxyDesktop = setTimeout( fechaDesktop, 10000 );
+			}
+			private function fechaDesktop():void
+			{
+				proxyChamaDesktopExecutar("fecha");
+			}
+				*/
+			private function ExternalInterface_DesktopChamaProxyFechar():void
+			{
+				//proxyChamaWebExecutar("proxy_chama_web_proxyfechou");
+			}
+			/*\
+			/**
+			 * FUNÇÃO RESPONSÁVEL PELO RECEBIMENTO DE COMANDOS VINDOS DO DESKTOP
+			 * 
+			 **/
+			private function ExternalInterface_DesktopChamaProxyExecutar(/*argumentos implicitos em 'arguments'*/):void
+			{
+				proxyChamaWebExecutar(arguments);
+			}
+			
+			private var ultima:Number=0;
+			
+			
+			/**
+			 * FUNÇÃO RESPONSÁVEL PELO RECEBIMENTO DE COMANDOS VINDOS DA WEB
+			 * 
+			 **/
+			 //proxy_chama_desktop_executar
+			public function web_chama_proxy_executar(/*argumentos implicitos em 'arguments'*/):void
+			{
+				var d:Date = new Date();
+				var agora:Number = d.minutes*100+d.seconds;//+"_"+d.milliseconds;
+				if (agora==ultima)//força uma espera minima de 1seg
+					return;
+				ultima=agora;
+				//var comando:String = arguments[0];
+				//Alert.show("comando: "+comando,"via LocalConnection, o web acabou de me pingar");
+				/*
+				if(arguments[0]=="ping")
+					webPingouProxy();
+				else
+				*/
+				proxyChamaDesktopExecutar(arguments);
+			}
+			
+			
+			
+			private function proxyPingaDesktop():void
+			{
+				proxyChamaDesktopExecutar("ping");
+			}
+			private function proxyPingaWeb():void
+			{
+				proxyChamaWebExecutar("ping");
+			}
+			
+			/**
+			 * 
+			 * FUNÇÕES MAIS IMPORTANTES, RESPONSAVEIS PELO ENVIO DE COMANDOS PARA AMBOS WEB E DESKTOP
+			 * 
+			 * */
+			private function proxyChamaDesktopExecutar(...a):void
+			{
+				ExternalInterface.call("proxy_chama_desktop_executar",a);
+			}
+			private function proxyChamaWebExecutar(...a):void
+			{
+				Alert.show("pingando "+LCSenderConnectionName+" com parametros "+a)
+				LCSender.send(LCSenderConnectionName, "proxy_chama_web_executar",a);
+			}
+			
+		]]>
+	</mx:Script>
+</mx:Application>

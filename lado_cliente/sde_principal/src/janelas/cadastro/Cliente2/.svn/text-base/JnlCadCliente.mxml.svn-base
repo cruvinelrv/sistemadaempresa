@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	initialize="{ init() }"
+	horizontalScrollPolicy="off"
+	xmlns:CP="Componentes.CP.*" xmlns:controls="com.adobe.flex.extras.controls.*" xmlns:master="com.flexpernambuco.controls.*"
+	xmlns:comp="Componentes.comp.*" xmlns:intelli="br.absolutobrasil.intelli.*" xmlns:Combo="Componentes.Combo.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*" xmlns:SDE="Componentes.SDE.*">
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EPesTipo;
+			import SDE.Enumerador.EContatoTipo;
+			import SDE.Enumerador.EVeiculoTipo;
+			import SDE.Enumerador.EEnderecoTipo;
+			import mx.effects.Move;
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+	<mx:states>
+		<mx:State name="state1">
+			<mx:SetStyle target="{tela1}" name="horizontalCenter" value="0"/>
+			<mx:SetStyle target="{tela2}" name="horizontalCenter" value="2000"/>
+		</mx:State>
+		<mx:State name="state2">
+			<mx:SetStyle target="{tela1}" name="horizontalCenter" value="-2000"/>
+			<mx:SetStyle target="{tela2}" name="horizontalCenter" value="0"/>
+		</mx:State>
+	</mx:states>
+	
+	<mx:Script source="script.as" />
+	
+	<mx:HBox id="tela2" moveEffect="{Move}"
+		width="95%" height="95%"
+		borderColor="#C9CBCC" borderStyle="solid" borderThickness="2"
+		cornerRadius="10"
+		horizontalCenter="0" verticalCenter="0"
+		paddingTop="25" paddingBottom="25" paddingLeft="25" paddingRight="25"
+		fontSize="16"
+		fontWeight="bold">
+		
+		<mx:LinkBar
+			width="150" height="100%"
+			direction="vertical" dataProvider="{vs}" />
+		
+		<mx:ViewStack id="vs" width="100%" height="100%" creationPolicy="all"
+			backgroundColor="#e1e1e1" styleName="padding10">
+			
+			<mx:VBox id="abaDados"
+				label="Dados"
+				width="100%" height="100%">
+				
+				<mx:VBox width="100%" height="100%" fontSize="12" fontWeight="normal">
+					
+					<mx:HBox width="100%">
+						<mx:Label id="lblTitulo" selectable="true" fontSize="14" fontWeight="bold" />
+						<mx:Label id="lblRG" styleName="lbl" text="RG: " 
+							visible="{ _c.tipo == EPesTipo.Fisica }"/>
+						<master:MasterTextInput id="boundRGTextInput"
+							width="100" maxChars="10" styleName="txt"
+							onlyRestrict="number"
+							visible="{ _c.tipo == EPesTipo.Fisica }"/>
+						<mx:Label id="lblUF" text="UF: "
+							visible="{ _c.tipo == EPesTipo.Fisica }"/>
+						<intelli:ComBoxSiglaEstadosBR id="boundUFCombo"
+							visible="{ _c.tipo == EPesTipo.Fisica }"/>
+						<mx:Label id="label4"
+							text="{ (_c.tipo == EPesTipo.Fisica)?'Data Nasc: ':'Data Abertura: ' }" />
+						<master:MasterTextInput id="boundDtNascTextInput" width="100"
+			                validationLanguage="portuguese" required="true" validator="date" />
+					</mx:HBox>
+					
+					<mx:HBox width="100%"
+						fontSize="16" fontWeight="bold">
+						<mx:Label text="Nome: " id="label1" styleName="lbl" width="100"/>
+						<master:MasterTextInput id="boundNomeTextInput" width="100%"
+							maxChars="60" minLength="5"
+							onlyRestrict="alphabeticNoSpecial" capsType="upercase" />
+					</mx:HBox>
+					<mx:HBox width="100%"
+						fontSize="16" fontWeight="bold">
+						<mx:Label id="label2" styleName="lbl" width="100"
+						text="{ (_c.tipo == EPesTipo.Fisica)?'Apelido: ':'Raz Soc: ' }"/>
+						<master:MasterTextInput id="boundApelidoTextInput" width="100%"
+							maxChars="60"
+							onlyRestrict="alphabeticNoSpecial" capsType="upercase" />
+					</mx:HBox>
+					
+					
+					<mx:HBox width="100%"  horizontalGap="0">
+						<mx:VBox id="vbFuncionario"
+							mouseOver="mouseEh(event.target, event.type, _c.ehFuncionario)"
+							mouseOut="mouseEh(event.target, event.type, _c.ehFuncionario)"
+							click="_c.ehFuncionario=!_c.ehFuncionario; mouseEh(event.target, event.type, _c.ehFuncionario); funcionarioChecked()"
+							width="120" height="100"
+							horizontalAlign="center" verticalAlign="middle">
+							<mx:Image source="{Imagens.unica.icn_64_funcionario}" />
+							<mx:CheckBox
+								selected="{_c.ehFuncionario}" enabled="false"
+								textDecoration="underline" label="Funcionário" />
+						</mx:VBox>
+						<mx:VBox id="vbParceiro"
+							mouseOver="mouseEh(event.target, event.type, _c.ehParceiro)"
+							mouseOut="mouseEh(event.target, event.type, _c.ehParceiro)"
+							click="_c.ehParceiro=!_c.ehParceiro; mouseEh(event.target, event.type, _c.ehParceiro)"
+							width="120" height="100"
+							horizontalAlign="center" verticalAlign="middle">
+							<mx:Image source="{Imagens.unica.icn_64_parceiro}" />
+							<mx:CheckBox
+								selected="{_c.ehParceiro}" enabled="false"
+								textDecoration="underline" label="Parceiro" />
+						</mx:VBox>
+						<mx:VBox id="vbFornecedor"
+							mouseOver="mouseEh(event.target, event.type, _c.ehFornecedor)"
+							mouseOut="mouseEh(event.target, event.type, _c.ehFornecedor)"
+							click="_c.ehFornecedor=!_c.ehFornecedor; mouseEh(event.target, event.type, _c.ehFornecedor)"
+							width="120" height="100"
+							horizontalAlign="center" verticalAlign="middle">
+							<mx:Image source="{Imagens.unica.icn_64_fornecedor}" />
+							<mx:CheckBox
+								selected="{_c.ehFornecedor}" enabled="false"
+								textDecoration="underline" label="Fornecedor" />
+						</mx:VBox>
+						<mx:VBox id="vbTransportador"
+							mouseOver="mouseEh(event.target, event.type, _c.ehTransportador)"
+							mouseOut="mouseEh(event.target, event.type, _c.ehTransportador)"
+							click="_c.ehTransportador=!_c.ehTransportador; mouseEh(event.target, event.type, _c.ehTransportador)"
+							width="120" height="100"
+							horizontalAlign="center" verticalAlign="middle">
+							<mx:Image source="{Imagens.unica.icn_64_transportador}" />
+							<mx:CheckBox
+								selected="{_c.ehTransportador}" enabled="false"
+								textDecoration="underline" label="Transportador" />
+						</mx:VBox>
+					</mx:HBox>
+					<mx:VBox width="100%" height="100%" label="Obs"
+						icon="{Imagens.unica.icn_16_listas}"
+						styleName="padding10" verticalGap="5">
+						<mx:Label
+							fontWeight="bold" fontSize="14"
+							text="Observações particulares de minha empresa sobre esta pessoa."/>
+						<mx:TextArea id="boundObsTextInput" width="80%" height="80%" />
+					</mx:VBox>
+					
+				</mx:VBox>
+				
+				<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+					<comp:Botao icon="{Imagens.unica.icn_32_esquerda_desenho}" label="Desfazer e Voltar" click="{ btnDesfazer_click(true) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_deleta}" label="Desfazer" click="{ btnDesfazer_click(false) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar e Voltar" click="{ btnSalvar_click(true, abaDados) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar" click="{ btnSalvar_click(false, abaDados) }" />
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<mx:VBox id="abaContatos"
+				label="Contatos"
+				width="100%" height="100%">
+				
+				<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+					<comp:Botao label="Adicionar" icon="{Imagens.unica.icn_32_adiciona}" click="{ usuario_adiciona_contato() }"/>
+				</mx:HBox>
+				
+				<mx:DataGrid id="abaContatos_grid" width="100%" height="100%"
+					themeColor="#3B5998"
+					fontSize="12" fontWeight="normal"
+					dataProvider="{arraycContatos}"
+					editable="false">
+					<mx:columns>
+					<!--
+						com esses campos eu posso ver claramente quando a linha foi recém-inserida
+						<mx:DataGridColumn dataField="id" />
+						<mx:DataGridColumn dataField="idPessoa" />
+						-->
+						<mx:DataGridColumn dataField="campo" headerText="Descrição" />
+						<mx:DataGridColumn dataField="valor" headerText="Contato"/>
+						<mx:DataGridColumn dataField="obs" headerText="Observação"/>
+						<mx:DataGridColumn headerText=" " width="100" editable="false">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button label="{'Alterar'}"
+										width="80%" labelPlacement="right" color="#008800"
+										click="dispatchEvent(new Event('usuario_edita_contato', true))">
+										<mx:Script>
+											<![CDATA[
+												import img.Imagens;
+											]]>
+										</mx:Script>
+									</mx:Button>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText=" " width="100" editable="false">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button label="{(data.isDeletado) ? 'removido':''}"
+										width="80%" labelPlacement="right" color="#840000"
+										icon="{Imagens.unica.icn_16_cancela}"
+										click="dispatchEvent(new Event('usuario_remove_contato', true))">
+										<mx:Script>
+											<![CDATA[
+												import img.Imagens;
+											]]>
+										</mx:Script>
+									</mx:Button>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+					
+					
+				<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+					<comp:Botao icon="{Imagens.unica.icn_32_esquerda_desenho}" label="Desfazer e Voltar" click="{ btnDesfazer_click(true) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_deleta}" label="Desfazer" click="{ btnDesfazer_click(false) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar e Voltar" click="{ btnSalvar_click(true, abaContatos) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar" click="{ btnSalvar_click(false, abaContatos) }" />
+				</mx:HBox>
+				
+			</mx:VBox>
+			<mx:VBox id="abaEnderecos"
+				label="Endereços"
+				width="100%" height="100%">
+					
+					
+				<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+					<comp:Botao label="Adicionar" icon="{Imagens.unica.icn_32_adiciona}" click="{ usuario_adiciona_endereco() }"/>
+				</mx:HBox>
+				
+				<mx:DataGrid id="abaEnderecos_grid" width="100%" height="100%"
+					themeColor="#3B5998"
+					fontSize="12" fontWeight="normal"
+					dataProvider="{arraycEnderecos}"
+					editable="false">
+					<mx:columns>
+						<mx:DataGridColumn width="3" dataField="campo" headerText="Tipo Endereço" />
+						<mx:DataGridColumn width="6" dataField="logradouro" headerText="Logradouro" />
+						<mx:DataGridColumn width="6" dataField="bairro" headerText="Bairro" />
+						<mx:DataGridColumn width="6" dataField="cidade" headerText="Cidade" />
+						<mx:DataGridColumn width="2" dataField="uf" headerText="UF" />
+						<mx:DataGridColumn width="3" dataField="numero" headerText="Número" />
+						<mx:DataGridColumn width="3" dataField="cep" headerText="CEP" />
+						<mx:DataGridColumn width="3" dataField="inscr" headerText="Insc. Estadual" />
+						<mx:DataGridColumn width="3" dataField="inscrMun" headerText="Insc. Municipal" />
+						<mx:DataGridColumn width="6" dataField="complemento" headerText="Complemento" />
+						<mx:DataGridColumn width="6" dataField="obs" headerText="Observação" />
+						<mx:DataGridColumn headerText=" " width="4" editable="false">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button label="{'Alterar'}"
+										labelPlacement="right" color="#008800"
+										click="dispatchEvent(new Event('usuario_edita_endereco', true))" />
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn width="4" editable="false" >
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button label="{(data.isDeletado)?'removido':''}"
+										icon="{Imagens.unica.icn_16_cancela}"
+										click="dispatchEvent(new Event('usuario_remove_endereco', true))" >
+										<mx:Script>
+											<![CDATA[
+												import img.Imagens;
+											]]>
+										</mx:Script>
+									</mx:Button>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+					
+					
+				<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+					<comp:Botao icon="{Imagens.unica.icn_32_esquerda_desenho}" label="Desfazer e Voltar" click="{ btnDesfazer_click(true) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_deleta}" label="Desfazer" click="{ btnDesfazer_click(false) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar e Voltar" click="{ btnSalvar_click(true, abaEnderecos) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar" click="{ btnSalvar_click(false, abaEnderecos) }" />
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<mx:VBox id="abaAmigos"
+				label="Depen/Autori"
+				width="100%" height="100%">
+				
+				<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+					<comp:Botao label="Adicionar" icon="{ Imagens.unica.icn_32_adiciona }" click="{ usuario_adiciona_amigo() }"/>
+				</mx:HBox>
+				
+				<mx:DataGrid id="abaAmigos_grid" fontSize="12" fontWeight="normal"
+					themeColor="#3B5998"
+					width="100%" height="100%"
+					editable="false" dataProvider="{arraycAmigos}">
+					<mx:columns>
+						<mx:DataGridColumn width="100" dataField="key"  headerText="Descrição"/>
+						<mx:DataGridColumn width="200" dataField="nome" headerText="Nome"/>
+						<mx:DataGridColumn width="75" dataField="data" headerText="Data"/>
+						<mx:DataGridColumn width="75" dataField="fone" headerText="Telefone" />
+						<mx:DataGridColumn width="100" dataField="obs"  headerText="Observação"/>
+						<mx:DataGridColumn width="45" editable="false" headerText="Dependente">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:CheckBox selected="{data.ehDependente}" textAlign="center" enabled="false"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn width="45" editable="false" headerText="Autorizado">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:CheckBox selected="{data.ehAutorizado}" textAlign="center" enabled="false"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn width="100" headerText=" " editable="false">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button label="{'Alterar'}"
+										labelPlacement="right" color="#008800"
+										click="dispatchEvent(new Event('usuario_edita_amigo', true))" />
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn width="100" headerText=" " editable="false">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button label="{(data.isDeletado)?'removido':''}"
+										icon="{Imagens.unica.icn_16_cancela}"
+										click="dispatchEvent(new Event('usuario_remove_amigo', true))" >
+										<mx:Script>
+											<![CDATA[
+												import img.Imagens;
+											]]>
+										</mx:Script>
+									</mx:Button>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+				
+				<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+					<comp:Botao icon="{Imagens.unica.icn_32_esquerda_desenho}" label="Desfazer e Voltar" click="{ btnDesfazer_click(true) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_deleta}" label="Desfazer" click="{ btnDesfazer_click(false) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar e Voltar" click="{ btnSalvar_click(true, abaAmigos) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar" click="{ btnSalvar_click(false, abaAmigos) }" />
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<mx:VBox id="abaVeiculos"
+				label="Veiculos"
+				width="100%" height="100%">
+					
+				<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+					<comp:Botao label="Adicionar" icon="{ Imagens.unica.icn_32_adiciona }" click="{ usuario_adiciona_veiculo() }"/>
+				</mx:HBox>
+				
+				<mx:DataGrid id="abaVeiculos_grid" width="100%" height="100%" fontSize="12"
+					themeColor="#3B5998"
+					fontWeight="normal"
+					dataProvider="{arraycVeiculos}"
+					editable="false">
+					<mx:columns>
+						<mx:DataGridColumn dataField="nome" headerText="Descrição" />
+						<mx:DataGridColumn dataField="placaNumero" headerText="Placa"/>
+						<mx:DataGridColumn dataField="placaUF" headerText="UF"/>
+						<mx:DataGridColumn dataField="regNacTranspCarga" headerText="Reg Nac Transp Carga"/>
+						<mx:DataGridColumn dataField="chassi" headerText="Chassi"/>
+						<mx:DataGridColumn dataField="numSerieMotor" headerText="Num Serie do Motor"/>
+						<mx:DataGridColumn dataField="franquia" headerText="Franquia"/>
+						<mx:DataGridColumn dataField="ano" headerText="Ano"/>
+						<mx:DataGridColumn dataField="marca" headerText="Marca"/>
+						<mx:DataGridColumn dataField="modelo" headerText="Modelo"/>
+						<mx:DataGridColumn dataField="valorFIPE" headerText="Valor Tabela FIPE"/>
+						<mx:DataGridColumn headerText=" " width="100" editable="false">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button label="{'Alterar'}"
+										width="80%" labelPlacement="right" color="#008800"
+										click="dispatchEvent(new Event('usuario_edita_veiculo', true))" />
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText=" " width="100" editable="false">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button label="{(data.isDeletado)?'removido':''}"
+										icon="{Imagens.unica.icn_16_cancela}"
+										click="dispatchEvent(new Event('usuario_remove_veiculo', true))" >
+										<mx:Script>
+											<![CDATA[
+												import img.Imagens;
+											]]>
+										</mx:Script>
+									</mx:Button>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+					
+				
+				<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+					<comp:Botao icon="{Imagens.unica.icn_32_esquerda_desenho}" label="Desfazer e Voltar" click="{ btnDesfazer_click(true) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_deleta}" label="Desfazer" click="{ btnDesfazer_click(false) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar e Voltar" click="{ btnSalvar_click(true, abaVeiculos) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar" click="{ btnSalvar_click(false, abaVeiculos) }" />
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+			<!--<mx:VBox id="abaFuncionario"
+				width="100%" height="100%"
+				verticalAlign="middle" horizontalAlign="center"
+				label="Funcionário"
+				show="binding_comissao(cliente_selecionado)">
+				
+				<mx:LinkBar id="lbFuncionario" dataProvider="{vsFuncionario}" width="100%"
+					fontWeight="bold" fontSize="16"/>
+				
+				<mx:ViewStack id="vsFuncionario" width="100%" height="100%">
+					
+					<mx:VBox label="Comissões">
+						
+						<mx:VBox verticalAlign="middle" horizontalAlign="center" width="100%" height="100%">
+					
+							<mx:HBox verticalAlign="middle">
+								<mx:Label text="Cargo:"/>
+								<Combo:CmbCargo id="cmbCargo" width="200" change="cmbCargo_Change()"/>
+							</mx:HBox>
+							
+							<mx:VBox>
+								<mx:HBox verticalAlign="middle">
+									<mx:CheckBox id="boundMontanteTotalCheckBox" label="Montante Total" width="280" fontWeight="bold"/>
+									<mx:NumericStepper id="boundMontanteTotalNumericStepper" minimum="0" maximum="100" stepSize="0.01" width="150" enabled="{boundMontanteTotalCheckBox.selected}"/>
+								</mx:HBox>
+								<mx:HBox verticalAlign="middle">
+									<mx:CheckBox id="boundMaoDeObraCheckBox" label="Mão de Obra" width="280" fontWeight="bold"/>
+									<mx:NumericStepper id="boundMaoDeObraNumericStepper" minimum="0" maximum="100" stepSize="0.01" width="150" enabled="{boundMaoDeObraCheckBox.selected}"/>
+								</mx:HBox>
+								<mx:HBox verticalAlign="middle">
+									<mx:CheckBox id="boundMaoDeObraGeralCheckBox" label="Mão de Obra Geral" width="280" fontWeight="bold"/>
+									<mx:NumericStepper id="boundMaoDeObraGeralNumericStepper" minimum="0" maximum="100" stepSize="0.01" width="150" enabled="{boundMaoDeObraGeralCheckBox.selected}"/>
+								</mx:HBox>
+								<mx:HBox verticalAlign="middle">
+									<mx:CheckBox id="boundMaoDeObraGarantiaCheckBox" label="Mão de Obra em Garantia" width="280" fontWeight="bold"/>
+									<mx:NumericStepper id="boundMaoDeObraGarantiaNumericStepper" minimum="0" maximum="100" stepSize="0.01" width="150" enabled="{boundMaoDeObraGarantiaCheckBox.selected}"/>
+								</mx:HBox>
+								<mx:HBox verticalAlign="middle">
+									<mx:CheckBox id="boundMaoDeObraGeralGarantiaCheckBox" label="Mão de Obra Geral em Garantia" width="280" fontWeight="bold"/>
+									<mx:NumericStepper id="boundMaoDeObraGeralGarantiaNumericStepper" minimum="0" maximum="100" stepSize="0.01" width="150" enabled="{boundMaoDeObraGeralGarantiaCheckBox.selected}"/>
+								</mx:HBox>
+								<mx:HBox verticalAlign="middle">
+									<mx:CheckBox id="boundProdutosEmGarantiaCheckBox" label="Produtos em Garantia" width="280" fontWeight="bold"/>
+									<mx:NumericStepper id="boundProdutosEmGarantiaNumericStepper" minimum="0" maximum="100" stepSize="0.01" width="150" enabled="{boundProdutosEmGarantiaCheckBox.selected}"/>
+								</mx:HBox>
+								<mx:HBox verticalAlign="middle">
+									<mx:CheckBox id="boundProdutosCheckBox" label="Produtos" width="280" fontWeight="bold"/>
+									<mx:NumericStepper id="boundProdutosNumericStepper" minimum="0" maximum="100" stepSize="0.01" width="150" enabled="{boundProdutosCheckBox.selected}"/>
+								</mx:HBox>
+							</mx:VBox>
+						
+						</mx:VBox>
+						
+					</mx:VBox>
+					
+					<mx:VBox label="Permissões" id="tabPermissoes" enabled="true"
+						verticalAlign="middle" horizontalAlign="center"
+						width="100%" height="100%" fontSize="14">						
+						
+						<mx:DataGrid id="dgPermissoes" editable="true"
+							width="100%" height="100%"
+							themeColor="#3B5998"
+							>
+							<mx:columns>
+								<mx:DataGridColumn width="9" dataField="variavel" headerText="Menu" editable="false"/>
+								<mx:DataGridColumn width="1" dataField="valor" headerText="Acesso Permitido?" editable="true"/>
+							</mx:columns>
+						</mx:DataGrid>
+						
+					</mx:VBox>
+					
+				</mx:ViewStack>
+				
+				<mx:HBox width="100%" horizontalAlign="right" verticalAlign="bottom" fontSize="14">
+					<comp:Botao icon="{Imagens.unica.icn_32_esquerda_desenho}" label="Desfazer e Voltar" click="{ btnDesfazer_click(true) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_deleta}" label="Desfazer" click="{ btnDesfazer_click(false) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar e Voltar" click="{ btnSalvar_click(true, abaFuncionario) }" />
+					<comp:Botao icon="{Imagens.unica.icn_32_salva}" label="Salvar" click="{ btnSalvar_click(false, abaFuncionario) }" />
+				</mx:HBox>
+				
+			</mx:VBox>-->
+			
+		</mx:ViewStack>
+		
+		
+	</mx:HBox>
+	
+	
+	
+	
+	
+	
+	<mx:VBox
+		id="tela1" moveEffect="{Move}"
+		width="600" height="350"
+		horizontalCenter="0" verticalCenter="0"
+		paddingTop="25" paddingBottom="25" paddingLeft="25" paddingRight="25"
+		fontSize="16" fontWeight="bold"
+		
+		borderColor="#C9CBCC" borderStyle="solid" borderThickness="2"
+		cornerRadius="10">
+		
+		<mx:LinkBar fontSize="30" dataProvider="{vsConsCad}"/>
+		
+		<mx:ViewStack id="vsConsCad"
+			width="100%" height="100%">
+			
+			<mx:VBox
+				width="100%" height="100%"
+				label="Consulta" icon="{Imagens.unica.icn_64_lapis}">
+				
+				
+				
+				<CP:PesqCliente id="cpCliente" fontWeight="normal"
+					width="530"
+					change="{trata_cpCliente_change()}" />
+				
+				
+				
+			</mx:VBox>
+			<mx:VBox
+				width="100%" height="100%"
+				label="Cadastro" icon="{Imagens.unica.icn_64_adiciona}">
+				
+				<mx:HBox width="100%">
+					<mx:Label text="Tipo:" width="150"/>
+					<mx:RadioButton id="rbFis"
+						label="Fisica"
+						selected="true"/>
+					<mx:RadioButton id="rbJur"
+						label="Juridica"
+						selected="false"/>
+					<mx:Image source="{(rbFis.selected || rbJur.selected) ? Imagens.unica.icn_32_aceita : Imagens.unica.icn_32_deleta }" />
+				</mx:HBox>
+				<mx:HBox width="100%">
+					<mx:Label text="{(rbFis.selected)?'CPF':'CNPJ'}:" width="150"/>
+					<controls:MaskedTextInput id="txtCPF" width="100%"
+						inputMask="{(rbFis.selected)?'###/.###/.###-##':'##/.###/.###//####-##'}"
+						keyUp="{ validaCPF() }"/>
+					<mx:Image source="{(isCpfValido) ? Imagens.unica.icn_32_aceita : Imagens.unica.icn_32_deleta }" />
+				</mx:HBox>
+				<mx:HBox width="100%">
+					<mx:Label text="{(rbFis.selected)?'Nome: ':'Nome Fantasia: '}" width="150"/>
+					<master:MasterTextInput id="txtNome" width="100%" capsType="upercase"/>
+					<mx:Image source="{(txtNome.text.length==0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+				</mx:HBox>
+				<mx:HBox width="100%">
+					<mx:Label text="{(rbFis.selected)?'Apelido: ':'Raz Soc: :'}" width="150"/>
+					<master:MasterTextInput id="txtApelRazao" width="100%" capsType="upercase"/>
+					<mx:Image source="{(txtApelRazao.text.length==0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+				</mx:HBox>
+				<mx:HBox width="100%" horizontalAlign="left">
+					<mx:Spacer width="150"/>
+					<comp:Botao width="200" icon="{Imagens.unica.icn_32_adiciona}"
+						label="Criar"
+						click="{Criar()}"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+		</mx:ViewStack>
+		
+		
+		
+		
+		
+	</mx:VBox>
+		
+	<PopUpPesquisa:SuperPopPesq id="abaContatos_popup"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_64_telefone}"
+		title="Contato"
+		fontSize="14" styleName="padding5"
+		width="390" height="360"
+		layout="vertical">
+		
+		<mx:Grid x="10" y="42" width="100%">
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label text="Descrição"/>
+						<master:MasterTextInput id="abaContatos_boundDescricaoTextInput" capsType="upercase" width="200"/>
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label text="Tipo"/>
+						<mx:ComboBox id="abaContatos_boundTipoComboBox"
+							dataProvider="{ EContatoTipo.getCampos() }" labelFunction="fn_ComboTipoContato_Label"
+							width="200" fontWeight="bold"/>
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem visible="{(abaContatos_boundTipoComboBox.text == 'Celular')}">
+					<mx:VBox>
+							<mx:Label text="Operadora" />
+							<mx:ComboBox id="abaContatos_boundOperadoraComboBox"
+							dataProvider="{[
+								{label:'CLARO'},
+								{label:'OI'},
+								{label:'TIM'},
+								{label:'VIVO'},							
+								]}"
+							width="150" fontWeight="bold"/>
+						</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label text="Contato"/>
+						<master:MasterTextInput id="abaContatos_boundContatoTextInput" capsType="upercase" width="200"/>	
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label text="Observação"/>
+						<master:MasterTextInput id="abaContatos_boundObsTextInput" capsType="upercase" width="200"/>
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+		
+		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+			<comp:Botao width="120" label="Voltar" icon="{ Imagens.unica.icn_32_deleta }"
+				bottom="10" right="140"
+				click="{ popup_Fechar() }"/>
+			<comp:Botao width="120" label="OK" icon="{ Imagens.unica.icn_32_aceita }"
+				bottom="10" right="10"
+				click="{ popup_Salvar() }"/>
+		</mx:HBox>
+		
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="abaEnderecos_popup"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_64_endereco}"
+		title="Endereço"
+		fontSize="14" styleName="padding5"
+		width="540" height="570"
+		layout="vertical">
+		
+		<mx:Grid x="10" y="42" width="100%">
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label text="Tipo Endereço"/>
+						<master:MasterTextInput id="abaEndereco_boundNomeTextInput" capsType="upercase" width="250"/>
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label text="Logradouro"/>
+						<master:MasterTextInput id="abaEndereco_boundLogradouroTextInput" capsType="upercase" width="250"/>
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label text="Número" />
+						<master:MasterTextInput id="abaEndereco_boundNumTextInput" capsType="upercase" onlyRestrict="number" text="0" width="80"  />
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label text="Complemento " />
+						<master:MasterTextInput id="abaEndereco_boundComplTextInput" capsType="upercase" width="250"/>
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label width="100%" text="Bairro " />
+						<master:MasterTextInput id="abaEndereco_boundBairroTextInput" capsType="upercase" width="250"/>
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label width="100%" text="CEP " />
+						<mx:HBox>
+							<master:MasterTextInput id="abaEndereco_boundCEPTextInput" width="100" color="black" maxChars="8" restrict="0-9"/>
+							<mx:LinkButton id="correios" label="Buscar CEP" fontSize="10" color="blue" click="{navigateToURL(new URLRequest('http://www.buscacep.correios.com.br/servicos/dnec/menuAction.do?Metodo=menuUnidadeOperacional'),'_blank')}"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label text="UF:"/>
+						<mx:ComboBox id="cmbUF" width="80" dataProvider="{ibge_estados}" labelField="sigla" change="{ filtra_municipios() }" />
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label width="100%" text="Cidade:"/>
+						<mx:ComboBox width="250" id="cmbMunicipio" dataProvider="{ibge_municipios_filtrados}" labelField="nome"/>
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:Label width="100%" text="Tipo " />
+						<mx:ComboBox id="abaEndereco_boundTipoComboBox" width="120"
+							dataProvider="{ EEnderecoTipo.getCampos() }" />
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:CheckBox id="cbInscrEst" label="Inscr Est:" change="{/*valido=false*/}"/>
+						<master:MasterTextInput id="abaEndereco_boundInscEstTextInput"
+							width="180" enabled="{cbInscrEst.selected}" restrict="0-9" maxChars="15"/>
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:VBox>
+						<mx:CheckBox id="cbInscrMun" label="Inscr Mun:" change="{/*valido=false*/}" x="270" y="354"/>
+						<master:MasterTextInput id="abaEndereco_boundInscMunTextInput"
+							width="180" enabled="{cbInscrMun.selected}" restrict="0-9" maxChars="15" x="270" y="387"/>
+						</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>	
+		
+		<mx:Label text="Observação" x="10" y="408"/>
+		<master:MasterTextInput id="abaEndereco_boundObsTextInput" capsType="upercase" width="510" x="10" y="433"/>
+		<!--<mx:Label id="lblUFCodigo" text="{cmbUF.selectedItem.c}"  x="10" y="435" width="125" visible="false" fontSize="8"/>
+		<mx:Label id="lblCidadeCodigo" text="{cmbMunicipio.selectedItem.c}"  x="143" y="435" width="119" visible="false" fontSize="8"/>-->
+		
+		<mx:Label width="100%" text="*Para Endereços situados na ZONA RURAL, Consulte o CEP pela Unidade Operacional" fontSize="10"/>
+		
+		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+			<SDE:Botao width="120" label="Voltar" icon="{ Imagens.unica.icn_32_deleta }"
+				bottom="10" right="140"
+				click="{ popup_Fechar() }"/>
+			<SDE:Botao width="120" label="OK" icon="{ Imagens.unica.icn_32_aceita }"
+				bottom="10" right="10"
+				click="{ popup_Salvar() }"/>
+		</mx:HBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="abaAmigos_popup"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_64_funcionario}"
+		title="Dependentes/Autorizados"
+		fontSize="14" styleName="padding5"
+		width="490" height="400"
+		layout="vertical">
+		
+		<mx:VBox x="10" y="42" width="100%" fontSize="12">
+			<mx:Label text="Descrição"/>
+			<master:MasterTextInput id="abaAmigos_boundDescricaoTextInput" width="100%" capsType="upercase"/>
+			<mx:Label text="Nome"/>
+			<master:MasterTextInput id="abaAmigos_boundNomeTextInput" width="100%" capsType="upercase"/>
+			<mx:HBox width="100%">
+				<mx:VBox width="50%">
+					<mx:Label text="Telefone"/>
+					<master:MasterTextInput id="abaAmigos_boundTelefoneTextInput" validator="phone" inputMask="(99)9999-9999" width="100%"/>
+				</mx:VBox>
+				<mx:VBox width="50%">
+					<mx:Label text="Data Nasc."/>
+					<master:MasterTextInput id="abaAmigos_boundDataNascTextInput" validator="date" inputMask="99/99/9999" required="false" width="100%"/>
+				</mx:VBox>
+			</mx:HBox>
+			<mx:HBox width="100%">
+				<mx:VBox width="50%">
+					<mx:Label text="Dependente"/>
+					<mx:CheckBox id="abaAmigos_boundDependenteCheckBox"/>
+				</mx:VBox>
+				<mx:VBox width="50%">
+					<mx:Label text="Autorizado"/>
+					<mx:CheckBox id="abaAmigos_boundAutorizadoCheckBox"/>
+				</mx:VBox>
+			</mx:HBox>
+			<mx:Label text="Observação"/>
+			<master:MasterTextInput id="abaAmigos_boundObsTextInput" width="100%" capsType="upercase"/>
+		</mx:VBox>
+		
+		<mx:HBox horizontalAlign="right" width="100%">
+			<comp:Botao width="120" label="Voltar" icon="{ Imagens.unica.icn_32_deleta }"
+				bottom="10" right="140"
+				click="{ popup_Fechar() }"/>
+			<comp:Botao width="120" label="OK" icon="{ Imagens.unica.icn_32_aceita }"
+				bottom="10" right="10"
+				click="{ popup_Salvar() }"/>
+		</mx:HBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="abaVeiculos_popup"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_64_fornecedor}"
+		title="Veiculos"
+		fontSize="14" styleName="padding5"
+		width="400" height="480"
+		layout="vertical">
+		
+		<mx:HBox width="100%" height="100%">
+			<mx:VBox y="42" verticalAlign="middle" width="50%">
+				<mx:Label text="Descrição"/>
+				<master:MasterTextInput id="abaVeiculos_boundNovoTextInput" capsType="upercase" width="100%"/>
+				
+				<mx:Label text="Tipo" />
+				<mx:ComboBox id="abaVeiculos_boundTipoComboBox" dataProvider="{EVeiculoTipo.getCampos()}" labelFunction="fn_ComboTipoVeiculo_Label" width="100%"/>
+				
+				<mx:Label text="Placa"/>
+				<master:MasterTextInput id="abaVeiculos_boundPlacaMaskedTextInput" capsType="upercase" width="100%" maxChars="7"/>
+				
+				<mx:Label text="UF"/>
+				<intelli:ComBoxSiglaEstadosBR id="abaVeiculos_boundUFComboBox" width="100%"/>
+				
+				<mx:Label text="Reg Nac Transp Carga"/>
+				<master:MasterTextInput id="abaVeiculos_boundRNTCTextInput" capsType="upercase" width="100%"/>
+				
+				<mx:Label text="Chassi"/>
+				<master:MasterTextInput id="abaVeiculos_boundChassiTextInput" capsType="upercase" width="100%"/>
+			</mx:VBox>
+			<mx:VBox y="42" right="0" verticalAlign="middle" width="50%">
+				<mx:Label text="Num Série do Motor"/>
+				<master:MasterTextInput id="abaVeiculos_boundNumSerieMotorTextInput" capsType="upercase" width="100%"/>
+				
+				<mx:Label text="Franquia"/>
+				<master:MasterTextInput id="abaVeiculos_boundFranquiaTextInput" capsType="upercase" width="100%"/>
+				
+				<mx:Label text="Ano"/>
+				<mx:NumericStepper id="abaVeiculos_boundAnoNumericStepper" minimum="1950" maximum="999999" width="100%"/>
+				
+				<mx:Label text="Marca"/>
+				<master:MasterTextInput id="abaVeiculos_boundMarcaTextInput" capsType="upercase" width="100%"/>
+				
+				<mx:Label text="Modelo"/>
+				<master:MasterTextInput id="abaVeiculos_boundModeloTextInput" capsType="upercase" width="100%"/>
+				
+				<mx:Label text="FIPE(R$)"/>
+				<mx:NumericStepper id="abaVeiculos_boundFIPENumericStepper" stepSize="0.01" minimum="0" maximum="999999" width="100%" />
+			</mx:VBox>
+		</mx:HBox>
+		
+		<mx:HBox horizontalAlign="right" width="100%">
+			<comp:Botao width="120" label="Voltar" icon="{ Imagens.unica.icn_32_deleta }"
+				bottom="10" right="140"
+				click="{ popup_Fechar() }"/>
+			<comp:Botao width="120" label="OK" icon="{ Imagens.unica.icn_32_aceita }"
+				bottom="10" right="10"
+				click="{ popup_Salvar() }"/>
+		</mx:HBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<!--<mx:Panel id="abaVeiculos_popup"
+		width="400" height="500" layout="absolute"
+		borderAlpha="1"
+		fontSize="14"
+		headerHeight="10">
+		
+		<mx:Image x="10" y="10" source="{Imagens.unica.icn_32_fornecedor}" />
+		<mx:Label x="45" y="10" fontSize="20" fontWeight="bold" text="Veiculos" />
+		
+		<comp:Botao width="120" label="Voltar" icon="{ Imagens.unica.icn_32_deleta }"
+			bottom="10" right="140"
+			click="{ popup_Fechar() }"/>
+		<comp:Botao width="120" label="OK" icon="{ Imagens.unica.icn_32_aceita }"
+			bottom="10" right="10"
+			click="{ popup_Salvar() }"/>
+		
+		<mx:VBox y="42" verticalAlign="middle" styleName="padding10" >
+			<mx:Label text="Descrição"/>
+			<master:MasterTextInput id="abaVeiculos_boundNovoTextInput" capsType="upercase" width="160" />
+			
+			<mx:Label text="Tipo" />
+			<mx:ComboBox id="abaVeiculos_boundTipoComboBox" dataProvider="{EVeiculoTipo.getCampos()}" labelFunction="fn_ComboTipoVeiculo_Label" width="160"/>
+			
+			<mx:Label text="Placa"/>
+			<master:MasterTextInput id="abaVeiculos_boundPlacaMaskedTextInput" capsType="upercase" width="160"/>
+			
+			<mx:Label text="UF"/>
+			<intelli:ComBoxSiglaEstadosBR id="abaVeiculos_boundUFComboBox" width="160"/>
+			
+			<mx:Label text="Reg Nac Transp Carga"/>
+			<master:MasterTextInput id="abaVeiculos_boundRNTCTextInput" capsType="upercase" width="160"/>
+			
+			<mx:Label text="Chassi"/>
+			<master:MasterTextInput id="abaVeiculos_boundChassiTextInput" capsType="upercase" width="160"/>
+		</mx:VBox>
+		<mx:VBox y="42" right="0" verticalAlign="middle" styleName="padding10">
+			<mx:Label text="Num Série do Motor"/>
+			<master:MasterTextInput id="abaVeiculos_boundNumSerieMotorTextInput" capsType="upercase" width="160"/>
+			
+			<mx:Label text="Franquia"/>
+			<master:MasterTextInput id="abaVeiculos_boundFranquiaTextInput" capsType="upercase" width="160"/>
+			
+			<mx:Label text="Ano"/>
+			<mx:NumericStepper id="abaVeiculos_boundAnoNumericStepper" minimum="1950" maximum="999999" width="160"/>
+			
+			<mx:Label text="Marca"/>
+			<master:MasterTextInput id="abaVeiculos_boundMarcaTextInput" capsType="upercase" width="160"/>
+			
+			<mx:Label text="Modelo"/>
+			<master:MasterTextInput id="abaVeiculos_boundModeloTextInput" capsType="upercase" width="160"/>
+			
+			<mx:Label text="FIPE(R$)"/>
+			<mx:NumericStepper id="abaVeiculos_boundFIPENumericStepper" stepSize="0.01" minimum="0" maximum="999999" width="160" />
+		</mx:VBox>
+		
+	</mx:Panel>-->
+	
+</mx:Canvas>

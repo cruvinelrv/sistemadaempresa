@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	fontSize="14"
+	creationComplete="create()">
+	
+	
+	<mx:HBox width="100%">	
+		<mx:VBox>
+			<mx:Label text="TIPO DE DOCUMENTO" width="100%"/>
+			<mx:HBox>
+				<master:MasterTextInput id="txtNome" capsType="upercase" width="100%" enterPressed="inserir()" />
+				<comp:Botao1 width="300" label="Criar Tipo Documento" icone="Adiciona" cor="Cinza" click="inserir()" />
+			</mx:HBox>
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:DataGrid id="grid" width="100%" height="100%"
+		themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="Cód"/>
+			<mx:DataGridColumn dataField="nome" headerText="Tipo"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao1 cor="Cinza" icone="Cancela" width="220" label="Desfazer Alterações" click="{resetar()}"/>
+		<comp:Botao1 cor="Cinza" icone="Salva" width="220" label="Salvar Tipos Documento" click="{salvar()}"/>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import SDE.Entidade.Finan_TipoDocumento;
+			import SDE.Entidade.Finan_PortadorTipo;
+			import SDE.CamadaNuvem.NuvemModificacoes;
+			import SDE.Enumerador.EPortadorTipo;
+			import SDE.Entidade.Finan_Portador;
+
+			import SDE.Entidade.Finan_CentroCusto;
+			import img.Imagens;
+			
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+
+			
+			import SDE.FachadaServico.FcdCorp;
+			import SDE.CamadaServico.SCorp;
+			
+			private var tiposDocumento:Array;
+			
+			
+			private function create():void
+			{
+				resetar();
+			}
+			
+			private function resetar():void
+			{
+				tiposDocumento = App.single.cache.cloneFinan_TipoDocumento;
+				preencheGrid();
+			}
+			
+			private function preencheGrid():void
+			{	
+				tiposDocumento.sortOn("nome");
+				grid.dataProvider = tiposDocumento;
+			}
+			
+			private function inserir():void
+			{
+				txtNome.setFocus();
+				if(txtNome.text == ''){
+					AlertaSistema.mensagem('Digite o Tipo de Portador');
+					return;
+				}
+				var xxx:Finan_TipoDocumento;
+				for each(xxx in tiposDocumento)
+				{
+					if(xxx.nome == txtNome.text)
+					{
+						AlertaSistema.mensagem("Este Tipo de Portador já existe.");
+						return;
+					}
+				}
+				xxx = new Finan_TipoDocumento();
+				xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.nome = txtNome.text;
+				txtNome.text = "";
+				
+				tiposDocumento.push(xxx);
+				preencheGrid();
+			}
+			
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				
+				for each(var xxx:Finan_TipoDocumento in tiposDocumento)			
+					if(xxx.id ==0)
+						arSalvar.push(xxx);
+				
+				Sessao.unica.nuvens.modificacoes.Finan_TipoDocumento_Novos(arSalvar,
+					function(retorno:Array):void
+					{
+						AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+							
+			}
+		]]>
+	</mx:Script>
+	
+	
+</mx:VBox>

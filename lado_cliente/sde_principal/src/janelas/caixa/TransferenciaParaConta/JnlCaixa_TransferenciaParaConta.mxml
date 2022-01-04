@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	xmlns:Combo="SDE.Componentes.Combo.*" xmlns:CP="Componentes.CP.*">
+	
+	<mx:Script source="MdllCaixa_TransferenciaParaConta_script.as"/>
+	
+	<mx:states>
+		<mx:State name="stateContaBancoDetalhe">
+			<mx:AddChild relativeTo="{placeHolderContaBancoDetalhe}" position="lastChild">
+				<mx:HBox width="100%" verticalAlign="middle" fontSize="14" fontWeight="bold">
+					<mx:Label text="Banco:"/>
+					<mx:Label id="lblBanco" width="100"/>
+					<mx:Label text="Agência:"/>
+					<mx:Label id="lblAgencia" width="100"/>
+					<mx:Label text="Conta:"/>
+					<mx:Label id="lblConta" width="100"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize target="{placeHolderContaBancoDetalhe}"/>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:VBox horizontalCenter="0" verticalCenter="0"
+		fontSize="14" fontWeight="bold"
+		moveEffect="{Move}">
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_32_centroCusto}"/>
+			<mx:Label text="Transferência de Caixa Para Conta" fontSize="16"/>
+		</mx:HBox>
+				
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Centro de Custo:" width="130"/>
+			<Combo:CmbFinan_CentroCusto id="cmbCentroCusto" width="300"/>
+		</mx:HBox>	
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Tipo de Conta:" width="130"/>
+			<Combo:CmbFinan_TipoLancamento id="cmbTipoLancamento" width="300"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Valor da Retirada:" width="130"/>
+			<mx:NumericStepper id="nsValorRetirada" minimum="0" maximum="999999" stepSize="0.01" width="150"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Conta Destino:" width="130"/>
+			<CP:PesqFinanConta id="cpFinanConta" width="460" change="cpFinanConta_Change()"/>
+		</mx:HBox>
+		
+		<mx:VBox id="placeHolderContaBancoDetalhe"/>
+		
+		<mx:Label text="Histórico:"/>
+		<mx:TextArea id="txtHistContaCaixa" width="600" height="180"/>
+		
+		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+			<mx:Button label="Lançar Retirada" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="btnLancarRetirada_Click()"/>
+		</mx:HBox>
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Move;
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

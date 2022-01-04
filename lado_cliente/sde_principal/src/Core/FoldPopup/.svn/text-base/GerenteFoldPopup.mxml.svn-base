@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	backgroundColor="#ffffff" backgroundAlpha=".6"
+	visible="false"
+	showEffect="{Fade}" hideEffect="{Fade}"
+	styleName="foldPopupTela">
+	
+	<mx:Canvas id="painel"
+		width="600" height="400"
+		top="-400"
+		horizontalCenter="0"
+		hideEffect="{Fade}" resizeEffect="{Resize}"
+		visible="{visible}">
+		
+		<!-- conteudo -->
+		<mx:VBox id="main" styleName="foldPopupTelaContent"
+			top="30"
+			width="100%" height="100%"
+			backgroundColor="#ffffff"
+			paddingTop="25" paddingBottom="18"
+			paddingLeft="3" paddingRight="3">
+			
+		</mx:VBox>
+		<!-- cabeçalho -->
+		<mx:HBox width="100%" height="50"
+			backgroundColor="#559EC9" color="#ffffff"
+			verticalAlign="middle">
+			<mx:Spacer width="2"/>
+			<mx:Image source="img\icones\32\search.png" />
+			<mx:Label id="lblTitulo" fontSize="28" fontWeight="bold"/>
+			<mx:Spacer width="100%"/>
+			<mx:HBox id="botoesJanela">
+				<mx:Image source="img\icones\32\window.png" click="maximiza()" toolTip="MIN / MAX" />
+				<mx:Image source="img\icones\32\close.png" click="fecha()" toolTip="FECHAR" />
+			</mx:HBox>
+			<mx:Spacer width="10"/>
+		</mx:HBox>
+	
+	</mx:Canvas>
+	<mx:Move id="efMove" duration="1000" effectEnd="terminaMoveEf()"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Blur;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import Core.Alerta.AlertaSistema;
+			import mx.core.Container;
+			import mx.effects.Resize;
+			import flash.utils.setTimeout;
+			import mx.effects.Move;
+			import mx.effects.Fade;
+			
+			public static const EV_FECHA:String="fecha";
+			
+			private var isFechando:Boolean = false;
+			private var fCancela:Function=null;
+			
+			private function terminaMoveEf():void
+			{
+				//AlertaSistema.mensagem("fold termina move", true);
+				painel.setStyle("moveEffect", null);
+				visible = !isFechando;
+			}
+			public function mostra():void
+			{
+				//AlertaSistema.mensagem("fold mostra", true);
+				painel.setStyle("moveEffect", efMove);
+				painel.setStyle('top', 0);
+				visible = true;
+				isFechando = false;
+				//foldPop vai precisar ser 100%, com fundo branco alpha .6 e conter o painel dentro de sí,
+				//deixando alerta display aparecer...
+				//PopUpManager.addPopUp(this, Application.application.gerTela, true);
+			}
+			
+			public function setConteudo(conteudo:Container, fCancela:Function):void
+			{
+				main.removeAllChildren();
+				main.addChild(conteudo);
+				lblTitulo.text = conteudo.label;
+				this.fCancela = fCancela;
+			}
+			
+			public function getConteudo():Object
+			{
+				return main.getChildAt(0);
+			}
+			
+			public function fecha(internamente:Boolean=false):void
+			{
+				//AlertaSistema.mensagem("fold fecha", true);
+				painel.setStyle("moveEffect", efMove);
+				painel.setStyle('top', -painel.height);
+				isFechando = true;
+				if (fCancela!=null && !internamente)
+					fCancela();
+				
+			}
+			private function maximiza():void
+			{
+				if (painel.width == 600)
+				{
+					painel.percentWidth = 90;
+					painel.percentHeight= 90;
+				}
+				else
+				{
+					painel.width = 600;
+					painel.height= 400;
+				}
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	
+</mx:Canvas>

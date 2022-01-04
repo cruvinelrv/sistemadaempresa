@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:BancoDados="Core.BancoDados.*"
+	layout="vertical" backgroundGradientColors="[#ffffff, #000000]" themeColor="#ffffff"
+	paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0">
+	
+	<mx:ViewStack id="vs" width="100%" height="100%">
+		<mx:VBox hideEffect="{Fade}" horizontalAlign="center" verticalAlign="middle">
+			<mx:TextInput id="txtSenha" width="300"
+				keyDown="txtSenha_kd(event)" fontSize="45" textAlign="center" displayAsPassword="true"/>
+		</mx:VBox>
+		<BancoDados:BancoDados showEffect="{Fade}"/>
+	</mx:ViewStack>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Fade;
+			private function txtSenha_kd(ev:KeyboardEvent):void
+			{
+				if (ev.keyCode != Keyboard.ENTER)
+					return;
+				if (txtSenha.text=="lgr480")//preciso fazer um chamado ao servidor nisso
+					vs.selectedIndex = 1;
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Application>

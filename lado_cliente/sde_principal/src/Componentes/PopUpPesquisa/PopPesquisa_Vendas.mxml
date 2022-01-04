@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SuperPopPesq xmlns="Componentes.PopUpPesquisa.*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	initialize="{ init() }" currentState="stateDetalhe" xmlns:comp="Componentes.comp.*" xmlns:CP="Componentes.CP.*"
+	preinitialize="{ preinit() }"
+	close="PopUpManager.removePopUp(this)"
+	creationComplete="{dgcRetorna.visible = retornaMov}"
+	keyDown="{botoesOcultos(event)}"
+	click="this.setFocus()"
+	show="this.setFocus()"
+	height="540">
+	
+	<states>
+		<mx:State name="stateDetalhe">
+			<mx:AddChild position="lastChild" relativeTo="{placeHolder}">
+				<mx:VBox width="100%" height="100%" fontSize="16" fontWeight="bold">
+					<mx:Label text="Valor Sem Desconto: {Formatadores.unica.formataValor(mov.vlrItensInicial, true)}"/>
+					<mx:Label text="Valor do Desconto: {Formatadores.unica.formataValor(-mov.vlrAcrescimo, true)}"/>
+					<mx:Label text="Valor Com Desconto: {Formatadores.unica.formataValor(mov.vlrTotal, true)}"/>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateCarrinho">
+			<mx:AddChild position="lastChild" relativeTo="{placeHolder}">
+				<mx:DataGrid id="gridCarrinho"
+					width="100%" height="100%"
+					dataProvider="{arraycCarrinho}"
+					showEffect="{Fade}" hideEffect="{Fade}"
+					fontSize="12" themeColor="#3B5998">
+					<mx:columns>
+						<mx:DataGridColumn width="6" headerText="Item" dataField="item_nome"/>
+						<mx:DataGridColumn width="2" headerText="Estoque" dataField="estoque_identificador"/>
+						<mx:DataGridColumn width="1" headerText="Quant" dataField="qtd"/>
+						<mx:DataGridColumn width="1" headerText="Valor" dataField="vlrUnitVendaFinalQtd" labelFunction="fn_lb_toCurrencyFormat_mi"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateCaixa">
+			<mx:AddChild position="lastChild" relativeTo="{placeHolder}">
+				<mx:DataGrid id="gridCaixa"
+					width="100%" height="100%"
+					dataProvider="{arraycCaixa}"
+					showEffect="{Fade}" hideEffect="{Fade}"
+					fontSize="12" themeColor="#3B5998">
+					<mx:columns>
+						<mx:DataGridColumn width="4" headerText="Documento" dataField="nome"/>
+						<mx:DataGridColumn width="2" headerText="Forma" dataField="tipoPagamento_nome"/>
+						<mx:DataGridColumn width="2" headerText="Valor" dataField="valorCobrado" labelFunction="fn_lb_toCurrencyFormat_cx"/>
+						<mx:DataGridColumn width="2" headerText="Previsão" dataField="dtPagamento"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:AddChild>
+		</mx:State>
+		
+	</states>
+	
+	<mx:VBox verticalAlign="middle" fontSize="14" fontWeight="bold">
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Nº:" fontWeight="bold" width="50"/>
+			<mx:TextInput id="txtNumMovPesquisa" width="150"
+				keyDown="{
+					if (event.keyCode==Keyboard.ENTER)
+						filtraBuscaMov();
+				}"/>
+			<mx:Label text="Cliente:" fontWeight="bold"/>
+			<CP:PesqCliente id="cpClientePesquisa" prompt="" showBrowseButton="false" width="485"
+				change="filtraBuscaMov()"/>
+		</mx:HBox>
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Data:" fontWeight="bold" width="50"/>
+			<comp:DateFieldBR id="dfDataPesquisa" editable="true" width="150"
+				keyDown="{
+					if (event.keyCode==Keyboard.ENTER)
+						filtraBuscaMov();
+				}"/>
+				<mx:Label id="lbTipoMov" text="Tipo Movimentação:" fontWeight="bold"/>
+				<mx:ComboBox id="cmbTipoMov" width="200" labelFunction="fn_ComboTipoMov_Label"
+					change="{
+						filtraBuscaMov();
+					}"/>
+					
+			<mx:Button id="btFiltrar" label="Filtrar" width="90"
+				fontSize="14" fontWeight="bold" textAlign="center"
+				buttonMode="true" mouseChildren="true" useHandCursor="true"
+				click="filtraBuscaMov()"/>
+			<mx:Button label="Limpar" width="90"
+				fontSize="14" fontWeight="bold" textAlign="center"
+				buttonMode="true" mouseChildren="true" useHandCursor="true"
+				click="limpaBuscaMov()"/>
+		</mx:HBox>
+		
+	</mx:VBox>
+	
+	<mx:DataGrid id="gridPrincipal"
+		width="100%" height="200"
+		dataProvider="{dp}"
+		fontSize="12" themeColor="#3B5998"
+		change="{ dispatchEvent(new Event('detalhe', true)) }">
+		<mx:columns>
+			<mx:DataGridColumn width="2" dataField="id" headerText="Cód." itemRenderer="{new ClassFactory(BackgroundComp)}"/>
+			<mx:DataGridColumn width="16" dataField="cliente_nome" headerText="Cliente" itemRenderer="{new ClassFactory(BackgroundComp)}"/>
+			<mx:DataGridColumn width="6" dataField="cliente_cpf" headerText="CPF/CNPJ" itemRenderer="{new ClassFactory(BackgroundComp)}"/>
+			<mx:DataGridColumn width="6" dataField="dthrMovEmissao" headerText="Data" itemRenderer="{new ClassFactory(BackgroundComp)}"/>
+			<mx:DataGridColumn width="4" labelFunction="fn_lb_tipoMov" headerText="Tipo Mov" itemRenderer="{new ClassFactory(BackgroundComp)}"/>
+			<mx:DataGridColumn width="4" dataField="vlrTotal" labelFunction="fn_lb_toCurrencyFormat_mov" headerText="Valor" itemRenderer="{new ClassFactory(BackgroundComp)}"/>
+			<mx:DataGridColumn width="1" labelFunction="fn_lb_orcamentoPorEmail" fontWeight="bold" fontSize="14" itemRenderer="{new ClassFactory(BackgroundComp)}"/>
+			<mx:DataGridColumn width="1">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button label="" icon="{Imagens.unica.icn_16_seta_bai}" toolTip="Detalhe"
+							click="{dispatchEvent(new Event('detalhe', true))}">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button label="" icon="{Imagens.unica.icn_16_carrinho}" toolTip="Itens Venda"
+							click="{dispatchEvent(new Event('carrinho', true))}">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button label="" icon="{Imagens.unica.icn_16_dollar}" toolTip="Formas Pagamento"
+							click="{dispatchEvent(new Event('caixa', true))}">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn id="dgcRetorna" width="1">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button width="2" icon="{Imagens.unica.icn_16_return}" toolTip="Seleciona"
+							click="{dispatchEvent(new Event('retorna', true))}">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:VBox id="placeHolder" width="100%"/>
+		
+	<!--
+	<mx:DataGrid id="grid2"
+		
+		dataProvider="{dpDetalhes}"
+		width="100%" height="100%"/>
+		-->
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Button;
+			import mx.collections.ItemResponder;
+			import Componentes.comp.BackgroundComp;
+			import SDE.Enumerador.EMovResumo;
+			import mx.managers.PopUpManager;
+			import impressoes.etiquetas.EtiquetaFabricaBodies;
+			import Core.Utils.Formatadores;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import SDE.Enumerador.EMovTipo;
+			import SDE.Entidade.Cliente;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Entidade.Cx_Lancamento;
+			import SDE.Entidade.MovItem;
+			import mx.effects.Fade;
+			import mx.effects.WipeDown;
+			import mx.effects.WipeUp;
+			import mx.controls.Alert;
+			import mx.effects.Resize;
+			import SDE.Entidade.Mov;
+			import Core.App;
+			import mx.collections.ArrayCollection;
+			import img.Imagens;
+			
+			[Bindable] private var mov:Mov;
+			[Bindable] private var dp:ArrayCollection;
+			[Bindable] private var arraycCarrinho:ArrayCollection;
+			[Bindable] private var arraycCaixa:ArrayCollection;
+			[Bindable] private var botoesEscondidos:Number;
+			private var dpCmb:Array;
+			private var mov_filtradas:ArrayCollection;
+			private var mostrandoOcultos:Boolean = false;
+			
+			[Bindable] public var retornaMov:Boolean;
+			
+			public var tipoMovTexto:Array = null;
+			
+			private function preinit():void
+			{
+				tipoMovTexto = [];
+				tipoMovTexto['Escolha...'] = "Escolha...";
+				tipoMovTexto[EMovTipo.ambos_aj_es] = "Ajuste de Estoque";
+				tipoMovTexto[EMovTipo.ambos_aj_gr] = "Ajuste Grade";
+				tipoMovTexto[EMovTipo.ambos_ajuste_estoque] = "Ajuste de Estoque";
+				tipoMovTexto[EMovTipo.ambos_balan] = "Balanço";
+				tipoMovTexto[EMovTipo.ambos_cancel] = "Entrada/Saida Cancelada";
+				tipoMovTexto[EMovTipo.entrada_cancel] = "Entrada Cancelada";
+				tipoMovTexto[EMovTipo.entrada_compra] = "Entrada Compra";
+				tipoMovTexto[EMovTipo.entrada_devolucao] = "Devolução de Entrada";
+				tipoMovTexto[EMovTipo.nfs_prefeitura] = "NFS";
+				tipoMovTexto[EMovTipo.outros_cancel] = "Outro Cancelado";
+				tipoMovTexto[EMovTipo.outros_orcamento] = "Orçamento";
+				tipoMovTexto[EMovTipo.outros_pedido] = "Pedido";
+				tipoMovTexto[EMovTipo.outros_reserva] = "Reserva de Estoque";
+				tipoMovTexto[EMovTipo.outros_servicos] = "Serviço";
+				tipoMovTexto[EMovTipo.saida_cancel] = "Saida Cancelada";
+				tipoMovTexto[EMovTipo.saida_condi] = "Saida Condicional";
+				tipoMovTexto[EMovTipo.saida_devolucao] = "Devolução de Saida";
+				tipoMovTexto[EMovTipo.saida_venda] = "Saida Venda";
+			}
+			
+			private function init():void
+			{
+				title = "Pesquisa de Movimentações";
+				titleIcon = Imagens.unica.icn_32_carrinho;
+				//vai ser tratado em outro lugar, bubles
+				//dp = App.single.cache.arraycMov;
+				arraycCaixa = new ArrayCollection();
+				arraycCarrinho = new ArrayCollection();
+				dp = new ArrayCollection();
+				mov_filtradas = new ArrayCollection();
+				for each (var mov:Mov in App.single.cache.arraycMov)
+				{
+					if (mov.tipo != EMovTipo.outros_pedido && mov.tipo != EMovTipo.outros_reserva)
+						mov_filtradas.addItem(mov);
+				}
+				dp = mov_filtradas;
+				
+				dpCmb = ['Escolha...'];
+				for each (var tipo:* in EMovTipo.getCampos())
+				{
+					dpCmb.push(tipo);
+				}
+				cmbTipoMov.dataProvider = dpCmb;
+				
+				gridPrincipal.addEventListener('detalhe', fn_ev_detalhe);
+				gridPrincipal.addEventListener('carrinho', fn_ev_carrinho);
+				gridPrincipal.addEventListener('caixa', fn_ev_caixa);
+			}
+			private function fn_ComboTipoMov_Label(tipoMov:String):String
+			{
+				return tipoMovTexto[tipoMov];
+			}
+			private function fn_lb_toCurrencyFormat_mi(mi:MovItem, dgc:DataGridColumn):String
+			{
+				return Formatadores.unica.formataValor(mi.vlrUnitVendaFinalQtd, true);
+			}
+			private function fn_lb_toCurrencyFormat_cx(cx:Cx_Lancamento, dgc:DataGridColumn):String
+			{
+				return Formatadores.unica.formataValor(cx.valorCobrado, true);
+			}
+			private function fn_lb_toCurrencyFormat_mov(mov:Mov, dgc:DataGridColumn):String
+			{
+				return Formatadores.unica.formataValor(mov.vlrTotal, true);
+			}
+			
+			private function fn_lb_orcamentoPorEmail(mov:Mov, dgc:DataGridColumn):String
+			{
+				return (mov.isEmailEnviado) ? "@" : "" ;
+			}
+			
+			private function fn_ev_detalhe(e:Event):void
+			{
+				currentState = "stateDetalhe";
+				mov = e.target.data;
+			}
+			private function fn_ev_carrinho(e:Event):void
+			{
+				mov = e.target.data;
+				//Alert.show("mostra itens de mov "+mov.id);
+				currentState = "stateCarrinho";
+				arraycCarrinho.removeAll();
+				for each(var mi:MovItem in App.single.cache.arrayMovItem)
+				{
+					if (mi.idMov == mov.id)
+						arraycCarrinho.addItem( mi );
+				}
+			}
+			private function fn_ev_caixa(e:Event):void
+			{
+				mov = e.target.data;
+				//Alert.show("mostra caixa de mov "+mov.id);
+				currentState = "stateCaixa";
+				arraycCaixa.removeAll();
+				for each(var clx:Cx_Lancamento in App.single.cache.arrayCx_Lancamento)
+				{
+					if (clx.idOperacao == mov.idOperacao)
+						arraycCaixa.addItem( clx );
+				}
+			}
+			private function fn_lb_tipoMov(mov:Mov, dgc:DataGridColumn):String
+			{
+				if (mov.tipo == EMovTipo.ambos_aj_es)
+					return "Ajuste de Estoque";
+				if (mov.tipo == EMovTipo.ambos_aj_gr)
+					return "Ajuste de Grade";
+				if (mov.tipo == EMovTipo.ambos_ajuste_estoque)
+					return "Ajuste de Estoque";
+				if (mov.tipo == EMovTipo.ambos_balan)
+					return "Balanço";
+				if (mov.tipo == EMovTipo.ambos_cancel)
+					return "Entrada/Saida Cancelada";
+				if (mov.tipo == EMovTipo.entrada_cancel)
+					return "Entrada Cancelada";
+				if (mov.tipo == EMovTipo.entrada_compra)
+					return "Entrada Compra";
+				if (mov.tipo == EMovTipo.entrada_devolucao)
+					return "Devolução de Entrada";
+				if (mov.tipo == EMovTipo.nfs_prefeitura)
+					return "NFS";
+				if (mov.tipo == EMovTipo.outros_cancel)
+					return "Outro Cancelado";
+				if (mov.tipo == EMovTipo.outros_orcamento)
+					return "Orçamento";
+				if (mov.tipo == EMovTipo.outros_pedido)
+					return "Pedido";
+				if (mov.tipo == EMovTipo.outros_reserva)
+					return "Reserva de Estoque";
+				if (mov.tipo == EMovTipo.outros_servicos)
+					return "Serviço";
+				if (mov.tipo == EMovTipo.saida_cancel)
+					return "Saida Cancelada";
+				if (mov.tipo == EMovTipo.saida_condi)
+					return "Saida Condicional";
+				if (mov.tipo == EMovTipo.saida_devolucao)
+					return "Devolução de Saida";
+				if (mov.tipo == EMovTipo.saida_venda)
+					return "Saida Venda";
+				else
+					return "Não Tratado";
+			}
+			
+			private function botoesOcultos(ev:KeyboardEvent):void
+			{
+				if (ev.ctrlKey && ev.altKey && ev.keyCode == Keyboard.ENTER)
+				{
+					mostrandoOcultos = !mostrandoOcultos;
+					if (mostrandoOcultos)
+					{
+						dp.removeAll();
+						for each (var mov:Mov in App.single.cache.arrayMov)
+						{
+							if (verificaMovValidas(mov))
+								dp.addItem(mov.clone());
+						}
+					}
+					else
+						filtraBuscaMov();
+				}
+			}
+			
+			public function filtraBuscaMov():void
+			{
+				dp = App.single.cache.arraycMov;
+				var listaMovFiltrada:ArrayCollection = new ArrayCollection(dp.source);
+				var listaTemporaria:Array = [];
+				if (cpClientePesquisa.selectedItem != null)
+				{
+					var cli:Cliente = cpClientePesquisa.selectedItem;
+					listaTemporaria = [];
+					for each (var mov_porCliente:Mov in listaMovFiltrada)
+					{
+						if (mov_porCliente.cliente_nome == cli.nome)
+							listaTemporaria.push(mov_porCliente);
+					}
+					listaMovFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				if (dfDataPesquisa.text != "")
+				{
+					listaTemporaria = [];
+					for each (var mov_porData:Mov in listaMovFiltrada)
+					{
+						if (mov_porData.dthrMovEmissao)
+						{
+							var dataPesquisa:String = mov_porData.dthrMovEmissao.substr(0,10);
+							AlertaSistema.mensagem("Data: " + dataPesquisa, true);
+							if (dataPesquisa == dfDataPesquisa.text)
+								listaTemporaria.push(mov_porData);
+						}
+					}
+					listaMovFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				if (txtNumMovPesquisa.text != "")
+				{
+					listaTemporaria = [];
+					for each (var mov_porNumero:Mov in listaMovFiltrada)
+					{
+						if (mov_porNumero.id.toString() == txtNumMovPesquisa.text)
+							listaTemporaria.push(mov_porNumero);
+					}
+					listaMovFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				if (cmbTipoMov.selectedLabel != "Escolha...")
+				{
+					listaTemporaria = [];
+					for each (var mov_porTipo:Mov in listaMovFiltrada)
+					{
+						if (mov_porTipo.tipo == cmbTipoMov.selectedItem)
+							listaTemporaria.push(mov_porTipo);
+					}
+					listaMovFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				dp.removeAll();
+				for each (var mov:Mov in listaMovFiltrada)
+				{
+					if (verificaMovValidas(mov))
+						dp.addItem(mov.clone());
+				}
+			}
+			private function limpaBuscaMov():void
+			{
+				cpClientePesquisa.selectedItems.removeAll();
+				dfDataPesquisa.text = "";
+				txtNumMovPesquisa.text = "";
+				filtraBuscaMov();
+			}
+			
+			private function verificaMovValidas(mov:Mov):Boolean
+			{
+				if (mov.tipo != EMovTipo.ambos_aj_es || mov.tipo != EMovTipo.ambos_aj_gr || mov.tipo != EMovTipo.ambos_ajuste_estoque ||
+					mov.tipo != EMovTipo.ambos_balan || mov.tipo != EMovTipo.ambos_cancel || mov.tipo != EMovTipo.entrada_cancel ||
+					mov.tipo != EMovTipo.entrada_devolucao || mov.tipo != EMovTipo.outros_cancel || mov.tipo != EMovTipo.outros_servicos ||
+					mov.tipo != EMovTipo.saida_cancel || mov.tipo != EMovTipo.saida_devolucao)
+					return true;
+				else
+					return false;
+			}
+		]]>
+	</mx:Script>
+</SuperPopPesq>

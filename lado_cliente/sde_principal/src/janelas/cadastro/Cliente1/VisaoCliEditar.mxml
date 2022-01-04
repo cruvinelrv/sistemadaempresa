@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:intelli="br.absolutobrasil.intelli.*" xmlns:abas="janelas.cadastro.Cliente1.abas.*"
+	xmlns:comp="Componentes.comp.*" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	backgroundColor="#EFEFEF" fontSize="12"
+	creationComplete="create()">
+	<mx:states>
+		<mx:State name="Juridica">
+			<mx:SetProperty target="{label2}" name="text" value="Raz Soc: "/>
+			<mx:SetProperty target="{label4}" name="text" value="Data Abertura: "/>
+			<mx:SetProperty target="{lblUF}" name="visible" value="false"/>
+			<mx:SetProperty target="{lblRG}" name="visible" value="false"/>
+			<mx:SetProperty target="{boundUFCombo}" name="visible" value="false"/>
+			<mx:SetProperty target="{boundRGTextInput}" name="visible" value="false"/>
+		</mx:State>
+	</mx:states>
+	
+	<mx:HBox width="100%">
+		<mx:Label id="lblTitulo" selectable="true" fontSize="14" fontWeight="bold" />
+		<mx:Label id="lblRG" styleName="lbl" text="RG:" />
+			<master:MasterTextInput id="boundRGTextInput"
+				width="100" maxChars="10" styleName="txt"
+				onlyRestrict="number" />
+		<mx:Label id="lblUF" text="UF: "/>
+			<intelli:ComBoxSiglaEstadosBR id="boundUFCombo" />
+		<mx:Label text="Data Nasc: " id="label4"/>
+			<master:MasterTextInput id="boundDtNascTextInput" width="100"
+                validationLanguage="portuguese" required="true" validator="date" />
+	</mx:HBox>
+	
+	<mx:HBox width="100%">
+		<mx:Label text="Nome: " id="label1" styleName="lbl"/>
+			<master:MasterTextInput id="boundNomeTextInput" width="330"
+				maxChars="40"  styleName="txt"  minLength="5"
+				onlyRestrict="alphabeticNoSpecial" capsType="upercase" />
+		<mx:Label text="Apelido: " id="label2" styleName="lbl"/>
+			<master:MasterTextInput id="boundApelidoTextInput" width="330"
+				maxChars="40" styleName="txt"
+				onlyRestrict="alphabeticNoSpecial" capsType="upercase" />
+	</mx:HBox>
+	
+	<mx:HBox width="100%" horizontalGap="0">
+		<mx:VBox id="vbFuncionario"
+			mouseOver="mouseEh(event.target, event.type, c.ehFuncionario)"
+			mouseOut="mouseEh(event.target, event.type, c.ehFuncionario)"
+			click="c.ehFuncionario=!c.ehFuncionario; mouseEh(event.target, event.type, c.ehFuncionario)"
+			width="120" height="100"
+			horizontalAlign="center" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_64_funcionario}" />
+			<mx:CheckBox
+				selected="{c.ehFuncionario}" enabled="false"
+				textDecoration="underline" label="Funcionário" />
+		</mx:VBox>
+		<mx:VBox id="vbParceiro"
+			mouseOver="mouseEh(event.target, event.type, c.ehParceiro)"
+			mouseOut="mouseEh(event.target, event.type, c.ehParceiro)"
+			click="c.ehParceiro=!c.ehParceiro; mouseEh(event.target, event.type, c.ehParceiro)"
+			width="120" height="100"
+			horizontalAlign="center" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_64_parceiro}" />
+			<mx:CheckBox
+				selected="{c.ehParceiro}" enabled="false"
+				textDecoration="underline" label="Parceiro" />
+		</mx:VBox>
+		<mx:VBox id="vbFornecedor"
+			mouseOver="mouseEh(event.target, event.type, c.ehFornecedor)"
+			mouseOut="mouseEh(event.target, event.type, c.ehFornecedor)"
+			click="c.ehFornecedor=!c.ehFornecedor; mouseEh(event.target, event.type, c.ehFornecedor)"
+			width="120" height="100"
+			horizontalAlign="center" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_64_fornecedor}" />
+			<mx:CheckBox
+				selected="{c.ehFornecedor}" enabled="false"
+				textDecoration="underline" label="Fornecedor" />
+		</mx:VBox>
+		<mx:VBox id="vbTransportador"
+			mouseOver="mouseEh(event.target, event.type, c.ehTransportador)"
+			mouseOut="mouseEh(event.target, event.type, c.ehTransportador)"
+			click="c.ehTransportador=!c.ehTransportador; mouseEh(event.target, event.type, c.ehTransportador)"
+			width="120" height="100"
+			horizontalAlign="center" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_64_transportador}" />
+			<mx:CheckBox
+				selected="{c.ehTransportador}" enabled="false"
+				textDecoration="underline" label="Transportador" />
+		</mx:VBox>
+		<mx:Spacer width="100%"/>
+		<mx:VBox>
+			<comp:Botao1 clica1x="true" label="Não Salvar" cor="Vermelho" icone="Cancela" click="cancelar()" />
+			<comp:Botao1 clica1x="true" label="Salvar e Fechar" cor="Amarelo" icone="Salva" click="salvar(false)" />
+			<comp:Botao1 clica1x="true" label="Salvar e Continuar" cor="Verde" icone="Salva" click="salvar(true)" />
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:LinkBar width="100%" dataProvider="{vs}"
+		color="#3B5998"
+		backgroundColor="#D5D5D5" separatorColor="#666666"
+		borderColor="#D5D5D5" borderThickness="0" borderStyle="solid" cornerRadius="5" />
+	
+	<mx:ViewStack id="vs" width="100%" height="100%"
+		borderColor="#cccccc" borderStyle="inset" borderThickness="1">
+		<mx:VBox width="100%" height="100%" label="Obs"
+			icon="{Imagens.unica.icn_16_listas}"
+			styleName="padding10" verticalGap="5">
+			<mx:Label
+				fontWeight="bold" fontSize="14"
+				text="Observações particulares de minha empresa sobre esta pessoa."/>
+			<mx:TextArea id="boundObsTextInput" width="80%" height="80%" />
+		</mx:VBox>
+		
+		<abas:AbaContatos	icon="{Imagens.unica.icn_16_listas}" label="Contatos" mdlPai="{mdlPai}"/>
+		<abas:AbaEnderecos	icon="{Imagens.unica.icn_16_listas}" label="Enderecos e Propriedades" mdlPai="{mdlPai}" />
+		<abas:AbaAmigos		icon="{Imagens.unica.icn_16_listas}" label="Dependente / Autorizado" mdlPai="{mdlPai}" />
+		<abas:AbaVeiculos	icon="{Imagens.unica.icn_16_listas}" label="Veiculos" mdlPai="{mdlPai}" />
+		
+		<!--
+		<abas:AbaPropriedade icon="{Imagens.unica.icn_16_listas}" label="Propriedades" mdlPai="{mdlPai}" />
+		
+		<mx:Canvas icon="{Imagens.unica.icn_16_funcionario}"	enabled="{false}" label="Funcionario" />
+		<mx:Canvas icon="{Imagens.unica.icn_16_parceiro}"		enabled="{false}" label="Parceiro" />
+		<mx:Canvas icon="{Imagens.unica.icn_16_fornecedor}"		enabled="{false}" label="Fornecedor" />
+		<mx:Canvas icon="{Imagens.unica.icn_16_transportador}"	enabled="{false}" label="Transportador" />
+		-->
+	</mx:ViewStack>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import Core.Sessao;
+			import img.Imagens;
+			import com.flexpernambuco.controls.MasterTextInput;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.ValidationResult;
+			import SDE.FachadaServico.FcdCliente;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.Funcoes;
+			import SDE.Enumerador.EPesTipo;
+			import SDE.Entidade.Cliente;
+			import janelas.cadastro.Cliente1.JanelaCadCliente;
+			
+			
+			
+			[Bindable] public var mdlPai:JanelaCadCliente;
+			
+			[Bindable] private var c:Cliente;
+			
+			
+			private var validacoes:Array = [];//MasterTextInput[]
+
+			/** Creation Complete */
+			private function create():void
+			{
+				//este método preenche os campos na tela
+				mdlPai.addEventListener(JanelaCadCliente.EV_MUDA_CLIENTE, mudaCliente);
+			}
+
+			/** Manipulação de dados */
+			private function mudaCliente(ev:Object):void
+			{
+				if (mdlPai.cliente==null)
+					return;
+				c = mdlPai.cliente;
+				//p = c.__pessoa;
+				
+				this.currentState = (c.tipo==EPesTipo.Fisica) ? null : "Juridica";
+				
+				AlertaSistema.mensagem( "C: "+c.id, true);
+				
+				var s:String = (c.tipo==EPesTipo.Fisica) ? "CPF" : "CNPJ";
+				lblTitulo.text = s+': '+Funcoes.MascaraCPF(c.cpf_cnpj) +' Tipo: '+c.tipo;
+				
+				doBinding();//assim não precisamos popular manualmente
+				vs.selectedIndex = 0; //seleciona a aba Observação, abaixo
+				//esse método 'registra' todas as validações do sistema
+				registraValidacoes();
+				
+				
+				mouseEh(vbFuncionario, MouseEvent.MOUSE_OUT, c.ehFuncionario);
+				mouseEh(vbParceiro, MouseEvent.MOUSE_OUT, c.ehParceiro);
+				mouseEh(vbFornecedor, MouseEvent.MOUSE_OUT, c.ehFornecedor);
+				mouseEh(vbTransportador, MouseEvent.MOUSE_OUT, c.ehTransportador);
+				
+			}
+			private function salvar(continuarEditando:Boolean):void
+			{
+				if (c.id==1)
+				{
+					AlertaSistema.mensagem( "Cliente Consumidor Não pode ser editado!" );
+					return;
+				}
+				
+				// VALIDAR
+				var sValid:String = valida();
+				if (sValid!=null)
+				{
+					AlertaSistema.mensagem(sValid);
+					return;
+				}
+				
+				// SALVAR
+				Application.application.sessao.nuvens.modificacoes.Cliente_NovoAltera(c,
+					function(retorno:Cliente):void
+					{
+						AlertaSistema.mensagem( "Salvei!" );
+						if (continuarEditando)
+							mdlPai.cliente = retorno;
+						else
+							mdlPai.cliente = null;
+					}
+				);
+				
+				/*
+				var fcd:FcdCliente = new FcdCliente();
+				fcd.Atualizar(c, continuarEditando,
+					function(retorno:Cliente):void
+					{
+						AlertaSistema.mensagem( "Salvei!" );
+						mdlPai.cliente = retorno;
+					}
+					
+				);
+				*/
+			}
+			
+			private function doBinding():void
+			{
+				Funcoes.myBind(boundObsTextInput, "text", c, "obs");
+				Funcoes.myBind(boundNomeTextInput, "text", c, "nome");
+				Funcoes.myBind(boundApelidoTextInput, "text", c, "apelido_razsoc");
+				Funcoes.myBind(boundDtNascTextInput, "text", c, "dtNasc");
+				
+				if (c.tipo ==EPesTipo.Fisica)
+				{
+					Funcoes.myBind(boundRGTextInput, "text", c, "rg");
+					Funcoes.myBind(boundUFCombo, "selectedItem", c, "rgUF");
+				}
+			}
+			
+			private function mouseEh(target:Object, evType:String, eh:Boolean):void
+			{
+				if (evType==MouseEvent.MOUSE_OUT)
+					target.alpha = (eh) ? 1 : .4;
+				else if (evType==MouseEvent.MOUSE_OVER || evType==MouseEvent.CLICK)
+					target.alpha = (eh) ? 1 : .7;
+			}
+			
+			private function cancelar():void
+			{
+				mdlPai.cliente=null;
+			}
+			
+			/** Validações */
+			private function registraValidacoes():void
+			{
+				validacoes.splice(0, validacoes.length);
+				registraValidacao(boundDtNascTextInput);
+				
+				//registraValidacao(boundDtNascTextInput);
+				//registraValidacao(boundDtNascTextInput);
+				//registraValidacao(boundDtNascTextInput);
+				//registraValidacao(boundDtNascTextInput);
+			}
+			private function registraValidacao(elemento:MasterTextInput):void
+			{
+				validacoes.push(elemento);
+			}
+			private function valida():String
+			{
+				for each (var elemento:MasterTextInput in validacoes)
+				{
+					var valido:ValidationResultEvent = elemento.currentValidator.validate(null, true);//não mudar parametros
+
+					for each (var validResult:ValidationResult in valido.results)
+						return validResult.errorMessage;
+				}
+				return null;
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Body xmlns="org.print.*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="create()">
+	
+	<ReportDataGrid width="100%" height="100%" dataProvider="{dados}" fontSize="9" 
+		rowHeight="17">
+		<columns>
+			<mx:DataGridColumn width="1" headerText="CÓD." dataField="id"/>
+			<mx:DataGridColumn width="1" headerText="RF" dataField="rfrf"/>
+			<mx:DataGridColumn width="6" headerText="PRODUTO" dataField="nome"/>
+			<mx:DataGridColumn width="3" headerText="MARCA" dataField="marca"/>
+			<mx:DataGridColumn width="1" headerText="GRADE" dataField="grade"/>
+			<mx:DataGridColumn width="2" headerText="QUANTIDADE" dataField="qtd"/>
+		</columns>
+	</ReportDataGrid>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.Utils.Formatadores;
+			import mx.formatters.CurrencyFormatter;
+			import SDE.Entidade.ItemEmpEstoque;
+			import impressoes.relatorios.modelos.ModeloItem;
+			import impressoes.relatorios.modelos.ModeloCliente;
+			import SDE.Entidade.Item;
+			import flash.text.engine.BreakOpportunity;
+			import Core.Utils.Funcoes;
+			import mx.controls.Alert;
+			
+			public override function converteDados(origem:Array):Array
+			{
+				//origem.sortOn("nome");
+				var retorno:Array = [];
+
+				for each(var it:Item in origem)
+				{
+					//if (it.__estoques==null)
+					//	continue;
+					for(var i:int = 0; i < it.__estoques.length; i++)
+					{
+						var mi:ModeloItem = new ModeloItem();
+						//mi.grade = (it.__estoques==null) ? "nulos" : it.__estoques.length+" estoques";
+						var iep:ItemEmpEstoque = it.__estoques[i];
+						mi.grade += iep.identificador;
+						mi.qtd +=  Formatadores.unica.formataDecimal(iep.qtd);
+						//verifica se o primeiro item 
+						if(i == 0)
+						{
+							mi.id = it.id.toString();
+							mi.nome = it.nome;
+							mi.marca = it.marca;
+							mi.rf = it.rfUnica;
+						}
+						retorno.push(mi);							
+					}
+				}
+				return retorno;
+			}
+			
+			private function create():void
+			{
+				//var a:Object = dados;
+			}
+			
+		]]>
+	</mx:Script>	
+	
+</Body>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	xmlns:Form="janelas.tecnico.Usuario.Form.*" xmlns:Pesquisa="janelas.tecnico.Usuario.Form.Pesquisa.*" xmlns:Cadastro="janelas.tecnico.Usuario.Form.Cadastro.*">
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:ViewStack id="vs" width="100%" height="100%" creationPolicy="all">
+		
+		<Pesquisa:Usuario_FormPesquisa id="formPesquisa" mdlPai="{this}" showEffect="{quickFade}" hideEffect="{quickFade}"/>
+		<Cadastro:Usuario_FormCadastro id="formCadastro" mdlPai="{this}" showEffect="{quickFade}" hideEffect="{quickFade}"/>
+		
+	</mx:ViewStack>
+	
+</mx:VBox>

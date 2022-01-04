@@ -1,0 +1,74 @@
+10
+
+dir
+213
+svn://localhost/lado_cliente_src/janelas/mov
+svn://localhost/lado_cliente_src
+
+
+
+2010-09-03T14:59:54.546875Z
+200
+marcos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+9b7fb334-f831-1d44-b9d0-4d2e2b1c18a5
+
+Balanco1
+dir
+
+AjusteEstoque
+dir
+
+Balanco2
+dir
+
+NFServicos
+dir
+
+EntradaCompleta
+dir
+
+Cancel1
+dir
+
+PdvEntrada
+dir
+
+
+
+delete
+
+PDV
+dir
+
+PdvGeraTitulo
+dir
+
+EntradaSimples
+dir
+
+PDV2
+dir
+
+PdvSaida
+dir
+
+ImpressaoNFE1
+dir
+
+PDV4
+dir
+

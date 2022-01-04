@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	fontSize="14"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%">
+		<mx:VBox>
+			<mx:Label text="RESUMO DE CAIXA:" width="100%"/>
+			<mx:HBox>
+				<master:MasterTextInput id="txtNome" capsType="upercase" width="100%"/>
+				<comp:Botao1 width="250" label="Criar" icone="Adiciona" cor="Cinza" click="inserir()" />
+			</mx:HBox>
+		</mx:VBox>		
+	</mx:HBox>
+	
+	<mx:DataGrid id="grid" width="100%" height="100%"
+		themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="Código"/>
+			<mx:DataGridColumn dataField="nome" headerText="Nome"/>
+		</mx:columns>				
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao1 cor="Cinza" icone="Cancela" width="220" label="Desfazer Alterações" click="{resetar()}"/>
+		<comp:Botao1 cor="Cinza" icone="Salva" width="220" label="Salvar Alterações" click="{salvar()}"/>
+	</mx:HBox>
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import SDE.Entidade.Finan_GrupoTipoPagamento;
+			import flash.net.sendToURL;
+			import SDE.Entidade.Finan_Conta;
+			import SDE.CamadaNuvem.NuvemModificacoes;
+
+			import SDE.Entidade.Finan_CentroCusto;
+			import img.Imagens;
+			
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+			
+			private var grupos:Array;
+			
+			private function create():void
+			{
+				resetar();
+			}
+			
+			public function resetar():void
+			{
+				grupos = App.single.cache.cloneFinan_GrupoTipoPagamento;
+				preencheGrid();
+			}
+			
+			private function preencheGrid():void
+			{
+				grupos.sortOn("nome");
+				grid.dataProvider =  grupos;
+			}
+			
+			private function inserir():void
+			{
+				txtNome.setFocus();
+				if(txtNome.text == ''){
+					AlertaSistema.mensagem('Digite o Resumo de Caixa');
+					return;
+				}
+				var xxx:Finan_GrupoTipoPagamento;
+				for each(xxx in grupos)
+				{
+					if(xxx.nome == txtNome.text)
+					{
+						AlertaSistema.mensagem("Este Resumo já existe.");
+						return;
+					}					
+				}
+				xxx = new Finan_GrupoTipoPagamento();
+				xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.nome = txtNome.text;
+				txtNome.text = "";
+				
+				grupos.push(xxx);
+				preencheGrid();
+			}
+			
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				
+				for each(var xxx:Finan_GrupoTipoPagamento in grupos)
+					if(xxx.id ==0)
+						arSalvar.push(xxx);
+				
+				Sessao.unica.nuvens.modificacoes.Finan_GrupoTipoPagamento_Novos(arSalvar,
+					function():void
+					{
+						AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+				
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

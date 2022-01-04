@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	xmlns:controls="com.flexpernambuco.controls.*" xmlns:CP="Componentes.CP.*"
+	creationComplete="create()" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*">
+	
+	<mx:Script source="Mdll_JnlCadCargo_scriptConsulta.as"/>
+	<mx:Script source="Mdll_JnlCadCargo_scriptNovoEdita.as"/>
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:ViewStack id="vsPrincipal" verticalCenter="0" horizontalCenter="0"
+		width="900" height="500"
+		creationPolicy="all"
+		fontSize="14" fontWeight="bold">
+		
+		<!-- TELA PESQUISA -->
+		<mx:VBox id="telaPesquisa"
+			width="100%" height="100%"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:HBox verticalAlign="middle" width="100%">
+				<mx:Label text="Cargo:"/>
+				<CP:PesqCargo id="cpCargo" showBrowseButton="false" width="100%" keyDown="cpCargo_KeyDown()"/>
+				<mx:Button label="Adicionar Cargo" labelPlacement="right" icon="{Imagens.unica.icn_32_adiciona}" click="btnNovoCargo_Click()"/>
+			</mx:HBox>
+			
+			<mx:DataGrid id="dgCargo"
+				width="100%" height="100%"
+				themeColor="#3B5998"
+				dataProvider="{dpCargo}">
+				<mx:columns>
+					<mx:DataGridColumn width="1" dataField="id" headerText="Cod"/>
+					<mx:DataGridColumn width="10" dataField="nomeCargo" headerText="Cargo"/>
+				</mx:columns>
+			</mx:DataGrid>
+			
+			<mx:HBox verticalAlign="middle" horizontalAlign="right" width="100%">
+				<mx:Button label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="btnSelecionar_Click()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		<!-- TELA EDIÇÃO -->
+		<mx:VBox width="100%" height="100%" id="telaTab" cornerRadius="5" borderColor="#3B5998"
+			fontSize="16" fontWeight="bold" styleName="padding5"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:LinkBar id="lb" dataProvider="{vs}" width="100%"
+				fontWeight="bold" fontSize="16"/>
+			
+			<mx:HBox width="100%" backgroundColor="#3B5998" color="white" styleName="padding5">
+				<mx:Label text="Cargo:"/>
+				<controls:MasterTextInput id="txtDescCargo" width="100%"
+					backgroundColor="#3B5998" borderColor="white" capsType="upercase"/>
+			</mx:HBox>
+			
+			<mx:ViewStack id="vs" width="100%" height="100%" cornerRadius="5"
+				borderColor="#3B5998" borderThickness="0"
+				fontSize="16" fontWeight="bold">
+				
+				<mx:VBox label="Comissões"
+					verticalAlign="middle" horizontalAlign="center"
+					width="100%" height="100%" fontSize="14">
+					
+					<mx:VBox width="70%">
+						<!--<mx:HBox verticalAlign="middle" width="100%">
+							<mx:Label text="Descrição:"/>
+							<controls:MasterTextInput id="txtDescCargo" capsType="upercase" width="100%"/>
+						</mx:HBox>-->
+						<mx:HBox verticalAlign="middle">
+							<mx:CheckBox id="chkbMontanteTotal" label="Montante Total:" width="260" fontWeight="bold"/>
+							<mx:NumericStepper id="nsMontanteTotal" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{chkbMontanteTotal.selected}"/>
+						</mx:HBox>
+						<mx:HBox verticalAlign="middle">
+							<mx:CheckBox id="chkbMaoDeObra" label="Mão de Obra:" width="260" fontWeight="bold"/>
+							<mx:NumericStepper id="nsMaoDeObra" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{chkbMaoDeObra.selected}"/>
+						</mx:HBox>
+						<mx:HBox verticalAlign="middle">
+							<mx:CheckBox id="chkbMaoDeObraGeral" label="Mão de Obra Geral:" width="260" fontWeight="bold"/>
+							<mx:NumericStepper id="nsMaoDeObraGeral" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{chkbMaoDeObraGeral.selected}"/>
+						</mx:HBox>
+						<mx:HBox verticalAlign="middle">
+							<mx:CheckBox id="chkbMaoDeObraGarantia" label="Mão de Obra Garantia:" width="260" fontWeight="bold"/>
+							<mx:NumericStepper id="nsMaoDeObraGarantia" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{chkbMaoDeObraGarantia.selected}"/>
+						</mx:HBox>
+						<mx:HBox verticalAlign="middle">
+							<mx:CheckBox id="chkbMaoDeObraGeralEmGarantia" label="Mão de Obra Geral em Garantia:" width="260" fontWeight="bold"/>
+							<mx:NumericStepper id="nsMaoDeObraGeralEmGarantia" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{chkbMaoDeObraGeralEmGarantia.selected}"/>
+						</mx:HBox>
+						<mx:HBox verticalAlign="middle">
+							<mx:CheckBox id="chkbProdutosEmGarantia" label="Produtos em Garantia:" width="260" fontWeight="bold"/>
+							<mx:NumericStepper id="nsProdutosEmGarantia" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{chkbProdutosEmGarantia.selected}"/>
+						</mx:HBox>
+						<mx:HBox verticalAlign="middle">
+							<mx:CheckBox id="chkbProdutos" label="Produtos:" width="260" fontWeight="bold"/>
+							<mx:NumericStepper id="nsProdutos" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{chkbProdutos.selected}"/>
+						</mx:HBox>
+					</mx:VBox>
+					
+					<!--<mx:HBox width="60%" horizontalAlign="right">
+						<mx:Button label="Cancelar" labelPlacement="right" icon="{Imagens.unica.icn_32_deleta}" click="mudaTela(telaPesquisa)"/>
+						<mx:Button label="Salvar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="btnSalvar_Click()"/>
+					</mx:HBox>-->
+					
+				</mx:VBox>
+				<mx:VBox label="" enabled="false" visible="false"
+					verticalAlign="middle" horizontalAlign="center"
+					width="100%" height="100%" fontSize="14">
+					
+					<mx:DataGrid id="dgPermissoes" editable="true"
+						width="100%" height="100%"
+						themeColor="#3B5998"
+						dataProvider="{parametros_filtados}">
+						<mx:columns>
+							<mx:DataGridColumn width="9" dataField="variavel" headerText="Menu" editable="false"/>
+							<mx:DataGridColumn width="1" dataField="valor" headerText="Acesso Permitido?" editable="true"/>
+						</mx:columns>
+					</mx:DataGrid>
+						
+				</mx:VBox>
+					
+			</mx:ViewStack>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<mx:Button label="Voltar" labelPlacement="right" icon="{Imagens.unica.icn_32_seta_esquerda}"
+					useHandCursor="true" buttonMode="true" mouseChildren="false"
+					click="mudaTela(telaPesquisa); limpaTelaCadastro();"/>
+				<mx:Button label="Salvar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+					useHandCursor="true" buttonMode="true" mouseChildren="false"
+					click="btnSalvar_Click()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</mx:ViewStack>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupNovoCargo"
+		titleIcon="{Imagens.unica.icn_32_adiciona}"
+		title="Novo Cargo"
+		showCloseButton="false"
+		width="650" height="160"
+		fontSize="14" fontWeight="bold"
+		layout="vertical">
+		
+		<mx:VBox width="100%">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Label text="Descrição do Cargo:"/>
+				<controls:MasterTextInput id="popupNovoCargo_txtDescCargo" width="100%" capsType="upercase"
+					keyDown="{if(event.keyCode==Keyboard.ENTER)btnSalvarNovoCargo_Click()}"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<mx:Button label="Cancelar" labelPlacement="right" icon="{Imagens.unica.icn_32_close}"
+					useHandCursor="true" buttonMode="true" mouseChildren="false"
+					click="popupNovoCargo.parent.removeChild(popupNovoCargo)"/>
+				<mx:Button label="Salvar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+					useHandCursor="true" buttonMode="true" mouseChildren="false"
+					click="btnSalvarNovoCargo_Click()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Fade;
+			import mx.effects.WipeUp;
+			import mx.effects.WipeDown;
+			import img.Imagens;
+			import mx.core.Container;
+			import mx.effects.Move;
+			
+			private function mudaTela(container:Container):void{
+				vsPrincipal.selectedChild = container;
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

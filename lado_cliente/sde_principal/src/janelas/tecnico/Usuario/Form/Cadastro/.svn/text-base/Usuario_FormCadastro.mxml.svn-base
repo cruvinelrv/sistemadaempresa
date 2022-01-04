@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	styleName="padding5" fontSize="14" fontWeight="bold"
+	verticalAlign="middle" horizontalAlign="center"
+	xmlns:SDE="Componentes.SDE.*" xmlns:controls="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*">
+	
+	<mx:Fade id="quickFade" duration="200"/>
+		
+	<mx:ViewStack id="vsUsuarioCadastro" width="85%" height="100%" creationPolicy="all">
+		
+		<mx:VBox id="pesquisaFuncionario" width="100%" height="100%" verticalAlign="middle" showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Image source="{Imagens.unica.icn_64_pesquisa}"/>
+				<mx:Label text="Pesquisa" fontSize="40" color="#666666" fontWeight="bold"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Label text="Funcionário:"/>
+				<SDE:CaixaPesquisa id="cpFuncionario" width="100%"
+					clickPesquisar="dpFuncionario=usuarioScript.pesquisaFuncionario(cpFuncionario.text)"/>
+			</mx:HBox>
+			
+			<SDE:DataGrid id="dgFuncionarios"
+				width="100%" height="100%"
+				dataProvider="{dpFuncionario}">
+				<SDE:columns>
+					<mx:DataGridColumn width="1" headerText="Cód." dataField="cod"/>
+					<mx:DataGridColumn width="6" headerText="Nome" dataField="nome"/>
+					<mx:DataGridColumn width="3" headerText="Cargo" dataField="nomeCargo"/>
+				</SDE:columns>
+			</SDE:DataGrid>
+			
+			<mx:HBox verticalAlign="middle" horizontalAlign="right" width="100%">
+				<SDE:Botao label="Cancelar Cadastro" labelPlacement="right" icon="{Imagens.unica.icn_32_deleta}"
+					click="usuarioScript.cancelaCadastroEdicao(this, mdlPai)"/>
+				<SDE:Botao label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+					click="usuarioScript.funcionarioSelecionado(dgFuncionarios.selectedItem, mdlPai);"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		<mx:VBox id="configuracaoPermissoes" width="100%" height="100%" showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Image source="{Imagens.unica.icn_64_configuracao}"/>
+				<mx:Label text="Configuração das Permissões de Usuário" fontSize="40" color="#666666" fontWeight="bold"/>
+			</mx:HBox>
+			
+			<mx:HBox verticalAlign="middle">
+				<mx:Label text="Funcionário:" width="100"/>
+				<mx:Label id="lblFuncionario"/>
+			</mx:HBox>
+			
+			<mx:HBox verticalAlign="middle">
+				<mx:Label text="Cargo:" width="100"/>
+				<mx:Label id="lblCargo"/>
+			</mx:HBox>
+			
+			<mx:HBox verticalAlign="middle">
+				<mx:Label text="Login:" width="100"/>
+				<controls:MasterTextInput id="txtLogin" width="230" maxChars="15" required="true" capsType="upercase"/>
+				<mx:Spacer width="50"/>
+				<mx:Label text="Obs: A senha será configurada no primeiro login do usuário" visible="{!ehEditando}"/>
+			</mx:HBox>
+			
+			<mx:CheckBox id="ckbUsuarioTecnico" label="Usuário Técnico" fontWeight="bold" click="usuarioScript.ckbUsuarioTecnico_Click(this, ckbUsuarioTecnico.selected)"/>
+			
+			<SDE:DataGrid id="dgPermissoes" editable="true"
+				width="100%" height="100%"
+				dataProvider="{dpPermissoesSistema}">
+				<SDE:columns>
+					<mx:DataGridColumn width="8.5" headerText="Menu" dataField="menu" editable="false"/>
+					<mx:DataGridColumn width="1.5" headerText="Acesso Permitido" dataField="permitido" editable="true"
+						textAlign="center" itemRenderer="mx.controls.CheckBox" itemEditor="mx.controls.CheckBox" editorDataField="selected"/>
+				</SDE:columns>
+			</SDE:DataGrid>
+			
+			<mx:HBox verticalAlign="middle" horizontalAlign="right" width="100%">
+				<SDE:Botao label="Voltar" labelPlacement="right" icon="{Imagens.unica.icn_32_seta_esquerda}" visible="{!ehEditando}"
+					click="usuarioScript.mudaTela(vsUsuarioCadastro, pesquisaFuncionario);
+					usuarioScript.limpaCadastroUsuario(this);
+					usuarioScript.limpaPesquisaFuncionario(this);"/>
+				<SDE:Botao label="{(ehEditando)?'Cancelar Edição':'Cancelar Cadastro'}" labelPlacement="right" icon="{Imagens.unica.icn_32_deleta}"
+					click="usuarioScript.cancelaCadastroEdicao(this, mdlPai)"/>
+				<SDE:Botao label="Salvar" labelPlacement="right" icon="{Imagens.unica.icn_32_salva}"
+					click="usuarioScript.salvaCadastroLogin(mdlPai, this)"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</mx:ViewStack>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.Cliente;
+			import mx.controls.CheckBox;
+			import mx.collections.ArrayCollection;
+			import janelas.tecnico.Usuario.UsuarioScript;
+			import img.Imagens;
+			import janelas.tecnico.Usuario.JnlTecUsuario;
+			
+			public var mdlPai:JnlTecUsuario;
+			private var usuarioScript:UsuarioScript = new UsuarioScript();
+			
+			private var _dpFuncionario:ArrayCollection = new ArrayCollection();
+			private var _dpPermissoesSistema:ArrayCollection = new ArrayCollection();
+			
+			private var _ehEditando:Boolean;
+			private var _idClienteFuncionario:Number;
+			private var _idClienteFuncionarioUsuario:Number;
+			
+			[Bindable]
+			private var checkBoxFac:ClassFactory;
+			
+			private function init():void
+			{
+				checkBoxFac = new ClassFactory(CheckBox);
+				checkBoxFac.properties =
+				{
+					enabled:false
+				};
+			}
+			
+			[Bindable]
+			public function get dpFuncionario():ArrayCollection{return this._dpFuncionario;}
+			public function set dpFuncionario(valor:ArrayCollection):void{this._dpFuncionario = valor;}
+			
+			[Bindable]
+			public function get dpPermissoesSistema():ArrayCollection{return this._dpPermissoesSistema;}
+			public function set dpPermissoesSistema(valor:ArrayCollection):void{this._dpPermissoesSistema=valor;}
+			
+			[Bindable]
+			public function get ehEditando():Boolean{return this._ehEditando;}
+			public function set ehEditando(valor:Boolean):void{this._ehEditando=valor;}
+			
+			public function get idClienteFuncionario():Number{return this._idClienteFuncionario;}
+			public function set idClienteFuncionario(valor:Number):void{this._idClienteFuncionario=valor;}
+			
+			public function get idClienteFuncionarioUsuario():Number{return this._idClienteFuncionarioUsuario;}
+			public function set idClienteFuncionarioUsuario(valor:Number):void{this._idClienteFuncionarioUsuario=valor;}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

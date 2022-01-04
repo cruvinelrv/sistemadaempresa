@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	fontSize="14" verticalAlign="middle"
+	creationComplete="create()" xmlns:controls="com.adobe.flex.extras.controls.*" 
+	xmlns:comp="Componentes.comp.*"
+	xmlns:controls1="com.flexpernambuco.controls.*" xmlns:CP="Componentes.CP.*">	
+	<mx:Canvas width="100%" height="100%">		
+		<mx:Image x="10" y="10" source="{Imagens.unica.icn_64_adiciona}" />
+		<mx:Label x="80" y="10" fontSize="40" color="#666666" fontWeight="bold" text="Cadastro" />			
+		<mx:Grid width="350"
+			horizontalCenter="0" verticalCenter="0">
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:Label text="Tipo:"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:RadioButton id="rbFis"
+						label="Fisica"
+						selected="true"/>
+					<mx:RadioButton id="rbJur"
+						label="Juridica"
+						selected="false"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{(rbFis.selected || rbJur.selected) ? Imagens.unica.icn_32_aceita : Imagens.unica.icn_32_deleta }" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem width="100%">
+					<mx:Label text="{(rbFis.selected)?'CPF':'CNPJ'}:"/>
+				</mx:GridItem>
+				<mx:GridItem width="180">
+					<controls:MaskedTextInput id="txtCPF" width="100%"
+						inputMask="{(rbFis.selected)?'###/.###/.###-##':'##/.###/.###//####-##'}"
+						keyUp="{ validaCPF() }"/>
+				</mx:GridItem>
+				<mx:GridItem id="imgCPF_CNPJ" width="35">
+					<mx:Image source="{(isCpfValido) ? Imagens.unica.icn_32_aceita : Imagens.unica.icn_32_deleta }" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:Label text="{(rbFis.selected)?'Nome:':'Nome Fantasia:'}"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<controls1:MasterTextInput id="txtNome" width="100%" capsType="upercase"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{(txtNome.text.length==0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:Label text="{(rbFis.selected)?'Apelido:':'Razão Social:'}"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<controls1:MasterTextInput id="txtApelRazao" width="100%" capsType="upercase"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{(txtApelRazao.text.length==0) ? Imagens.unica.icn_32_deleta : Imagens.unica.icn_32_aceita }" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<comp:Botao1 icone="Adiciona"
+						cor="Cinza"
+						label="Criar"
+						click="{Criar()}"/>
+				</mx:GridItem>
+				<mx:GridItem>
+				</mx:GridItem>
+			</mx:GridRow>	
+		</mx:Grid>
+		
+	</mx:Canvas>
+	
+	<mx:VRule strokeColor="#3B5998" strokeWidth="2" height="50%" />
+	<mx:Canvas width="100%" height="100%">
+		
+		<mx:Image x="10" y="10" source="{Imagens.unica.icn_64_lapis}" />
+		<mx:Label x="80" y="10" fontSize="40" color="#666666" fontWeight="bold" text="Pesquisa / Altera" />
+		
+		<mx:VBox horizontalAlign="center" width="100%"
+			horizontalCenter="0" verticalCenter="0">
+			<mx:VBox>
+			<!--
+				<mx:CheckBox id="cbFunc" label="Funcionarios"/>
+				<mx:CheckBox id="cbForn" label="Fornecedores"/>
+				<mx:CheckBox id="cbTran" label="Transportadores"/>
+				<mx:CheckBox id="cbParc" label="Parceiros"/>
+				
+				ehFornecedor="{cbForn.selected}"
+				ehFuncionario="{cbFunc.selected}"
+				
+				
+				
+				<CP:PesqCFOP/>
+				-->
+				<CP:PesqCliente id="cpCliente2"
+					change="{trata_cpCliente_change()}"  />
+			</mx:VBox>
+		</mx:VBox>
+	</mx:Canvas>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import mx.core.Application;
+			import Core.Sessao;
+			import SDE.Entidade.Cad_Secao;
+			import img.Imagens;
+			import Core.Utils.Funcoes;
+			import Core.Ev.EvRetornaArray;	
+			import SDE.Enumerador.EPesTipo;
+			import SDE.FachadaServico.FcdCliente;
+			import SDE.Entidade.Cliente;
+			import Core.Alerta.AlertaSistema;
+			import mx.controls.Alert;
+			
+			[Bindable] public var mdlPai:JanelaCadCliente;
+			[Bindable] private var isCpfValido:Boolean = false;
+			
+			private function create():void
+			{
+				mdlPai.addEventListener(JanelaCadCliente.EV_MUDA_CLIENTE, mudaCliente);
+			}
+			private function mudaCliente(ev:Object):void
+			{
+				if (mdlPai.cliente!=null)
+					return;
+				
+				txtNome.text='';
+				txtApelRazao.text='';
+				txtCPF.text='';
+				//cpCliente.limpa();
+			}
+			
+			
+			private function trata_cpCliente_change():void
+			{
+				var xxx:Cliente = cpCliente2.selectedItem;
+				if (xxx!=null)
+					mdlPai.cliente = xxx.clone();
+			}
+			
+			
+			
+			/*
+			private function cpCliente_retorno(ev:EvRetornaArray):void
+			{
+				if (!ev.retorno)
+					return;
+				var retorno:Cliente = ev.retorno[0];
+				mdlPai.cliente = retorno;
+				//AlertaSistema.mensagem( "cliente: "+retorno.__pessoa.nome );
+			}
+			private function cpCliente_cancela():void
+			{
+				cpCliente.limpa();
+			}
+			*/
+			private function validaCPF():void
+			{
+				isCpfValido = false;
+				var cpf:String = txtCPF.text;
+				if (cpf.length == 0)
+					return;
+				
+				if (rbFis.selected)
+					isCpfValido = Funcoes.validaCpf(cpf);
+				else
+					isCpfValido = Funcoes.validaCnpj(cpf);
+					
+				
+				if (!isCpfValido)
+					return;
+				
+				for each(var xxx:Cliente in App.single.cache.arrayCliente)
+				{
+					if (xxx.cpf_cnpj==cpf)
+					{
+						AlertaSistema.mensagem("cliente "+xxx.nome+" já cadastrado");
+						txtCPF.text="";
+						//cpCliente2.text = xxx.cpf_cnpj;
+						break;
+					}
+				}
+				/*
+				FcdCliente.unica.LoadClienteCpfCnpj(txtCPF.text,
+					function(retorno:Cliente):void
+					{
+						if (retorno==null)
+							return;
+						txtNome.text=retorno.nome;
+						txtApelRazao.text=retorno.apelido_razsoc;
+					}
+				);
+				*/
+			}
+			
+			//Cria um novo cliente
+			private function Criar():void
+			{
+				//verifica se os campos foram preenchidos
+				var msg:String = '';
+				if (txtNome.text == '')
+					msg += 'Informe o Nome\n';
+				if (txtApelRazao.text == '')
+					msg += 'Informe ' + (rbFis.selected) ? 'o Apelido':'a Razão';
+				if (msg != '')
+				{
+					AlertaSistema.mensagem(msg);
+					return;
+				}
+				
+				//verifica se o CPF ou CNPJ é válido
+				var cpf:String = txtCPF.text;
+				var valido:Boolean =
+					(rbFis.selected)
+					? Funcoes.validaCpf(cpf)
+					: Funcoes.validaCnpj(cpf);
+				//se CPF ou CNPJ for inválido processo é interrompido
+				if (!valido)
+				{
+					AlertaSistema.mensagem((rbFis.selected)?'CPF Inválido':'CNPJ inválido');
+					return;
+				}
+								
+				var cNovo:Cliente = new Cliente();
+				cNovo.nome = txtNome.text;
+				cNovo.apelido_razsoc = txtApelRazao.text;
+				cNovo.cpf_cnpj = Funcoes.LimpaCPF(txtCPF.text);
+				cNovo.tipo = (rbFis.selected) ? EPesTipo.Fisica : EPesTipo.Juridica;
+				//Salva nova pessoa e direciona para cadastro de cliente
+				
+				Application.application.sessao.nuvens.modificacoes.Cliente_NovoAltera(cNovo,
+					function(retorno:Cliente):void
+					{
+						mdlPai.cliente = retorno;
+					}
+				);
+				/*
+				FcdCliente.unica.Novo(cNovo,
+					function(retorno:Cliente):void
+					{
+						if (retorno != null)
+							mdlPai.cliente = retorno;
+					}
+				);*/
+			}
+		]]>
+	</mx:Script>
+	
+</mx:HBox>

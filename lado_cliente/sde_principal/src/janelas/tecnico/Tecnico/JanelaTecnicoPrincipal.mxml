@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:abas="janelas.financeiro.FinCadastros.abas.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	themeColor="#3B5998"
+	creationComplete="create()">
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.Login;
+			import SDE.FachadaServico.FcdLogin;
+			import mx.controls.CheckBox;
+			import SDE.Entidade.LoginTelas;
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+			import SDE.FachadaServico.FcdTecnico;
+			import SDE.FachadaServico.FcdCorp;
+			import img.Imagens;
+			
+			private function create():void
+			{
+				/*
+				var t:LoginTelas = Sessao.unica.login.telas;
+				for each (var sCampo:String in LoginTelas.getCampos())
+				{
+					if (sCampo.indexOf("id")==0 || sCampo.indexOf("tec")==0)//id...
+						continue;
+					
+					var cb:CheckBox = new CheckBox();
+					//cb.width = 200;
+					cb.label = sCampo;
+					cb.selected = t[sCampo];
+					vboxPlaceHolder.addChild( cb );
+				}
+				*/
+				
+			}
+			private function RedefineLoginTelas():void
+			{
+				/*
+				var l:Login = Sessao.unica.login;
+				var t:LoginTelas = l.telas;
+				for each (var cb:CheckBox in vboxPlaceHolder.getChildren())
+				{
+					var sCampo:String = cb.label;
+					t[sCampo] = cb.selected;
+					if (sCampo.indexOf("tec")==0)
+						t[sCampo] = false;
+				}
+				FcdLogin.unica.AtualizaLoginTelas(
+					l.empresa, l.usuario, t,
+					function():void
+					{
+						AlertaSistema.mensagem( "ok" );
+					}
+				);
+				*/
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:TabNavigator width="100%" height="100%">
+		<mx:VBox width="100%" height="100%" label="Escolher Modulos">
+			
+			<mx:VBox id="vboxPlaceHolder" width="100%" height="100%" />
+			<comp:Botao1 label="Redefine Telas Autorizadas"
+				cor="Vermelho" icone="Confirma"
+				click="RedefineLoginTelas()" />
+			
+		</mx:VBox>
+		<mx:VBox width="100%" height="100%" label="Ações de Suporte">
+			<comp:Botao2 label="REMOVER TODOS CLIENTES" click="
+						FcdTecnico.unica.ClientesRemoveTodos(
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+			<comp:Botao2 label="RESETAR CORP LISTAS"/>
+			<comp:Botao2 label="RESETAR EMP LISTAS"/>
+				
+			<comp:Botao2 label="(cuidado) APAGAR ITENS, ESTOQUES, MOV, BALANÇO" click="
+						FcdTecnico.unica.ItemRemoverTudo(
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+			<comp:Botao2 label="(cuidado) APAGAR CLIENTES" click="
+						FcdTecnico.unica.ClientesResetaTodos(
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+				
+			<comp:Botao2 label="(todos) REDEFINE REFERENCIAS PARA ID ITEM" click="
+						FcdTecnico.unica.ItemRedefineCodUnicoComIdItem(true,
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+			<comp:Botao2 label="(necessarios) REDEFINE REFERENCIAS PARA ID ITEM" click="
+						FcdTecnico.unica.ItemRedefineCodUnicoComIdItem(false,
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+			<comp:Botao2 label="(necessarios) REDEFINE grade e barras DE ESTOQUE" click="
+						FcdTecnico.unica.EstoqueCorrecaoGradeBarras(
+							function():void { AlertaSistema.mensagem('ok'); }
+						);
+				" />
+		</mx:VBox>
+	</mx:TabNavigator>
+	
+</mx:VBox>

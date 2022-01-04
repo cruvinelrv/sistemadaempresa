@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	themeColor="#3B5998"
+	initialize="init()"
+	fontSize="20" xmlns:CP="Componentes.CaixaPesquisa.CP.*" xmlns:CP1="Componentes.CP.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*" xmlns:Combo="SDE.Componentes.Combo.*" xmlns:controls="com.flexpernambuco.controls.*">
+	
+	<mx:ArrayCollection id="tiposMov">
+		<mx:Label text="Todos"/>
+		<mx:Label text="Venda"/>
+		<mx:Label text="Orçamento"/>
+		<mx:Label text="Pedido"/>
+		<mx:Label text="Reserva"/>
+		<mx:Label text="Compra"/>
+		<mx:Label text="Balanço"/>
+		<mx:Label text="Serviço"/>
+		<mx:Label text="NFS Preveitura RV (DMS)"/>
+		<mx:Label text="Venda Cancelada"/>
+		<mx:Label text="Compra Cancelada"/>
+		<mx:Label text="Devolução"/>
+		<mx:Label text="Ajuste de Estoque"/>
+	</mx:ArrayCollection>
+	
+	<mx:states>
+	<!--
+		<mx:State name="movimentacao">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<CP:CPesqMov id="cpMov" labelBtn="" widthBtn="35"
+					retorno="retornaMov(event)" cancela="cpMov.limpa()" />
+			</mx:AddChild>
+		</mx:State>
+		-->
+		<mx:State name="Lista de Preços">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild"/>
+		</mx:State>
+		<mx:State name="Estoques Com Grade">
+			<mx:AddChild relativeTo="{conteudo}" position="lastchild">
+				<mx:CheckBox id="ckbMostraEstoqueZeradoEstoqueComGrade"
+					label="Imprimir Itens Sem Estoque?"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Estoques Sem Grade">
+			<mx:AddChild relativeTo="{conteudo}" position="lastchild">
+				<mx:CheckBox id="ckbMostraEstoqueZeradoEstoqueSemGrade"
+					label="Imprimir Itens Sem Estoque?"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Listagem Para Balanço">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Espelho de Movimentações">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:VBox width="750">
+					<mx:HBox verticalAlign="middle" width="100%">
+						<mx:Label text="Data Inicio:" width="185"/>
+						<comp:DateFieldBR id="dtfDiarioInicio" selectedDate="{new Date()}" />
+					</mx:HBox>
+					<mx:HBox verticalAlign="middle" width="100%">
+						<mx:Label text="Data Fim:" width="185"/>
+						<comp:DateFieldBR id="dtfDiarioFim" selectedDate="{new Date()}"/>
+					</mx:HBox>
+					<mx:HBox verticalAlign="middle" width="100%">
+						<mx:Label text="Cliente:" width="185"/>
+						<CP1:PesqCliente id="cpClienteDiario" width="100%"/>
+					</mx:HBox>
+					<mx:HBox verticalAlign="middle" width="100%">
+						<mx:Label text="Vendedor:" width="185"/>
+						<CP1:PesqFuncionario id="cpVendedorDiario" width="100%"/>
+					</mx:HBox>
+					<mx:HBox verticalAlign="middle" width="100%">
+						<mx:Label text="Produto:" width="185"/>
+						<CP1:CPesqItem id="cpItemDiario" width="100%"/>
+					</mx:HBox>
+					<mx:HBox verticalAlign="middle" width="100%">
+						<mx:Label text="Tipo Movimentação:" width="185"/>
+						<mx:ComboBox id="cmbTiposMovDiario" dataProvider="{tiposMov}" width="300"
+							labelFunction="{function(label:Label):String{return label.text}}"/>
+					</mx:HBox>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Relatório de Caixa">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<comp:DateFieldBR id="dtfResumo1" selectedDate="{new Date()}" />
+			</mx:AddChild>
+			<!--
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<comp:DateFieldBR id="dtfResumo2" selectedDate="{new Date()}" />
+			</mx:AddChild>
+			-->
+		</mx:State>
+		<mx:State name="Relatório PIS / COFINS">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:HBox>
+					<comp:DateFieldBR id="dtfPeriodoInicioPisCofins" selectedDate="{new Date()}"/>
+					<comp:DateFieldBR id="dtfPeriodoFimPisCofins" selectedDate="{new Date()}"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Relatório Extrato Conta Corrente Caixa">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:VBox creationComplete="create()">
+					<mx:HBox>
+						<comp:DateFieldBR id="dtfPeriodoInicioExtrato" selectedDate="{new Date()}"/>
+						<comp:DateFieldBR id="dtfPeriodoFimExtrato" selectedDate="{new Date()}"/>
+					</mx:HBox>
+					<mx:HBox>
+						<mx:Label text="Conta:" width="160"/>
+						<Combo:CmbFinan_Conta id="cmbConta" width="300"/>
+					</mx:HBox>
+					<mx:HBox>
+						<mx:Label text="Centro de Custo:" width="160"/>
+						<Combo:CmbFinan_CentroCusto id="cmbCentroCusto" width="300"/>
+					</mx:HBox>
+					<mx:HBox>
+						<mx:Label text="Plano de Conta" width="160"/>
+						<Combo:CmbFinan_TipoLancamento id="cmbPlanoConta" width="300"/>
+					</mx:HBox>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Relatório Títulos a Receber / Pagar">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:VBox>
+					<mx:HBox>
+						<comp:DateFieldBR id="dtfPeriodoInicioTitulos" selectedDate="{new Date()}"/>
+						<comp:DateFieldBR id="dtfPeriodoFimTitulos" selectedDate="{new Date()}"/>
+					</mx:HBox>
+					<mx:CheckBox id="chkbMostraAReceber" label="Exibe Contas a Receber" selected="true"/>
+					<mx:CheckBox id="chkbMostraAPagar" label="Exibe Contas a Pagar" selected="true"/>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Relatórios Cheque">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:VBox width="100%" height="100%">
+					<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="center">
+						<comp:DateFieldBR id="dfPeriodoInicioCheque" selectedDate="{new Date()}"/>
+						<comp:DateFieldBR id="dfPeriodoFimCheque" selectedDate="{new Date()}"/>
+					</mx:HBox>
+					<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="center" fontSize="18">
+						<mx:Button label="Cheques a Receber" height="60" click="{tipoRelatorioCheque = 'Cheques a Receber'; btnGerar_Click()}"/>
+						<mx:Button label="Cheques Baixados" height="60" click="{tipoRelatorioCheque = 'Cheques Baixados'; btnGerar_Click()}"/>
+						<mx:Button label="Cheques Compensados" height="60" click="{tipoRelatorioCheque = 'Cheques Compensados'; btnGerar_Click()}"/>
+						<mx:Button label="Cheques Devolvidos" height="60" click="{tipoRelatorioCheque = 'Cheques Devolvidos'; btnGerar_Click()}"/>
+					</mx:HBox>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Relatório de Comissionamento Dinâmico">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:VBox width="560" height="100%">
+					<mx:HBox width="100%" verticalAlign="middle">
+						<mx:Label text="Data Início:" width="130"/>
+						<comp:DateFieldBR id="dtfPeriodoInicioComissao" selectedDate="{new Date()}"/>
+					</mx:HBox>
+					<mx:HBox width="100%" verticalAlign="middle">
+						<mx:Label text="Data Fim:" width="130"/>
+						<comp:DateFieldBR id="dtfPeriodoFimComissao" selectedDate="{new Date()}"/>
+					</mx:HBox>
+					<mx:HBox width="100%" verticalAlign="middle">
+						<mx:Label text="Funcionário:" width="130"/>
+						<CP1:PesqFuncionario id="cpFuncionario" width="100%"/>
+					</mx:HBox>
+					<mx:CheckBox id="chkbExibirMov" label="Exibir Movimentações?"/>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Produtos Vendidos no Período">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:VBox width="600">
+					<mx:HBox verticalAlign="middle">
+						<mx:Label text="Data Inicio:"/>
+						<comp:DateFieldBR id="dtfPeriodoInicio" selectedDate="{new Date()}"/>
+					</mx:HBox>
+					<mx:HBox verticalAlign="middle">
+						<mx:Label text="Data Fim:" width="100"/>
+						<comp:DateFieldBR id="dtfPeriodoFim" selectedDate="{new Date()}"/>
+					</mx:HBox>
+					<mx:HBox verticalAlign="middle" width="100%">
+						<mx:Label text="Produto:" width="100"/>
+						<CP1:CPesqItem id="cpItemPeriodo" width="100%"/>
+					</mx:HBox>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Agrodefesa">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:VBox>
+					<mx:VBox>
+						<mx:HBox>
+							<mx:Label text="Data Inicial: " width="150"/>
+							<comp:DateFieldBR id="dtfDtInicial"/>
+						</mx:HBox>
+						<mx:HBox>
+							<mx:Label text="Data Final: " width="150"/>
+							<comp:DateFieldBR id="dtfDtFinal"/>
+						</mx:HBox>
+					</mx:VBox>
+					<mx:HBox>
+						<CP1:PesqItem id="cpItem" change="{usuario_escolheu_item()}"/>
+					</mx:HBox>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Relatório Inventário">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:VBox width="100%" verticalAlign="middle">
+					<mx:HBox verticalAlign="middle">
+						<mx:Label text="Tipo de Preço:" width="240"/>
+						<mx:ComboBox id="cmbTipoPreco" dataProvider="{['Compra', 'Custo', 'Venda']}" width="130"/>
+					</mx:HBox>
+					<mx:HBox verticalAlign="middle">
+						<mx:Label text="Porcentagem Sobre Valor:" width="240"/>
+						<mx:NumericStepper id="nsPctSobreValor" minimum="0" maximum="100" stepSize="0.01" width="130"/>
+					</mx:HBox>
+					<mx:HBox>
+						<mx:Label text="Data do Inventário:" width="240"/>
+						<comp:DateFieldBR id="dtfDataInventario" selectedDate="{new Date()}" width="130"/>
+					</mx:HBox>
+					<mx:HBox>
+						<mx:Label text="Cabeçalho do Inventário:" width="240"/>
+						<mx:Label id="lblCabecalhoInventario" text="Registro de Inventário Nº "/>
+						<controls:MasterTextInput id="txtCabecalhoInventario"/>
+					</mx:HBox>
+					<mx:CheckBox id="chkbMostraZerados" label="Mostra Itens Sem Estoque"/>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Cadastro de Clientes">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+			</mx:AddChild>
+		</mx:State>
+		<!--<mx:State name="Estoques">
+		
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<CP:CPesqEstoque id="cpEstoque"
+					labelBtn="" widthBtn="35" widthTxtPercent="100"
+					retorno="retornaEstoque(event)" cancela="cpEstoque.limpa()" />
+			</mx:AddChild>
+		
+		</mx:State>-->
+	</mx:states>
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize target="{conteudo}"/>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:VBox width="100%" height="100%"
+		verticalAlign="middle" horizontalAlign="center">
+		
+		<mx:ComboBox id="cmbRelatorios" width="500" change=" mudaState() " />
+		<mx:HBox id="conteudo"/>
+		<mx:Button id="btnGerar"
+			label="GERAR" icon="{Imagens.unica.icn_64_impressora}"
+			visible="{(cmbRelatorios.selectedIndex>0)}"
+			click="btnGerar_Click()"
+			styleName="padding10" />
+		
+	</mx:VBox>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupEstoque"
+		titleIcon="{Imagens.unica.icn_32_estoque}"
+		title="Escolha Seu Estoque"
+		close="{ usuario_fecha_popup_estoques() }"
+		width="720" height="430"
+		layout="absolute"
+		fontSize="14">
+		
+		<!--<mx:Image left="10" top="10" source="{Imagens.unica.icn_32_estoque}" />
+		<mx:Label left="45" top="10" fontSize="20" fontWeight="bold" text="Escolha seu estoque"/>
+		<mx:Button right="10" top="10" icon="{Imagens.unica.icn_32_fecha}" click="{ usuario_fecha_popup_estoques() }" />-->
+		
+		<mx:VBox x="10" y="50" width="100%" height="100%"
+			right="10" left="10" bottom="10" top="10">
+			<mx:DataGrid id="dtGridEstoques"
+				width="100%" height="100%"
+				themeColor="#3B5998"
+				dataProvider="{ arraycEstoques }"
+				keyDown="{ if(event.keyCode==Keyboard.ENTER)usuario_escolheu_estoque(); }">
+				<mx:columns>
+					<mx:DataGridColumn dataField="idItem" headerText="Item" />
+					<mx:DataGridColumn dataField="identificador" headerText="Grade/Ident." visible="{item.tipoIdent != EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="codBarras" headerText="Barras" />
+					<mx:DataGridColumn dataField="lote" headerText="Lote" visible="{item.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="dtFab" headerText="Fab" visible="{item.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="dtVal" headerText="Val" visible="{item.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="qtd" headerText="Qtd" />
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.Cx_Diario;
+			import SDE.Entidade.Finan_Conta;
+			import SDE.Entidade.Finan_TipoLancamento;
+			import SDE.Entidade.Finan_CentroCusto;
+			import SDE.Enumerador.EItemTipoIdent;
+			import mx.effects.Zoom;
+			import SDE.Entidade.Item;
+			import mx.managers.PopUpManager;
+			import Core.Utils.MeuFiltroWhere;
+			import mx.collections.ArrayCollection;
+			import SDE.Entidade.ItemEmpEstoque;
+			import SDE.Constantes.Variaveis_SdeConfig;
+			import Core.App;
+			import mx.core.Application;
+			import mx.utils.Base64Encoder;
+			import mx.utils.Base64Decoder;
+			import mx.utils.SHA256;
+			import img.Imagens;
+			import SDE.Enumerador.EMovTipo;
+			import Core.Utils.Formatadores;
+			import Core.Ev.EvRetornaArray;
+			import mx.controls.Alert;
+			import flash.net.navigateToURL;
+			import mx.states.State;
+			import SDE.Entidade.Cliente;
+			import SDE.Enumerador.EModo;
+			import mx.effects.WipeDown;
+			import mx.effects.WipeUp;
+			import Core.Alerta.AlertaSistema;
+			import Core.Sessao;
+			
+			//[Bindable] private var relatorios:Array = ["movId","movDiario","movResumo","clientes","estoques"];
+			
+			private var idIEE:Number=0;
+			private var idItem:Number=0;
+			private var idMov:Number=0;
+			
+			private var tipoRelatorioCheque:String = "";
+			
+			[Bindable] private var arraycEstoques:ArrayCollection = new ArrayCollection();
+			
+			private function init():void
+			{
+				popupEstoque.parent.removeChild(popupEstoque);
+				
+				var ar:Array = ['escolha...'];
+				for each (var st:* in this.states)
+				{
+					ar.push(st.name);
+				}
+				cmbRelatorios.dataProvider = ar;
+			}
+			
+			private function create():void
+			{
+				 var dpCentroCusto:Array = ['TODOS'];
+				for each (var cc:Finan_CentroCusto in cmbCentroCusto.dataProvider)
+				{
+					dpCentroCusto.push(cc);
+				}
+				cmbCentroCusto.dataProvider = dpCentroCusto;
+				
+				var dpPlanoConta:Array = ['TODOS'];
+				for each (var pc:Finan_TipoLancamento in cmbPlanoConta.dataProvider)
+				{
+					dpPlanoConta.push(pc);
+				}
+				cmbPlanoConta.dataProvider = dpPlanoConta;
+				
+				var dpConta:Array = ['TODOS'];
+				for each (var c:Finan_Conta in cmbConta.dataProvider)
+				{
+					dpConta.push(c);
+				}
+				cmbConta.dataProvider = dpConta; 
+			}
+			
+			private function mudaState():void
+			{
+				this.currentState = (cmbRelatorios.selectedIndex==0) ? null : cmbRelatorios.selectedLabel;
+				if (cmbRelatorios.selectedLabel == "Relatórios Cheque")
+					btnGerar.visible = false;
+			}
+			
+			private function btnGerar_Click():void
+			{
+				var urlStr:String;	
+				var url:URLRequest = new URLRequest("Imprime.swf");
+				//var url:URLRequest = new URLRequest("Default.aspx");
+				var vars:URLVariables = new URLVariables();
+				url.data = vars;
+				
+				vars.idCorp = Sessao.unica.idCorp;
+				vars.idEmp = Sessao.unica.idEmp;
+				vars.tipo_impressao = "relatorio";
+				vars.relatorio = cmbRelatorios.selectedLabel;
+				
+				/*
+				if (cmbRelatorios.selectedLabel=="Relatório de Caixa")
+				{
+					vars.relatorio = "movResumo";
+				}
+				*/
+				
+				var imprimirNoIE:String = App.single.ss.parametrizacao.getParametro(Variaveis_SdeConfig.RELATORIO_ABREIMPRESSAO_IE);
+								
+				var enc:Base64Encoder = new Base64Encoder();
+				enc.encodeUTFBytes("corp"+vars.idCorp);
+				vars.hash = enc.toString();
+				
+				switch(vars.relatorio)
+				{
+					/*
+					case "movimentacao":
+						vars.idMov = idMov;
+						break;
+					*/
+					
+					/**COMENTADA A OPÇÃO DE IMPRIMIR NO INTERNET EXPLORER
+					 * ESSA FUNCIONALIDADE PERMANECERÁ SOMENTE NA IMPRESSÃO
+					 * DE NO FISCAL EM FORMULÁRIO*/
+					
+					case "Lista de Preços":
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=listaPrecos";
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						*/
+							url.url = "imprime.aspx";
+						
+						break;
+					
+					case "Estoques Com Grade":
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&mostraEstoqueZerado="+ckbMostraEstoqueZeradoEstoqueComGrade.selected;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=estoques";
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						*/
+							url.url = "imprime.aspx";
+							vars.mostraEstoqueZerado = ckbMostraEstoqueZeradoEstoqueComGrade.selected;
+						
+						break;
+						
+					case "Estoques Sem Grade":
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&mostraEstoqueZerado="+ckbMostraEstoqueZeradoEstoqueSemGrade.selected;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=estoques";
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						*/
+							url.url = "imprime.aspx";
+							vars.mostraEstoqueZerado = ckbMostraEstoqueZeradoEstoqueSemGrade.selected;
+						
+						break;
+					
+					case "Listagem Para Balanço":
+					
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="tipo_impressao=relatorio";
+							urlStr+="relatorio=Listagem Para Balanço";
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer", urlStr);
+							return;
+						}
+						else
+						*/
+							url.url = "imprime.aspx";
+							
+						break;
+					
+					case "Espelho de Movimentações":
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=movDiario";
+							urlStr+="&tipoMov="+cmbTiposMovDiario.selectedLabel;
+							urlStr+="&idCliente="+(cpClienteDiario.selectedItem) ? cpClienteDiario.selectedItem.id : 0;
+							urlStr+="&idFuncionario="+(cpVendedorDiario.selectedItem) ? cpVendedorDiario.selectedItem.id : 0;
+							urlStr+="&idItem="+(cpItemDiario.itemSelecionado) ? cpItemDiario.itemSelecionado.id : 0;
+							urlStr+="&dtInicial="+Formatadores.unica.formataData(dtfDiarioInicio.selectedDate);
+							urlStr+="&dtFinal="+Formatadores.unica.formataData(dtfDiarioFim.selectedDate);
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						{
+						*/
+							url.url = "imprime.aspx";
+							vars.tipoMov = cmbTiposMovDiario.selectedLabel;
+							vars.idCliente = (cpClienteDiario.selectedItem) ? cpClienteDiario.selectedItem.id : 0 ;
+							vars.idFuncionario = (cpVendedorDiario.selectedItem) ? cpVendedorDiario.selectedItem.id : 0;
+							vars.idItem = (cpItemDiario.itemSelecionado) ? cpItemDiario.itemSelecionado.id : 0;
+							vars. dtInicial = Formatadores.unica.formataData(dtfDiarioInicio.selectedDate);
+							vars.dtFinal = Formatadores.unica.formataData(dtfDiarioFim.selectedDate);
+						//}
+						break;
+						
+					case "Relatório PIS / COFINS":
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=relatorioPisCofins";
+							urlStr+="&dtInicial="+Formatadores.unica.formataData(dtfPeriodoInicioPisCofins.selectedDate);
+							urlStr+="&dtFinal="+Formatadores.unica.formataData(dtfPeriodoFimPisCofins.selectedDate);
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						{
+						*/
+							url.url = "imprime.aspx";
+							vars.dtInicial = Formatadores.unica.formataData(dtfPeriodoInicioPisCofins.selectedDate);
+							vars.dtFinal = Formatadores.unica.formataData(dtfPeriodoFimPisCofins.selectedDate);
+						//}
+						break;
+						
+					case "Relatório Extrato Conta Corrente Caixa":
+					
+						var idConta:Number;
+						var idCentroCusto:Number;
+						var idTipoLancamento:Number;
+						
+						if (cmbConta.selectedIndex == 0)
+							idConta = 0;
+						else
+							idConta = cmbConta.getAs().id;
+							
+						if (cmbCentroCusto.selectedIndex == 0)
+							idCentroCusto = 0;
+						else
+							idCentroCusto = cmbCentroCusto.getAs().id;
+							
+						if (cmbPlanoConta.selectedIndex == 0)
+							idTipoLancamento = 0;
+						else
+							idTipoLancamento = cmbPlanoConta.getAs().id
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&idConta="+idConta;
+							urlStr+="&idCentroCusto="+idCentroCusto;
+							urlStr+="&idTipoLancamento="+idTipoLancamento;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=relatorioExtratoContaCorrenteCaixa";
+							urlStr+="&dtInicial="+Formatadores.unica.formataData(dtfPeriodoInicioExtrato.selectedDate);
+							urlStr+="&dtFinal="+Formatadores.unica.formataData(dtfPeriodoFimExtrato.selectedDate);
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						{
+						*/
+							url.url = "imprime.aspx";
+							vars.dtInicial = Formatadores.unica.formataData(dtfPeriodoInicioExtrato.selectedDate);
+							vars.dtFinal = Formatadores.unica.formataData(dtfPeriodoFimExtrato.selectedDate);
+							vars.idConta = idConta;
+							vars.idCentroCusto = idCentroCusto;
+							vars.idTipoLancamento = idTipoLancamento;
+						//}
+						break;
+						
+					case "Relatório Títulos a Receber / Pagar":
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=relatorioTitulosAReceber";
+							urlStr+="&dtInicial="+Formatadores.unica.formataData(dtfPeriodoInicioTitulos.selectedDate);
+							urlStr+="&dtFinal="+Formatadores.unica.formataData(dtfPeriodoFimTitulos.selectedDate);
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						{
+						*/
+							url.url = "imprime.aspx";
+							vars.dtInicial = Formatadores.unica.formataData(dtfPeriodoInicioTitulos.selectedDate);
+							vars.dtFinal = Formatadores.unica.formataData(dtfPeriodoFimTitulos.selectedDate);
+							vars.mostraAReceber = chkbMostraAReceber.selected;
+							vars.mostraAPagar = chkbMostraAPagar.selected;
+						//}
+						break;
+						
+					case "Relatórios Cheque":
+					
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio="+ tipoRelatorioCheque +"";
+							urlStr+="&dtInicial="+Formatadores.unica.formataData(dfPeriodoInicioCheque.selectedDate);
+							urlStr+="&dtFinal="+Formatadores.unica.formataData(dfPeriodoFimCheque.selectedDate);
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						{
+						*/
+							url.url = "imprime.aspx";
+							vars.dtInicial = Formatadores.unica.formataData(dfPeriodoInicioCheque.selectedDate);
+							vars.dtFinal = Formatadores.unica.formataData(dfPeriodoFimCheque.selectedDate);
+							vars.relatorio = tipoRelatorioCheque;
+						//}
+						break;
+						
+					case "Produtos Vendidos no Período":
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop != null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=movPeriodo";
+							urlStr+="&idItem="+(cpItemPeriodo.itemSelecionado) ? cpItemPeriodo.itemSelecionado.id : 0;
+							urlStr+="&dtInicial="+Formatadores.unica.formataData(dtfPeriodoInicio.selectedDate);
+							urlStr+="&dtFinal="+Formatadores.unica.formataData(dtfPeriodoFim.selectedDate);
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						{
+						*/
+							url.url = "imprime.aspx";
+							vars.idItem = (cpItemPeriodo.itemSelecionado) ? cpItemPeriodo.itemSelecionado.id : 0;;
+							vars.dtInicial = Formatadores.unica.formataData(dtfPeriodoInicio.selectedDate);
+							vars.dtFinal = Formatadores.unica.formataData(dtfPeriodoFim.selectedDate);
+						//}
+						break;
+						
+					case "Relatório de Caixa":
+						var caixaDiarioAberto:Boolean = false;
+						for each (var xxx:Cx_Diario in App.single.cache.arrayCx_Diario){
+							if (Formatadores.unica.stringToDate(xxx.data).getTime() != (dtfResumo1.selectedDate as Date).getTime() || xxx.idEmp != App.single.idEmp)
+								continue;
+							caixaDiarioAberto = true;
+							break;
+						}
+						
+						if (!caixaDiarioAberto){
+							AlertaSistema.mensagem("Não foi realizada abertura de caixa na data '"+Formatadores.unica.formataData(dtfResumo1.selectedDate)+"', realize a abertura para emissão do relatório.");
+							return;
+						}
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop!=null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprimeRelCaixa.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=movResumo";
+							urlStr+="&dataBase="+Formatadores.unica.formataData(dtfResumo1.selectedDate);
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return; 
+						}
+						else
+						{
+						*/
+							url.url = "imprimeRelCaixa.aspx";
+							vars.dataBase = Formatadores.unica.formataData(dtfResumo1.selectedDate);
+							vars.ehCorporativo = false;
+						//}
+						break;
+						
+					case "Relatório de Comissionamento Dinâmico":
+						
+						var idFuncionario:Number;
+						
+						if (cpFuncionario.selectedItem)
+							idFuncionario = (cpFuncionario.selectedItem as Cliente).id;
+						else
+							idFuncionario = 0;
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop!=null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=Relatório de Comissionamento Dinâmico";
+							urlStr+="&idFuncionario="+idFuncionario;
+							urlStr+="&dtInicial="+Formatadores.unica.formataData(dtfPeriodoInicioComissao.selectedDate);
+							urlStr+="&dtFinal="+Formatadores.unica.formataData(dtfPeriodoFimComissao.selectedDate);
+							urlStr+="$mostraMov="+chkbExibirMov.selected;
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return; 
+						}
+						else
+						{
+						*/
+							url.url = "imprime.aspx";
+							vars.idFuncionario = idFuncionario;
+							vars.dtInicial = Formatadores.unica.formataData(dtfPeriodoInicioComissao.selectedDate);
+							vars.dtFinal = Formatadores.unica.formataData(dtfPeriodoFimComissao.selectedDate);
+							vars.mostraMov = chkbExibirMov.selected;
+						//}
+						break;
+						
+					case "Agrodefesa":
+						
+						if (idItem == 0 || idIEE == 0)
+						{
+							AlertaSistema.mensagem("Escolha o Item");
+							return;
+						}
+						
+						/*
+						if (imprimirNoIE == "1" && Application.application.gerenteConexaoDesktop!=null)
+						{
+							urlStr = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+							urlStr+="?idCorp="+Sessao.unica.idCorp;
+							urlStr+="&idEmp="+Sessao.unica.idEmp;
+							urlStr+="&tipo_impressao=relatorio";
+							urlStr+="&relatorio=agrodefesa";
+							urlStr+="&dtInicial="+Formatadores.unica.formataData(dtfDtInicial.selectedDate);
+							urlStr+="&dtFinal="+Formatadores.unica.formataData(dtfDtFinal.selectedDate);
+							urlStr+="&idItem="+idItem;
+							urlStr+="&idIEE="+idIEE;
+							
+							urlStr = "\""+urlStr+"\"";
+							
+							Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer",urlStr);
+							return;
+						}
+						else
+						{
+						*/
+							url.url = "imprime.aspx";
+							vars.dtInicial = Formatadores.unica.formataData(dtfDtInicial.selectedDate);
+							vars.dtFinal = Formatadores.unica.formataData(dtfDtFinal.selectedDate);
+							vars.idItem = idItem;
+							vars.idIEE = idIEE;
+						//}
+												
+						break;
+						
+					case "Relatório Inventário":
+						App.single.ss.nuvens.modificacoes.Estoque_InventarioEscrevePdf(false, cmbTipoPreco.selectedLabel, nsPctSobreValor.value, Formatadores.unica.formataData(dtfDataInventario.selectedDate), lblCabecalhoInventario.text +" "+  txtCabecalhoInventario.text, chkbMostraZerados.selected,
+							function ():void{
+								if (Application.application.gerenteConexaoDesktop){
+				            		Application.application.gerenteConexaoDesktop.baixaInventario(App.single.idCorp, Formatadores.unica.formataData(dtfDataInventario.selectedDate), "Inventário");
+				            	}
+				            	else{
+				            		AlertaSistema.mensagem("É necessário estar conectado ao SDE Desktop para a impressão");
+				            	}	
+							}
+						);
+						return;
+						break;
+					case "Cadastro de Clientes":
+						App.single.ss.nuvens.modificacoes.RelatorioCliente_EscrevePdf(
+							function ():void{
+								if (Application.application.gerenteConexaoDesktop){
+				            		Application.application.gerenteConexaoDesktop.baixaRelatorioCliente(App.single.idCorp, App.single.idEmp);
+				            	}
+				            	else{
+				            		AlertaSistema.mensagem("É necessário estar conectado ao SDE Desktop para a impressão");
+				            	}
+							}
+						);
+						return;
+						break;
+						/*
+					case "estoques":
+						break;
+						*/
+					//movId","movDiario","movResumo","clientes","estoques"
+				}
+				
+				navigateToURL(url, "_blank");
+			}
+			/*
+			private function retornaMov(ev:EvRetornaArray):void
+			{
+				idMov = ev.retorno[0].id;
+				AlertaSistema.mensagem(idMov.toString());
+			}
+			*/
+			
+			
+			
+			
+			[Bindable] private var item:Item; 
+			
+			private function usuario_escolheu_item():void
+			{
+				if (cpItem.selectedItem==null)
+					return;
+					
+				item = cpItem.selectedItem;
+				
+				var filtro:MeuFiltroWhere =
+					new MeuFiltroWhere(App.single.cache.arrayItemEmpEstoque)
+					.andEquals(item.id,ItemEmpEstoque.campo_idItem);
+				
+				arraycEstoques.removeAll();
+				var estoques:Array = filtro.getResultadoArraySimples();
+
+				if (estoques.length == 1)
+				{
+					sistema_lanca_estoque(estoques[0]);
+				}
+				else
+				{
+					sistema_abrepopup_estoques();
+				}
+				
+				arraycEstoques.source = estoques;
+			}
+			
+			private function sistema_abrepopup_estoques():void
+			{
+				PopUpManager.addPopUp(popupEstoque, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupEstoque);
+				dtGridEstoques.selectedIndex=0;
+				dtGridEstoques.setFocus();
+			}
+			
+			private function usuario_escolheu_estoque():void
+			{
+				usuario_fecha_popup_estoques();
+				var estoque:ItemEmpEstoque = dtGridEstoques.selectedItem as ItemEmpEstoque;
+				sistema_lanca_estoque(estoque);
+			}
+			
+			private function usuario_fecha_popup_estoques():void
+			{
+				PopUpManager.removePopUp(popupEstoque);
+			}
+			
+			private function sistema_lanca_estoque(estoque:ItemEmpEstoque):void
+			{
+				idIEE = estoque.id;
+				idItem = estoque.idItem;
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

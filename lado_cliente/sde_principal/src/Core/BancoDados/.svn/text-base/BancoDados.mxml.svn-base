@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	backgroundColor="#333333" themeColor="#ffffff" color="#ffffff"
+	creationComplete="create()"
+	paddingBottom="3" paddingLeft="3" paddingRight="3" paddingTop="3">
+	
+	<mx:Script source="BancoDados_script.as"/>
+	
+	<mx:HBox height="35" backgroundColor="#333333">
+		<mx:Label fontSize="14" fontWeight="bold" text="CLASSES:"/>
+		<mx:ComboBox id="cmbClasses" dropdownWidth="250" rowCount="30" color="#000000" fontWeight="bold" selectionColor="#333333"/>
+		<mx:Label fontSize="14" fontWeight="bold" text="BASE: #"/>
+		<mx:NumericStepper id="nsIdBase" maximum="99" value="0" color="#000000" keyDown="if (event.keyCode==Keyboard.ENTER) buscaInstancias();" />
+		<mx:Button label="busca instancias" click="buscaInstancias()"/>
+	</mx:HBox>
+	
+	<mx:Label id="lblQtdInstancias" fontSize="14" fontWeight="bold"/>
+	<mx:VBox width="100%" color="#000000">
+		<mx:Box id="vbPlaceHolderInstancias" width="100%" />
+		
+		<mx:Box id="vbPlaceHolderProfundidade" width="100%" />
+	</mx:VBox>
+	
+	<mx:CheckBox id="cbTranca" fontSize="14" fontWeight="bold" label="Ações sobre esta instancia" />
+	<mx:HBox verticalAlign="middle" enabled="{cbTranca.selected}"
+		backgroundColor="#333333" themeColor="#ffffff" color="#ffffff">
+		<mx:Button label="Zerar Instâncias" click="removeTodasInstanciasClasse()" />
+		<mx:Button label="Deletar Instância" enabled="{instanciaEditando!=null}" click="deletaInstancia()" />
+		<mx:VRule strokeColor="#cccccc" height="25" />
+		<mx:Button id="btnMetodoCorretivo" label="Metodo Corretivo" click="metodoCorretivo()" />
+		<mx:VRule strokeColor="#cccccc" height="25" />
+		<mx:TextInput id="txtExcecao" color="#000000" />
+		<mx:Button label="Gera Exceção" click="geraExcecao()" enabled="{txtExcecao.text!=''}" />
+		
+	</mx:HBox>
+	
+	<mx:Label fontSize="14" fontWeight="bold" text="Instancia para edição" />
+	<mx:DataGrid width="100%" rowCount="8" id="gridInstancia" color="#000000"
+		editable="true">
+		<mx:columns>
+			<mx:DataGridColumn width="1" dataField="campo" editable="false"/>
+			<mx:DataGridColumn width="1" dataField="classe" editable="false"/>
+			<mx:DataGridColumn width="1" dataField="uuID" editable="false"/>
+			<mx:DataGridColumn width="5" dataField="valor"/>
+			<mx:DataGridColumn width="2" headerText="Ações" editable="false">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:HBox>
+							<mx:Button label="edit" click="dispatchEvent(new Event('editar', true))"/>
+							<mx:Button label="null" click="dispatchEvent(new Event('setnull', true))"/>
+						</mx:HBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	
+</mx:VBox>

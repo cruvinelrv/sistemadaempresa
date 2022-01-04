@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox styleName="padding5"
+	xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:CP="Componentes.CP.*"
+	xmlns:controls="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*"
+	creationComplete="create()" xmlns:controls1="com.adobe.flex.extras.controls.*">
+	
+	<mx:states>
+		<mx:State name="stateContaBanco" basedOn="stateDestinoChequeConta">
+			<mx:AddChild relativeTo="{placeHolderContaBancoDetalhe}" position="lastChild">
+				<mx:HBox width="100%" verticalAlign="middle" fontSize="14" fontWeight="bold">
+					<mx:Label text="Banco:"/>
+					<mx:Label id="lblBanco" width="100"/>
+					<mx:Label text="Agência:"/>
+					<mx:Label id="lblAgencia" width="100"/>
+					<mx:Label text="Conta:"/>
+					<mx:Label id="lblConta" width="100"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateDestinoChequeConta">
+			<mx:AddChild relativeTo="{placeHolderDestinoCheque}" position="lastChild">
+				<mx:HBox verticalAlign="middle" fontSize="14" fontWeight="bold">
+					<mx:Label text="Conta Destino:" width="180"/>
+					<CP:PesqFinanConta id="cpFinanConta" width="480" change="cpFinanConta_Change()" enabled="{editaConta}"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateDestinoChequeCliente">
+			<mx:AddChild relativeTo="{placeHolderDestinoCheque}" position="lastChild">
+				<mx:HBox verticalAlign="middle" fontSize="14" fontWeight="bold">
+					<mx:Label text="Cliente Destino:" width="180"/>
+					<CP:PesqCliente id="cpClienteDestino" width="480" change="cpClienteDestino_Change()" enabled="{editaConta}"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateChequeDevolvido" basedOn="stateContaBanco">
+			<mx:AddChild relativeTo="{placeHolderChequeDevolvido}" position="lastChild">
+				<mx:HBox verticalAlign="middle" fontSize="14" fontWeight="bold">
+					<mx:Label text="Data da 1ª Devolução:" visible="{chequeDevolvido1Visible}"/>
+					<comp:DateFieldBR id="dfChequeDevolucao1" width="130" selectedDate="{new Date()}" visible="{chequeDevolvido1Visible}" enabled="{chequeDevolvido1Enabled}"/>
+					<mx:Label text="Data da 2ª Devolução:" visible="{chequeDevolvido2Visible}"/>
+					<comp:DateFieldBR id="dfChequeDevolucao2" width="130" selectedDate="{new Date()}" visible="{chequeDevolvido2Visible}" enabled="{chequeDevolvido2Enabled}"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize target="{placeHolderContaBancoDetalhe}"/>
+		</mx:Transition>
+		<mx:Transition fromState="stateContaBanco" toState="stateChequeDevolvido">
+			<mx:Fade target="{placeHolderChequeDevolvido}"/>
+		</mx:Transition>
+		<mx:Transition fromState="stateDestinoChequeConta" toState="stateDestinoChequeCliente">
+			<mx:Fade target="{placeHolderDestinoCheque}"/>
+		</mx:Transition>
+		<mx:Transition fromState="stateDestinoChequeCliente" toState="stateDestinoChequeConta">
+			<mx:Fade target="{placeHolderDestinoCheque}"/>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:ViewStack id="vs" width="100%" height="100%" creationPolicy="all" creationComplete="createVs()">
+		
+		<!-- vs INDEX:0 -->
+		<mx:HBox width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" fontSize="30" fontWeight="bold"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:Button label="Cadastro" textAlign="center" width="240" height="80" click="btnCadastro_Click()"/>
+			<mx:Button label="Alteração" textAlign="center" width="240" height="80" click="btnAlteracao_Click()"/>
+			<mx:Button label="Baixa" textAlign="center" width="240" height="80" click="btnBaixa_Click()"/>
+			<mx:Button label="Compensação" textAlign="center" width="240" height="80" click="btnConpensacao_Click()"/>
+			
+		</mx:HBox>
+		
+		<!-- vs INDEX:1 -->
+		<mx:VBox width="100%" height="100%" fontSize="14" fontWeight="bold"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:VBox width="100%" height="100%" id="placeHolderNovoCadastro"/>
+			
+			<mx:HBox width="100%" horizontalAlign="right" fontSize="16" fontWeight="bold">
+				<mx:Button height="30" width="100" label="Cancelar" textAlign="center" click="{btnCancelar_Click()}"/>
+				<mx:Button height="30" width="100" label="Salvar" textAlign="center" click="{btnSalvarCadastro_Click()}"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		<!-- vs INDEX:2 -->
+		<mx:VBox width="100%" height="100%" fontSize="14" fontWeight="bold"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:VBox width="100%" height="100%" id="placeHolderAlteraCadastro"/>
+			
+			<mx:HBox width="100%" horizontalAlign="right" fontSize="16" fontWeight="bold">
+				<mx:Button height="30" width="100" label="Cancelar" textAlign="center" click="{btnCancelar_Click()}"/>
+				<mx:Button height="30" width="100" label="Salvar" textAlign="center" click="{btnSalvarAlteracao_Click()}"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		<!-- vs INDEX:3 -->
+		<mx:VBox width="100%" height="100%" fontSize="14" fontWeight="bold"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:VBox width="100%" height="100%" id="placeHolderBaixaChequeForm"/>
+			<mx:VBox width="100%" id="placeHolderBaixaChequeContaBanco"/>
+			
+			<mx:HBox width="100%" horizontalAlign="right" fontSize="16" fontWeight="bold">
+				<mx:Button height="30" width="100" label="Cancelar" textAlign="center" click="{btnCancelar_Click()}"/>
+				<mx:Button height="30" width="100" label="Salvar" textAlign="center" click="btnSalvarBaixa_Click()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		<!-- vs INDEX:4 -->
+		<mx:VBox width="100%" height="100%" fontSize="14" fontWeight="bold"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:VBox width="100%" height="100%" id="placeHolderCompensacaoChequeForm"/>
+			<mx:VBox width="100%" id="placeHolderCompensacaoChequeContaBanco"/>
+			
+			<mx:HBox verticalAlign="middle">
+				<mx:Label text="Data da Compensação:" width="180"/>
+				<comp:DateFieldBR id="dfDataCompensacao" width="130" textAlign="center" selectedDate="{new Date()}"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%">
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Cheque Devolvido:" width="178"/>
+					<mx:CheckBox id="ckbChequeDevolvido" width="100" click="ckbChequeDevolvido_Click()"/>
+				</mx:HBox>
+				<mx:HBox id="placeHolderChequeDevolvido"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" horizontalAlign="right" fontSize="16" fontWeight="bold">
+				<mx:Button height="30" width="100" label="Cancelar" textAlign="center" click="{btnCancelar_Click()}"/>
+				<mx:Button height="30" width="100" label="Salvar" textAlign="center" click="btnSalvarCompensacao_Click()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</mx:ViewStack>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupBuscaRecebimentoCheque"
+		showCloseButton="false"
+		titleIcon="{Imagens.unica.icn_32_busca}"
+		width="800" height="400"
+		layout="vertical"
+		fontSize="14"
+		fontWeight="bold">
+		
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Pesquisa Titulo:"/>
+			<CP:PesqFinanTitulo id="cpFinanTitulo" width="100%" keyUp="cpFinanTitulo_KeyUp()"/>
+		</mx:HBox>
+		
+		<mx:DataGrid id="dgFinanTitulo" dataProvider="{dpFinanTitulo}"
+			width="100%" height="100%">
+			<mx:columns>
+				<mx:DataGridColumn width="2" dataField="id" headerText="Cod"/>
+				<mx:DataGridColumn width="6" dataField="cliente" headerText="Cliente"/>
+				<mx:DataGridColumn width="6" dataField="numCheque" headerText="Num. Cheque"/>
+				<mx:DataGridColumn width="4" dataField="dtPagamento" headerText="Data Pagamento"/>
+				<mx:DataGridColumn width="3" dataField="valor" headerText="Valor"/>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right" fontSize="16" fontWeight="bold">
+			<mx:Button label="Cancelar" width="120" textAlign="center" click="removeComponente(popupBuscaRecebimentoCheque)"/>
+			<mx:Button label="Selecionar" width="120" textAlign="center" click="btnSelecionar_Click()"/>
+		</mx:HBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<mx:VBox width="100%" height="100%" id="formCadastroCheque">
+			
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Emitente:" width="180"/>
+			<CP:PesqCliente id="cpCliente" width="480" change="cpCliente_Change()" enabled="{editaForm}"/>
+			<mx:Button width="33" height="34" icon="{Imagens.unica.icn_32_adiciona}" toolTip="Adicionar Cliente" click="btnAdicionaCliente_Click()" visible="{editaForm}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Tipo Cliente:" width="180"/>
+			<mx:RadioButton id="rbTipoClientePessoaFisica" label="Pessoa Física" selected="true" enabled="{!cliente}"/>
+			<mx:RadioButton id="rbTipoClientePessoaJuridica" label="Pessoa Jurídica" selected="false" enabled="{!cliente}"/>
+		</mx:HBox>
+		<mx:HBox width="100%">
+			<mx:Label text="{(rbTipoClientePessoaFisica.selected)?'CPF':'CNPJ'}:" width="180"/>
+			<controls1:MaskedTextInput id="txtCPF_CNPJ" width="100%" editable="{!cliente}"
+				inputMask="{(rbTipoClientePessoaFisica.selected)?'###/.###/.###-##':'##/.###/.###//####-##'}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Telefone:" width="180"/>
+			<controls:MasterTextInput id="txtTelefone" width="220" capsType="upercase" enabled="{editaForm}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Banco:" width="180"/>
+			<controls:MasterTextInput id="txtBanco" capsType="upercase" width="220" enabled="{editaForm}"/>
+			<mx:Label text="Agência:"/>
+			<controls:MasterTextInput id="txtAgencia" capsType="upercase" width="180" enabled="{editaForm}"/>
+			<mx:Label text="Conta:"/>
+			<controls:MasterTextInput id="txtConta" capsType="upercase" width="180" enabled="{editaForm}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Número do Cheque:" width="180"/>
+			<controls:MasterTextInput id="txtNumeroCheque" width="220" onlyRestrict="number" enabled="{editaForm}"/>
+			<mx:Label text="Valor:" width="65"/>
+			<mx:NumericStepper id="nsValor" minimum="0" maximum="999999" stepSize="0.01" width="180" enabled="{editaForm}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Data de Emissão:" width="180"/>
+			<comp:DateFieldBR id="dfDataEmissao" selectedDate="{new Date()}" width="130" textAlign="center" enabled="{editaForm}"/>
+			<mx:Label text="Bom Para o Dia:"/>
+			<comp:DateFieldBR id="dfBomParaDia" width="130" textAlign="center" enabled="{editaForm}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Fornecedor do Cheque:" width="180"/>
+			<CP:PesqCliente id="cpFornecedor" width="480" change="cpFornecedor_Change()" enabled="{editaForm}"/>
+			<mx:Button width="33" height="34" icon="{Imagens.unica.icn_32_adiciona}" toolTip="Adicionar Fornecedor" click="btnAdicionarFornecedor()" visible="{editaForm}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Venda:" width="180"/>
+			<CP:PesqMov id="cpVenda" width="480" change="cpVenda_Change()" enabled="{editaForm}"/>
+		</mx:HBox>
+		
+		<mx:Label text="Observações:"/>
+		<mx:TextArea id="txtObservacoes" width="100%" height="100%"/>
+		
+	</mx:VBox>
+	
+	<mx:VBox width="100%" id="formContaBanco" creationComplete="createDestino()">
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Data da Baixa:" width="180"/>
+			<comp:DateFieldBR id="dfDataBaixa" width="130" textAlign="center" selectedDate="{new Date()}" enabled="{editaConta}"/>
+			<mx:HBox width="40"/>
+			<mx:Label text="Destino:"/>
+			<mx:CheckBox id="ckbDestinoConta" label="Conta Banco/Caixa" click="ckbDestinoConta_Click()"/>
+			<mx:CheckBox id="ckbDestinoCliente" label="Cliente" click="ckbDestinoCliente_Click()"/>
+		</mx:HBox>
+		
+		<!--<mx:HBox verticalAlign="middle">
+			<mx:Label text="Conta Destino:" width="180"/>
+			<CP:PesqFinanConta id="cpFinanConta" width="480" change="cpFinanConta_Change()" enabled="{editaConta}"/>
+		</mx:HBox>-->
+		
+		<mx:HBox id="placeHolderDestinoCheque" width="100%" verticalAlign="middle"/>
+		<mx:HBox id="placeHolderContaBancoDetalhe" width="100%" verticalAlign="middle"/>
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import SDE.Enumerador.EPesTipo;
+			import SDE.Enumerador.ETipoTitulo;
+			import org.alivepdf.layout.Format;
+			import org.idmedia.as3commons.util.Comparator;
+			import SDE.Enumerador.EContaTipo;
+			import SDE.Entidade.Finan_Conta;
+			import SDE.Entidade.Finan_TipoDocumento;
+			import Core.Utils.Formatadores;
+			import Core.Utils.Funcoes;
+			import SDE.Enumerador.EMovTipo;
+			import Core.Utils.MeuFiltroWhere;
+			import mx.collections.ArrayCollection;
+			import mx.core.Container;
+			import mx.managers.PopUpManager;
+			import mx.accessibility.AlertAccImpl;
+			import janelas.cadastro.Cliente2.JnlCadCliente;
+			import janelas.cadastro.Cliente1.JanelaCadCliente;
+			import mx.core.Application;
+			import SDE.Entidade.ClienteContato;
+			import SDE.Entidade.Empresa;
+			import SDE.Entidade.Finan_Titulo_Mapa;
+			import SDE.Entidade.Finan_Titulo;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Entidade.Mov;
+			import SDE.Entidade.Cliente;
+			import Core.App;
+			import img.Imagens;
+			
+			private var alteracao:Boolean = false;
+			private var baixa:Boolean = false;
+			private var compensacao:Boolean = false;
+			
+			[Bindable] private var editaForm:Boolean = false;
+			[Bindable] private var editaConta:Boolean = false;
+			
+			[Bindable] private var chequeDevolvido1Enabled:Boolean = false;
+			[Bindable] private var chequeDevolvido1Visible:Boolean = false;
+			[Bindable] private var chequeDevolvido2Enabled:Boolean = false;
+			[Bindable] private var chequeDevolvido2Visible:Boolean =false;
+			
+			[Bindable] private var dpFinanTitulo:ArrayCollection = new ArrayCollection();
+			
+			[Bindable] private var cliente:Cliente;
+			private var fornecedor:Cliente;
+			private var venda:Mov;
+			private var finanContaDestino:Finan_Conta;
+			private var clienteDestino:Cliente;
+			
+			private var finanTitulo:Finan_Titulo = null;;
+			
+			private function create():void
+			{
+				removeComponente(popupBuscaRecebimentoCheque);
+				removeComponente(formCadastroCheque);
+				removeComponente(formContaBanco);
+			}
+			
+			private function createVs():void
+			{
+				cpVenda.dataProvider = cpVenda.somenteVenda();
+			}
+			
+			private function createDestino():void{
+				ckbDestinoConta.selected = true;
+				currentState = "stateDestinoChequeConta";
+			}
+			
+			private function removeComponente(comp:Container):void
+			{
+				comp.parent.removeChild(comp);
+			}
+			
+			private function cpCliente_Change():void
+			{
+				cliente = cpCliente.selectedItem as Cliente;
+				if (cliente)
+				{
+					if (cliente.tipo == EPesTipo.Fisica)
+						rbTipoClientePessoaFisica.selected = true;
+					else
+						rbTipoClientePessoaJuridica.selected = true;
+					
+					txtCPF_CNPJ.text = cliente.cpf_cnpj;
+				}
+				else
+				{
+					rbTipoClientePessoaFisica.selected = true;
+					rbTipoClientePessoaJuridica.selected = false;
+					txtCPF_CNPJ.text = "";
+				}
+			}
+			
+			private function cpFornecedor_Change():void
+			{
+				fornecedor = cpFornecedor.selectedItem as Cliente;
+			}
+			
+			private function cpVenda_Change():void
+			{
+				venda = cpVenda.selectedItem as Mov;
+			}
+			
+			private function cpFinanConta_Change():void
+			{
+				if (cpFinanConta.selectedItem)
+				{
+					if ((cpFinanConta.selectedItem as Finan_Conta).tipo == EContaTipo.Banco)
+					{
+						currentState = "stateContaBanco";
+						lblBanco.text = (cpFinanConta.selectedItem as Finan_Conta).banco;
+						lblAgencia.text = (cpFinanConta.selectedItem as Finan_Conta).ag;
+						lblConta.text = (cpFinanConta.selectedItem as Finan_Conta).conta;
+					}
+					else
+						currentState = "stateDestinoChequeConta";
+				}
+				else
+					currentState = "stateDestinoChequeConta";
+				finanContaDestino = cpFinanConta.selectedItem as Finan_Conta;
+			}
+			
+			private function cpClienteDestino_Change():void{
+				if (cpClienteDestino.selectedItem){
+					clienteDestino = cpClienteDestino.selectedItem as Cliente;
+				}
+			}
+			
+			private function cpFinanTitulo_KeyUp():void
+			{	
+				if (cpFinanTitulo.dropDown)
+					cpFinanTitulo.dropDown.visible = false;
+				
+				dpFinanTitulo.removeAll();	
+				for each (var obj:Object in cpFinanTitulo.dataProvider)
+				{
+					dpFinanTitulo.addItem(obj);
+				}
+			}
+			
+			private function btnAdicionaCliente_Click():void
+			{
+				Application.application.gerenteJanelas.NovaJanela(new JnlCadCliente(), "Cadastre o Cliente");
+			}
+			
+			private function btnAdicionarFornecedor():void
+			{
+				Application.application.gerenteJanelas.NovaJanela(new JnlCadCliente(), "Cadastre o Fornecedor");
+			}
+			
+			private function btnCancelar_Click():void
+			{
+				vs.selectedIndex = 0;
+				limparTela();
+			}
+			
+			private function populaTitulo():void
+			{
+				finanTitulo.idEmp = App.single.ss.idEmp;
+				finanTitulo.idClienteFuncionarioLogado = App.single.ss.idClienteFuncionarioLogado;
+				if (venda != null)
+				{
+					finanTitulo.idOperacao = venda.idOperacao;
+					finanTitulo.idTransacao = venda.idTransacao;
+				}
+				
+				finanTitulo.telefone = txtTelefone.text;
+				finanTitulo.banco = txtBanco.text;
+				finanTitulo.agencia = txtAgencia.text;
+				finanTitulo.conta = txtConta.text;
+				finanTitulo.numCheque = txtNumeroCheque.text;
+				finanTitulo.valorCobrado = nsValor.value;
+				finanTitulo.dtEmissao = dfDataEmissao.text;
+				finanTitulo.dtPagamento = dfBomParaDia.text;
+				
+				if (fornecedor)
+					finanTitulo.idFornecedorCheque = fornecedor.id;
+					
+					
+				/* else
+					finanTitulo.idFornecedorCheque = cliente.id; */
+				
+				finanTitulo.obs = txtObservacoes.text;
+				
+				if (!cliente)
+				{
+					cliente = new Cliente();
+					if (rbTipoClientePessoaFisica.selected)
+						cliente.tipo = EPesTipo.Fisica;
+					else
+						cliente.tipo = EPesTipo.Juridica;
+					cliente.nome = cpCliente.textInput.text.toUpperCase();
+					cliente.apelido_razsoc = cpCliente.textInput.text.toUpperCase();
+					cliente.cpf_cnpj = txtCPF_CNPJ.text;
+				}
+			}
+			
+			private function populaCompensacao():void
+			{
+				finanContaDestino = App.single.cache.getFinan_Conta(finanTitulo.idContaDestino);
+				cpFinanConta.selectedItem = finanContaDestino;
+				lblBanco.text = finanContaDestino.banco;
+				lblConta.text = finanContaDestino.conta;
+				lblAgencia.text = finanContaDestino.ag;
+				dfDataBaixa.text = finanTitulo.dtBaixa;
+			}
+			
+			private function validaCadastro(ehCadastro:Boolean):Boolean
+			{
+				var str:String = "";
+				if (cliente == null && cpCliente.textInput.text == "")
+					str += "Informe o emitente do cheque\n";
+				if (txtBanco.text == "")
+					str += "Digite o Banco\n";
+				if (txtAgencia.text == "")
+					str += "Digite a Agência\n";
+				if (txtConta.text == "")
+					str += "Digite a Conta\n";
+				if (txtNumeroCheque.text == "")
+					str += "Digite o Número do cheque\n";
+				if (nsValor.value == 0)
+					str += "Valor deve ser maior que 0\n";
+				if (dfBomParaDia.text == "")
+					str += "Selecione a Data para Pagamento\n";
+					
+				if (str != "")
+				{
+					AlertaSistema.mensagem(str);
+					return false;
+				}
+				
+				if (rbTipoClientePessoaFisica.selected)
+				{
+					if (!Funcoes.validaCpf(txtCPF_CNPJ.text))
+					{
+						Alert.show("CPF Inválido.", "Alerta SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+						return false;
+					}
+				}
+				else if (rbTipoClientePessoaJuridica.selected)
+				{
+					if (!Funcoes.validaCnpj(txtCPF_CNPJ.text))
+					{
+						Alert.show("CNPJ Inválido.", "Alerta SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+						return false;
+					}
+				}
+				
+				if (ehCadastro){
+					for each (var ft:Finan_Titulo in App.single.cache.arrayFinan_Titulo){
+						if (ft.tipo == ETipoTitulo.cheque_a_receber){
+							if (txtBanco.text == ft.banco && txtAgencia.text == ft.agencia
+								&& txtConta.text == ft.conta && txtNumeroCheque.text == ft.numCheque){
+								AlertaSistema.mensagem("Cheque já cadastrado");
+								return false;
+							}
+						}
+					}
+				}
+				return true;
+			}
+			
+			private function btnSelecionar_Click():void
+			{
+				if (!dgFinanTitulo.selectedItem)
+					return;
+				
+				finanTitulo = App.single.cache.getFinan_Titulo(dgFinanTitulo.selectedItem.id).clone();
+				
+				cliente = App.single.cache.getCliente(finanTitulo.idClienteAPagar);
+				fornecedor = App.single.cache.getCliente(finanTitulo.idFornecedorCheque);
+				if (finanTitulo.idOperacao != 0)
+				{
+					var filtro:MeuFiltroWhere =
+						new MeuFiltroWhere(App.single.cache.arrayMov)
+						.andEquals(finanTitulo.idOperacao, Mov.campo_idOperacao);
+						
+					var resultado:Array = filtro.getResultadoArraySimples();
+					
+					if (resultado.length == 1)
+						venda = resultado[0] as Mov;
+					else
+					{
+						for each (var mov:Mov in resultado)
+						{
+							if (mov.tipo != EMovTipo.ambos_cancel && mov.tipo != EMovTipo.entrada_cancel
+								&& mov.tipo != EMovTipo.outros_cancel && mov.tipo != EMovTipo.saida_cancel)
+							{
+								venda = mov;
+								continue;
+							}
+						}
+					}
+				}
+				
+				cpCliente.selectedItem = cliente;
+				cpFornecedor.selectedItem = fornecedor;
+				if (venda)
+					cpVenda.selectedItem = venda;
+				
+				if (cliente.tipo == EPesTipo.Fisica)
+					rbTipoClientePessoaFisica.selected = true;
+				else if (cliente.tipo == EPesTipo.Juridica)
+					rbTipoClientePessoaJuridica.selected = true;
+				txtCPF_CNPJ.text = cliente.cpf_cnpj;	
+				
+				txtTelefone.text = finanTitulo.telefone;
+				txtBanco.text = finanTitulo.banco;
+				txtAgencia.text = finanTitulo.agencia;
+				txtConta.text = finanTitulo.conta;
+				txtNumeroCheque.text = finanTitulo.numCheque;
+				nsValor.value = finanTitulo.valorCobrado;
+				dfDataEmissao.text = finanTitulo.dtEmissao;
+				dfBomParaDia.text = finanTitulo.dtPagamento;
+				txtObservacoes.text = finanTitulo.obs;
+				
+				if (alteracao)
+				{
+					vs.selectedIndex = 2;
+				}
+				else if (baixa)
+				{
+					vs.selectedIndex = 3;
+				}
+				else if (compensacao)
+				{
+					vs.selectedIndex = 4;
+					currentState = "stateContaBanco";
+					populaCompensacao();
+				}
+				
+				removeComponente(popupBuscaRecebimentoCheque);
+			}
+			
+			private function ckbChequeDevolvido_Click():void
+			{
+				if (ckbChequeDevolvido.selected)
+				{
+					currentState = "stateChequeDevolvido";
+					
+					if (!finanTitulo.isDevolvido1 && !finanTitulo.isDevolvido2)
+					{
+						chequeDevolvido1Visible = true;
+						chequeDevolvido1Enabled = true;
+					}
+					else if (finanTitulo.isDevolvido1 && !finanTitulo.isDevolvido2)
+					{
+						dfChequeDevolucao1.text = finanTitulo.dtDevolucao1;
+						
+						chequeDevolvido1Visible = true;
+						chequeDevolvido1Enabled = false;
+						chequeDevolvido2Visible = true;
+						chequeDevolvido2Enabled = true;
+					}
+					else if (finanTitulo.isDevolvido1 && finanTitulo.isDevolvido2)
+					{
+						dfChequeDevolucao1.text = finanTitulo.dtDevolucao1;
+						dfChequeDevolucao2.text = finanTitulo.dtDevolucao2;
+						
+						chequeDevolvido1Visible = true;
+						chequeDevolvido1Enabled = false;
+						chequeDevolvido2Visible = true;
+						chequeDevolvido2Enabled = false;
+					}
+				}
+				else
+					currentState = "stateContaBanco";
+			}
+			
+			/**NOVO*/
+			
+			private function btnCadastro_Click():void
+			{
+				alteracao = false;
+				baixa = false;
+				compensacao = false;
+				editaForm = true;
+				finanTitulo = new Finan_Titulo();
+				placeHolderNovoCadastro.removeAllChildren();
+				vs.selectedIndex = 1;
+				placeHolderNovoCadastro.addChild(formCadastroCheque);
+			}
+			
+			private function btnSalvarCadastro_Click():void
+			{
+				if (!validaCadastro(true))
+					return;
+				
+				populaTitulo();
+				
+				App.single.mod.Finan_ChequeNovo(finanTitulo, cliente,
+					function():void
+					{
+						AlertaSistema.mensagem("Salvei!", true);
+						limparTela();
+						vs.selectedIndex = 0;
+					}
+				);
+			}
+			
+			/***/
+			
+			/**ALTERAÇÃO*/
+			
+			private function btnAlteracao_Click():void
+			{
+				placeHolderAlteraCadastro.removeAllChildren();
+				alteracao = true;
+				baixa = false;
+				compensacao = false;
+				editaForm = true;
+				popupBuscaRecebimentoCheque.title = "Alteração de Cadastro de Cheque";
+				cpFinanTitulo.dataProvider = cpFinanTitulo.somenteCheque();
+				cpFinanTitulo.prompt = "Selecione um Cheque("+cpFinanTitulo.dataProvider.length+")";
+				cpFinanTitulo.searchText = "";
+				cpFinanTitulo.text = cpFinanTitulo.searchText;
+				cpFinanTitulo_KeyUp();
+				
+				PopUpManager.addPopUp(popupBuscaRecebimentoCheque, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupBuscaRecebimentoCheque);
+				
+				placeHolderAlteraCadastro.addChild(formCadastroCheque);
+			}
+			
+			private function btnSalvarAlteracao_Click():void
+			{
+				if (!validaCadastro(false))
+					return;
+					
+				populaTitulo();
+				
+				App.single.mod.Finan_ChequeAltera(finanTitulo, cliente,
+					function():void
+					{
+						AlertaSistema.mensagem("Salvei!", true);
+						limparTela();
+						vs.selectedIndex = 0;
+					}
+				);
+			}
+			
+			/***/
+			
+			/**BAIXA*/
+			
+			private function ckbDestinoConta_Click():void{
+				ckbDestinoConta.selected = true;
+				ckbDestinoCliente.selected = false;
+				currentState = "stateDestinoChequeConta";
+				cpClienteDestino.selectedItem = null;
+				cpClienteDestino.prompt = "Selecione um Cliente ("+cpClienteDestino.dataProvider.length+")";
+				clienteDestino = null;
+			}
+			
+			private function ckbDestinoCliente_Click():void{
+				ckbDestinoCliente.selected = true;
+				ckbDestinoConta.selected = false;
+				currentState = "stateDestinoChequeCliente";
+				cpFinanConta.selectedItem = null;
+				cpFinanConta.prompt = "Selecione uma Conta ("+cpFinanConta.dataProvider.length+")";
+				finanContaDestino = null;
+			}
+			
+			private function btnBaixa_Click():void
+			{
+				placeHolderBaixaChequeForm.removeAllChildren();
+				alteracao = false;
+				baixa = true;
+				compensacao = false;
+				editaForm = false;
+				editaConta = true;
+				popupBuscaRecebimentoCheque.title = "Baixa de Cheque";
+				cpFinanTitulo.dataProvider = cpFinanTitulo.somenteCheque();
+				cpFinanTitulo.prompt = "Selecione um Titulo("+cpFinanTitulo.dataProvider.length+")";
+				cpFinanTitulo.searchText = "";
+				cpFinanTitulo.text = cpFinanTitulo.searchText;
+				cpFinanTitulo_KeyUp();
+				
+				PopUpManager.addPopUp(popupBuscaRecebimentoCheque, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupBuscaRecebimentoCheque);
+				
+				placeHolderBaixaChequeForm.addChild(formCadastroCheque);
+				placeHolderBaixaChequeContaBanco.addChild(formContaBanco);
+			}
+			
+			private function btnSalvarBaixa_Click():void
+			{
+				if (ckbDestinoConta.selected){
+					if (!finanContaDestino)
+					{
+						AlertaSistema.mensagem("Selecione uma conta de destino");
+						return;
+					}
+				}
+				
+				if (ckbDestinoCliente.selected){
+					if (!clienteDestino)
+					{
+						AlertaSistema.mensagem("Selecione um cliente para destino");
+						return;
+					}
+				}
+				
+				finanTitulo.obs = txtObservacoes.text;
+				finanTitulo.dtBaixa = dfDataBaixa.text;
+				
+				App.single.mod.Finan_ChequeBaixa(finanTitulo, cpFinanConta.selectedItem as Finan_Conta, clienteDestino,
+					function():void
+					{
+						AlertaSistema.mensagem("Salvei!", true);
+						limparTela();
+						vs.selectedIndex = 0;
+					}
+				);
+			}
+			
+			/***/
+			
+			/**COMPENSAÇÃO*/
+			
+			private function btnConpensacao_Click():void
+			{
+				placeHolderBaixaChequeForm.removeAllChildren();
+				alteracao = false;
+				baixa = false;
+				compensacao = true;
+				editaForm = false;
+				editaConta = false;
+				popupBuscaRecebimentoCheque.title = "Compensação de Cheque";
+				cpFinanTitulo.dataProvider = cpFinanTitulo.somenteCheque_Compensacao();
+				cpFinanTitulo.prompt = "Selecione um Titulo("+cpFinanTitulo.dataProvider.length+")";
+				cpFinanTitulo.searchText = "";
+				cpFinanTitulo.text = cpFinanTitulo.searchText;
+				cpFinanTitulo_KeyUp();
+				
+				PopUpManager.addPopUp(popupBuscaRecebimentoCheque, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupBuscaRecebimentoCheque);
+				
+				currentState = "stateContaBanco";
+				
+				placeHolderCompensacaoChequeForm.addChild(formCadastroCheque);
+				placeHolderCompensacaoChequeContaBanco.addChild(formContaBanco);
+			}
+			
+			private function btnSalvarCompensacao_Click():void
+			{
+				finanTitulo.obs = txtObservacoes.text;
+				finanTitulo.dtCompensacao = dfDataCompensacao.text;
+				
+				if (currentState == "stateChequeDevolvido")
+				{
+					if (!finanTitulo.isDevolvido1 && !finanTitulo.isDevolvido2)
+						finanTitulo.dtDevolucao1 = dfChequeDevolucao1.text;
+					else if (finanTitulo.isDevolvido1 && !finanTitulo.isDevolvido2)
+					{
+						finanTitulo.dtDevolucao1 = dfChequeDevolucao1.text;
+						finanTitulo.dtDevolucao2 = dfChequeDevolucao2.text;
+					}
+				}
+				
+				App.single.mod.Finan_ChequeCompensa(finanTitulo, finanContaDestino, ckbChequeDevolvido.selected,
+					function():void
+					{
+						AlertaSistema.mensagem("Salvei!", true);
+						limparTela();
+						vs.selectedIndex = 0;
+					}
+				);
+			}
+			
+			/***/
+			
+			private function limparTela():void
+			{
+				cliente = null;
+				fornecedor = null;
+				venda = null;
+				
+				cpVenda.selectedItems.removeAll();
+				cpCliente.selectedItems.removeAll();
+				rbTipoClientePessoaFisica.selected = true;
+				rbTipoClientePessoaJuridica.selected = false;
+				txtCPF_CNPJ.text = "";
+				txtTelefone.text = "";
+				txtBanco.text = "";
+				txtAgencia.text = "";
+				txtConta.text = "";
+				txtNumeroCheque.text = "";
+				nsValor.value = 0;
+				dfDataEmissao.selectedDate = new Date();
+				dfBomParaDia.selectedDate = null;
+				dfBomParaDia.text = "";
+				cpFornecedor.selectedItems.removeAll();
+				txtObservacoes.text = "";
+				dfDataBaixa.selectedDate = new Date();
+				cpFinanConta.selectedItems.removeAll();
+				
+				cpFinanTitulo.dataProvider = cpFinanTitulo.somenteCheque();
+				
+				if (currentState == "stateChequeDevolvido")
+				{
+					dfChequeDevolucao1.selectedDate = new Date();
+					dfChequeDevolucao2.selectedDate = new Date();
+				}
+				ckbChequeDevolvido.selected = false;
+				
+				finanTitulo = null;
+				finanContaDestino = null;
+				currentState = "stateDestinoChequeConta";
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.adobe.flex.extras.controls.*" xmlns:comp="Componentes.comp.*" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Button label="BUSCAR" click="load()" icon="{Imagens.unica.icn_64_Atualiza}" labelPlacement="bottom" />
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.swf_loading}" scaleX="5" scaleY="5" />
+	</mx:HBox>
+	
+	<mx:HBox>
+		<mx:VBox>
+			<mx:Label text="ISSQN(%)"/>
+			<mx:NumericStepper id="nsISSQN" width="135" minimum="0" stepSize="0.01" maximum="100"/>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="INSS(%)"/>
+			<mx:NumericStepper id="nsINSS" width="135" minimum="0" stepSize="0.01" maximum="100"/>
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import janelas.cadastro.ItemServico.JanelaCadItemServico;
+			import img.Imagens;
+			import SDE.Entidade.ItemEmpAliquotas;
+			import Core.Utils.Funcoes;
+			import Core.Sessao;
+			import SDE.FachadaServico.FcdItem;
+			import SDE.Parametro.ParamLoadItem;
+			import SDE.Entidade.Item;
+			import janelas.cadastro.ItemServico.JanelaCadItemServico;
+			
+			[Bindable] public var mdlPai:JanelaCadItemServico;			
+			[Bindable] public var iea:ItemEmpAliquotas;
+			
+			private function create():void
+			{	
+				mdlPai.addEventListener(JanelaCadItemServico.EV_MUDA_ITEM, mudaItem);
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				selectedIndex = 0;
+			}
+			
+			private function load():void
+			{
+				var pl:ParamLoadItem = new ParamLoadItem();
+				pl.aliquotas = true;
+				
+				selectedIndex = 1;
+				
+				FcdItem.unica.Load(
+					Sessao.unica.idEmp,
+					mdlPai.item.id, pl,
+					function(retorno:Item):void
+					{
+						mdlPai.item.__ie.__aliquotas = retorno.__ie.__aliquotas;
+						iea = mdlPai.item.__ie.__aliquotas;
+						doBinding();
+						selectedIndex = 2;
+					}
+				);
+			}
+			
+			private function doBinding():void
+			{
+				Funcoes.myBind(nsISSQN, "value", iea, "issqn");
+				Funcoes.myBind(nsINSS, "value", iea, "inss");
+			}
+		]]>
+	</mx:Script>
+	
+</mx:ViewStack>

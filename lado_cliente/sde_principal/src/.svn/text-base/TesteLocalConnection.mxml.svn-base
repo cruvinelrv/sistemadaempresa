@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+	creationComplete="{create()}">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import flash.utils.setTimeout;
+			import mx.controls.Alert;
+			import Core.Ev.EventoGenerico;
+			import Core.ConexaoDesktop.GerenteConexaoDesktop;
+			import Core.ConexaoDesktop.ConnDesktop;
+			
+			[Bindable] private var gerente:GerenteConexaoDesktop;
+			[Bindable] public var ProxyEstaAberto:Boolean = false;
+			
+			private function create():void
+			{
+				if (parameters["proxy"]!=null)
+				{
+					gerente = new GerenteConexaoDesktop(parameters["receiverweb"],parameters["receiverproxy"]);
+					//gerente.addEventListener(ConnDesktop.RetornoTEF, fn_trata_RetornoTEF);
+					//gerente.addEventListener(ConnDesktop.MudaEstadoProxy, fn_trata_MudaEstadoProxy);
+				}
+			}
+			private function fn_trata_RetornoTEF(ev:EventoGenerico):void
+			{
+				Alert.show("retorno tratado: "+ev.number);
+			}
+			private function btn_click():void
+			{
+				gerente.escreveArquivoTEF("connnnnnnt","commmpl", fn_trata_RetornoTEF);
+			}
+			private function btn2_click():void
+			{
+				gerente.escreveArquivoNFE("arquivo"+Math.random()+".txt","aaaaaaaaaaaaaaaa");
+			}
+			private function btn3_click():void
+			{
+				gerente.iniciaProcesso("calc");
+			}
+		]]>
+	</mx:Script>
+	<mx:Label
+		color="white" fontSize="14" fontWeight="bold"
+		visible="{ProxyEstaAberto}"
+		text="PROXY ESTÁ EM USO" />
+	<mx:TextInput id="txt1" text="SDE SISTEMAS" />
+	<mx:Button click="{btn_click()}" label="GERA ARQUIVO TEF EXEMPLO" />
+	<mx:Button click="{btn2_click()}" label="GERA ARQUIVO NFE EXEMPLO" />
+	<mx:Button click="{btn3_click()}" label="INICIA PROCESSO EXEMPLO" />
+	<!--
+	<mx:Button click="{ conectar(); }" label="conectar" />
+	<mx:Button click="{ gerente.Fecha(); }" label="fechar conexão" />
+	-->
+</mx:Application>

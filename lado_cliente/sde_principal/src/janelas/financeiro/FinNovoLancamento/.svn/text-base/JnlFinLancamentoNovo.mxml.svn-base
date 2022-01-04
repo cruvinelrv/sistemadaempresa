@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	fontWeight="bold" fontSize="16"
+	creationComplete="{create()}"
+	xmlns:Combo="SDE.Componentes.Combo.*">
+	
+	<mx:VBox horizontalCenter="0" verticalCenter="0"
+		moveEffect="{Move}">
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_64_setasHorizontal}"/>
+			<mx:Label fontSize="24" text="Transferência entre Contas:"/>
+		</mx:HBox>
+		
+		<mx:Label text="Documento:" />
+		<controls:MasterTextInput id="txtNome" width="300" />
+		
+		<mx:Label text="Centro de Custo:" />
+		<Combo:CmbFinan_CentroCusto id="cmbCentroDeCusto"/>
+		
+		<mx:Label text="Conta Origem:" />
+		<Combo:CmbFinan_Conta id="cmbContaOrigem" width="300" />
+		<mx:Label text="Conta Destino:" />
+		<Combo:CmbFinan_Conta id="cmbContaDestino" width="300" />
+		
+		<mx:Label text="Valor:" />
+		<mx:NumericStepper id="nsValor" maximum="999999" stepSize=".01" />
+		
+		<mx:Button icon="{Imagens.unica.icn_32_aceita}" label="Lançar" click="{concluir()}" />
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.Finan_CentroCusto;
+			import Core.Utils.Formatadores;
+			import Core.App;
+			import Core.Utils.Funcoes;
+			import mx.effects.Move;
+			import Core.Alerta.AlertaSistema;
+			import mx.controls.Alert;
+			import SDE.Entidade.Finan_TipoLancamento;
+			import SDE.Entidade.Finan_Lancamento;
+			import img.Imagens;
+			import SDE.Constantes.Variaveis_SdeConfig;
+			import SDE.Entidade.SdeConfig;
+			import SDE.Entidade.Finan_Conta;
+			import mx.core.Application;
+			import SDE.CamadaNuvem.NuvemCache;
+			import Core.Sessao;
+			
+			private var ss:Sessao;
+			private var cache:NuvemCache;
+			private var tipoLancamentoManual:Finan_TipoLancamento;
+			
+			private function create():void
+			{
+				ss = Application.application.sessao;
+				cache = ss.nuvens.cache;
+				//
+				var idTipoLancamentoManual:Number = ss.parametrizacao.getParametro(Variaveis_SdeConfig.FINANCEIRO_TIPOSLANCAMENTO_MANUAL);
+				tipoLancamentoManual = cache.getFinan_TipoLancamento(idTipoLancamentoManual);
+				//contaCapitalTotal = cache.getFinan_Conta(idContaCapitalTotal);
+				//
+				resetar();
+			}
+			private function resetar():void
+			{
+				cmbContaOrigem.setIdentificador(0);
+				cmbContaDestino.setIdentificador(0);
+				nsValor.value=0;
+				txtNome.text="";
+				txtNome.setFocus();
+			}
+			private function concluir():void
+			{
+				var cOrigem:Finan_Conta = cmbContaOrigem.getAs();
+				var cDestino:Finan_Conta = cmbContaDestino.getAs();
+				
+				var msg:String=null;
+				if (cOrigem.saldoAtual < nsValor.value)
+				{
+					Alert.show("Origem não tem saldo suficiente\nSaldo Origem:\nR$ "+cOrigem.saldoAtual);
+					return;
+				}
+				else if (nsValor.value == 0)
+				{
+					msg = "Digite um Valor";
+					nsValor.setFocus();
+				}
+				else if (cmbContaOrigem.selectedIndex==cmbContaDestino.selectedIndex)
+				{
+					msg = "A Origem deve ser diferente do Destino";
+					cmbContaDestino.setFocus();
+				}
+				else if (txtNome.text.length < 3)
+				{
+					msg = "Digite um Documento";
+					txtNome.setFocus();
+				}
+				else if (msg)
+				{
+					AlertaSistema.mensagem(msg);
+					return;
+				}
+				
+				var lan:Finan_Lancamento = new Finan_Lancamento();
+				lan.idTipoLancamento = tipoLancamentoManual.id;
+				lan.tipoLancamento_nome = tipoLancamentoManual.nomeTipoLancamento;
+				lan.idCentroCusto = (cmbCentroDeCusto.selectedItem as Finan_CentroCusto).id;
+				lan.idContaOrigem = cmbContaOrigem.getAs().id;
+				lan.idContaDestino= cmbContaDestino.getAs().id;
+				lan.nome = txtNome.text;
+				lan.valorLancado = nsValor.value;
+				
+				ss.nuvens.modificacoes.Finan_Lancamento_Transferencia(
+					lan,
+					function():void
+					{
+						AlertaSistema.mensagem("Lançado!");
+						resetar();
+					}
+				);
+				/*
+				AlertaSistema.mensagem("Lançado 2!");
+				resetar();
+				/**/
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

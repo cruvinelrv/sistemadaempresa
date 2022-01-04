@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionScriptProperties mainApplicationPath="index.mxml" version="3">
+<compiler additionalCompilerArguments="-locale en_US -services C:\dev\sistemadaempresa\bibliotecas_terceiros\WEB-INF\flex\services-config.xml" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="false" htmlPlayerVersion="10.0.0" htmlPlayerVersionCheck="true" outputFolderLocation="C:/dev/sistemadaempresa/ambiente_desenvolvimento/principal/lado_servidor/sde_principal/SDE" outputFolderPath="bin-debug" rootURL="http://localhost:2000/" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compilerSourcePath/>
+<libraryPath defaultLinkType="1">
+<libraryPathEntry kind="4" path="">
+<modifiedEntries>
+<libraryPathEntry kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/framework.swc" useDefaultLinkType="true">
+<crossDomainRsls>
+<crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="framework_3.2.0.3958.swz"/>
+<crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="framework_3.2.0.3958.swf"/>
+</crossDomainRsls>
+</libraryPathEntry>
+</modifiedEntries>
+</libraryPathEntry>
+<libraryPathEntry kind="1" linkType="1" path="libs"/>
+<libraryPathEntry kind="1" linkType="1" path="C:/dev/sistemadaempresa/bibliotecas_terceiros/swc_variados"/>
+<libraryPathEntry kind="3" linkType="1" path="C:/dev/sistemadaempresa/bibliotecas_terceiros/swc_variados/FlexDevLib.swc" useDefaultLinkType="false"/>
+<libraryPathEntry kind="3" linkType="1" path="libs/LibReport.swc" useDefaultLinkType="false"/>
+</libraryPath>
+<sourceAttachmentPath/>
+</compiler>
+<applications>
+<application path="Banco.mxml"/>
+<application path="index.mxml"/>
+</applications>
+<modules/>
+<buildCSSFiles/>
+</actionScriptProperties>

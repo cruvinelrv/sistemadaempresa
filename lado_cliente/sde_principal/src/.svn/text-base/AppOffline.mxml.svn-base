@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+	backgroundGradientColors="[#C8C8C8,#C8C8C8]"
+	horizontalAlign="center" verticalAlign="middle"
+	creationComplete="create()">
+	
+	<mx:Image source="trabalhando.jpg"/>
+	<mx:Label fontSize="40" color="#000000"
+		text="em manutenção, por favor aguarde {restante_min}:{restante_seg_Str} e retorne" />
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.CursorManager;
+			import flash.utils.setTimeout;
+			import flash.net.navigateToURL;
+			
+			[Bindable] private var restante_seg:Number = 60;
+			[Bindable] private var restante_seg_Str:String = "60";
+			[Bindable] private var restante_min:Number = 15;
+			
+			private function create():void
+			{
+				var tempo:Number = 1000 * 60 * restante_min;//seg min 15 
+				setTimeout(atualiza, tempo);
+				setInterval(mostra, 1000);
+			}
+			private function atualiza():void
+			{
+				var url:URLRequest = new URLRequest("index.swf");
+				navigateToURL(url,"_self");
+			}
+			private function mostra():void
+			{
+				if (restante_seg==1)
+				{
+					restante_seg=60;
+					restante_min--;
+				}
+				restante_seg--;
+				restante_seg_Str = (restante_seg < 10) ? "0"+restante_seg : restante_seg.toString();
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Application>

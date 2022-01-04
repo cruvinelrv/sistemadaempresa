@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" paddingTop="0" paddingBottom="0">
+	<mx:Script>
+		<![CDATA[
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	<mx:Label width="100%" text="{data.nome}" />
+	<mx:Button icon="{Imagens.unica.icn_16_seta_bai}" click="{dispatchEvent(new Event('lanca', true))}" />
+</mx:HBox>

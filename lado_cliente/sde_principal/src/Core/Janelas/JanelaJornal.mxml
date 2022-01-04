@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	backgroundColor="#ffffff"
+	creationComplete="create()"
+	verticalGap="0"
+	styleName="padding3">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			import Core.Sessao;
+			[Bindable] public var meses:ArrayCollection;
+			
+			private function create():void
+			{
+				/*
+				Sessao.unica.listasXML.Novidades(
+					function(retorno:ArrayCollection):void
+					{
+						meses = retorno;
+						alteraTexto();
+					}
+				);
+				*/
+			}
+			private function alteraTexto():void
+			{
+				var indice:Number = tabs.selectedIndex;
+				if (indice==-1)
+					indice=0;
+				var o:Object = o = cbMes.selectedItem.n[indice];
+				txt.htmlText = o.texto;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:ComboBox id="cbMes"
+		width="200" textAlign="center" fontSize="20"
+		dataProvider="{meses}" labelField="nome"
+		change="alteraTexto()"/>
+	<mx:Spacer height="3"/>
+	<mx:TabBar id="tabs" tabWidth="150" width="100%" fontSize="16"
+		dataProvider="{cbMes.selectedItem.n}"
+		labelField="data"
+		itemClick="alteraTexto()" />
+	<mx:TextArea id="txt" width="100%" height="100%" fontSize="20" editable="false" />
+	
+	
+</mx:VBox>

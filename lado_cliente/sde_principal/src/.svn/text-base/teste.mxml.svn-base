@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" xmlns:LoginSistema="Core.LoginSistema.*" xmlns:CP="Componentes.CP.*"
+	preinitialize="{pinit()}">
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;
+			import Core.Sessao;
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			import SDE.Entidade.Cliente;
+			
+			private function testex():void
+			{
+				var http:HTTPService = new HTTPService("http://api.flickr.com/services/feeds/photos_public.gne");
+				http.addEventListener(ResultEvent.RESULT,
+					function(ev:ResultEvent):void
+					{
+						Alert.show(ev.result.toString());
+					}
+				);
+				http.addEventListener(FaultEvent.FAULT,
+					function(ev:FaultEvent):void
+					{
+						Alert.show(ev.fault.toString(),"erro");
+					}
+				);
+				http.useProxy=false;
+				Alert.show("enviei");
+				http.send();
+				
+			}
+			
+			private function pinit():void
+			{
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Button label="Teste" click="testex()"/>
+	
+	
+	
+</mx:Application>

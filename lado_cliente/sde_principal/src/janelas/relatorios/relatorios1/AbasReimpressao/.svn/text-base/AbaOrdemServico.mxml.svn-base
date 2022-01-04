@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	initialize="init()"
+	xmlns:comp="Componentes.comp.*" xmlns:CP="Componentes.CP.*">
+	<mx:states>
+		<mx:State name="stateDetalhe">
+			<mx:AddChild position="lastChild" relativeTo="{placeHolder}">
+				<mx:VBox width="100%" height="100%" fontSize="16" fontWeight="bold">
+					<mx:Label id="tipo_os"/>
+					<mx:Label text="Valor Sem Desconto: {Formatadores.unica.formataValor(ordem_servico.vlrItensInicial, true)}"/>
+					<mx:Label text="Valor do Desconto: {Formatadores.unica.formataValor(-ordem_servico.vlrAcrescimo, true)}"/>
+					<mx:Label text="Valor Com Desconto: {Formatadores.unica.formataValor(ordem_servico.vlrTotal, true)}"/>
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateCarrinho"
+			enterState="{gridCarrinho.addEventListener('executores', fn_ev_executores)}">
+			<mx:AddChild position="lastChild" relativeTo="{placeHolder}">
+				<mx:DataGrid id="gridCarrinho"
+					width="100%" height="100%"
+					themeColor="#3B5998"
+					dataProvider="{arraycCarrinho}"
+					fontSize="12">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Item" dataField="item_nome"/>
+						<mx:DataGridColumn headerText="Quant" dataField="qtd"/>
+						<mx:DataGridColumn headerText="Valor" dataField="vlrUnitVendaFinalQtd" labelFunction="fn_lb_toCurrencyFormat"/>
+						<mx:DataGridColumn width="25">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button label="" icon="{Imagens.unica.icn_16_seta_dir}" toolTip="Executores"
+										click="{dispatchEvent(new Event('executores', true))}">
+										<mx:Script>
+											<![CDATA[
+												import img.Imagens;
+											]]>
+										</mx:Script>
+									</mx:Button>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateExecutores">
+			<mx:AddChild position="lastChild" relativeTo="{placeHolder}">
+			<mx:VBox width="100%" height="100%">
+				<mx:VBox id="placeHolderExecutores"
+					width="100%" height="100%"
+					fontSize="16" fontWeight="bold">
+				</mx:VBox>
+				<comp:Botao icon="{Imagens.unica.icn_32_return}"
+					toolTip="Retornar" labelPlacement="right"
+					click="{currentState='stateCarrinho'}"/>
+			</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+		
+	<mx:HBox verticalAlign="middle" fontSize="14" fontWeight="bold">
+		<mx:Label text="Nº:" fontWeight="bold"/>
+		<mx:TextInput id="txtNumOSPesquisa" width="50"
+			keyDown="{
+				if (event.keyCode==Keyboard.ENTER)
+					filtraBuscaOrdemServico();
+			}"/>
+		<mx:Label text="Data:" fontWeight="bold"/>
+		<comp:DateFieldBR id="dfDataPesquisa" editable="true" width="100"
+			keyDown="{
+				if (event.keyCode==Keyboard.ENTER)
+					filtraBuscaOrdemServico();
+			}"/>
+		<mx:Label text="Cliente:" fontWeight="bold"/>
+		<CP:PesqCliente id="cpClientePesquisa" prompt="" showBrowseButton="false" width="350"
+			change="filtraBuscaOrdemServico()"/>
+		<mx:Button label="Filtrar" width="90"
+			fontSize="14" fontWeight="bold" textAlign="center"
+			buttonMode="true" mouseChildren="true" useHandCursor="true"
+			click="filtraBuscaOrdemServico()"/>
+		<mx:Button label="Limpar" width="90"
+			fontSize="14" fontWeight="bold" textAlign="center"
+			buttonMode="true" mouseChildren="true" useHandCursor="true"
+			click="limpaBuscaOrdemServico()"/>
+	</mx:HBox>
+	
+	<mx:DataGrid id="gridPrincipal"
+		dataProvider="{dp}"
+		width="100%" rowCount="10"
+		themeColor="#3B5998"
+		fontSize="12">
+		<mx:columns>
+			<mx:DataGridColumn dataField="cliente_nome" headerText="Cliente"/>
+			<mx:DataGridColumn dataField="cliente_cpf" headerText="CPF/CNPJ"/>
+			<mx:DataGridColumn dataField="cliente_contato" headerText="Contato"/>
+			<mx:DataGridColumn dataField="dthrLancamento" headerText="Data"/>
+			<mx:DataGridColumn width="25">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button label="" icon="{Imagens.unica.icn_16_seta_bai}" toolTip="Detalhe"
+							click="{dispatchEvent(new Event('detalhe', true))}">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="25">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button label="" icon="{Imagens.unica.icn_16_carrinho}" toolTip="Itens Venda"
+							click="{dispatchEvent(new Event('carrinho', true))}">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:VBox id="placeHolder" width="100%" height="100%"/>
+	<mx:HBox width="100%" horizontalAlign="right">
+		<mx:Button label="Gerar Impressão" icon="{Imagens.unica.icn_32_impressora}"
+			fontSize="14" fontWeight="bold" enabled="{gridPrincipal.selectedItem}"
+			click="imprime()"/>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import SDE.Constantes.Variaveis_SdeConfig;
+			import mx.core.Application;
+			import mx.utils.Base64Encoder;
+			import Core.Sessao;
+			import SDE.Entidade.OrdemServico_Executor;
+			import SDE.Entidade.OrdemServico_Tipo;
+			import Core.Utils.MeuFiltroWhere;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import Core.Utils.Formatadores;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Entidade.Cliente;
+			import SDE.Entidade.OrdemServico_Item;
+			import SDE.Entidade.OrdemServico;
+			import Core.App;
+			import img.Imagens;
+			import mx.collections.ArrayCollection;
+			
+			[Bindable] private var ordem_servico:OrdemServico;
+			[Bindable] private var dp:ArrayCollection;
+			[Bindable] private var arraycCarrinho:ArrayCollection;
+			[Bindable] private var arraycExecutores:ArrayCollection;
+			//[Bindable] private var arraycCaixa:ArrayCollection;
+			
+			private function init():void
+			{
+				dp = App.single.cache.arraycOrdemServico;
+				arraycCarrinho = new ArrayCollection();
+				arraycExecutores = new ArrayCollection();
+				
+				gridPrincipal.addEventListener('detalhe', fn_ev_detalhe);
+				gridPrincipal.addEventListener('carrinho', fn_ev_carrinho);
+			}
+			private function fn_lb_toCurrencyFormat(osi:OrdemServico_Item, dgc:DataGridColumn):String
+			{
+				return Formatadores.unica.formataValor(osi.vlrUnitVendaFinalQtd, true);
+			}
+			private function fn_lb_tipo_os():void
+			{
+				var filtro:MeuFiltroWhere = 
+					new MeuFiltroWhere(App.single.cache.arrayOrdemServico_Tipo)
+					.andEquals(ordem_servico.idOrdemServicoTipo, OrdemServico_Tipo.campo_id);
+				var ost:OrdemServico_Tipo = filtro.getResultadoArraySimples()[0];
+				tipo_os.text = "Tipo OS: " + ost.nome;
+			}
+			
+			private function fn_ev_detalhe(e:Event):void
+			{
+				currentState = "stateDetalhe";
+				ordem_servico = e.target.data;
+				fn_lb_tipo_os();
+			}
+			private function fn_ev_carrinho(e:Event):void
+			{
+				ordem_servico = e.target.data;
+				//Alert.show("mostra itens de mov "+mov.id);
+				currentState = "stateCarrinho";
+				arraycCarrinho.removeAll();
+				for each(var osi:OrdemServico_Item in App.single.cache.arrayOrdemServico_Item)
+				{
+					if (osi.idOrdemServico == ordem_servico.id)
+						arraycCarrinho.addItem( osi );
+				}
+			}
+			private function fn_ev_executores(e:Event):void
+			{
+				var osi:OrdemServico_Item;
+				osi = e.target.data;
+				currentState = "stateExecutores";
+				arraycExecutores.removeAll();
+				for each (var ose:OrdemServico_Executor in App.single.cache.arrayOrdemServico_Executor)
+				{
+					if (ose.idOrdemServicoItem == osi.id)
+						for each (var executor:Cliente in App.single.cache.arrayCliente)
+						{
+							if (ose.idClienteExecutor != executor.id)
+								continue;
+							
+							arraycExecutores.addItem(executor);
+						}
+				}
+				
+				var label_executor:Label;
+				placeHolderExecutores.removeAllChildren();
+				if (arraycExecutores.length == 0)
+				{
+					label_executor = new Label();
+					label_executor.text = "Este item não possui executores.";
+					placeHolderExecutores.addChild(label_executor);
+				}
+				else
+					for each (var xxx:Cliente in arraycExecutores)
+					{
+						label_executor = new Label();
+						label_executor.text = (xxx.nome=="")?xxx.apelido_razsoc:xxx.nome;
+						placeHolderExecutores.addChild(label_executor);
+					}
+			}
+			private function filtraBuscaOrdemServico():void
+			{
+				dp = App.single.cache.arraycOrdemServico;
+				var listaOrdemServicoFiltrada:ArrayCollection = new ArrayCollection(dp.source);
+				var listaTemporaria:Array = [];
+				if (cpClientePesquisa.selectedItem != null)
+				{
+					var cli:Cliente = cpClientePesquisa.selectedItem;
+					listaTemporaria = [];
+					for each (var os_porCliente:OrdemServico in listaOrdemServicoFiltrada)
+					{
+						if (os_porCliente.cliente_nome == cli.nome)
+							listaTemporaria.push(os_porCliente);
+					}
+					listaOrdemServicoFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				if (dfDataPesquisa.text != "")
+				{
+					listaTemporaria = [];
+					for each (var os_porData:OrdemServico in listaOrdemServicoFiltrada)
+					{
+						var dataPesquisa:String = os_porData.dthrLancamento.substr(0,10);
+						AlertaSistema.mensagem("Data: " + dataPesquisa, true);
+						if (dataPesquisa == dfDataPesquisa.text)
+							listaTemporaria.push(os_porData);
+					}
+					listaOrdemServicoFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				if (txtNumOSPesquisa.text != "")
+				{
+					listaTemporaria = [];
+					for each (var os_porNumero:OrdemServico in listaOrdemServicoFiltrada)
+					{
+						if (os_porNumero.numOS == txtNumOSPesquisa.text)
+							listaTemporaria.push(os_porNumero);
+					}
+					listaOrdemServicoFiltrada = new ArrayCollection(listaTemporaria);
+				}
+				dp = listaOrdemServicoFiltrada;
+			}
+			private function limpaBuscaOrdemServico():void
+			{
+				cpClientePesquisa.selectedItems.removeAll();
+				dfDataPesquisa.text = "";
+				txtNumOSPesquisa.text = "";
+				filtraBuscaOrdemServico();
+			}
+			
+			private function imprime():void
+			{
+				if (!Application.application.gerenteConexaoDesktop)
+				{
+					Alert.show("É necessário estar conectado ao SDE Desktop para a impressão", "Mensagem SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+					return;
+				}
+					
+				var ordemServicoId:Number = (gridPrincipal.selectedItem as OrdemServico).id;
+				
+				App.single.n.modificacoes.RelatorioOrdemServico(ordemServicoId,
+					function():void
+					{
+						Application.application.gerenteConexaoDesktop.baixaRelatorioOrdemServico(Sessao.unica.idCorp, ordemServicoId);	
+					}
+				);
+				
+				/*
+				var ss:Sessao = Application.application.sessao;
+		                    
+				var enc:Base64Encoder = new Base64Encoder();
+				enc.encodeUTFBytes("corp"+ss.idCorp);
+                var hash:String = enc.toString();
+                
+                if (ss.parametrizacao.getParametro(Variaveis_SdeConfig.RELATORIO_ABREIMPRESSAO_IE) == "1"
+                	&& Application.application.gerenteConexaoDesktop!=null)
+                {
+                	var url:String = "http://sistemadaempresa.com.br/sde/imprime.aspx";
+                	url+="?idCorp="	+ss.idCorp;
+                    url+="&idEmp="	+ss.idEmp;
+                    url+="&hash="	+hash;
+                    url+="&tipo_impressao=relatorio";
+                    url+="&relatorio=Ordem Serviço";
+                    url+="&idOrdemServico="+(gridPrincipal.selectedItem as OrdemServico).id;
+                    
+                    url = "\""+url+"\"";
+                    Application.application.gerenteConexaoDesktop.iniciaProcesso("explorer", url);
+                    return;
+                }
+                
+                var urlR:URLRequest = new URLRequest("imprime.aspx");
+                urlR.method = URLRequestMethod.GET;
+                
+                var vars:URLVariables = new URLVariables();
+                vars.idOrdemServico  = (gridPrincipal.selectedItem as OrdemServico).id;
+                vars.idCorp = ss.idCorp;
+                vars.idEmp  = ss.idEmp;
+                
+                vars.tipo_impressao = "relatorio";
+                vars.relatorio = "Ordem Serviço";
+                
+				vars.hash = hash;
+                
+                urlR.data = vars;
+                navigateToURL(urlR, "_blank");
+                */
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

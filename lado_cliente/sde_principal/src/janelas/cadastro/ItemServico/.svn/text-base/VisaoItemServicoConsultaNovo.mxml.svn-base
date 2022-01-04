@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%" 
+	fontSize="14" verticalAlign="middle" 
+	horizontalAlign="center"
+	xmlns:drawing="org.alivepdf.drawing.*" xmlns:CP="Componentes.CaixaPesquisa.CP.*" xmlns:comp="Componentes.comp.*"
+	
+	creationComplete="create()" xmlns:controls="com.flexpernambuco.controls.*" xmlns:Parametro="SDE.Parametro.*">
+	
+	<mx:Canvas id="main" width="100%" height="100%">
+	
+		<mx:Image x="10" y="10" source="{Imagens.unica.icn_64_adiciona}" />
+		<mx:Label x="80" y="10" fontSize="40" color="#666666" fontWeight="bold" text="Cadastro" />
+		
+		<mx:Grid horizontalCenter="0" verticalCenter="0">
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:Label text="Cód Único:"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<controls:MasterTextInput id="txtCodUnico" width="100%" text="GERAR" capsType="upercase"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{(txtCodUnico.text.length==0)?Imagens.unica.icn_32_deleta:Imagens.unica.icn_32_aceita}"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:Label text="Descrição:"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<controls:MasterTextInput id="txtDescricao" width="100%" capsType="upercase"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{(txtDescricao.text.length==0)?Imagens.unica.icn_32_deleta:Imagens.unica.icn_32_aceita}"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:Label text="Seção:"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:ComboBox id="cmbSecao" width="100%" fontWeight="bold" labelField="__orderBy" dataProvider="{mdlPai.secoes}"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{Imagens.unica.icn_32_aceita}"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" >
+				<mx:GridItem>
+					<mx:Label text="Unid Med:"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:ComboBox id="cmbUM" width="100%" labelField="um" dataProvider="{Constantes.unica.UM}" />
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{Imagens.unica.icn_32_aceita}"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:Label text="Preço de Custo:"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:NumericStepper id="nsPrecoCusto" width="100%" minimum="0" stepSize="0.01" maximum="999999"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{Imagens.unica.icn_32_aceita}"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:Label text="Preço do Serviço:"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:NumericStepper id="nsPrecoServico" width="100%" minimum="0" stepSize="0.01" maximum="999999"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{(nsPrecoServico.value==0)?Imagens.unica.icn_32_deleta:Imagens.unica.icn_32_aceita}"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+					<mx:Label text="Desc. Máximo(%):"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:NumericStepper id="nsDescMaximo" width="100%" minimum="0" stepSize="0.01" maximum="100"/>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:Image source="{Imagens.unica.icn_32_aceita}"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem>
+				</mx:GridItem>
+				<mx:GridItem>
+					<comp:Botao1 icone="Adiciona"
+						cor="Cinza"
+						label="Criar"
+						click="{criar()}"/>
+				</mx:GridItem>
+				<mx:GridItem>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+		
+	</mx:Canvas>
+	
+	<mx:VRule strokeColor="#3B5998" strokeWidth="2" height="50%" />
+	
+	<mx:Canvas width="100%" height="100%">
+	
+		<mx:Image x="10" y="10" source="{Imagens.unica.icn_64_lapis}" />
+		<mx:Label x="80" y="10" fontSize="40" color="#666666" fontWeight="bold" text="Pesquisa / Altera" />
+	
+		<mx:VBox horizontalAlign="center" width="100%"
+			horizontalCenter="0" verticalCenter="0">
+			<!--<mx:HBox>
+				<controls:MasterTextInput id="txtNome" width="250" capsType="upercase"/>
+				<mx:Button label="Pesquisa" click="{ btnConsultar_click() }"/>
+			</mx:HBox>-->
+			<CP:CPesqItem id="cpItem"
+				widthBtn="32"
+				retorno="cpItem_retorno(event)"
+				cancela="cpItem_cancela()">
+				<CP:pFiltro>
+					<Parametro:ParamFiltroItem servico="true"/>
+				</CP:pFiltro>
+				<CP:pLoad>
+					<Parametro:ParamLoadItem aliquotas="true"/>
+				</CP:pLoad>
+			</CP:CPesqItem>
+		</mx:VBox>
+	</mx:Canvas>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.Utils.Constantes;
+			import Core.Ev.EvRetornaArray;
+			import Core.FoldPopup.FoldPopupPesquisa;
+			import SDE.Parametro.ParamFiltroItem;
+			import SDE.Entidade.ItemEmp;
+			import SDE.Parametro.ParamLoadItem;
+			import SDE.Enumerador.EItemUnidMed;
+			import Core.Sessao;
+			import SDE.Entidade.ItemEmpPreco;
+			import SDE.Enumerador.EItemTipo;
+			import SDE.Entidade.Item;
+			import SDE.FachadaServico.FcdItem;
+			import Core.Alerta.AlertaSistema;
+			import img.Imagens;
+			
+			[Bindable] public var mdlPai:JanelaCadItemServico;
+			
+			public function create():void
+			{
+				mdlPai.addEventListener(JanelaCadItemServico.EV_MUDA_ITEM, mudaItem);
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				if (mdlPai.item!=null)
+					return;
+				//limpa campos para novo cadastro
+				limpaCampos();
+			}
+			private function cpItem_retorno(ev:EvRetornaArray):void
+			{
+				if (ev.retorno==null)
+				{
+					AlertaSistema.mensagem("Serviço não encontrado");
+					return;
+				}
+				var retorno:Item = ev.retorno[0];
+				mdlPai.item = retorno;
+				//AlertaSistema.mensagem( "cliente: "+retorno.__pessoa.nome );
+			}
+			private function cpItem_cancela():void
+			{
+				cpItem.limpa();
+			}
+			/*
+			private function btnConsultar_click():void
+			{
+				var pFiltro:ParamFiltroItem = new ParamFiltroItem();
+				var pLoad:ParamLoadItem = new ParamLoadItem();					
+				pFiltro.texto = txtNome.text;					
+				FoldPopupPesquisa.et1_PesquisaItem(pFiltro, pLoad,
+					function(retorno:Array):void
+					{
+						if (retorno==null)
+						{
+							//setModoCadastro();
+						}
+						else
+						{
+							mdlPai.item = retorno[0];
+						}
+					},
+					function():void//cancela
+					{
+						//AlertaSistema.mensagem("pesquisa cancelada",true);
+						txtNome.setFocus();
+						txtNome.selectionBeginIndex=0;
+						txtNome.selectionBeginIndex=txtNome.text.length;
+					}
+				);					
+				if (txtNome.text.length==0)
+					FoldPopupPesquisa.et2_mostra();
+				else
+					FoldPopupPesquisa.et2_pesquisa();	
+			}
+			*/
+			
+			private function criar():void
+			{
+				/**INÍCIO VALIDAÇÃO*/
+				var msg:String = "";
+				if (txtCodUnico.text == '')
+					msg += "Digite uma REFERENCIA\n";
+				if (txtDescricao.text == '')
+					msg += "Digite uma DESCRIÇÃO\n";
+				if (nsPrecoServico.value == 0)
+					msg += "Digite um PREÇO DO SERVIÇO";
+				if (msg != "")
+				{
+					AlertaSistema.mensagem(msg);
+					return;
+				}
+				/**FIM VALIDAÇÃO*/
+				
+				var iNovo:Item = new Item();
+				iNovo.tipo = EItemTipo.servico;
+				iNovo.rfUnica = txtCodUnico.text;
+				iNovo.nome = txtDescricao.text;
+				
+				iNovo.idSecao = cmbSecao.selectedItem.id;
+				iNovo.secao = cmbSecao.selectedItem.secao;
+				iNovo.grupo = cmbSecao.selectedItem.grupo;
+				iNovo.subgrupo = cmbSecao.selectedItem.subgrupo;
+				
+				iNovo.unidMed = cmbUM.selectedLabel;
+				
+				var iepNovo:ItemEmpPreco = new ItemEmpPreco();
+				iepNovo.idEmp = Sessao.unica.idEmp;
+				iepNovo.custo = nsPrecoCusto.value;
+				iepNovo.compra = nsPrecoCusto.value;
+				iepNovo.venda = nsPrecoServico.value;
+				iepNovo.descontoMaximo = nsDescMaximo.value;
+				
+				iNovo.__ie = new ItemEmp();
+				iNovo.__ie.idEmp = Sessao.unica.idEmp;
+				
+				iNovo.__ie.__preco = iepNovo
+				
+				FcdItem.unica.Novo(
+					Sessao.unica.idEmp,
+					iNovo,
+					"GERAR",
+					function(retorno:Item):void
+					{
+						if(retorno!=null)
+							mdlPai.item = retorno;
+						else
+							AlertaSistema.mensagem("O Item não pôde ser salvo");
+					}
+				);
+				
+			}
+			
+			private function limpaCampos():void
+			{
+				txtDescricao.setFocus();
+				txtCodUnico.text = "GERAR";
+				txtDescricao.text = "";
+				cmbSecao.selectedIndex = 0;
+				nsPrecoCusto.value = 0;
+				nsPrecoServico.value = 0;
+				nsDescMaximo.value = 0;
+			}
+			
+		]]>
+	</mx:Script> 
+</mx:HBox>

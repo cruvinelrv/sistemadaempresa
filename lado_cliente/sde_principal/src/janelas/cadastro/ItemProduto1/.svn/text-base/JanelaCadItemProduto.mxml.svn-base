@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:Item1="janelas.cadastro.Item1.*"
+	width="100%" height="100%"
+	themeColor="#3B5998"
+	initialize="init()" xmlns:ItemProduto1="janelas.cadastro.ItemProduto1.*">
+	
+	<mx:Canvas id="main" width="100%" height="100%">
+		<mx:LinkBar id="lb"
+			dataProvider="{vs}" />
+		<mx:Canvas width="200" height="30" backgroundColor="#ffffff" backgroundAlpha="0"/>
+		<mx:ViewStack id="vs" top="30" width="100%" height="100%" creationPolicy="all">
+			<ItemProduto1:VisaoItemProdutoConsultaNovo id="telaConsultar" label="Consulta / Novo"
+				mdlPai="{this}"
+				showEffect="{WipeDown}" hideEffect="{WipeUp}"/>
+			<ItemProduto1:VisaoItemProdutoEditar id="telaEditar" label="Editar"
+				mdlPai="{this}"
+				showEffect="{WipeDown}" hideEffect="{WipeUp}"/>
+		</mx:ViewStack>
+	</mx:Canvas>
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import SDE.Entidade.Cad_Marca;
+			import SDE.Entidade.Cad_Secao;
+			import SDE.Entidade.Item;
+			import SDE.Enumerador.EModo;
+			import Core.Alerta.AlertaSistema;
+			import Core.Sessao;
+			import mx.effects.WipeUp;
+			import mx.effects.WipeDown;
+			
+			public static const EV_MUDA_ITEM:String="mudaItem";
+			
+			[Bindable] private var _item:Item;
+			public function set item(v:Item):void
+			{
+				_item=v;
+				lb.selectedIndex = (_item==null) ? 0 : 1;
+				dispatchEvent(new Event(EV_MUDA_ITEM));
+			}
+			public function get item():Item
+			{
+				return _item;
+			}
+			private function init():void
+			{
+				secoes = [];
+				for each (var o:Cad_Secao in App.single.cache.arrayCad_Secao)
+				{
+					secoes.push(o);
+					o.__orderBy = o.secao;
+					if (o.grupo!="")
+						o.__orderBy+=", "+o.grupo;
+					if (o.subgrupo!="")
+						o.__orderBy+=", "+o.subgrupo;
+				}
+				secoes.sortOn("__orderBy");
+				marcas = [];
+				for each (var o2:Cad_Marca in App.single.cache.arrayCad_Marca)
+				{
+					marcas.push(o2);
+					o2.__orderBy = o2.marca;
+					if (o2.modelo!="")
+						o2.__orderBy+=", "+o2.modelo;
+				}
+				marcas.sortOn("__orderBy");
+			}
+			
+			[Bindable] public var marcas:Array = null;
+			[Bindable] public var secoes:Array = null;
+			
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:controls="com.flexpernambuco.controls.*"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Button label="BUSCAR" click="load()" icon="{Imagens.unica.icn_64_Atualiza}" labelPlacement="bottom" />
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Image id="test" source="{Imagens.unica.swf_loading}" scaleX="5" scaleY="5" />
+	</mx:HBox>
+	
+	<mx:HBox>
+		<mx:VBox>
+			<mx:Label text="Nome na Etiqueta:"/>
+			<controls:MasterTextInput id="txtNomeEtiqueta" capsType="upercase" maxChars="18" width="250"/>
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.Utils.Funcoes;
+			import janelas.cadastro.ItemProduto1.JanelaCadItemProduto;
+			import mx.effects.Pause;
+			import mx.core.Application;
+			import SDE.Entidade.Item;
+			import Core.Sessao;
+			import SDE.FachadaServico.FcdItem;
+			import SDE.Parametro.ParamLoadItem;
+			import img.Imagens;
+			
+			[Bindable] public var mdlPai:JanelaCadItemProduto;
+			
+			private function create():void
+			{
+				mdlPai.addEventListener(JanelaCadItemProduto.EV_MUDA_ITEM, mudaItem);
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				selectedIndex = 0;
+			}
+			
+			private function load():void
+			{
+				var pl:ParamLoadItem = new ParamLoadItem();
+				
+				selectedIndex = 1;
+				var pause:Pause = new Pause(); 
+				pause.duration = 1000; //seta duração da pausa 
+				pause.target = test;//seta o destino da pausa 
+				pause.addEventListener("effectEnd", onPauseComplete);
+				pause.play();
+			}
+			
+			private function onPauseComplete(ev:Event):void
+			{
+				doBinding();
+				selectedIndex = 2;
+			}
+			
+			private function doBinding():void
+			{
+				Funcoes.myBind(txtNomeEtiqueta, "text", mdlPai.item, "nomeEtiqueta");
+			}
+		]]>
+	</mx:Script>
+	
+</mx:ViewStack>

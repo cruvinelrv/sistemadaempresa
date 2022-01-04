@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:CP="Componentes.CaixaPesquisa.CP.*" 
+	xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%" horizontalAlign="center" verticalAlign="middle"
+	creationComplete="create()" xmlns:CP1="Componentes.CP.*">
+	
+	<mx:VBox width="80%" height="80%" 
+		styleName="padding10" verticalAlign="middle"
+		borderColor="blue" borderThickness="2" borderStyle="solid" cornerRadius="10">
+	
+		<mx:HBox width="100%" styleName="padding5" fontSize="12">
+			<mx:Label text="Movimentação: " height="30"/>
+			<CP1:PesqMov id="cpMov" change="retornaMov()" width="100%"/>
+			<!--<CP:CPesqMov id="cpMov" fontSize="10" widthBtn="150" widthTxt="150" textAlign="center"
+				retorno="retornaMov(event)"/>-->
+		</mx:HBox>
+		
+		<mx:HBox width="100%" backgroundColor="#F5F2F2">
+			<mx:Label text="Cliente: " fontSize="12"/>
+			<mx:Label id="lblCliente" fontSize="14" fontWeight="bold"/>
+		</mx:HBox>
+		<mx:VBox width="100%" backgroundColor="#F5F2F2">
+			<mx:HBox width="100%" horizontalGap="2">
+				<mx:Label width="100" text="Movimentação: " fontSize="12"/>
+				<mx:Label id="lblCodigo"  width="100" fontSize="14" fontWeight="bold"/>
+				<mx:Label width="50" text="Data: " fontSize="12"/>
+				<mx:Label id="lblData"  width="150" fontSize="14" fontWeight="bold"/>
+				<mx:Label width="50" text="Tipo: " fontSize="12"/>
+				<mx:Label id="lblTipo"  width="150" fontSize="14" fontWeight="bold"/>
+				
+			</mx:HBox>
+			<mx:HBox width="100%"  horizontalGap="2">
+				<mx:Label width="100" text="Valor Produtos: " fontSize="12"/>
+				<mx:Label id="lblVlrProd" width="100" fontSize="14" fontWeight="bold"/>
+				<mx:Label width="100" text="Valor Desconto: " fontSize="12"/>
+				<mx:Label id="lblVlrDesc" width="100" fontSize="14" fontWeight="bold"/>
+				<mx:Label width="80" text="Valor Total: " fontSize="12"/>
+				<mx:Label id="lblVlrTotal" width="100" fontSize="14" fontWeight="bold"/>
+			</mx:HBox>
+		</mx:VBox>
+		
+		<mx:DataGrid id="grid" width="100%" height="100%"
+			themeColor="#3B5998"
+			dataProvider="{arraycDataProvider}">
+			<mx:columns>
+			<!--
+				<mx:DataGridColumn width="1" headerText="idItem" dataField="id" />
+				-->
+				<mx:DataGridColumn width="1" headerText="" dataField="contador"/>
+				<mx:DataGridColumn width="4" headerText="Produto" dataField="nome"/>
+				<mx:DataGridColumn width="1" headerText="Grade" dataField="grade"/>
+				<mx:DataGridColumn width="1" headerText="Valor" dataField="valor" textAlign="right"/>
+				<mx:DataGridColumn width="1" headerText="Quantidade" dataField="qtd" textAlign="right"/>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<mx:HBox width="100%" horizontalAlign="center">
+			<comp:Botao1 label="Cancelar Movimentação" fontSize="14" 
+				height="30" width="200"
+				cor="Vermelho" click="cancelar()"/>
+		</mx:HBox>
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.ItemEmpEstoque;
+			import Core.App;
+			import mx.collections.ArrayCollection;
+
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import SDE.Enumerador.EMovTipo;
+			import SDE.Parametro.ParamFiltroMov;
+			import SDE.FachadaServico.FcdMov;
+			import SDE.Entidade.Cliente;
+			import SDE.Parametro.ParamLoadCliente;
+			import SDE.FachadaServico.FcdCliente;
+			import SDE.Enumerador.EMovResumo;
+			import SDE.Entidade.MovItemEstoque;
+			import SDE.Entidade.MovItem;
+			import SDE.Entidade.Item;
+			import SDE.Entidade.Mov;
+			import Core.Ev.EvRetornaArray;
+			import Core.Sessao;
+			import Core.Utils.Formatadores;
+			import Core.Alerta.AlertaSistema;
+			
+			
+			private var ar:Array = null;
+			private var idMov: Number = 0;
+			private var idMovCanceladora:Number = 0;
+			
+			[Bindable] private var arraycDataProvider:ArrayCollection = new ArrayCollection();
+			
+			private function create():void
+			{
+								
+				//cpMov.pFiltro.tipos = 
+				//	EMovTipo.saida_venda+"_"+EMovTipo.entrada_compra+"_"+EMovTipo.outros_reserva+"_"+EMovTipo.ambos_balan;
+				
+			}
+			
+			private function retornaMov():void
+			{
+				arraycDataProvider.removeAll();
+				
+				if (cpMov.selectedItem == null)
+					return;
+				
+				var mov:Mov = cpMov.selectedItem;
+				var contador:int = 0;
+				idMov = mov.id;
+				idMovCanceladora = mov.idMovCanceladora;
+				
+				var arrayMovItem:Array = new Array();
+				for each (var xxx:MovItem in App.single.cache.arrayMovItem)
+					if (xxx.idMov == mov.id)
+						arrayMovItem.push(xxx);
+						
+				for each (var mi:MovItem in arrayMovItem)
+				{
+					contador++;
+					var obj:Object = new Object();
+					obj.id = mi.idIEE;
+					obj.contador = contador;
+					obj.grade = mi.estoque_identificador;
+					obj.nome = mi.item_nome;
+					obj.qtd = Formatadores.unica.formataDecimal( mi.qtd, 2 );
+					
+					if(mov.resumo == EMovResumo.entrada) {
+						obj.valor = Formatadores.unica.formataValor( mi.vlrUnitCompra, true );
+					}
+					else {
+						obj.valor = Formatadores.unica.formataValor( mi.vlrUnitVendaFinal, true );
+					}
+					arraycDataProvider.addItem(obj);
+				}
+				
+				lblCliente.text = mov.cliente_nome;		
+				lblCodigo.text =  mov.id.toString();
+				lblData.text = mov.dthrMovEmissao;
+				lblTipo.text = mov.tipo;
+				
+				lblVlrDesc.text = Formatadores.unica.formataValor( mov.vlrAcrescimo, true );
+				lblVlrProd.text = Formatadores.unica.formataValor( mov.vlrItensFinal, true );
+				lblVlrTotal.text = Formatadores.unica.formataValor( mov.vlrTotal, true );
+			}
+			
+			private function cancelar():void
+			{
+				if(idMov == 0)
+				{
+					AlertaSistema.mensagem("Escolha uma Movimentação.");
+					return;
+				}				
+				if(idMovCanceladora != 0)
+				{
+					AlertaSistema.mensagem("Movimentação ja foi cancelada.");
+					return;
+				}
+				
+				Alert.yesLabel = "SIM";
+				Alert.noLabel = "NÃO";
+				Alert.show( "Deseja cancelar movimentação?", "", Alert.YES+Alert.NO, null,
+					function(ev:CloseEvent):void
+				    {			
+						if(ev.detail == Alert.YES)
+						{
+							App.single.ss.nuvens.modificacoes.Mov_Cancela(idMov,
+								function():void
+								{
+									AlertaSistema.mensagem("Cancelada com Sucesso");
+									limpaCampos();
+								}
+							);
+						}
+				    }
+				);
+			}
+			
+			private function limpaCampos():void
+			{
+				idMov = 0;
+								
+				lblCliente.text = "";
+				lblCodigo.text = "";
+				lblData.text = "";
+				lblTipo.text = "";
+				lblVlrDesc.text = "";
+				lblVlrProd.text = "";
+				lblVlrTotal.text = "";
+				
+				cpMov.selectedItems.removeAll();
+				cpMov.text = "";
+				
+				var dp:ArrayCollection = new ArrayCollection();
+				for each (var xxx:Mov in App.single.cache.arrayMov)
+				{
+					if (xxx.tipo == EMovTipo.saida_venda || xxx.tipo == EMovTipo.entrada_compra
+						|| xxx.tipo == EMovTipo.outros_reserva || xxx.tipo == EMovTipo.ambos_balan)
+						dp.addItem(xxx);
+				}
+				cpMov.dataProvider = dp;
+				cpMov.prompt = "Selecione uma Movimentação ("+cpMov.dataProvider.length+")";
+				
+				arraycDataProvider.removeAll();
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

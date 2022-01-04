@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	xmlns:comp="Componentes.comp.*" xmlns:controls="com.flexpernambuco.controls.*"
+	creationComplete="create()">
+	<mx:states>
+		<mx:State name="stateAberturaDiaRealizada">
+			<mx:AddChild relativeTo="{placeHolderAberturaDiaRealizada}" position="lastChild">
+				<mx:HBox width="100%" verticalAlign="middle">
+					<mx:Image source="{Imagens.unica.icn_32_alerta}"/>
+					<mx:Label text="Abertura de caixa da data selecionada já realizada." color="red"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="stateAberturaDiaRealizadaPeloSistema">
+			<mx:AddChild relativeTo="{placeHolderAberturaDiaRealizada}" position="lastChild">
+				<mx:HBox width="100%" verticalAlign="middle">
+					<mx:Image source="{Imagens.unica.icn_32_alerta}"/>
+					<mx:VBox verticalAlign="middle">
+						<mx:Label text="Abertura de caixa da data selecionada aberta pelo sistema" color="red"/>
+						<mx:HBox verticalAlign="middle">
+							<mx:Label text="Valor da abertura: " color="red"/>
+							<mx:Label id="lblValorAberturaSistema" color="red"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize target="{placeHolderAberturaDiaRealizada}"/>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:Script source="MdllCaixa_Abertura_script.as"/>
+	
+	<mx:VBox horizontalCenter="0" verticalCenter="0" horizontalAlign="center"
+		fontSize="18" fontWeight="bold" creationPolicy="all">
+		
+		<mx:HBox verticalAlign="middle" fontSize="22" fontWeight="bold">
+			<mx:Image source="{Imagens.unica.icn_64_caixaDinheiro}"/>
+			<mx:Label text="Abertura de Caixa"/>
+		</mx:HBox>
+		
+		<mx:HBox backgroundColor="#3B5998" width="100%" height="1"/>
+		
+		<!--<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_32_alerta}"/>
+			<mx:Label text="Abertura de caixa da data selecionada já realizada." color="red"/>
+		</mx:HBox>-->
+		
+		<mx:HBox id="placeHolderAberturaDiaRealizada" width="100%"/>
+		
+		<mx:VBox>
+			<mx:HBox verticalAlign="middle">
+				<mx:Label text="Data da Abertura:" width="170"/>
+				<comp:DateFieldBR id="dtfAbertura" selectedDate="{new Date()}" change="dtfAbertura_Change()"/>
+			</mx:HBox>
+			<mx:HBox verticalAlign="middle">
+				<mx:Label text="Saldo Anterior:" width="170"/>
+				<mx:Label id="lblSaldoAnterior"/>
+			</mx:HBox>
+			<mx:HBox verticalAlign="middle" width="100%">
+				<mx:Label text="Saldo de Caixa:" width="170"/>
+				<mx:NumericStepper id="nsSaldo" minimum="0" maximum="999999" stepSize="0.01" width="100%" valueCommit="nsSaldo_ValueCommit()"/>
+			</mx:HBox>
+			<mx:HBox verticalAlign="middle">
+				<mx:Label text="Saldo Total:" width="170"/>
+				<mx:Label id="lblsaldoTotal"/>
+			</mx:HBox>
+			
+			<mx:HBox verticalAlign="middle" width="100%" horizontalAlign="right">
+				<mx:Button label="Confirmar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="btnConfirmar_Click()"/>
+			</mx:HBox>
+		</mx:VBox>
+
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Resize;
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

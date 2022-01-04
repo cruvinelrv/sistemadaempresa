@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.adobe.flex.extras.controls.*" xmlns:comp="Componentes.comp.*" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Button label="BUSCAR" click="load()" icon="{Imagens.unica.icn_64_Atualiza}" labelPlacement="bottom" />
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.swf_loading}" scaleX="5" scaleY="5" />
+	</mx:HBox>
+	
+	<mx:VBox> 
+		<mx:HBox>
+			<mx:VBox>
+				<mx:Label text="Preço Custo"/>
+				<mx:NumericStepper id="nsPrecoCusto" width="135" minimum="0" stepSize="0.01" maximum="999999"/>
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Preço Serviço"/>
+				<mx:NumericStepper id="nsPrecoServico" width="135" minimum="0" stepSize="0.01" maximum="999999"/>
+			</mx:VBox>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:VBox>
+				<mx:Label text="Desc Máximo(%)"/>
+				<mx:NumericStepper id="nsDescMaximo" width="135" minimum="0" stepSize="0.01" maximum="100"/>
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Porcentagem Lucro"/>
+				<mx:TextInput id="txtPorcentagemLucro" width="135" editable="false"/>
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Label text="Valor Lucro"/>
+				<mx:TextInput id="txtValorLucro" width="135" editable="false"/>
+			</mx:VBox>
+		</mx:HBox>
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import janelas.cadastro.ItemServico.JanelaCadItemServico;
+			import mx.controls.Alert;
+			import SDE.Parametro.ParamLoadItem;
+			import img.Imagens;
+			import SDE.Entidade.ItemEmpPreco; 
+			import Core.Sessao;
+			import Core.Utils.Constantes;
+			import SDE.FachadaServico.FcdItem;
+			import SDE.Entidade.Item;
+			import SDE.FachadaServico.FcdCliente;
+			import mx.formatters.DateFormatter;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.Funcoes;
+			
+			[Bindable] public var mdlPai:JanelaCadItemServico;			
+			[Bindable] public var iep: ItemEmpPreco;
+			
+			
+            
+			private function create():void
+			{
+				mdlPai.addEventListener(JanelaCadItemServico.EV_MUDA_ITEM, mudaItem);
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				selectedIndex = 0;
+			}
+			
+			private function load():void
+			{
+				var pl:ParamLoadItem = new ParamLoadItem();
+				var teste:Number= new Number();
+				pl.precos = true;
+				
+				selectedIndex = 1;
+				
+				FcdItem.unica.Load(
+					Sessao.unica.idEmp,
+					mdlPai.item.id, pl,
+					function(retorno:Item):void
+					{
+						mdlPai.item.__ie.__preco = retorno.__ie.__preco;
+						iep = mdlPai.item.__ie.__preco;
+						doBinding();
+						txtValorLucro.text = (iep.venda - iep.custo).toFixed(2);
+						txtPorcentagemLucro.text = (((iep.venda*100)/iep.custo)-100).toFixed(2);
+						selectedIndex = 2;
+					}
+				);
+			}
+			
+			private function doBinding():void
+			{
+				Funcoes.myBind(nsPrecoCusto, "value", iep, "custo");
+				Funcoes.myBind(nsPrecoServico, "value", iep, "venda");
+				Funcoes.myBind(nsDescMaximo, "value", iep, "descontoMaximo");
+			}
+			
+		]]>
+	</mx:Script>
+</mx:ViewStack>

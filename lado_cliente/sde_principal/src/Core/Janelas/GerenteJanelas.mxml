@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:flexmdi="http://flexmdi.googlecode.com/" xmlns:Janelas="Core.Janelas.*"
+	width="100%" height="100%"
+	initialize="init()"
+	xmlns:LoginSistema="Core.LoginSistema.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*" xmlns:CP="Componentes.CP.*">
+	<mx:Metadata>
+		[Event(name="BaixouTodosCache")]
+		[Event(name="RetornoLogin", type="Core.Ev.EventoGenerico")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import janelas.mov.PdvGeraTitulo.JnlPdvGeraTitulo;
+			import mx.managers.PopUpManager;
+			import Componentes.CP.PesqEstoque;
+			import Componentes.PopUpPesquisa.SuperPopPesq;
+			import mx.effects.Move;
+			import mx.effects.Resize;
+			import mx.core.Container;
+			import flexmdi.containers.MDIWindow;
+			import mx.utils.StringUtil;
+			import SDE.Entidade.SdeConfig;
+			import mx.effects.Zoom;
+			import Core.Alerta.AlertaSistema;
+			import mx.core.Application;
+			import mx.controls.Alert;
+			import Core.Ev.EventoGenerico
+			import Core.Sessao;
+			import img.Imagens;
+			import mx.effects.Fade;
+			
+			[Bindable]
+			private var mensagem:String = "Senhores clientes, informamos que no dia 05/08, quinta-feira, não estaremos atendendo por motivo de feriado municipal em Rio Verde-GO.\nObrigado pela compreensão.\nMULTISOFT SISTEMAS";
+			
+			
+		]]>
+	</mx:Script>
+	<mx:Script source="GerenteJanelas_script.as"/>
+	
+	<mx:ApplicationControlBar id="applicationcontrolbar1"
+		showEffect="{fadeZoom}" hideEffect="{fadeZoom}"
+		width="100%" height="50" dock="true" cornerRadius="0"
+		verticalAlign="middle"
+		fontSize="16" fontFamily="Arial" fontWeight="bold"
+		themeColor="#3B5998"
+		>
+		
+		<mx:PopUpMenuButton id="popMenu" label="MENU"
+			dataProvider="{menuItens}" visible="{menuItens!=null}"
+			itemClick="popMenuItemClickHandler(event)" 
+			/>
+			<!--
+		<mx:Image id="imgStatusDesktop"
+			click=" if (!Sessao.unica.desktopExecutando) SoqueteCentral.unica.confereConexao(); "
+			source="{ (Sessao.unica.desktopExecutando) ? Imagens.unica.icn_16_desktopON : Imagens.unica.icn_16_desktopOFF }"
+			toolTip="{ (Sessao.unica.desktopExecutando) ? 'CF/TEF conectado' : 'CF/TEF desconectado' }" />
+			-->
+			
+			
+		<mx:Button width="100" cornerRadius="0" fontSize="12" label="Cascata" click="alinhaCascata()" />
+		<mx:Button width="100" cornerRadius="0" fontSize="12" label="Quadros" click="alinhaQuadros()" />
+		
+		<mx:Image
+			source="{ Imagens.unica.icn_32_tecnico }"
+			toolTip="{ 'usuário técnico' }"
+			visible="{ Application.application.sessao.modoTecnico }" />
+		<mx:Image
+			source="{ Imagens.unica.icn_32_aceita }"
+			toolTip="{ 'conectado aos perifericos' }"
+			visible="{ Application.application.ProxyEstaAberto }" />
+		<!--
+		<mx:VBox width="100" fontSize="12">
+		</mx:VBox>
+		<mx:ComboBox id="cmbWall" fontSize="20"
+			dataProvider="{papeis}"
+			change="setStyle('backgroundImage',cmbWall.selectedItem.img)"
+			/>
+		-->
+		
+		<mx:Spacer width="100%"/>
+		
+		<mx:Label fontSize="20" color="#ffffff" visible="false" text="{versao}" />
+		<!--
+		<mx:Button label="" toolTip="Opções" icon="{Imagens.unica.icn_32_config}" click="telaOpcoes()" />
+		<mx:Button label="" toolTip="Novidades" icon="{Imagens.unica.icn_32_novidades}" click="telaNovidades()" />
+		-->
+		<mx:Button label="" toolTip="Calculadora"
+			icon="{Imagens.unica.icn_32_calc}"
+			click="{ Application.application.gerenteConexaoDesktop.iniciaProcesso('calc') }"
+			visible="{ Application.application.ProxyEstaAberto }" />
+		<mx:Button label="Venda/Orçamento" toolTip="Venda e Orçamento"
+			labelPlacement="right" fontSize="10" fontWeight="normal"
+			icon="{Imagens.unica.icn_32_carrinho}"
+			visible="{acessaPdv}"
+			click="Application.application.gerenteJanelas.NovaJanela(new JnlPdvGeraTitulo(), 'Menu.Movimentacoes.Pdv Titulos');"/>
+		<mx:Button label="Produtos" toolTip="Pesquisa de Produtos"
+			labelPlacement="right" fontSize="10" fontWeight="normal"
+			icon="{Imagens.unica.icn_32_busca}"
+			click="{abrePopupPesquisaItens()}"/>
+		<mx:Button label="Movimentações" toolTip="Pesquisa de Movimentações"
+			labelPlacement="right" fontSize="10" fontWeight="normal"
+			icon="{Imagens.unica.icn_32_busca}"
+			click="{abrePopupPesquisaMov()}"/>
+		<mx:Button label="" toolTip="Sair" icon="{Imagens.unica.icn_32_fecha}" click="logout()" />
+	</mx:ApplicationControlBar>
+	
+	<mx:ViewStack id="vsCentral"
+		resizeEffect="{Resize}"
+		width="100%" height="100%" creationPolicy="all">
+		
+		<LoginSistema:JanelaLoginSistema id="janelaLogin"
+			showEffect="{Fade}" hideEffect="{Fade}"
+			RetornoLogin="{ janelaLogin_trata_retornoLogin(event) }"
+			/>
+		
+		<mx:Canvas id="janelaProgressBar"
+			width="100%" height="100%"
+			showEffect="{Fade}" hideEffect="{fadeZoom}">
+			
+			<mx:Canvas
+				width="700" height="300" horizontalCenter="0" verticalCenter="0"
+				backgroundColor="#3B5998" color="white" backgroundAlpha="1"
+				borderColor="#C9CBCC" borderStyle="solid" borderThickness="5" cornerRadius="10">
+					
+				<mx:ProgressBar id="progresso"
+					width="90%"
+					themeColor="green" mode="manual" label="Carregando %3%%"
+					horizontalCenter="0" verticalCenter="0"
+					fontSize="14" fontWeight="bold"/>
+				<mx:Label
+					fontWeight="bold" fontSize="26"
+					bottom="10" right="30"
+					text="SDE SISTEMAS DE GESTÃO" />
+			</mx:Canvas>
+			
+		</mx:Canvas>
+		
+		<flexmdi:MDICanvas id="janelaMdiCanvas"
+			showEffect="{Fade}" hideEffect="{Fade}"
+			width="100%" height="100%">
+			
+			<!--<mx:HBox
+				top="50" left="30"
+				backgroundColor="#ffffff">
+				
+				<mx:Image source="{Imagens.unica.icn_imagem_copa}"/>
+				
+				<mx:VBox verticalGap="0">
+					
+					<mx:TextArea width="360" height="180" borderStyle="solid" selectable="false" fontSize="20"
+						fontWeight="bold" cornerRadius="5" backgroundColor="#3B5998" color="white" borderThickness="2"
+						text="{mensagem}"/>
+					<mx:HBox width="360" height="10" cornerRadius="5" borderStyle="solid" backgroundColor="green" borderThickness="2"/>
+					<mx:HBox width="360" height="10" cornerRadius="5" borderStyle="solid" backgroundColor="yellow" borderThickness="2"/>
+					
+				</mx:VBox>
+				
+			</mx:HBox>-->
+			
+			<mx:Canvas id="rodapeMXML" width="370" height="150"
+				bottom="20" right="20"
+				backgroundColor="#ffffff">
+				
+				<mx:Image source="{Imagens.unica.img_logo_sde}" left="10" top="10" />
+				<mx:Image source="{Imagens.unica.img_logo_ms}"  bottom="10" right="10" />
+				<mx:Label id="lblUsuario" fontWeight="bold" right="5" top="25" visible="false"/>
+				<mx:Label id="lblEmpresa" fontWeight="bold" right="5" top="5" visible="false"/>
+				
+			</mx:Canvas>
+			
+		</flexmdi:MDICanvas>
+		
+	</mx:ViewStack>
+	
+	<mx:HBox id="teste"/>
+	
+	<mx:Parallel id="fadeZoom">
+		<mx:Fade/>
+	</mx:Parallel>
+</mx:VBox>

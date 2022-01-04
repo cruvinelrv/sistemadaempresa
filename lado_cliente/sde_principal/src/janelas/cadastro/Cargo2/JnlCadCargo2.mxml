@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:SDE="Componentes.SDE.*"
+	xmlns:Consulta="janelas.cadastro.Cargo2.Form.Consulta.*" xmlns:Cadastro="janelas.cadastro.Cargo2.Form.Cadastro.*"
+	xmlns:Pesquisa="janelas.cadastro.Cargo2.Form.Pesquisa.*">
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:ViewStack id="vs" width="100%" height="100%" creationPolicy="all">
+		
+		<Pesquisa:Cargo_FormPesquisa id="formPesquisa" mdlPai="{this}" showEffect="{quickFade}" hideEffect="{quickFade}"/>
+		<Cadastro:Cargo_FormCadastro id="formCadastro" mdlPai="{this}" showEffect="{quickFade}" hideEffect="{quickFade}"/>
+		
+	</mx:ViewStack>
+	
+</mx:VBox>

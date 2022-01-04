@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" xmlns:title="net.srirangan.title.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*"
+	creationComplete="{ create() }"
+	backgroundColor="white">
+	
+	
+	<!--
+	<PopUpPesquisa:PopPesquisa_Vendas id="popup" />
+	-->
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import flash.utils.setTimeout;
+			import mx.events.CloseEvent;
+			import Componentes.PopUpPesquisa.PopPesquisa_Vendas;
+			import mx.managers.PopUpManager;
+			
+			private var popup:PopPesquisa_Vendas = null;
+			
+			private function create():void
+			{
+				//popup.parent.removeChild(popup);
+				popup = new PopPesquisa_Vendas();
+				popup.addEventListener(CloseEvent.CLOSE, popup_ev_close);
+				
+				PopUpManager.addPopUp(popup, this, true);
+				PopUpManager.centerPopUp(popup);
+			}
+			private function popup_ev_close(ev:CloseEvent):void
+			{
+				PopUpManager.removePopUp(popup);
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Application>

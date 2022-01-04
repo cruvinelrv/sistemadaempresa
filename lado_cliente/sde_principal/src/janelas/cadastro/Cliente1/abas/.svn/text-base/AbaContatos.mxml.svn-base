@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="Componentes.comp.*" xmlns:controls="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Button label="BUSCAR" click="load()" icon="{Imagens.unica.icn_64_Atualiza}" labelPlacement="bottom" />
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.swf_loading}" scaleX="3" scaleY="3" />
+	</mx:HBox>
+	<mx:VBox width="100%" height="100%">
+			
+			<comp:Botao2 width="120" label="Inserir"
+				cor="Branco" icone="Adiciona"
+				click="{novoContato()}"
+				horizontalCenter="0" />
+		
+		<mx:DataGrid id="grid" width="100%" height="100%"
+			themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+			editable="false">
+			<mx:columns>
+			<!--
+				com esses campos eu posso ver claramente quando a linha foi recém-inserida
+				<mx:DataGridColumn dataField="id" />
+				<mx:DataGridColumn dataField="idPessoa" />
+				-->
+				<mx:DataGridColumn dataField="campo" headerText="Descrição" />
+				<mx:DataGridColumn dataField="valor" headerText="Contato"/>
+				<mx:DataGridColumn dataField="obs" headerText="Observação"/>
+				<mx:DataGridColumn headerText=" " width="100" editable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="{'Alterar'}"
+								width="80%" labelPlacement="right" color="#008800"
+								click="dispatchEvent(new Event('editRow', true))" />
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText=" " width="100" editable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="{(data.isDeletado) ? 'removido':''}"
+								width="80%" labelPlacement="right" color="#840000"
+								icon="@Embed(source='../../../../img/icones/16/cancela1.png')"
+								click="dispatchEvent(new Event('deleteRow', true))" />
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<mx:Panel id="popupEditar"
+			width="530" height="308" layout="absolute"
+			borderAlpha="1"
+			fontSize="14"
+			headerHeight="10">
+			
+			<mx:Image x="10" y="10" source="{Imagens.unica.icn_32_funcionario}" />
+			<mx:Label x="45" y="10" fontSize="20" fontWeight="bold" text="Contatos" />
+			
+			<comp:Botao2 width="120" label="Voltar"
+				bottom="10" right="140"
+				cor="Branco" icone="Deleta"
+				click="{ cancela() }"/>
+			<comp:Botao2 width="120" label="OK"
+				bottom="10" right="10"
+				cor="Branco" icone="Adiciona"
+				click="{ edita() }"/>
+				
+			<mx:Grid x="10" y="42" width="100%">
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label text="Descrição"/>
+							<controls:MasterTextInput id="boundDescricaoTextInput" capsType="upercase" width="200"/>
+						</mx:VBox>
+					</mx:GridItem>
+					<mx:GridItem>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label text="Tipo"/>
+							<mx:ComboBox id="boundTipoComboBox"
+								dataProvider="{[
+									{label:'Fone Fixo',icon:testeeee},
+									{label:'Celular',icon:testeeee},
+									{label:'Email',icon:testeeee},
+									{label:'MSN',icon:testeeee},
+									{label:'Skype',icon:testeeee}
+									]}" 
+								width="200" fontWeight="bold"/>
+						</mx:VBox>
+					</mx:GridItem>
+					<mx:GridItem visible="{(boundTipoComboBox.text == 'Celular')}">
+						<mx:VBox>
+								<mx:Label text="Operadora" />
+								<mx:ComboBox id="boundOperadoraComboBox"
+								dataProvider="{[
+									{label:'CLARO'},
+									{label:'OI'},
+									{label:'TIM'},
+									{label:'VIVO'},							
+									]}"
+								width="150" fontWeight="bold"/>
+							</mx:VBox>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label text="Contato"/>
+							<controls:MasterTextInput id="boundContatoTextInput" capsType="upercase" width="200"/>	
+						</mx:VBox>
+					</mx:GridItem>
+					<mx:GridItem>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label text="Observação"/>
+							<controls:MasterTextInput id="boundObsTextInput" capsType="upercase" width="200"/>
+						</mx:VBox>
+					</mx:GridItem>
+					<mx:GridItem>
+					</mx:GridItem>
+				</mx:GridRow>
+			</mx:Grid>
+			
+		</mx:Panel>
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.ClienteContato;
+			import SDE.Entidade.Cliente;
+			import Core.Utils.Funcoes;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.Funcoes;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import Core.Alerta.AlertaSistema;
+			import SDE.FachadaServico.FcdCliente;
+			import SDE.Parametro.ParamLoadCliente;
+			import img.Imagens;
+			import janelas.cadastro.Cliente1.JanelaCadCliente;
+			import SDE.Entidade.Cliente;
+		
+			[Bindable] public var mdlPai:JanelaCadCliente;
+			
+			
+			[Bindable] private var testeeee:Class = Imagens.unica.icn_32_impressora;
+			
+			private function get c():Cliente
+			{
+				return mdlPai.cliente;
+			}
+			
+			private var contatoEditando:ClienteContato = null;
+			private var contatoOriginal:ClienteContato= null;
+			
+			private function create():void
+			{
+				mdlPai.addEventListener(JanelaCadCliente.EV_MUDA_CLIENTE, mudaCliente);
+				grid.addEventListener('editRow', editRowHandler);
+				grid.addEventListener('deleteRow', deleteRowHandler);
+				popupEditar.parent.removeChild(popupEditar);
+			}
+			
+			private function mudaCliente(ev:Object):void
+			{
+				selectedIndex = 0;
+				grid.dataProvider = null;
+			}
+			
+			private function load():void
+			{
+				selectedIndex = 1;
+				
+				var param:ParamLoadCliente = new ParamLoadCliente();
+				param.ignorar=true;
+				param.contatos=true;
+				
+				FcdCliente.unica.Load(mdlPai.cliente.id, param,
+					function(retorno:Cliente):void
+					{
+						AlertaSistema.mensagem( "C: "+mdlPai.cliente.id+" largura: "+retorno.__contatos.length , true);
+						c.__contatos = retorno.__contatos;
+						selectedIndex = 2;
+						grid.dataProvider = c.__contatos;
+					}
+				);
+				
+			}
+			private function cancela():void
+			{
+				//trata-se de uma edição
+				if (contatoOriginal!=null)
+					c.__contatos.push(contatoOriginal);
+				
+				atualizaTelaFecha();
+			}
+			private function edita():void
+			{
+				/**INICIO VALIDAÇÃO*/
+				var msg:String = "";
+				if (boundDescricaoTextInput.length < 3)
+					msg += "Digite uma DESCRIÇÃO\n";
+				if (boundContatoTextInput.length < 3)
+					msg += "Digite o CONTATO"
+				
+				if (msg != "")
+				{
+					AlertaSistema.mensagem(msg);
+					return;
+				}
+				/**FIM VALIDAÇÃO*/
+				
+				c.__contatos.push(contatoEditando.clone());
+				
+				atualizaTelaFecha();
+			}
+			private function atualizaTelaFecha():void
+			{
+				//atualiza na tela
+				grid.dataProvider = c.__contatos;
+				PopUpManager.removePopUp(popupEditar);
+			}
+			private function novoContato():void
+			{
+				contatoOriginal = null;
+				contatoEditando = new ClienteContato();
+				contatoEditando.idCliente = c.id;
+				boundTipoComboBox.selectedIndex = 0; /**SUBSTITUIR POR REFERÊNCIA DO ENUMERADOR QUANDO ESTE FOR CRIADO*/
+				boundOperadoraComboBox.selectedIndex = 0; /**SUBSTITUIR POR REFERÊNCIA DO ENUMERADOR QUANDO ESTE FOR CRIADO*/
+				mostraPopUp();
+			}
+			
+			private function mostraPopUp():void
+			{
+				PopUpManager.addPopUp(popupEditar, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupEditar);
+				doBinding();
+			}
+			
+			private function doBinding():void
+			{
+				Funcoes.myBind(boundDescricaoTextInput, "text", contatoEditando, "campo");
+				Funcoes.myBind(boundContatoTextInput, "text", contatoEditando, "valor");
+				Funcoes.myBind(boundObsTextInput, "text", contatoEditando, "obs");
+				/**Funcoes.myBind(boundTipoComboBox, "text", cotatoEditando, "tipo");*/// ativar opós a criação da propriedade TIPO
+			}
+			
+            private function editRowHandler(event:Event):void
+            {
+            	contatoOriginal = event.target.data;
+            	
+            	var index:int = c.__contatos.indexOf(contatoOriginal);
+            	c.__contatos.splice(index, 1);//returns removed items
+            	
+            	contatoEditando = contatoOriginal.clone();//cria um clone
+            	contatoEditando.isDeletado = false;
+            	mostraPopUp();
+            }
+            
+            private function deleteRowHandler(event:Event):void
+            {
+            	var cc:ClienteContato = event.target.data;
+            	cc.isDeletado = !cc.isDeletado;
+            	
+            	if (cc.isDeletado)
+            	{
+            		if (cc.id==0)
+            		{
+		            	var index:int = c.__contatos.indexOf(cc);
+		            	c.__contatos.splice(index, 1);//returns removed items
+	            	}
+            	}
+				grid.dataProvider = c.__contatos;
+            }
+		]]>
+	</mx:Script>
+	
+</mx:ViewStack>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	verticalAlign="middle"
+	themeColor="#3B5998"
+	creationComplete="create()" xmlns:Combo="Componentes.Combo.*" xmlns:comp="Componentes.comp.*">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import mx.controls.Alert;
+			import Core.Sessao;
+			import SDE.Constantes.Variaveis_SdeConfig;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.MyArrayUtils;
+			import SDE.Entidade.SdeConfig;
+			import mx.collections.ArrayCollection;
+			import mx.core.Application;
+			
+			[Bindable] private var parametros:Array;
+			[Bindable] private var parametros_filtados:ArrayCollection = new ArrayCollection();
+			
+			private function create():void
+			{
+				verifica_novas_telas();
+				
+				parametros = MyArrayUtils.cloneArrayEntidades(App.single.cache.arraySdeConfig);
+				grid1.addEventListener("editRow", fn_trata_editaLinhaGrid1);
+				parametros_filtados.addAll( new ArrayCollection(parametros) );
+				
+				
+			}
+			
+			private function verifica_novas_telas():void
+			{
+				//var camposTodos_String:Array = Variaveis_SdeConfig.getCampos();
+				var camposMeus:Array = MyArrayUtils.cloneArrayEntidades(App.single.cache.arraySdeConfig);
+				var camposNovos:Array = [];
+				
+				for each (var s:String in Variaveis_SdeConfig.getCampos())
+				{
+					var existe:Boolean = false;
+					var c:SdeConfig;
+					for each (c in camposMeus)
+					{
+						if (c.variavel == s)
+							existe=true;
+					}
+					if(!existe)
+					{
+						c = new SdeConfig();
+						c.variavel = s;
+						c.valor = "0";
+						c.prioridade = 1;//1==corp,2==emp,10==usuario-logado
+						camposNovos.push(c);
+						AlertaSistema.mensagem("criando configuração: "+s);
+					}
+					
+					
+				}
+				
+				if (camposNovos.length > 0)
+				{
+					Application.application.sessao.nuvens.modificacoes.SdeConfig_NovosAtualizacoes(
+						camposNovos,
+						function(r:Array):void
+						{
+							AlertaSistema.mensagem(camposNovos.length+ " novas configurações foram criadas");
+						}
+					);
+				}
+				
+			}
+			
+			private function fn_trata_editaLinhaGrid1(ev:Event):void
+			{
+				var c:SdeConfig = ev.target.data;
+				
+			}
+			
+			private function salva():void
+			{
+				for each(var c:SdeConfig in parametros_filtados)
+				{
+					c.__forcaAtualizacao = true;
+				}
+				Application.application.sessao.nuvens.modificacoes.SdeConfig_NovosAtualizacoes( parametros_filtados.source );
+			}
+			private function resetaTudo():void
+			{
+				Application.application.sessao.nuvens.modificacoes.SdeConfig_Reseta(
+					function():void
+					{
+						Alert.show("resetado :)");
+						Sessao.unica.logOut();
+					}
+				);
+			}
+			/*
+			private function trata_cmbParametros_change():void
+			{
+				parametros_filtados.removeAll();
+				var variavel:String = cmbParametros.selectedItem.variavel;
+				//variavel=="Todos" || 
+				
+				for(var i:int=0; i<parametros.length; i++)
+				{
+					var c:SdeConfig = parametros[i];
+					if (c.variavel==variavel)
+						parametros_filtados.addItem(c);
+				}
+				
+			}
+			*/
+		]]>
+	</mx:Script>
+	
+	<mx:TabNavigator width="100%" height="100%" styleName="padding10">
+		<mx:VBox width="100%" height="100%" label="Por Parametro">
+			<!--
+			<mx:ComboBox id="cmbParametros"
+				dataProvider="{parametros}" labelField="variavel"
+				change="{ trata_cmbParametros_change() }"/>
+			-->
+			<mx:DataGrid id="grid1" editable="true"
+				width="100%" height="100%"
+				themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+				dataProvider="{parametros_filtados}">
+				<mx:columns>
+					<mx:DataGridColumn dataField="id" editable="false" />
+					<mx:DataGridColumn dataField="variavel" editable="false" />
+					<mx:DataGridColumn dataField="valor" editable="true" />
+					<mx:DataGridColumn editable="false" visible="false">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Button label="salvar" click="{dispatchEvent(new Event('editRow', true))}" />
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+			
+			<mx:Button label="RESETA TUDO (muito bom)" click="{resetaTudo()}" />
+			<mx:Button label="SALVA ALTERAÇÕES" click="{salva()}" />
+			
+		</mx:VBox>
+	</mx:TabNavigator>
+	
+	
+</mx:VBox>

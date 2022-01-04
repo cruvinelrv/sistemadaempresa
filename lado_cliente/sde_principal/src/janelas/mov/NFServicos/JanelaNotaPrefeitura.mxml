@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	horizontalAlign="center"
+	creationComplete="create()"
+	color="#333333" xmlns:CP="Componentes.CaixaPesquisa.CP.*" xmlns:CaixaPesquisa="Componentes.CaixaPesquisa.*"
+	xmlns:Parametro="SDE.Parametro.*" xmlns:controls="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*"
+	xmlns:template="janelas.mov.PDV.template.*" xmlns:controls1="com.adobe.flex.extras.controls.*"
+	xmlns:CP1="Componentes.CP.*">
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EMovImpressao;
+			import SDE.Enumerador.EMovResumo;
+			import SDE.Enumerador.EMovTipo;
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+	<mx:Script source="MdllNotaPrefeitura_script.as" />
+	<mx:Script source="MdllNotaPrefeitura_script2.as"/>
+	
+	<mx:Fade id="quickFade" duration="200" />
+	
+	<mx:VBox width="100%" height="100%" styleName="padding10">
+		
+		<mx:VBox fontSize="16" verticalAlign="middle">
+			<mx:HBox>
+				<CP:CPesqCliente id="cpCliente">
+					<CP:pLoad>
+						<Parametro:ParamLoadCliente enderecos="true"/>
+					</CP:pLoad>
+				</CP:CPesqCliente>
+				<mx:VBox verticalGap="0">
+					<mx:HBox>
+						<mx:Label text="Cliente:" fontSize="14"/>
+						<mx:Label text="{cliente.nome}" fontSize="14"/>
+					</mx:HBox>
+					<mx:HBox>
+						<mx:Label text="Endereço do Cliente:" fontSize="14"/>
+						<mx:ComboBox id="cmbEndereco" width="490"
+							labelFunction="{lblfn_endereco}" fontSize="12"
+							change="change_cmbEndereco()"/>
+					</mx:HBox>
+				</mx:VBox>
+			</mx:HBox>
+			<mx:HBox>
+				<CP:CPesqCliente id="cpVendedor" />
+				<mx:Label text="Vendedor:" />
+				<mx:Label text="{vendedor.nome}" />
+			</mx:HBox>
+			<mx:HBox>
+				<!--<CP1:PesqCFOP id="cpCFOP" fontSize="14" change="change_cpCFOP()"/> AQUI-->
+				<!--<CP:CPesqCFOP id="cpCFOP" fontSize="14" change="change_cpCFOP()"/>-->
+				<mx:Label text="CFOP:" />
+				<mx:Label text="{cfop.codigo +', '+ cfop.descricao}" />
+			</mx:HBox>
+		</mx:VBox>
+		
+		<mx:HBox width="100%"
+			cornerRadius="5" color="white" styleName="padding3"
+			backgroundColor="#3B5998" borderColor="#3B5998" fontWeight="bold"
+			verticalAlign="middle" horizontalAlign="right">
+			<mx:Label width="100%" fontSize="14" text="{vs.selectedChild.label}" fontWeight="bold" />
+			<mx:VRule strokeColor="white" width="10" height="18"/>
+			<mx:Label fontWeight="bold" text="Qtde" fontSize="10" />
+			<mx:TextInput width="75" textAlign="right" fontSize="12" backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white"
+				text="{listaMI.length}" />
+			<mx:Label fontWeight="bold" text="Bru" fontSize="10" />
+			<mx:TextInput
+				id="txtMostraTotalBru"
+				width="150" textAlign="right" fontSize="12" backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white" />
+			<mx:Label fontWeight="bold" text="Acr/Desc" fontSize="10" />
+			<mx:TextInput
+				id="txtMostraTotalAcr"
+				width="150" textAlign="right" fontSize="12" backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white" />
+			<mx:Label fontWeight="bold" text="Líq" fontSize="10" />
+			<mx:TextInput
+				id="txtMostraTotalLiq2"
+				width="150" textAlign="right" fontSize="12" backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white"/>
+		</mx:HBox>
+		
+		<!--<mx:HBox width="100%">
+			<mx:VBox verticalGap="0">
+				<mx:Label fontSize="10" color="#333333" text="{vs.selectedChild.label}" />
+				<mx:HRule width="100%" />
+			</mx:VBox>
+		</mx:HBox>
+		<mx:HRule width="100%" />-->
+		
+		
+		<mx:ViewStack id="vs" width="100%" height="100%" creationPolicy="all">
+		
+		<!-- VIEW STACK 'vs' INDEX 0 -->
+		<mx:VBox width="100%" height="100%" label="Produtos / Serviços"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<!--<mx:HBox fontSize="16" width="100%" verticalAlign="middle">
+				<CP:CPesqCliente id="cpFuncionario" />
+				<mx:Label text="Funcionario:" />
+				<mx:Label text="{funcionario.nome}"/>
+			</mx:HBox>-->
+			
+			<mx:HBox width="100%" height="100%" >
+			<mx:VBox width="50%">
+				<!--
+				<mx:TabNavigator width="100%" creationPolicy="all">
+					<mx:VBox width="100%" label="Código de Barras">
+						<mx:TextInput id="txtBarras"
+							textAlign="center" width="200"
+							fontSize="20" styleName="padding10"
+							keyDown="txtBarrasKDown(event)"/>
+					</mx:VBox>
+					<mx:VBox width="100%" label="Pesquisa">
+						
+					</mx:VBox>
+				</mx:TabNavigator>
+				-->
+				
+				
+				<mx:HBox width="100%" verticalAlign="middle">
+					
+					<mx:VBox width="100%" fontSize="16" fontWeight="bold" verticalGap="0">
+						<mx:Label text="Código de Barras"/>
+						<controls:MasterTextInput id="txtBarras"
+							textAlign="center" width="100%"
+							styleName="padding5" capsType="upercase"
+							keyDown="txtBarrasKDown(event)"/>
+					</mx:VBox>
+					<mx:VBox width="100%" fontSize="16" fontWeight="bold" verticalGap="0">
+						<mx:Label text="Itens"/>
+						<CP:CPesqEstoque id="cpEstoque"
+							labelBtn="" widthBtn="35" widthTxtPercent="100"
+							retorno="retornaEstoque(event)" cancela="cpEstoque.limpa()">
+							<CP:pFiltro>
+								<Parametro:ParamFiltroItem servico="true"/>
+							</CP:pFiltro>
+						</CP:CPesqEstoque>
+					</mx:VBox>
+					<mx:VBox fontSize="16" fontWeight="bold" verticalGap="0">
+						<mx:Label text="Movimentação" />
+						<CP:CPesqMov id="cpMov" labelBtn="" widthBtn="35"
+							 retorno="retornaMov(event)" cancela="cpMov.limpa()"/>
+							 <!--
+							 labelBtn="" widthBtn="35" widthTxtPercent="100"
+							 -->
+					</mx:VBox>
+					
+				</mx:HBox>
+				
+				<mx:HBox width="100%"
+					backgroundColor="#cccccc" borderThickness="1" borderStyle="none" borderColor="#cccccc"
+					 horizontalAlign="center" fontSize="14" fontWeight="bold">
+					<mx:Label id="lblItemAtual" />
+				</mx:HBox>
+				
+				<mx:HBox width="100%"
+					horizontalAlign="center" verticalAlign="bottom"
+					fontSize="12" fontWeight="bold" paddingTop="3"
+					enabled="{atualItem!=null}">
+					<mx:VBox verticalGap="0">
+						<mx:Label text="Unid Med"/>
+						<mx:ComboBox id="cmbUM"
+							width="80" labelField="um" dataProvider="{Constantes.unica.UM}" enabled="false"/>
+					</mx:VBox>
+					<mx:VBox verticalGap="0">
+						<mx:Label text="QTD:"/>
+						<mx:NumericStepper id="nsQtd" valueCommit="altereiQtdUnit()"
+							width="100" stepSize="0.01" maximum="999999" keyDown="nsQtdKDown(event)"/>
+					</mx:VBox>
+					<mx:Label text="x" fontSize="33"/>
+					<mx:VBox verticalGap="0">
+						<mx:Label text="VALOR UN:"/>
+						<mx:NumericStepper id="nsVlr" valueCommit="altereiQtdUnit()"
+							width="100" stepSize="0.01" maximum="999999" keyDown="nsQtdKDown(event)"/>
+					</mx:VBox>
+					<mx:Label text="=" fontSize="33"/>
+					<mx:VBox verticalGap="0">
+						<mx:Label text="VALOR TOT:"/>
+						<mx:NumericStepper id="nsVlrTot" valueCommit="altereiTotal()"
+							width="100" stepSize="0.01" maximum="999999" keyDown="nsQtdKDown(event)"/>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" fontSize="10"
+					enabled="{atualItem!=null}">
+					<mx:Label id="lblAcrescimo"/>
+					<mx:Spacer width="100%"/>
+					<comp:Botao2 cor="Vermelho" label="Lançar" click="lancarAtual()"/>
+				</mx:HBox>
+				
+				
+			</mx:VBox>
+			<mx:VBox width="50%" height="100%">
+				<mx:DataGrid id="grid" width="100%" height="100%"
+					themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+					<mx:columns>
+						<!--<mx:DataGridColumn width="1" dataField="tipo" headerText="Tipo"/>-->
+						<mx:DataGridColumn width="1" dataField="qtd" headerText="Qtde"/>
+						<mx:DataGridColumn width="1" dataField="unidMed" headerText="UN"/>
+						<mx:DataGridColumn width="4" dataField="nome" headerText="Item"/>
+						<mx:DataGridColumn width="1" dataField="unit" headerText="R$"/>
+						<mx:DataGridColumn width="1" dataField="total" headerText="R$"/>
+						<mx:DataGridColumn width="1" headerText=" ">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:Button
+										width="22" themeColor="#840000"
+										label="" icon="{Imagens.unica.icn_16_cancela}"
+										click="dispatchEvent(new Event('deleteRow', true))">
+										<mx:Script>
+											<![CDATA[
+												import img.Imagens;
+											]]>
+										</mx:Script>
+									</mx:Button>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:VBox>
+			
+			<mx:Box height="100%" verticalAlign="middle">
+				<mx:Button label="finalizar" icon="{Imagens.unica.icn_64_seta_dir}" labelPlacement="bottom"
+					click="vs.selectedIndex=1" />
+			</mx:Box>
+			
+		</mx:HBox>
+			
+		</mx:VBox>
+		
+		
+		<!-- VIEW STACK 'vs' INDEX 1 -->
+		<mx:HBox
+			width="100%" height="100%" label="Forma de Pagamento"
+			showEffect="{quickFade}" hideEffect="{quickFade}" verticalAlign="middle">
+			
+			<mx:Box height="100%" verticalAlign="middle">
+				<mx:Button label="voltar" icon="{Imagens.unica.icn_64_seta_esq}" labelPlacement="bottom"
+					click="vs.selectedIndex=0" />
+			</mx:Box>
+			
+			<mx:VBox id="boxFechamento1" width="100%" height="100%">
+				<mx:Label fontSize="10" fontWeight="bold" text="Desconto sobre a venda"/>
+				<mx:HBox>
+					<mx:Label width="200" fontSize="10" fontWeight="bold" text="Valor Total"/>
+					<mx:TextInput
+						id="txtMostraTotalLiq1"
+						styleName="padding5" width="100" textAlign="right" fontSize="12" editable="false" borderStyle="solid"/>
+				</mx:HBox>
+				<mx:HBox>
+					<mx:Label width="200" fontWeight="bold" text="Reduzir em" fontSize="10" />
+					<mx:NumericStepper id="nsDescontoFinal"
+						styleName="padding5" width="100" stepSize="0.01" fontSize="12" borderStyle="solid" 
+						keyDown="keyDownDescontoFinal(event)" focusOut="focusOutDescontoFinal(event)"/>
+					<mx:Label fontWeight="bold" text="ou" fontSize="10" />
+					<mx:NumericStepper id="nsDescontoFinalpct"
+						maximum="99"
+						styleName="padding5" width="100" stepSize="0.01" fontSize="12" borderStyle="solid" 
+						/>
+					<mx:Label fontWeight="bold" text="%" fontSize="10" />
+				</mx:HBox>
+				<mx:HBox>
+					<mx:Label width="200" fontWeight="bold" text="Final" fontSize="10" />
+					<mx:TextInput
+						text="{txtMostraTotalLiq2.text}"
+						styleName="padding5" width="100" textAlign="right" fontSize="12" editable="false" borderStyle="solid" />
+				</mx:HBox>
+				<mx:HRule width="100%" />
+				
+				<mx:Label fontSize="10" fontWeight="bold" text="Escolha"/>
+				<template:SeletorValorEspecies id="seletorEspecies" />
+				
+			</mx:VBox>
+			
+			<mx:VRule strokeColor="#3B5998" strokeWidth="2" height="80%"/>
+			
+			<mx:VBox id="boxFechamento2" width="100%" height="100%">
+				<mx:HBox width="100%">
+					<mx:VBox>
+						<mx:Label text="N° Nota" fontWeight="bold" fontSize="10"/>
+						<controls:MasterTextInput id="txtNumNota" fontSize="12" onlyRestrict="number" width="80"/>
+					</mx:VBox>
+					<mx:VBox>
+						<mx:Label text="Série Nota" fontWeight="bold" fontSize="10"/>
+						<controls:MasterTextInput id="txtSerieNota" fontSize="12" onlyRestrict="number" width="80"/>
+					</mx:VBox>
+					<mx:VBox>
+						<mx:Label text="Data de Emissão" fontWeight="bold" fontSize="10"/>
+						<controls:MasterTextInput id="txtDataEmissao" fontSize="12" validator="date" inputMask="99/99/9999" width="100"/>
+					</mx:VBox>
+				</mx:HBox>
+				<mx:HBox width="100%">
+					<mx:VBox>
+						<mx:Label text="Retenção ISSQN(%)" fontWeight="bold" fontSize="10"/>
+						<mx:NumericStepper id="nsISSQN" fontSize="12" minimum="0" stepSize="0.01" maximum="100"/>
+					</mx:VBox>
+					<mx:VBox>
+						<mx:Label text="Retenção INSS(%)" fontWeight="bold" fontSize="10"/>
+						<mx:NumericStepper id="nsINSS" fontSize="12" minimum="0" stepSize="0.01" maximum="100"/>
+					</mx:VBox>
+					<mx:VBox>
+					<mx:Label text="Local da Prestação" fontWeight="bold" fontSize="10"/>
+						<mx:HBox width="100%">
+							<mx:CheckBox id="ckbNoMun" label="No Município" fontSize="10" selected="{(ckbForaMun.selected)?false:true}"/>
+							<mx:CheckBox id="ckbForaMun" label="Fora do Município" fontSize="10" selected="{(ckbNoMun.selected?false:true)}"/>
+						</mx:HBox> 
+					</mx:VBox>
+				</mx:HBox>
+				<mx:Label text="Fatura" fontWeight="bold" fontSize="10"/>
+				<mx:TextArea id="txtFatura" fontSize="12" width="400" height="40"/>
+				<mx:Label text="Observações" fontWeight="bold" fontSize="10"/>
+				<mx:TextArea id="txtObs" fontSize="12" width="400" height="50"/>
+				<mx:HBox>
+					<comp:Botao2 cor="Verde" label="NFS Formulário" width="198"
+						click="finaliza(EMovResumo.outros, EMovTipo.outros_servicos, EMovImpressao.nfs_prefeitura, 'formulario')"/>
+					<comp:Botao2 cor="Verde" label="NFS Eletrônica" width="198"
+						click="vs.selectedIndex=2"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+		</mx:HBox>
+		
+		
+		<!-- VIEW STACK 'vs' INDEX 2 -->
+		<mx:HBox
+			width="100%" height="100%" label="NFS Eletrônica"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:Box height="100%" verticalAlign="middle">
+				<mx:Button label="voltar" icon="{Imagens.unica.icn_64_seta_esq}" labelPlacement="bottom"
+					click="vs.selectedIndex=1" />
+			</mx:Box>
+			
+			<mx:VBox id="boxNFSe" fontSize="16" verticalAlign="top" verticalGap="3">
+				
+				<mx:Label text="Data Referencia"/>
+				<mx:ComboBox id="cmbDataReferencia" width="180"/>
+				
+				<mx:Label text="Tipo do Serviço"/>
+				<mx:ComboBox id="cmbTipoServico" width="180"
+					dataProvider="{ [
+						'Selecione...',
+						'Prestado',
+						'Tomado'
+					] }"/>
+				
+				<mx:Label text="Tipo de Declaração"/>
+				<mx:ComboBox id="cmbTipoDeclaracao" width="180"
+					dataProvider="{ [
+						'Com Movimento',
+						'Sem Movimento'
+					] }"/>
+				
+				<mx:Label text="Situação"/>
+				<mx:ComboBox id="cmbSituacao" width="180"
+					dataProvider="{ [
+						'Normal',
+						'Retificada'
+					] }"/>
+				
+				<mx:Label text="Aliquota"/>
+				<mx:NumericStepper id="nsAliquota" stepSize="0.01" minimum="0" maximum="999999" width="180"/>
+				
+			</mx:VBox>
+			
+			<mx:VBox width="100%" height="100%">
+			
+				<mx:HBox horizontalAlign="left">
+					<comp:Botao2 label="Todos Recolhido Pelo Tomador" cor="Azul" click="recolhidoTomador_click(true)"/>
+					<comp:Botao2 label="Nenhum Recolhido Pelo Tomador" cor="Azul" click="recolhidoTomador_click(false)"/>
+				</mx:HBox>
+				<mx:VBox horizontalAlign="right" width="100%" height="100%">
+					<mx:DataGrid id="gridNFSe" width="100%" height="100%"
+						themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+						<mx:columns>
+							<mx:DataGridColumn  width="10" dataField="qtd" headerText="Qtde"/>
+							<mx:DataGridColumn  width="10" dataField="unidMed" headerText="UN"/>
+							<mx:DataGridColumn  width="40" dataField="nome" headerText="Item"/>
+							<mx:DataGridColumn  width="10" dataField="unit" headerText="R$"/>
+							<mx:DataGridColumn  width="10" dataField="total" headerText="R$"/>
+							<mx:DataGridColumn  width="20" dataField="recolhidoPeloTomador" headerText="Recolhido pelo Tomador" rendererIsEditor="true">
+								<mx:itemRenderer>
+									<mx:Component>
+										<mx:Canvas>
+											<mx:CheckBox
+												horizontalCenter="0" verticalCenter="0"
+												click="{dispatchEvent(new Event('tomadorChecked', true))}"/>
+										</mx:Canvas>
+									</mx:Component>
+								</mx:itemRenderer>
+							</mx:DataGridColumn>
+						</mx:columns>
+					</mx:DataGrid>
+					<mx:HBox horizontalAlign="right" verticalAlign="middle">
+						<mx:LinkButton label="Abrir Envio DMS" fontSize="16" color="#0000FF" fontWeight="bold"
+							click="fn_abreUrlDms(URL_DMS)"/>
+						<comp:Botao2 label="Finalizar" cor="Verde" 
+							click="finaliza(EMovResumo.outros, EMovTipo.outros_servicos, EMovImpressao.nfs_prefeitura, 'eletronica')"/>
+					</mx:HBox>
+					
+				</mx:VBox>
+				
+			</mx:VBox>
+			
+		</mx:HBox>
+			
+		</mx:ViewStack>
+		
+	</mx:VBox>
+	
+	<mx:Panel id="popupDadosCliente"
+		width="580" height="220"
+		layout="absolute"
+		borderAlpha="1"
+		fontSize="14"
+		headerHeight="10">
+		
+		<mx:Image x="10" y="10" source="{Imagens.unica.icn_32_funcionario}" />
+		<mx:Label x="45" y="10" fontSize="20" fontWeight="bold" text="Dados Cliente"/>
+		
+		<comp:Botao2 width="120" label="Voltar"
+			bottom="10" right="140"
+			cor="Branco" icone="Deleta"
+			click="fechaPopupDadosCliente()"/>
+		<comp:Botao2 width="120" label="OK"
+			bottom="10" right="10"
+			cor="Branco" icone="Aceita"
+			click="salvaDadosCliente()"/>
+		
+		<mx:VBox x="10" y="50" width="100%">
+			
+			<mx:HBox verticalAlign="middle" width="100%">
+				<mx:Label text="Nome:" width="100"/>
+				<controls:MasterTextInput id="txtClienteNome"
+					capsType="upercase" width="432"/>
+			</mx:HBox>
+			
+			<mx:HBox verticalAlign="middle" width="100%">
+				<mx:HBox verticalAlign="middle" width="50%">
+					<mx:Label text="Tipo:" width="100"/>
+					<mx:RadioButton id="rbFis"
+						label="Fisica"
+						selected="true"/>
+					<mx:RadioButton id="rbJur"
+						label="Juridica"
+						selected="false"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle" width="50%">
+					<mx:Label text="CPF/CNPJ:"/>
+					<controls1:MaskedTextInput id="txtCPFCNPJ" width="100%"
+						inputMask="{(rbFis.selected)?'###/.###/.###-##':'##/.###/.###//####-##'}"/>
+				</mx:HBox>
+			</mx:HBox>
+			
+			<mx:HBox verticalAlign="middle" width="100%">
+				<mx:Label text="Endereço:" width="100"/>
+				<controls:MasterTextInput id="txtClienteEndereco"
+					capsType="upercase" width="432"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</mx:Panel>
+	
+</mx:VBox>

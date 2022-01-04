@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="100%"
+	backgroundColor="#ffffff">
+	
+	<mx:Image source="img/imagens/logo_sde.png" left="100" top="50"/>
+	<mx:Image source="img/imagens/logo_mini.png" right="10" bottom="10"/>
+	
+</mx:Canvas>

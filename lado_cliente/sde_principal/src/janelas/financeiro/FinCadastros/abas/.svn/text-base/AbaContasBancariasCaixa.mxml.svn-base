@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:masked="com.adobe.flex.extras.controls.*" xmlns:master="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	fontSize="14"
+	creationComplete="create()">
+	
+	<mx:HBox>
+		<mx:VBox>
+			<mx:Label text="TIPO"/>
+			<mx:ComboBox id="cmbContaTipo" />
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="DESCRIÇÃO"/>
+			<master:MasterTextInput id="txtDescricao" capsType="upercase" width="100%" />
+		</mx:VBox>
+	</mx:HBox>
+	<mx:HBox id="boxBanco" enabled="{cmbContaTipo.selectedItem==EContaTipo.Banco}">
+		<mx:VBox>
+			<mx:Label text="CORR/POUP"/>
+			<mx:ComboBox id="cmbContaOperacao"
+				dataProvider="{['corrente', 'poupança']}" />
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="BANCO"/>
+			<master:MasterTextInput id="txtCodBanco" maxLength="3"  />
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="AGENCIA"/>
+			<master:MasterTextInput id="txtAgencia" maxLength="12" />
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="CONTA"/>
+			<master:MasterTextInput id="txtConta" maxLength="12" />
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="CARTEIRA"/>
+			<master:MasterTextInput id="txtCarteira" capsType="upercase" width="75"  maxLength="5" />
+		</mx:VBox>
+		<mx:VBox id="vbox2">
+			<mx:Label text="LIMITE CONTRATUAL (R$)"/>
+			<master:MasterTextInput id="txtLimite" capsType="upercase" onlyRestrict="number" width="150" />
+		</mx:VBox>
+	</mx:HBox>
+	<mx:VBox>
+		<mx:Label text=""/>
+		<comp:Botao1 label="Criar Conta" icone="Adiciona" cor="Cinza" click="{inserir()}" />
+	</mx:VBox>
+	
+	<mx:DataGrid id="grid" width="100%" height="100%" editable="false"
+		themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+		<mx:columns>
+			<mx:DataGridColumn dataField="tipo" headerText="Tipo" />
+			<mx:DataGridColumn dataField="nome" headerText="Descrição" />
+			<mx:DataGridColumn dataField="operacao" headerText="Operação" />
+			<mx:DataGridColumn dataField="banco" headerText="Banco" textAlign="right" />
+			<mx:DataGridColumn dataField="ag" headerText="Agencia" textAlign="right" />
+			<mx:DataGridColumn dataField="conta" headerText="Conta" textAlign="right" />
+			<mx:DataGridColumn dataField="carteira" headerText="Carteira" textAlign="right" />
+			<mx:DataGridColumn dataField="limite" headerText="Limite" textAlign="right" />
+			<mx:DataGridColumn dataField="saldoInicial" headerText="Saldo Inicial" textAlign="right" />
+			<mx:DataGridColumn dataField="dtSaldoInicial" headerText="Lançado em" textAlign="right" />
+			<mx:DataGridColumn width="130">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button enabled="{data.dtSaldoInicial==''}" label="saldo inicial" click="{dispatchEvent(new Event('saldoinicial', true))}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<comp:MyDataGridColumn tipo="Dinheiro" dataField="saldoAtual" headerText="Saldo Atual" textAlign="right" />
+			<comp:MyDataGridColumn tipo="Dinheiro" dataField="saldoAnterior" headerText="Anterior" textAlign="right" />
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao1 cor="Cinza" icone="Cancela" width="220" label="Desfazer Alterações" click="{resetar()}"/>
+		<comp:Botao1 cor="Cinza" icone="Salva" width="220" label="Salvar Alterações" click="{salvar()}"/>
+	</mx:HBox>
+	<mx:VBox id="popSaldo"
+		styleName="padding10"
+		width="300" fontSize="14" backgroundColor="#ffffff"
+		borderColor="#3B5998" borderStyle="solid" borderThickness="3" cornerRadius="5">
+		<mx:HBox>
+			<mx:Image source="{Imagens.unica.icn_32_centroCusto}" />
+			<mx:Label color="#666666" fontSize="24" fontWeight="bold" text="Lançar Saldo Inicial" />
+		</mx:HBox>
+		<mx:Grid width="100%">
+			<mx:GridRow width="100%">
+				<mx:GridItem width="100%">
+					<mx:Label text="Data:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%">
+					<comp:DateFieldBR id="popSaldo_Data" width="100%" valueCommit="{ popSaldo_Valor.setFocus(); }" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem width="100%">
+					<mx:Label text="Valor:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%">
+					<mx:NumericStepper id="popSaldo_Valor" stepSize=".01" maximum="9999999" width="100%" keyDown="{if (event.keyCode==Keyboard.ENTER) popSaldo_Definir(); }" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem width="100%">
+					
+				</mx:GridItem>
+				<mx:GridItem width="100%">
+					<comp:Botao1 width="90" icone="Cancela" label="Voltar" cor="Cinza" click="{ PopUpManager.removePopUp(popSaldo); }"/>
+					<comp:Botao1 width="90" icone="Confirma" label="Definir" cor="Cinza" click="{ popSaldo_Definir(); }"/>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+	</mx:VBox>
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import Core.Utils.MyArrayUtils;
+			import SDE.Enumerador.EContaTipo;
+			import SDE.Entidade.Finan_Conta;
+			import Core.Utils.Formatadores;
+			import mx.charts.DateTimeAxis;
+
+			import mx.utils.ArrayUtil;
+			import mx.utils.StringUtil;
+			
+			import img.Imagens;
+			
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+			
+			import SDE.FachadaServico.FcdCorp;
+			import SDE.CamadaServico.SCorp;
+
+			
+			private var contas:Array;
+			private var contaEditando:Finan_Conta;
+			
+			private function create():void
+			{
+				grid.addEventListener('saldoinicial', fn_click_saldoInicial);
+				this.removeChild(popSaldo);
+				//
+				cmbContaTipo.dataProvider = EContaTipo.getCampos();
+				resetar();
+			}
+			
+			private function resetar():void
+			{
+				contas = App.single.cache.cloneFinan_Conta;
+				preencheGrid();
+			}
+			private function preencheGrid():void
+			{
+				txtDescricao.setFocus();
+				txtDescricao.text;
+				txtAgencia.text;
+				txtConta.text;
+				txtCarteira.text;
+				txtCodBanco.text;
+				txtLimite.text = "0";
+				cmbContaTipo.dataProvider = EContaTipo.getCampos();
+				grid.dataProvider = contas;
+			}
+			
+			private function fn_click_saldoInicial(ev:Event):void
+			{
+				contaEditando = ev.target.data;
+				popSaldo_Data.selectedDate = new Date();
+				popSaldo_Valor.value = 0;
+				PopUpManager.addPopUp(popSaldo, this, true);
+				PopUpManager.centerPopUp(popSaldo);
+			}
+			
+			private function popSaldo_Definir():void
+			{
+				contaEditando.saldoInicial = popSaldo_Valor.value;
+				contaEditando.dtSaldoInicial = Formatadores.unica.formataData(popSaldo_Data.selectedDate);
+				contaEditando.__forcaAtualizacao = true;
+			}
+			
+			private function inserir():void
+			{
+				txtDescricao.setFocus();
+				if(txtDescricao.text == ''){
+					AlertaSistema.mensagem('Digite uma descrição para a conta');
+					return;
+				}
+				
+				var xxx:Finan_Conta;
+				for each(xxx in contas)
+				{
+					if(xxx.nome == txtDescricao.text)
+					{
+						AlertaSistema.mensagem("Esta Conta já existe.");
+						return;
+					}
+				}
+				xxx = new Finan_Conta();
+				xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.nome = txtDescricao.text;
+				xxx.ag = txtAgencia.text;
+				xxx.conta = txtConta.text;
+				xxx.carteira=txtCarteira.text;
+				xxx.banco = txtCodBanco.text;
+				xxx.limite = Number(txtLimite.text);
+				
+				xxx.tipo = String(cmbContaTipo.selectedItem);
+				if (xxx.tipo==EContaTipo.Banco)
+					xxx.operacao = cmbContaOperacao.selectedLabel;
+				
+				//xxx.dtSaldoInicial = '01/01/1900';
+				
+				contas.push(xxx);
+				preencheGrid();
+			}
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				
+				for each(var xxx:Finan_Conta in contas)
+				{
+					if(xxx.id==0 || xxx.__forcaAtualizacao)
+						arSalvar.push(xxx);
+				}
+				Sessao.unica.nuvens.modificacoes.Finan_Conta_NovosAtualizacoes(arSalvar,
+					function(retorno:Array):void
+					{
+						AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

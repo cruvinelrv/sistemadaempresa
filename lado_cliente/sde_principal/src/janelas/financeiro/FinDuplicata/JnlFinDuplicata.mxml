@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:CP="Componentes.CP.*"
+	xmlns:comp="Componentes.comp.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*"
+	xmlns:controls="com.flexpernambuco.controls.*"
+	creationComplete="create()"
+	creationPolicy="all">
+	
+	<mx:Script source="MdllJnlFinDuplicata_script.as"/>
+	
+	<mx:ViewStack id="vsPrincipal" width="100%" height="100%" creationPolicy="all" fontSize="14" fontWeight="bold" styleName="padding5">
+		
+		<mx:VBox id="telaBusca" width="100%" height="100%" verticalAlign="middle" horizontalAlign="center"
+			showEffect="{WipeDown}" hideEffect="{WipeUp}">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Label text="Cliente:" width="100"/>
+				<CP:PesqCliente id="cpCliente" width="600" showBrowseButton="false" keyUp="cpCliente_KeyUp()"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Label text="Lancamento:" width="100"/>
+				<CP:PesqTituloItem id="cpFinTituloItem" width="600" showBrowseButton="false" keyUp="cpFinTituloItem_KeyUp()"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Label text="Data Início:" width="100"/>
+				<comp:DateFieldBR id="dtfDataInicio" valueCommit="dtfDataInicio_ValueCommit()"/>
+				<mx:Label text="Data Limite:"/>
+				<comp:DateFieldBR id="dtfDataLimite" valueCommit="dtfDataLimite_ValueCommit()"/>
+				<mx:Button label="Limpar Data" click="btnLimparData()"/>
+			</mx:HBox>
+			
+			<mx:DataGrid id="dgTituloItens"
+				width="100%" height="100%"
+				themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+				dataProvider="{dpTituloDuplicata}">
+				<mx:columns>
+					<mx:DataGridColumn width="1" dataField="cod" headerText="Cod"/>
+					<mx:DataGridColumn width="3" dataField="numeroTitulo" headerText="Número Titulo"/>
+					<mx:DataGridColumn width="10" dataField="cliente" headerText="Cliente"/>
+					<mx:DataGridColumn width="3" dataField="dataVencimento" headerText="Data Vencimento"/>
+					<mx:DataGridColumn width="3" dataField="valorCobrado" headerText="Valor"/>
+					<mx:DataGridColumn width="1" dataField="gerado" editorDataField="gerado" rendererIsEditor="true" headerText="Gerado">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Canvas>
+									<mx:CheckBox
+										horizontalCenter="0" verticalCenter="0"
+										selected="{data.gerado}"
+										enabled="false"
+										click="{dispatchEvent(new Event('gerarDuplicataChecked', true))}"/>
+								</mx:Canvas>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+			
+			<mx:HBox width="100%" horizontalAlign="right" verticalAlign="middle">
+				<mx:Button label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="btnSelecionar_Click(); mudaTela(telaFinaliza)"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		<mx:VBox id="telaFinaliza" width="100%" verticalAlign="middle" horizontalAlign="center"
+			showEffect="{WipeDown}" hideEffect="{WipeUp}">
+			
+			<mx:VBox width="700">
+				
+				<mx:HBox verticalAlign="middle" fontSize="16">
+					<mx:Label text="Número Título:" width="120"/>
+					<mx:Label id="lblNumeroTitulo"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Valor Título:" width="120"/>
+					<mx:Label id="lblValorTitulo"/>
+					<mx:Label text="Valor com Desconto:"/>
+					<mx:Label id="lblValorComDesconto" text="{Number(lblValorTitulo.text) - nsDescontoVlr.value}"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Desconto (%):" width="120"/>
+					<mx:NumericStepper id="nsDescontoPct" minimum="0" maximum="100" stepSize="0.01" width="120" valueCommit="nsDescontoPct_Commited()"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Desconto (R$):" width="120"/>
+					<mx:NumericStepper id="nsDescontoVlr" minimum="0" maximum="999999" stepSize="0.01" width="120" valueCommit="nsDescontoVlr_Commited()"/>
+				</mx:HBox>
+				<mx:HBox verticalAlign="middle">
+					<mx:Label text="Validade:" width="120"/>
+					<comp:DateFieldBR id="dtfDescontoValidade"/>
+				</mx:HBox>
+				
+				<mx:Label text="Condições Especiais:"/>
+				<mx:TextArea id="txtCondEspeciais" width="100%" height="220"/>
+				
+				<mx:HBox verticalAlign="middle" horizontalAlign="right" width="100%">
+					<mx:Button label="Cancelar" labelPlacement="right" icon="{Imagens.unica.icn_32_deleta}" click="mudaTela(telaBusca); limpaSelecionado()"/>
+					<mx:Button label="Gerar Duplicata" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="btnGerarDuplicata_Click()"/>
+				</mx:HBox>
+				
+			</mx:VBox>
+			
+		</mx:VBox>
+		
+	</mx:ViewStack>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.WipeUp;
+			import mx.effects.WipeDown;
+			import mx.core.Container;
+			import img.Imagens;
+			
+			private function mudaTela(container:Container):void{
+				vsPrincipal.selectedChild = container;
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

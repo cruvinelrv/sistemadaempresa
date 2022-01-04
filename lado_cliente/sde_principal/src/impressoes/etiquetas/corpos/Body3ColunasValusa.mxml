@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Body xmlns="org.print.*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="create()" xmlns:corpos="impressoes.etiquetas.corpos.*"
+	paddingBottom="-50" paddingTop="11" paddingLeft="4" paddingRight="4">
+	
+	<ReportDataGrid id="grid" width="580" height="100%"  
+		headerHeight="0" rowHeight="91.3" 
+		borderColor="#ffffff" borderStyle="none" borderThickness="0"	
+		verticalGridLineColor="#ffffff"	
+		horizontalGridLineColor="#ffffff"
+		>
+						
+		<columns>
+			<mx:DataGridColumn><mx:itemRenderer><mx:Component><corpos:Valusa3Colunas coluna="col1" /></mx:Component></mx:itemRenderer></mx:DataGridColumn>
+			<mx:DataGridColumn><mx:itemRenderer><mx:Component><corpos:Valusa3Colunas coluna="col2" /></mx:Component></mx:itemRenderer></mx:DataGridColumn>
+			<mx:DataGridColumn><mx:itemRenderer><mx:Component><corpos:Valusa3Colunas coluna="col3" /></mx:Component></mx:itemRenderer></mx:DataGridColumn>
+		</columns>
+		
+	</ReportDataGrid>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.ItemEmpPreco;
+			import SDE.Entidade.Item;
+			import Core.Utils.Formatadores;
+			import impressoes.etiquetas.ModeloEtiqueta;
+			import SDE.Entidade.ItemEmpEstoque;
+			import mx.controls.Alert;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import org.print.ReportDataGrid;
+			import Core.Alerta.AlertaSistema;
+			import mx.core.Container;
+			import mx.containers.HBox;
+			
+			private var provedor:Array = [];
+			
+			private function create():void
+			{
+				grid.dataProvider = provedor;
+			}
+			
+			public function desenha():void
+			{
+				var ar:Array = [];
+				var cont:int = 0;
+				
+				//var s:String =  "";
+				for(var j:int = 0; j <dados.length; j++)
+				{
+					//s += "-"+dados[j].id;
+					cont++;
+					ar['col'+cont] = dados[j];	
+					if( cont == 3 || dados.length == j+1)
+					{
+						//s += "\r\n";
+						cont = 0;
+						provedor.push(ar);
+						ar=[];
+						continue;
+					}
+				}
+				//Alert.show(s);				
+			}
+			
+			public override function converteDados(origem:Array):Array
+			{
+				var ar:Array = [];			
+				for each (var it:Item in origem)
+				{
+					
+					if (it == null)
+					{
+						ar.push(null);
+					}
+					else
+					{					
+						var iep:ItemEmpPreco = it.__ie.__preco;
+						for each (var iee:ItemEmpEstoque in it.__estoques){						
+							var vlrVista:Number = iep.venda;
+							var vlrParcelas:Number = iep.venda / 3;
+							var me:ModeloEtiqueta = new ModeloEtiqueta();
+													
+							me.id = iee.id.toString();
+							me.nome = it.nome;
+							me.rfUnica = it.rfUnica;
+							me.grade = iee.identificador;
+							me.vlrVista = Formatadores.unica.formataValor(vlrVista, true);
+							me.vlrPrazo = Formatadores.unica.formataValor(iep.venda, true);
+							me.vlrParcelas = Formatadores.unica.formataValor(vlrParcelas, true);
+							me.codBarras = iee.codBarras;
+							ar.push(me);
+						}
+					}
+				}
+
+				return ar;
+			}
+			
+		]]>
+		
+	</mx:Script>
+</Body>

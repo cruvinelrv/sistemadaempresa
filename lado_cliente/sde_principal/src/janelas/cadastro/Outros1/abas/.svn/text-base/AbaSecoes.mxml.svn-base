@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()" xmlns:comp="Componentes.comp.*"
+	fontSize="14" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*" xmlns:SDE="Componentes.SDE.*">
+	
+	<mx:Label text="Seções" />
+	<mx:HBox>
+		<master:MasterTextInput id="txtSecao" capsType="upercase" width="150"/>
+		<comp:Botao1 label="Criar" icone="Adiciona" cor="Cinza" width="100" click="{inserirSecao()}" />
+	</mx:HBox>
+	<mx:Label text="Grupo" />
+	<mx:HBox>
+		<mx:ComboBox id="cmbSecoes1" width="150" labelField="secao" />
+		<master:MasterTextInput id="txtGrupo" width="150" capsType="upercase" />
+		<comp:Botao1 label="Criar" icone="Adiciona" cor="Cinza" width="100" click="{inserirGrupo()}" />
+	</mx:HBox>
+	<mx:Label text="SubGrupo" />
+	<mx:HBox>
+		<mx:ComboBox id="cmbSecoes2" width="150" labelField="secao" change="{cmbSecoes2_change()}" />
+		<mx:ComboBox id="cmbGrupos" width="150" labelField="grupo" />
+		<master:MasterTextInput id="txtSubGrupo" width="150" capsType="upercase" />
+		<comp:Botao1 label="Criar" icone="Adiciona" cor="Cinza" width="100" click="{inserirSubGrupo()}" />
+	</mx:HBox>
+	
+	<mx:DataGrid id="grid" width="100%" height="100%"
+		themeColor="#3B5998">
+		<mx:columns>
+			<mx:DataGridColumn width="10" dataField="id" headerText="Id Interna"/>
+			<mx:DataGridColumn width="25" dataField="secao" headerText="Seção"/>
+			<mx:DataGridColumn width="25" dataField="grupo" headerText="Grupo"/>
+			<mx:DataGridColumn width="25" dataField="subgrupo" headerText="Sub Grupo"/>
+			<mx:DataGridColumn width="15">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button label="{'Alterar'}" click="dispatchEvent(new Event('alteraItem', true))"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao1 cor="Cinza" icone="Cancela" label="Desfazer" click="{resetar()}"/>
+		<comp:Botao1 cor="Cinza" icone="Salva" label="Salvar" click="{salvar()}"/>
+	</mx:HBox>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupEditar"
+		showCloseButton="false" fontSize="14" 
+		title="Editar" titleIcon="{Imagens.unica.icn_64_edita}"
+		layout="vertical" width="400" height="140" styleName="padding3">
+		
+		<mx:VBox width="100%">
+			<master:MasterTextInput id="popupEditar_txtDescricao" width="100%" capsType="upercase" keyDown="{if(event.keyCode==Keyboard.ENTER)confirmaEdicao()}"/>
+			<mx:HBox width="100%" horizontalAlign="right">
+				<SDE:Botao label="Cancelar" labelPlacement="right" icon="{Imagens.unica.icn_32_deleta}" click="cancelaEdicao()"/>
+				<SDE:Botao label="Confirmar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}" click="confirmaEdicao()"/>
+			</mx:HBox>
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import img.Imagens;
+			import mx.collections.SortField;
+			import mx.collections.Sort;
+			import mx.collections.ArrayCollection;
+			import mx.states.SetEventHandler;
+			import mx.controls.Alert;
+			import Componentes.SDE.Botao;
+			import Core.App;
+			import SDE.Entidade.Cad_Secao;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.MyArrayUtils;
+			import SDE.Entidade.Cad_Marca;
+			import Core.Sessao;
+			
+			private var objetos:ArrayCollection = new ArrayCollection();
+			private var secoes:Array;
+			private var grupos:Array;
+			
+			private var itemEditando:Cad_Secao;
+			
+			private function create():void
+			{
+				resetar();
+				popupEditar.parent.removeChild(popupEditar);
+				grid.addEventListener('alteraItem', alteraItemHandler);
+			}
+			
+			private function alteraItemHandler(event:Event):void
+			{
+				var objeto:Cad_Secao = event.target.data;
+				
+				if (objeto.secao != "" && objeto.grupo != "" && objeto.subgrupo != "")
+				{
+					popupEditar.title = "Editar Sub-Grupo";
+					PopUpManager.addPopUp(popupEditar, Application.application.gerenteJanelas, true);
+					PopUpManager.centerPopUp(popupEditar);
+					popupEditar_txtDescricao.text = objeto.subgrupo;
+					itemEditando = objeto.clone();
+				}
+				else if (objeto.secao != "" && objeto.grupo != "" && objeto.subgrupo == "")
+				{
+					popupEditar.title = "Editar Grupo";
+					PopUpManager.addPopUp(popupEditar, Application.application.gerenteJanelas, true);
+					PopUpManager.centerPopUp(popupEditar);
+					popupEditar_txtDescricao.text = objeto.grupo;
+					itemEditando = objeto.clone();
+				}
+				else if (objeto.secao != "" && objeto.grupo == "" && objeto.subgrupo == "")
+				{
+					popupEditar.title = "Editar Seção";
+					PopUpManager.addPopUp(popupEditar, Application.application.gerenteJanelas, true);
+					PopUpManager.centerPopUp(popupEditar);
+					popupEditar_txtDescricao.text = objeto.secao;
+					itemEditando = objeto.clone();
+				}
+			}
+			
+			public function cancelaEdicao():void
+			{
+				PopUpManager.removePopUp(popupEditar);
+			}
+			
+			public function confirmaEdicao():void
+			{
+				var arrayTipoEdicao:Array = popupEditar.title.split(' ');
+				for each (var obj:Cad_Secao in objetos)
+				{
+					if (arrayTipoEdicao[1] == "Sub-Grupo")
+					{
+						if (obj.secao == itemEditando.secao && obj.grupo == itemEditando.grupo && obj.subgrupo == itemEditando.subgrupo)
+							obj.subgrupo = popupEditar_txtDescricao.text;
+					}
+					else if (arrayTipoEdicao[1] == "Grupo")
+					{
+						if (obj.secao == itemEditando.secao && obj.grupo == itemEditando.grupo && obj.subgrupo == "")
+							obj.grupo = popupEditar_txtDescricao.text;
+					}
+					else if (arrayTipoEdicao[1] == "Seção")
+					{
+						if (obj.secao == itemEditando.secao && obj.grupo == "" && obj.subgrupo == "")
+							obj.secao = popupEditar_txtDescricao.text;
+					}
+				}
+				PopUpManager.removePopUp(popupEditar);
+				preencheGrid();
+			}
+			
+			public function resetar():void
+			{
+				objetos.removeAll();
+				for each (var xxx:Cad_Secao in App.single.cache.arrayCad_Secao)
+					objetos.addItem(xxx.clone());
+				secoes = ["*"];//cria um primeiro item, para forçar o usuário a escolher opção
+				grupos = [];
+				for each (var o:Cad_Secao in objetos)
+				{
+					if (o.grupo=="")
+					{
+						secoes.push(o);
+						grupos[o.secao] = ["*"];//cria um primeiro item, para forçar o usuário a escolher opção
+					}
+					else if (o.subgrupo=="")
+						grupos[o.secao].push(o);
+					
+					o.__orderBy = o.secao+o.grupo+o.subgrupo;
+				}
+				
+				/*
+				var sort:Sort = new Sort();
+				sort.fields = [new SortField("__orderBy")];
+				objetos.sort = sort;
+				objetos.refresh();
+				*/
+				
+				//objetos.sort( sortOn("__orderBy");
+				cmbSecoes1.dataProvider = secoes;
+				cmbSecoes2.dataProvider = secoes;
+				preencheGrid();
+			}
+			
+			private function preencheGrid():void
+			{
+				txtSecao.text = "";
+				txtGrupo.text = "";
+				txtSubGrupo.text = "";
+				grid.dataProvider = objetos;
+			}
+			
+			private function cmbSecoes2_change():void
+			{
+				if (cmbSecoes2.selectedItem != "*")
+					cmbGrupos.dataProvider = grupos[cmbSecoes2.selectedItem.secao];
+				else
+					cmbGrupos.dataProvider = [];
+			}
+			
+			//private function inserirSecao():void{}
+			//private function inserirGrupo():void{}
+			//private function inserirSubGrupo():void{}
+			private function inserirSecao():void
+			{
+				txtSecao.setFocus();
+				if(txtSecao.text.length<2){
+					Alert.show("Digite a Seção", "Mensagem SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+					return;
+				}
+				var xxx:Cad_Secao;
+				for each(xxx in objetos)
+				{
+					if(xxx.secao == txtSecao.text)
+					{
+						Alert.show("Esta Seção já existe", "Mensagem SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+						return;
+					}
+				}
+				xxx = new Cad_Secao();
+				//xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.secao = txtSecao.text;
+				xxx.grupo = "";
+				xxx.subgrupo = "";
+				
+				objetos.addItem(xxx);
+				preencheGrid();
+			}
+			
+			private function inserirGrupo():void
+			{
+				txtGrupo.setFocus();
+				if(cmbSecoes1.selectedIndex<1){
+					Alert.show("Selecione a Seção", "Mensagem SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+					return;
+				}
+				if(txtGrupo.text.length<2){
+					Alert.show("Digite o Grupo", "Mensagem SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+					return;
+				}
+				var xxx:Cad_Secao;
+				for each(xxx in objetos)
+				{
+					if(xxx.secao == cmbSecoes1.selectedItem.secao && xxx.grupo == txtGrupo.text)
+					{
+						AlertaSistema.mensagem("Este Grupo já existe.");
+						return;
+					}
+				}
+				xxx = new Cad_Secao();
+				//xxx.idEmp = Sessao.unica.idEmp;
+				//xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.secao = cmbSecoes1.selectedItem.secao;
+				xxx.grupo = txtGrupo.text;
+				xxx.subgrupo = "";
+				
+				objetos.addItem(xxx);
+				preencheGrid();
+			}
+			
+			
+			private function inserirSubGrupo():void
+			{
+				txtSubGrupo.setFocus();
+				if(cmbSecoes2.selectedIndex<1){
+					Alert.show("Selecione a Seção", "Mensagem SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+					return;
+				}
+				if(cmbGrupos.selectedIndex<1){
+					Alert.show("Selecione o Grupo", "Mensagem SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+					return;
+				}
+				if(txtSubGrupo.text.length<2){
+					Alert.show("Digite o SubGrupo", "Mensagem SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+					return;
+				}
+				var xxx:Cad_Secao;
+				for each(xxx in objetos)
+				{
+					if(xxx.secao == cmbGrupos.selectedItem.secao && xxx.grupo == cmbGrupos.selectedItem.grupo && xxx.subgrupo == txtSubGrupo.text)
+					{
+						Alert.show("Este Grupo já esixte", "Mensagem SDE", 4, null, null, Imagens.unica.icn_32_alerta);
+						return;
+					}
+				}
+				xxx = new Cad_Secao();
+				//xxx.idEmp = Sessao.unica.idEmp;
+				//xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.secao = cmbGrupos.selectedItem.secao;
+				xxx.grupo = cmbGrupos.selectedItem.grupo;
+				xxx.subgrupo = txtSubGrupo.text;
+				
+				objetos.addItem(xxx);
+				preencheGrid();
+			}
+			
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				var arAlterar:Array = [];
+				
+				for each(var xxx:Cad_Secao in objetos)
+					if(xxx.id == 0)
+						arSalvar.push(xxx);
+					else
+						arAlterar.push(xxx);
+				
+				Sessao.unica.nuvens.modificacoes.Cad_Generico_Novos(Cad_Secao.CLASSE, arSalvar,
+					function():void
+					{
+						//AlertaSistema.mensagem("Salvei.");
+						Sessao.unica.nuvens.modificacoes.Cad_Secao_Atualizacoes(arAlterar,
+							function():void
+							{
+								resetar();
+							}
+						);
+					}
+				);
+				
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

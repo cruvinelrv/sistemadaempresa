@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" horizontalAlign="center">
+	<mx:Metadata>
+		[ExcludeClass]
+	</mx:Metadata>
+	<mx:Button id="btnPaginaAnterior" toggle="false" icon="{Imagens.unica.icn_32_anterior}" useHandCursor="true" buttonMode="true"/>
+	<mx:HBox id="containerBtnIntermediarios"/>
+	<mx:Button id="btnProximaPagina" toggle="false" icon="{Imagens.unica.icn_32_proximo}" useHandCursor="true" buttonMode="true"/>
+	<mx:ComboBox id="cbIntervalo" width="60">
+		<mx:dataProvider>
+			<mx:Object label="5" value="5"/>
+			<mx:Object label="10" value="10"/>
+			<mx:Object label="15" value="15"/>
+		</mx:dataProvider>
+	</mx:ComboBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+</mx:HBox>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	styleName="padding5" fontSize="12" fontWeight="bold" creationPolicy="all"
+	creationComplete="create()"
+	xmlns:SDE="Componentes.SDE.*" xmlns:comp="Componentes.comp.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*">
+	
+	<mx:ViewStack id="vs" width="100%" height="100%">
+		
+		<!-- INDEX:0 TELA:CONSULTA -->
+		<mx:VBox width="100%" height="100%" id="telaConsulta"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Image source="{Imagens.unica.icn_64_pesquisa}"/>
+				<mx:Label text="Pesquisa" fontSize="40" color="#666666" fontWeight="bold"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<SDE:CaixaPesquisa id="cpListaCasamento" width="100%"
+					clickPesquisar="pesquisaLista(cpListaCasamento.text, ckbExibirListaFinalizadas.selected)"/>
+				<SDE:Botao label="Nova Lista" labelPlacement="right" icon="{Imagens.unica.icn_32_adiciona}"
+					click="mostraPopup(popupNovaLista); arraycCliente.removeAll(); cpClienteNovaLista.txtPesquisa.setFocus(); cpClienteNovaLista.text = '';"/>
+			</mx:HBox>
+			<mx:CheckBox id="ckbExibirListaFinalizadas" label="Exibir Listas Finalizadas" fontSize="14" fontWeight="bold"/>
+			
+			<SDE:DataGrid id="dgListaCasamentoPesquisa"
+				width="100%" height="100%"
+				doubleClick="selecionaLista(dgListaCasamentoPesquisa.selectedItem as OrdemServico)"
+				dataProvider="{arraycLista}">
+				<SDE:columns>
+					<mx:DataGridColumn width="65" dataField="cliente_nome" headerText="Nome"/>
+					<comp:MyDataGridColumn width="10" dataField="cliente_cpf" headerText="CPF" tipo="CpfCnpj"/>
+					<mx:DataGridColumn width="10" dataField="dthrInicio" headerText="Data do Evento"/>
+					<mx:DataGridColumn width="15">
+						<mx:itemRenderer>
+							<mx:Component>
+								<SDE:Botao label="Finalizar Lista"
+									click="dispatchEvent( new Event('finalizar', true) )">
+									<mx:Script>
+										import img.Imagens;
+									</mx:Script>
+								</SDE:Botao>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</SDE:columns>
+			</SDE:DataGrid>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<SDE:Botao label="Abrir Lista" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+					click="selecionaLista(dgListaCasamentoPesquisa.selectedItem as OrdemServico)"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+		<!-- INDEX:1 TELA:LISTA -->
+		<mx:VBox width="100%" height="100%" id="telaLista"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:HBox width="100%" verticalAlign="middle">
+				<mx:Image source="{Imagens.unica.icn_64_anotacao}"/>
+				<mx:Label text="Lista de:" fontSize="40" color="#666666" fontWeight="bold"/>
+				<mx:Label text="{clienteSelecionado.nome}" fontSize="40" color="#666666" fontWeight="bold"/>
+				<mx:HBox width="100%" horizontalAlign="right" verticalAlign="middle">
+					<SDE:Botao label="Voltar" labelPlacement="right" icon="{Imagens.unica.icn_32_anterior}"
+						click="mudaTela(telaConsulta); cpListaCasamento.text = ''; cpListaCasamento.txtPesquisa.setFocus(); arraycLista.removeAll();"/>
+				</mx:HBox>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" fontSize="16" fontWeight="bold" verticalAlign="middle" enabled="{listaSelecionada.status == EOrdemServicoStatus.em_andamento}">
+				<mx:Label text="Data do Evento:"/>
+				<mx:Label text="{listaSelecionada.dthrInicio}"/>
+				<SDE:Botao label="Alterar Data" labelPlacement="right" icon="{Imagens.unica.icn_32_edita}"
+					click="mostraPopup(popupAlteraData); dtfDataAlteracao.selectedDate = null; dtfDataAlteracao.text = ''"/>
+			</mx:HBox>
+			
+			<mx:HBox width="100%" verticalAlign="middle"  enabled="{listaSelecionada.status == EOrdemServicoStatus.em_andamento}">
+				<SDE:CaixaPesquisa id="cpItem" width="100%"
+					clickPesquisar="pesquisaItem(cpItem.text)"/>
+			</mx:HBox>
+			
+			<SDE:DataGrid id="dgListaCasamento"
+				width="100%" height="100%"
+				dataProvider="{arraycListaItem}">
+				<SDE:columns>
+					<mx:DataGridColumn width="78" dataField="item_nome" headerText="Item"/>
+					<comp:MyDataGridColumn width="18" dataField="vlrUnitVendaInicial" headerText="Preço" tipo="Dinheiro"/>
+					<mx:DataGridColumn width="4">
+						<mx:itemRenderer>
+							<mx:Component>
+								<SDE:Botao icon="{Imagens.unica.icn_16_cancela}" toolTip="Remover Item" labelPlacement="top"
+									click="dispatchEvent( new Event('remover', true) )">
+									<mx:Script>
+										import img.Imagens;
+									</mx:Script>
+								</SDE:Botao>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</SDE:columns>
+			</SDE:DataGrid>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<SDE:Botao label="Imprimir Lista" labelPlacement="right" icon="{Imagens.unica.icn_32_impressora}"
+					click="imprimeLista()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</mx:ViewStack>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupNovaLista"
+		showCloseButton="true"
+		close="removePopup(popupNovaLista)"
+		title="Nova Lista"
+		titleIcon="{Imagens.unica.icn_64_pesquisa}"
+		width="900" height="500" styleName="padding5"
+		fontSize="14" fontWeight="bold"
+		layout="vertical">
+		
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Cliente:"/>
+			<SDE:CaixaPesquisa id="cpClienteNovaLista" width="100%"
+				clickPesquisar="pesquisaCliente(cpClienteNovaLista.text)"/>
+			<mx:Label text="Data do Evento:"/>
+			<comp:DateFieldBR id="dfDataEvento" yearNavigationEnabled="true" selectedDate="{new Date()}"/>
+		</mx:HBox>
+			
+		<SDE:DataGrid id="dgClienteNovaLista"
+			width="100%" height="100%"
+			doubleClick="selecionaClienteCriaLista(dgClienteNovaLista.selectedItem as Cliente, dfDataEvento.selectedDate)"
+			dataProvider="{arraycCliente}">
+			<SDE:columns>
+				<mx:DataGridColumn width="75" dataField="nome" headerText="Nome"/>
+				<comp:MyDataGridColumn width="25" dataField="cpf_cnpj" headerText="CPF" tipo="CpfCnpj"/>
+			</SDE:columns>
+		</SDE:DataGrid>
+		
+		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+			<SDE:Botao label="Selecionar e Criar Lista" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+				click="selecionaClienteCriaLista(dgClienteNovaLista.selectedItem as Cliente, dfDataEvento.selectedDate)"/>
+		</mx:HBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupPesquisaItem"
+		showCloseButton="true"
+		close="{removePopup(popupPesquisaItem)}"
+		title="Pesquisa de Item"
+		titleIcon="{Imagens.unica.icn_64_pesquisa}"
+		width="900" height="500" styleName="padding5"
+		fontSize="14" fontWeight="bold"
+		layout="vertical">
+		
+		<SDE:CaixaPesquisa id="cpItemPopup" width="100%"
+			clickPesquisar="pesquisaItemPopup(cpItemPopup.text)"/>
+			
+		<SDE:DataGrid id="dgItemPesquisa"
+			width="100%" height="100%"
+			doubleClick="itemPopupSelecionado(dgItemPesquisa.selectedItem.item)"
+			dataProvider="{arraycItem}">
+			<SDE:columns>
+				<mx:DataGridColumn width="80" dataField="nome" headerText="Item"/>
+				<comp:MyDataGridColumn width="20" dataField="venda" headerText="Preço" tipo="Dinheiro"/>
+			</SDE:columns>
+		</SDE:DataGrid>
+		
+		<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+			<SDE:Botao label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+				click="itemPopupSelecionado(dgItemPesquisa.selectedItem.item)"/>
+		</mx:HBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupAlteraData"
+		showCloseButton="true"
+		close="{removePopup(popupAlteraData)}"
+		title="Alterar Data do Evento"
+		titleIcon="{Imagens.unica.icn_64_edita}"
+		width="455" height="115" styleName="padding5"
+		fontSize="14" fontWeight="bold"
+		horizontalAlign="center"
+		layout="vertical">
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Label text="Data:"/>
+			<comp:DateFieldBR id="dtfDataAlteracao" yearNavigationEnabled="true"/>
+			<SDE:Botao label="Confirmar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+				click="alteraDataEvento(dtfDataAlteracao.text)"/>
+		</mx:HBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:Script source="MdllJnlAtendimentoListaPresentes_script.as"/>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EOrdemServicoStatus;
+			import SDE.Entidade.OrdemServico;
+			import mx.collections.SortField;
+			import mx.collections.Sort;
+			import SDE.Entidade.Cliente;
+			import mx.collections.ArrayCollection;
+			import img.Imagens;
+			
+			private var sortLista:Sort
+			private var sortCliente:Sort;
+			private var sortItem:Sort;
+			private var sortListaItem:Sort;
+			
+			[Bindable] private var listaSelecionada:OrdemServico;
+			[Bindable] private var clienteSelecionado:Cliente;
+			
+			[Bindable] private var arraycCliente:ArrayCollection = new ArrayCollection();
+			[Bindable] private var arraycItem:ArrayCollection = new ArrayCollection();
+			[Bindable] private var arraycLista:ArrayCollection = new ArrayCollection();
+			[Bindable] private var arraycListaItem:ArrayCollection = new ArrayCollection();
+			
+			private function create():void
+			{
+				dgListaCasamentoPesquisa.addEventListener("finalizar", finalizaLista);
+				dgListaCasamento.addEventListener("remover", removeItem);
+				
+				popupNovaLista.parent.removeChild(popupNovaLista);
+				popupPesquisaItem.parent.removeChild(popupPesquisaItem);
+				popupAlteraData.parent.removeChild(popupAlteraData);
+				
+				sortLista = new Sort();
+				sortLista.fields = [new SortField("cliente_nome")];
+				sortCliente = new Sort();
+				sortCliente.fields = [new SortField("nome")];
+				sortItem = new Sort();
+				sortItem.fields = [new SortField("nome")];
+				sortListaItem = new Sort();
+				sortListaItem.fields = [new SortField("item_nome")];
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

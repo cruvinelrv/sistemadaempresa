@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*" xmlns:CamadaServico="SDE.CamadaServico.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	fontSize="14"
+	creationComplete="create()">
+	
+	<mx:HBox>
+		<mx:VBox>
+			<mx:Label text="GRUPO"/>
+			<master:MasterTextInput id="txtNomeGRUPO" capsType="upercase" width="100%" enterPressed="{novoGrupo()}"/>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text=""/>
+			<mx:Button label="Criar Grupo" icon="{Imagens.unica.icn_16_adiciona}" click="{novoGrupo()}" />
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:HBox>
+		<mx:VBox>
+			<mx:Label text="GRUPO"/>
+			<mx:ComboBox id="cmbGrupos" labelField="nomeGrupoLancamento" />
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="PLANO DE CONTA"/>
+			<master:MasterTextInput id="txtNome" capsType="upercase" width="100%"/>
+		</mx:VBox>
+		<!--
+		<mx:VBox>
+			<mx:Label text="TIPO"/>
+			<mx:ComboBox id="cmbTiposPlanos" labelField="sigla" />
+		</mx:VBox>
+		-->
+		<mx:VBox>
+			<mx:Label text="" />
+			<mx:Button label="Criar Plano de Conta" icon="{Imagens.unica.icn_16_adiciona}" click="novaConta()" />
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:DataGrid id="grid" width="100%" height="100%" editable="false"
+		themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+		<mx:columns>
+			<mx:DataGridColumn width="2" dataField="codigo" headerText="Código" textAlign="right" />
+			<!--
+			-->
+			<mx:DataGridColumn width="1" dataField="codigoGrupoLancamento" headerText="GRUPO" textAlign="right" editable="false" />
+			<mx:DataGridColumn width="1" dataField="codigoTipoLancamento" headerText="PLANO DE CONTA" textAlign="right" editable="false" />
+			
+			<mx:DataGridColumn width="3" dataField="nomeGrupoLancamento" headerText="Grupo" />
+			<mx:DataGridColumn width="3" dataField="nomeTipoLancamento" headerText="Plano de Conta" />
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<mx:Button icon="{Imagens.unica.icn_16_cancela}" width="220" label="Desfazer Alterações" click="resetar()" />
+		<mx:Button icon="{Imagens.unica.icn_16_salva}" width="220" label="Salvar Alterações" click="salvar()" />
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import mx.controls.Alert;
+			import Core.Utils.MyArrayUtils;
+			import SDE.Entidade.Finan_TipoLancamento;
+			
+			import mx.utils.ArrayUtil;
+			import mx.utils.StringUtil;
+			
+			import img.Imagens;
+			
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+			
+			private var tiposLancamento:Array;
+			private var grupos:Array;
+			
+			private function create():void
+			{
+				resetar();
+			}
+			
+			private function resetar():void
+			{
+				tiposLancamento = App.single.cache.cloneFinan_TipoLancamento;
+				tiposLancamento.sortOn("codigo");
+				grupos = [];
+				for each (var xxx:Finan_TipoLancamento in tiposLancamento)
+				{
+					if(xxx.codigoTipoLancamento==0)
+						grupos.push(xxx);
+				}
+				
+				cmbGrupos.dataProvider = grupos;
+				preencheGrid();
+			}
+			
+			private function preencheGrid():void
+			{
+				txtNomeGRUPO.text = "";
+				txtNome.text = "";
+				grid.dataProvider = tiposLancamento;
+				//as Dictionary
+				//var tiposPlanos_AsDict:Array = MyArrayUtils.asDictionary(tiposPlanos);
+				//
+				//var ar:Array = [];
+				/*
+				for each (var xxx:Finan_TipoLancamento in lancamentos)
+				{
+					var o:Object = {};
+					//o.plano = xxx;
+					o.id = xxx.id;
+					o.nomeConta = xxx.nomeConta;
+					o.nomeCateg = xxx.nomeContaPai;
+					o.cod = xxx.cod;
+					//if (xxx.idTipoPlanoConta>0)
+					//	o.tipo = tiposPlanos_AsDict[xxx.idTipoPlanoConta].nome;
+					ar.push(o);
+				}
+				*/
+				//grid.dataProvider = ar;
+			}
+			
+			private function novoGrupo():void
+			{
+				txtNomeGRUPO.setFocus();
+				if(txtNomeGRUPO.text == ''){
+					Alert.show('Digite o Grupo');
+					return;
+				}
+				var xxx:Finan_TipoLancamento;
+				for each(xxx in tiposLancamento)
+				{
+					if(xxx.nomeGrupoLancamento == txtNomeGRUPO.text)
+					{
+						Alert.show("Este Tipo já existe.");
+						return;
+					}
+				}
+				xxx = new Finan_TipoLancamento();
+				xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.nomeGrupoLancamento = txtNomeGRUPO.text;
+				xxx.nomeTipoLancamento = "-";
+				//xxx.idTipoPlanoConta = cmbTiposPlanos.selectedItem.id; //isso não é uma conta
+				
+				tiposLancamento.push(xxx);
+				preencheGrid();
+			}
+			
+			private function novaConta():void
+			{
+				txtNome.setFocus();
+				if(txtNome.text == ''){
+					Alert.show('Digite o Grupo');
+					return;
+				}
+				if(cmbGrupos.selectedIndex < 0){
+					Alert.show('Selecione o Grupo');
+					return;
+				}
+				/*
+				if(cmbTiposPlanos.selectedIndex <= 0){
+					AlertaSistema.mensagem('Selecione um Tipo de Plano de Conta');
+					return;
+				}
+				*/
+				var xxx:Finan_TipoLancamento;
+				for each(xxx in tiposLancamento)
+				{
+					if(xxx.nomeGrupoLancamento==cmbGrupos.selectedLabel && xxx.nomeTipoLancamento == txtNome.text)
+					{
+						Alert.show("Já Existe.");
+						return;
+					}
+				}
+				xxx = new Finan_TipoLancamento();
+				xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				
+				xxx.nomeGrupoLancamento = cmbGrupos.selectedItem.nomeGrupoLancamento;
+				xxx.codigoGrupoLancamento = cmbGrupos.selectedItem.codigoGrupoLancamento;
+				xxx.nomeTipoLancamento = txtNome.text;
+				//xxx.codigoLancamento = cmbTiposPlanos.selectedItem.id;
+				
+				tiposLancamento.push(xxx);
+				preencheGrid();
+			}
+			
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				
+				for each(var xxx:Finan_TipoLancamento in tiposLancamento)			
+					if(xxx.id==0)
+						arSalvar.push(xxx);
+				
+				Sessao.unica.nuvens.modificacoes.Finan_TipoLancamento_Novos(arSalvar,
+					function():void
+					{
+						AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

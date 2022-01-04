@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()" xmlns:comp="Componentes.comp.*"
+	fontSize="14">
+	
+	<mx:Label text="Marcas" />
+	<mx:HBox>
+		<master:MasterTextInput id="txtMarca" capsType="upercase" width="200"/>
+		<comp:Botao1 label="Criar" icone="Adiciona" cor="Cinza" click="{inserirMarca()}" />
+	</mx:HBox>
+	<mx:Label text="Modelos" />
+	<mx:HBox>
+		<mx:ComboBox id="cmbMarcas" width="200" labelField="marca" />
+		<master:MasterTextInput id="txtModelo" width="200" capsType="upercase" />
+		<comp:Botao1 label="Criar" icone="Adiciona" cor="Cinza" click="{inserirModelo()}" />
+	</mx:HBox>
+	
+	<mx:DataGrid id="grid" width="100%" height="100%"
+		themeColor="#3B5998">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="Id Interna"/>
+			<mx:DataGridColumn dataField="marca" headerText="Marca"/>
+			<mx:DataGridColumn dataField="modelo" headerText="Modelo"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao1 cor="Cinza" icone="Cancela" label="Desfazer" click="{resetar()}"/>
+		<comp:Botao1 cor="Cinza" icone="Salva" label="Salvar" click="{salvar()}"/>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.MyArrayUtils;
+			import SDE.Entidade.Cad_Marca;
+			import Core.Sessao;
+			
+			
+			private var objetos:Array;
+			private var marcas:Array;
+			
+			private function create():void
+			{
+				resetar();
+			}
+			
+			public function resetar():void
+			{
+				objetos = App.single.cache.cloneCad_Marca;
+				marcas = ["*"];//cria um primeiro item, para forçar o usuário a escolher opção
+				for each (var o:Cad_Marca in objetos)
+				{
+					if (o.modelo=="")
+						marcas.push(o);
+					o.__orderBy = o.marca+o.modelo;
+				}
+				objetos.sortOn("__orderBy");
+				cmbMarcas.dataProvider = marcas;
+				preencheGrid();
+			}
+			
+			private function preencheGrid():void
+			{
+				txtMarca.text = "";
+				txtModelo.text = "";
+				grid.dataProvider = objetos;
+			}
+			
+			private function inserirMarca():void
+			{
+				txtMarca.setFocus();
+				if(txtMarca.text.length<2){
+					AlertaSistema.mensagem('Digite a Marca');
+					return;
+				}
+				var xxx:Cad_Marca;
+				for each(xxx in objetos)
+				{
+					if(xxx.marca == txtMarca.text)
+					{
+						AlertaSistema.mensagem("Esta Marca já existe.");
+						return;
+					}
+				}
+				xxx = new Cad_Marca();
+				//xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.marca = txtMarca.text;
+				xxx.modelo = "";
+				
+				objetos.push(xxx);
+				preencheGrid();
+			}
+			
+			private function inserirModelo():void
+			{
+				txtModelo.setFocus();
+				if(cmbMarcas.selectedIndex<1){
+					AlertaSistema.mensagem('Selecione a Marca');
+					return;
+				}
+				if(txtModelo.text.length<2){
+					AlertaSistema.mensagem('Digite o Modelo');
+					return;
+				}
+				var xxx:Cad_Marca;
+				for each(xxx in objetos)
+				{
+					if(xxx.marca == cmbMarcas.selectedItem.marca && xxx.modelo == txtModelo.text)
+					{
+						AlertaSistema.mensagem("Este Modelo já existe.");
+						return;
+					}
+				}
+				xxx = new Cad_Marca();
+				//xxx.idEmp = Sessao.unica.idEmp;
+				//xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.marca = cmbMarcas.selectedItem.marca;
+				xxx.modelo = txtModelo.text;
+				
+				objetos.push(xxx);
+				preencheGrid();
+			}
+			
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				
+				for each(var xxx:Cad_Marca in objetos)
+					if(xxx.id ==0)
+						arSalvar.push(xxx);
+				
+				Sessao.unica.nuvens.modificacoes.Cad_Generico_Novos(Cad_Marca.CLASSE, arSalvar,
+					function():void
+					{
+						//AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

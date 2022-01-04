@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PrintComponent xmlns="org.print.*"  xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="20"
+	borderColor="blue" borderThickness="1" borderStyle="solid">
+	<mx:Label text="texto"/>
+</PrintComponent>

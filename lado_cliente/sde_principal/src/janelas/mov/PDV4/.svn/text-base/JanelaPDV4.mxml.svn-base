@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:CP="Componentes.CaixaPesquisa.CP.*" xmlns:comp="Componentes.comp.*"
+	xmlns:template="janelas.mov.PDV.template.*" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	horizontalAlign="center"
+	creationComplete="create()"
+	
+	color="#333333">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import janelas.mov.ImpressaoNFE1.JanelaImpressaoNFE1;
+			import mx.core.Application;
+			import Core.Alerta.GerenteAlerta;
+			import mx.core.Container;
+			import Core.Janelas.FabricaJanela;
+			import mx.effects.WipeRight;
+			import mx.effects.WipeLeft;
+			import Core.Utils.Constantes;
+			import Core.Sessao;
+			import img.Imagens;
+			import SDE.Enumerador.EValorEspecie;
+			import SDE.Enumerador.EMovImpressao;
+			import SDE.Enumerador.EMovTipo;
+			import SDE.Enumerador.EMovResumo;
+			/*
+			private function lblfn_CFOP(objCFOP:Object):String
+			{
+				//"("+objCFOP.e+")"+ 
+				return objCFOP.c+" - "+objCFOP.d;
+			}
+			*/
+			[Bindable] private var arCfopSaida:ArrayCollection = new ArrayCollection();
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Script source="MdlPDV4_script.as" />
+	<mx:Script source="MdlPDV4_script2.as" />
+	
+	<mx:Fade id="quickFade" duration="200" />	
+	<mx:VBox width="100%" height="100%" styleName="padding10">
+		
+		<mx:VBox fontSize="20">
+			<mx:HBox>
+				<CP:CPesqCliente id="cpCliente" />
+				<mx:Label text="Cliente:" />
+				<mx:Label text="{cliente.nome}" />
+			</mx:HBox>
+			<mx:HBox>
+				<CP:CPesqCliente id="cpVendedor" />
+				<mx:Label text="Vendedor:" />
+				<mx:Label text="{vendedor.nome}" />
+			</mx:HBox>
+		</mx:VBox>
+		
+		<mx:HBox width="100%"
+			cornerRadius="5" color="white" styleName="padding3"
+			backgroundColor="#3B5998" borderColor="#3B5998" fontWeight="bold"
+			verticalAlign="middle" horizontalAlign="right">
+			<mx:Label fontWeight="bold" text="Qtde" fontSize="14" />
+			<mx:TextInput styleName="padding5" width="75" textAlign="right" fontSize="16" backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white"
+				text="{listaMI.length}" />
+			<mx:Label fontWeight="bold" text="Bru" fontSize="14" />
+			<mx:TextInput
+				id="txtMostraTotalBru"
+				styleName="padding5" width="150" textAlign="right" fontSize="16" backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white" />
+			<mx:Label fontWeight="bold" text="Acr/Desc" fontSize="14" />
+			<mx:TextInput
+				id="txtMostraTotalAcr"
+				styleName="padding5" width="150" textAlign="right" fontSize="16" backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white" />
+			<mx:Label fontWeight="bold" text="Líq" fontSize="14" />
+			<mx:TextInput
+				id="txtMostraTotalLiq2"
+				styleName="padding5" width="150" textAlign="right" fontSize="16" backgroundAlpha="0" editable="false" borderStyle="solid" borderColor="white"/>
+		</mx:HBox>
+		
+		<mx:HBox width="100%">
+			<mx:VBox verticalGap="0" paddingTop="20">
+				<mx:Label fontSize="20" color="#333333" text="{vs.selectedChild.label}" />
+				<mx:HRule width="100%" />
+			</mx:VBox>
+		</mx:HBox>
+		<mx:HRule width="100%" />
+		
+		<mx:ViewStack id="vs" width="100%" height="100%" creationPolicy="all">
+			
+			
+			<!-- VIEW STACK 'vs' INDEX 0 -->
+			<mx:HBox width="100%" height="100%" label="Produtos Vendidos"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:VBox width="50%">
+					
+					<mx:HBox width="100%">
+						
+						<mx:VBox width="100%" fontSize="16" fontWeight="bold">
+							<mx:Label text="Código de Barras"/>
+							<master:MasterTextInput id="txtBarras"
+								textAlign="center" width="100%"
+								styleName="padding5" capsType="upercase"
+								keyDown="txtBarrasKDown(event)"/>
+						</mx:VBox>
+						<mx:VBox width="100%" fontSize="16" fontWeight="bold">
+							<mx:Label text="Estoque"/>
+							<CP:CPesqEstoque id="cpEstoque"
+								labelBtn="" widthBtn="35" widthTxtPercent="100"
+								retorno="retornaEstoque(event)" cancela="cpEstoque.limpa()" />
+						</mx:VBox>
+								 <!--
+						<mx:VBox fontSize="16" fontWeight="bold">
+							<mx:Label text="Movimentação" />
+							<CP:CPesqMov id="cpMov" labelBtn="" widthBtn="35"
+								retorno="retornaMov(event)" cancela="cpMov.limpa()" />
+						</mx:VBox>
+								 -->
+						
+					</mx:HBox>
+					
+					<mx:HBox width="100%"
+						backgroundColor="#cccccc" borderThickness="1" borderStyle="none" borderColor="#cccccc"
+						cornerRadius="5"
+						styleName="padding5" horizontalAlign="center" fontSize="20" fontWeight="bold">
+						<mx:Label id="lblItemAtual" />
+					</mx:HBox>
+					
+					<mx:Text
+						width="100%"
+						fontWeight="bold"
+						text="* CFOP: {cmbCFOP.selectedItem.codigo} - {cmbCFOP.selectedItem.descricao}" />
+					
+					<mx:Grid
+						fontSize="16" fontWeight="bold"
+						enabled="{atualItem!=null}">
+						<mx:GridRow width="100%">
+							<mx:GridItem width="100%">
+								<mx:VBox verticalGap="0">
+									<mx:Label text="QTD:"/>
+									<mx:NumericStepper id="nsQtd" valueCommit="altereiQtdUnit()"
+										width="100" stepSize="0.01" maximum="999999" keyDown="nsQtdKDown(event)" />
+								</mx:VBox>
+							</mx:GridItem>
+							<mx:GridItem verticalAlign="bottom">
+								<mx:Label text="x" fontSize="40"/>
+							</mx:GridItem>
+							<mx:GridItem width="100%">
+								<mx:VBox verticalGap="0">
+									<mx:Label text="VALOR UN:"/>
+									<mx:NumericStepper id="nsVlr" valueCommit="altereiQtdUnit()"
+										width="100" stepSize="0.01" maximum="999999" keyDown="nsQtdKDown(event)" />
+								</mx:VBox>
+							</mx:GridItem>
+							<mx:GridItem verticalAlign="bottom">
+								<mx:Label text="=" fontSize="40"/>
+							</mx:GridItem>
+							<mx:GridItem width="100%">
+								<mx:VBox verticalGap="0">
+									<mx:Label text="VALOR TOT:"/>
+									<mx:NumericStepper id="nsVlrTot" valueCommit="altereiTotal()"
+										width="100" stepSize="0.01" maximum="999999" keyDown="nsQtdKDown(event)" />
+								</mx:VBox>
+							</mx:GridItem>
+						</mx:GridRow>
+						<mx:GridRow width="100%">
+							<mx:GridItem>
+								<mx:VBox verticalGap="0">
+									<mx:Label text="FRETE:"/>
+									<mx:NumericStepper id="nsFrete" valueCommit="altereiQtdUnit()"
+										width="100" stepSize="0.01" maximum="999999" keyDown="nsQtdKDown(event)" />
+								</mx:VBox>
+							</mx:GridItem>
+							<mx:GridItem />
+							<mx:GridItem>
+								<mx:VBox verticalGap="0">
+									<mx:Label text="SEGURO:"/>
+									<mx:NumericStepper id="nsSeguro" valueCommit="altereiQtdUnit()"
+										width="100" stepSize="0.01" maximum="999999" keyDown="nsQtdKDown(event)" />
+								</mx:VBox>
+							</mx:GridItem>
+							<mx:GridItem />
+							<mx:GridItem>
+								<mx:VBox verticalGap="0">
+									<mx:Label text="CFOP:" />
+									<mx:ComboBox id="cmbCFOP" dataProvider="{ arCfopSaida }" labelField="codigo" />
+								</mx:VBox>
+							</mx:GridItem>
+						</mx:GridRow>
+						<mx:GridRow width="100%">
+							<mx:GridItem colSpan="4">
+								<mx:VBox verticalGap="0" visible="{ Number(lblAcrescimo.text) != 0 }">
+									<mx:Label text="{ (Number(lblAcrescimo.text) > 0) ? 'ACRÉSCIMO' : 'DESCONTO:' }" />
+									<mx:Label id="lblAcrescimo" />
+								</mx:VBox>
+							</mx:GridItem>
+							<mx:GridItem>
+								<comp:Botao2 cor="Vermelho" fontSize="20" label="Lançar"
+									enabled="{atualItem!=null}"
+									click="lancarAtual()" />
+							</mx:GridItem>
+						</mx:GridRow>
+					</mx:Grid>
+					
+				</mx:VBox>
+				<mx:VBox width="50%" height="100%">
+					<mx:DataGrid id="grid" width="100%" height="100%"
+						themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+						<mx:columns>
+							<mx:DataGridColumn width="1" dataField="qtd" headerText="Qtde"/>
+							<mx:DataGridColumn width="4" dataField="nome" headerText="Produto"/>
+							<mx:DataGridColumn width="1" dataField="unit" headerText="R$"/>
+							<mx:DataGridColumn width="1" dataField="total" headerText="R$"/>
+							<mx:DataGridColumn width="1" headerText=" ">
+								<mx:itemRenderer>
+									<mx:Component>
+										<mx:Button
+											width="22" themeColor="#840000"
+											label="" icon="{Imagens.unica.icn_16_cancela}"
+											click="dispatchEvent(new Event('deleteRow', true))">
+											<mx:Script>
+												<![CDATA[
+													import img.Imagens;
+												]]>
+											</mx:Script>
+										</mx:Button>
+									</mx:Component>
+								</mx:itemRenderer>
+							</mx:DataGridColumn>
+						</mx:columns>
+					</mx:DataGrid>
+				</mx:VBox>
+				
+				<mx:Box height="100%" verticalAlign="middle">
+					<mx:Button label="finalizar" icon="{Imagens.unica.icn_64_seta_dir}" labelPlacement="bottom"
+						click="vs.selectedIndex=1" />
+				</mx:Box>
+				
+			</mx:HBox>
+			<!-- VIEW STACK 'vs' INDEX 1 -->
+			<mx:HBox
+				width="100%" height="100%" label="Forma de Pagamento"
+				showEffect="{quickFade}" hideEffect="{quickFade}">
+				
+				<mx:Box height="100%" verticalAlign="middle">
+					<mx:Button label="voltar" icon="{Imagens.unica.icn_64_seta_esq}" labelPlacement="bottom"
+						click="vs.selectedIndex=0" />
+				</mx:Box>
+				<mx:VBox id="boxFechamento1" width="100%" height="100%"
+					verticalAlign="middle">
+					<mx:Label fontSize="14" fontWeight="bold" text="Desconto sobre a venda"/>
+					<mx:HBox>
+						<mx:Label width="200" fontSize="14" fontWeight="bold" text="Valor Total"/>
+						<mx:TextInput
+							id="txtMostraTotalLiq1"
+							styleName="padding5" width="100" textAlign="right" fontSize="16" editable="false" borderStyle="solid"/>
+					</mx:HBox>
+					<mx:HBox>
+						<mx:Label width="200" fontWeight="bold" text="Reduzir em" fontSize="14" />
+						<mx:NumericStepper id="nsDescontoFinal"
+							styleName="padding5" width="100" stepSize="0.01" fontSize="16" borderStyle="solid" 
+							keyDown="keyDownDescontoFinal(event)" focusOut="focusOutDescontoFinal(event)"/>
+						<mx:Label fontWeight="bold" text="ou" fontSize="14" />
+						<mx:NumericStepper id="nsDescontoFinalpct"
+							maximum="99"
+							styleName="padding5" width="100" stepSize="0.01" fontSize="16" borderStyle="solid" 
+							keyDown="keyDownDescontoFinal(event)"  focusOut="focusOutDescontoFinal(event)"/>
+						<mx:Label fontWeight="bold" text="%" fontSize="14" />
+					</mx:HBox>
+					<mx:HBox>
+						<mx:Label width="200" fontWeight="bold" text="Final" fontSize="14" />
+						<mx:TextInput
+							text="{txtMostraTotalLiq2.text}"
+							styleName="padding5" width="100" textAlign="right" fontSize="16" editable="false" borderStyle="solid" />
+					</mx:HBox>
+					<mx:HRule width="100%" />
+					
+					<mx:Label fontSize="14" fontWeight="bold" text="Escolha"/>
+					<template:SeletorValorEspecies id="seletorEspecies" />
+					
+				</mx:VBox>
+				<mx:VBox id="boxFechamento2"
+					width="100%" height="100%"
+					color="#666666" fontSize="12" fontWeight="bold"
+					horizontalAlign="center" verticalAlign="middle">
+					
+					<comp:Botao2 width="200" cor="Verde" label="Finalizar"
+						click="FechaMovimentacao(EMovResumo.entrada, EMovTipo.entrada_devolucao, EMovImpressao.nfe_produto)" />
+					
+				</mx:VBox>
+			</mx:HBox>
+			
+		</mx:ViewStack>
+		
+	</mx:VBox>
+	
+</mx:VBox>
+	<!-- labelFunction="CmbEspecieLabel"
+	-->

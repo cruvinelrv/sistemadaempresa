@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	borderStyle="solid" backgroundColor="#3B5998"
+	cornerRadius="3"
+	creationComplete="create()"
+	xmlns:controls="com.flexpernambuco.controls.*"
+	styleName="padding3"
+	xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*"
+	creationPolicy="all">
+	
+	<controls:MasterTextInput id="txtPesquisaBox" capsType="upercase" width="100%"
+		keyDown="txtPesquisaBox_KeyDown(event)"/>
+	<mx:Button id="btnPesquisa" label="Pesquisar" click="btnPesquisarBox_Click()"/>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupPesquisa"
+		close="{popupPesquisa.parent.removeChild(popupPesquisa)}"
+		showCloseButton="true"
+		titleIcon="{Imagens.unica.icn_32_pesquisa}"
+		title="Pesquisa Produto"
+		width="950" height="600"
+		keyDown="mostraCustoCompra(event)"
+		creationComplete="{dgcCompra.visible=false;dgcCusto.visible=false;}"
+		layout="vertical" fontSize="14">
+		
+		<mx:VBox width="100%" height="100%">
+			
+			<mx:HBox verticalAlign="middle" width="100%">
+				<mx:Label text="Produto:"/>
+				<controls:MasterTextInput id="txtPesquisaPopup" capsType="upercase" width="100%" keyDown="txtPesquisaPopup_KeyDown(event)"/>
+				<mx:Button id="btnPesquisarPopup" label="Pesquisar" icon="{Imagens.unica.icn_16_pesquisa}" click="btnPesquisarPopup_Click()"/>
+			</mx:HBox>
+			
+			<mx:DataGrid id="dgItemPopup"
+				width="100%" height="100%"
+				themeColor="#3B5998"
+				doubleClick="btnSelecionar_Click()"
+				change="dgItemPopup_Change(event)"
+				dataProvider="{dpItem}"
+				>
+				<mx:columns>
+					<mx:DataGridColumn width="1" dataField="id" headerText="Cód."/>
+					<mx:DataGridColumn width="3" dataField="nome" headerText="Item"/>
+					<mx:DataGridColumn width="1" dataField="rfUnica" headerText="Rf. Única"/>
+					<mx:DataGridColumn width="2" dataField="rfAuxiliar" headerText="Rf. Auxiliar"/>
+					<mx:DataGridColumn width="1" dataField="unidMed" headerText="Un. Med."/>
+					<mx:DataGridColumn width="1" id="dgcEstoque" dataField="quantidade" headerText="Estoque" visible="true"/>
+					<mx:DataGridColumn width="2" id="dgcCusto" dataField="custo" labelFunction="lblFn_Preco" headerText="Custo" visible="true"/>
+					<mx:DataGridColumn width="2" id="dgcCompra" dataField="compra" labelFunction="lblFn_Preco" headerText="Compra" visible="true"/>
+					<mx:DataGridColumn width="2" id="dgcVenda" dataField="venda" labelFunction="lblFn_Preco" headerText="Venda"/>
+					<mx:DataGridColumn width=".5" headerText="">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Button
+									icon="{Imagens.unica.icn_32_locacao}" scaleX=".5" scaleY=".5"
+									toolTip="Locação"
+									click="dispatchEvent(new Event('abrePopupLocacao',true))">
+									<mx:Script>
+										<![CDATA[
+											import img.Imagens;
+										]]>
+									</mx:Script>
+								</mx:Button>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+			
+			<mx:TextArea id="txtObs" width="100%" height="130" editable="false"/>
+			
+			<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+				<mx:Button id="btnSelecionarPopup" label="Selecionar" icon="{Imagens.unica.icn_16_confirma}" click="btnSelecionar_Click()"/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupLocacao"
+		showCloseButton="true"
+		close="popupLocacao.parent.removeChild(popupLocacao)"
+		titleIcon="{Imagens.unica.icn_32_locacao}"
+		title="Locação do Produto"
+		width="700" height="380"
+		layout="vertical">
+		
+		<mx:VBox width="100%" height="100%" verticalAlign="middle" fontSize="14" fontWeight="bold">
+			<mx:DataGrid id="dgLocacao"
+				width="100%" rowCount="10"
+				themeColor="#3B5998"
+				dataProvider="{dpLocacao}">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Locação"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<mx:Metadata>
+		[Event(name="change")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EItemTipo;
+			import mx.formatters.NumberBaseRoundType;
+			import mx.formatters.CurrencyFormatter;
+			import pesquisas.PesquisaItemEmpEstoque;
+			import pesquisas.PesquisaItemEmpPreco;
+			import pesquisas.PesquisaItem;
+			import SDE.Entidade.ItemEmp;
+			import mx.core.Container;
+			import Core.Utils.Formatadores;
+			import mx.controls.VRule;
+			import Core.Sessao;
+			import mx.controls.Alert;
+			import SDE.Entidade.ItemEmpEstoque;
+			import SDE.Entidade.ItemEmpPreco;
+			import SDE.Entidade.Item;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.collections.ArrayCollection;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Entidade.Item;
+			import mx.core.Application;
+			import Core.App;
+			import mx.managers.PopUpManager;
+			import img.Imagens;
+			
+			private var _buscaServico:Boolean = false;
+			
+			[Bindable] private var _itemSelecionado:Item;
+			[Bindable] private var dpItem:ArrayCollection;
+			[Bindable] private var dpLocacao:ArrayCollection;
+			[Bindable] private var mostrando_reserva:Boolean = false;
+			[Bindable] private var mostrando_custo_compra:Boolean = false;
+			
+			private function create():void{
+				popupPesquisa.parent.removeChild(popupPesquisa);
+				popupLocacao.parent.removeChild(popupLocacao);
+				
+				dgItemPopup.addEventListener('abrePopupLocacao', abrePopupLocacao);
+			}
+			
+			private function lblFn_Preco(obj:Object, dgc:DataGridColumn):String
+			{
+				var retorno:String;
+				
+				if(dgc.dataField == "venda")
+					retorno = Formatadores.unica.formataValor(obj.venda,true);
+				if(dgc.dataField == "custo")
+					retorno = Formatadores.unica.formataValor(obj.custo,true);
+				if(dgc.dataField == "compra")
+					retorno = Formatadores.unica.formataValor(obj.compra,true);
+			
+				return retorno;
+			}
+			
+			private function dgItemPopup_Change(ev:Event):void{
+				
+				var dgpItem:Item = App.single.cache.getItem(dgItemPopup.selectedItem.id);
+				txtObs.text = dgpItem.complAplic;
+			}
+			
+			[Bindable] public function get itemSelecionado():Item{
+				return _itemSelecionado;
+			}
+			public function set itemSelecionado(value:Item):void{
+				_itemSelecionado = value;
+			}
+			
+			public function get buscaServico():Boolean{return _buscaServico;}
+			public function set buscaServico(value:Boolean):void{_buscaServico=value;}
+			
+			private function txtPesquisaBox_KeyDown(event:KeyboardEvent):void{
+				if (event.keyCode == Keyboard.ENTER)
+					btnPesquisarBox_Click();
+				else
+					if (txtPesquisaBox.text.length == 0)
+						this.itemSelecionado = null;
+			}
+			
+			private function btnPesquisarBox_Click():void{
+				var resultadoBusca:Array = executaBusca(txtPesquisaBox.text);
+				
+				if (resultadoBusca.length == 0){
+					AlertaSistema.mensagem("Produto não encontrado");
+					return;
+				}
+				else if (resultadoBusca.length == 1){
+					_itemSelecionado = App.single.cache.getItem(resultadoBusca[0].id);
+					txtPesquisaBox.text = "";
+					txtPesquisaBox.text = _itemSelecionado.nome;
+					dispatchEvent(new Event( Event.CHANGE ));					
+				}
+				else{
+					abrePopup(resultadoBusca);
+				}
+			}
+			
+			private function txtPesquisaPopup_KeyDown(event:KeyboardEvent):void{
+				if (event.keyCode == Keyboard.ENTER)
+					btnPesquisarPopup_Click();
+			}
+			
+			private function btnPesquisarPopup_Click():void{
+				var resultadoBusca:Array = executaBusca(txtPesquisaPopup.text);
+				populaDataProvider(resultadoBusca);
+			}
+			
+			public function executaBusca(textoBusca:String):Array
+			{
+				var arrayRetornoItens:Array = [];
+				/*
+				var arrayResultadoPesquisaItem:Array = PesquisaItem.pesquisar(textoBusca);
+				if (buscaServico)
+					for each (var itemLaco:Item in PesquisaItem.pesquisar(textoBusca, 'servico'));
+						arrayResultadoPesquisaItem.push(itemLaco);
+				*/
+				var arrayResultadoPesquisaItem:Array = PesquisaItem.pesquisar(textoBusca, true, (buscaServico));
+				
+				
+				for each (var item:Item in arrayResultadoPesquisaItem)
+				{
+					var idEmp:Number = Sessao.unica.idEmp;
+					var item_id:Number = item.id;
+					var itemEmpPreco:ItemEmpPreco = PesquisaItemEmpPreco.pegar(idEmp, item_id);
+					
+					
+					
+					var arrayItemEmpEstoques:Array = PesquisaItemEmpEstoque.pegarArrayPorItem(Sessao.unica.idEmp, item.id);
+					
+					var quantidade:Number = 0;
+					for each (var itemEmpEstoque:ItemEmpEstoque in arrayItemEmpEstoques)
+						quantidade += itemEmpEstoque.qtd;
+					
+					var object:Object = new Object();
+					object.id = item.id;
+					object.nome = item.nome;
+					object.rfUnica = item.rfUnica;
+					object.rfAuxiliar = item.rfAuxiliar;
+					object.unidMed = item.unidMed;
+					object.venda = itemEmpPreco.venda;
+					object.custo = itemEmpPreco.custo;
+					object.compra = itemEmpPreco.compra;
+					object.quantidade = quantidade;
+					object.item = item;
+					object.itemEmpPreco = itemEmpPreco;
+					object.arrayItemEmpEstoques = arrayItemEmpEstoques;
+					
+					arrayRetornoItens.push(object);
+				}
+				
+				return arrayRetornoItens;
+				
+				//antigo
+				/*
+				var arrayItens:Array = [];
+				var source:Array = App.single.cache.arrayItem;
+				for each (var item:Item in source){
+					var qtd:Number = 0;
+					for each(var iee:ItemEmpEstoque in App.single.cache.arrayItemEmpEstoque){
+						if (item.id != iee.idItem || iee.idEmp != Sessao.unica.idEmp)
+							continue;
+						qtd += iee.qtd;
+					}
+						
+					if (!item.desuso){
+						var arrayStringPesquisas:Array = textoBusca.split(' ');
+						var arrayValorPesquisas:Array = [
+							item.id.toString(), item.rfAuxiliar,
+							item.rfUnica, item.marca, item.secao, item.grupo,
+							item.complAplic, item.nome
+							];
+						var contador:Number = 0;
+						for each (var strPesq:String in arrayStringPesquisas){
+							for each (var strValor:String in arrayValorPesquisas){
+								if (strValor == null)
+									continue;
+								if (strValor.search(strPesq.toUpperCase()) > -1){
+									contador++;
+									break;
+								}
+							}
+						}
+	 					if (contador == arrayStringPesquisas.length)
+							arrayItens.push(item);
+					}
+				}
+				
+				var arrayReturnItens:Array=[];
+				
+				for each (var aItem:Item in arrayItens)
+				{
+					var iep:ItemEmpPreco;
+					for each (var xxx:ItemEmpPreco in App.single.cache.arrayItemEmpPreco)
+					{
+						if(xxx.idItem != aItem.id || xxx.idEmp != Sessao.unica.idEmp)
+							continue;
+						
+						iep=xxx;
+						break;
+					}
+					
+					var obj:Object = new Object();
+					obj.id = aItem.id;
+					obj.nome = aItem.nome;
+					obj.rfUnica = aItem.rfUnica;
+					obj.rfAuxiliar = aItem.rfAuxiliar;
+					obj.unidMed = aItem.unidMed;
+					obj.venda = iep.venda;
+					obj.custo = iep.custo;
+					obj.compra = iep.compra;
+					
+					arrayReturnItens.push(obj);
+				}
+				return arrayReturnItens;
+				*/
+			}
+			
+			private function abrePopup(source:Array = null):void
+			{
+				var tamTxt:int=0;
+								
+				populaDataProvider(source);
+				
+				txtPesquisaPopup.text = txtPesquisaBox.text;
+				
+				PopUpManager.addPopUp(popupPesquisa, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupPesquisa);
+				
+				tamTxt=txtPesquisaPopup.length;
+				dgItemPopup.selectedIndex = 0;
+				
+				txtPesquisaPopup.setFocus();
+				txtPesquisaPopup.setSelection(tamTxt,tamTxt);
+			}
+			
+			private function populaDataProvider(source:Array):void{
+				dpItem = new ArrayCollection();
+				dpItem.source = source;
+			}
+			
+			private function btnSelecionar_Click():void{
+				if (!dgItemPopup.selectedItem)
+				{
+					Alert.show("Clique sobre um item da tabela para selecioná-lo", "Alerta SDE");
+					return;
+				}
+				_itemSelecionado = App.single.cache.getItem(dgItemPopup.selectedItem.id);
+				popupPesquisa.parent.removeChild(popupPesquisa);
+				txtPesquisaBox.text = "";
+				txtPesquisaBox.text = _itemSelecionado.nome;
+				dispatchEvent(new Event( Event.CHANGE ));
+			}
+			
+			private function abrePopupLocacao(ev:Event):void{
+				PopUpManager.addPopUp(popupLocacao, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupLocacao);
+				
+				var item:Item = ev.target.data.item;
+				
+				dpLocacao = new ArrayCollection();
+				
+				for (var i:Number = 0 ; i < 10 ; i++){
+					var campo:String = "locacao" + (i + 1).toString();
+					
+					if (item[campo] != null){
+						dpLocacao.addItem(item[campo]);
+					}
+				}
+			}
+			
+			private function dgItens_change(ev:Event):void
+			{
+				var vrule:VRule = new VRule();
+				vrule.percentHeight = 100;
+												
+				var box:VBox = new VBox();
+								
+				for each (var zzz:ItemEmpEstoque in ev.target.selectedItem.iee)
+				{
+					if (zzz.idEmp == App.single.ss.idEmp)
+					{
+						var boxLinha:HBox = new HBox();
+						
+						var lblIdentificador:Label = new Label();
+						var lblQuantidade:Label = new Label();
+						
+						lblIdentificador.width = 190;
+						lblQuantidade.width = 80;
+						
+						lblIdentificador.text = zzz.identificador;
+						lblQuantidade.text = zzz.qtd.toString();
+						
+						boxLinha.addChild(lblIdentificador);
+						boxLinha.addChild(lblQuantidade);
+						
+						if (mostrando_reserva)
+						{
+							var lblReserva:Label = new Label();
+							var lblSaldo:Label = new Label();
+							
+							lblReserva.width = 80;
+							lblSaldo.width = 80;
+							
+							lblReserva.text = zzz.qtdReserva.toString();
+							lblSaldo.text = (zzz.qtd-zzz.qtdReserva).toString();
+							
+							boxLinha.addChild(lblReserva);
+							boxLinha.addChild(lblSaldo);
+						}
+						
+						box.addChild(boxLinha);
+					}
+				}
+			}
+			
+			private function cabecalhoEstoque():Container
+			{
+				var box:HBox = new HBox();
+				var lblIdentificador:Label = new Label();
+				var lblQuantidade:Label = new Label();
+				
+				lblIdentificador.text = "Grade/Ident.";
+				lblQuantidade.text = "Qtd";
+				
+				lblIdentificador.width = 190;
+				lblQuantidade.width = 80;
+				
+				box.addChild(lblIdentificador);
+				box.addChild(lblQuantidade);
+				
+				if (mostrando_reserva)
+				{
+					var lblReserva:Label = new Label();
+					var lblSaldo:Label = new Label();
+					
+					lblReserva.text = "Qtd Res";
+					lblSaldo.text = "Saldo";
+					
+					lblReserva.width = 80;
+					lblSaldo.width = 80;
+					
+					box.addChild(lblReserva);
+					box.addChild(lblSaldo);
+				}
+				
+				return box;
+			}
+			
+			private function mostraReserva(event:KeyboardEvent):void
+			{
+				if (event.ctrlKey && event.altKey)
+					mostrando_reserva = !mostrando_reserva;
+					
+				dgItens_change(event);
+			}
+			
+			private function mostraCustoCompra(event:KeyboardEvent):void
+			{
+				if (event.ctrlKey && event.shiftKey)
+				{
+					dgcCompra.visible=!dgcCompra.visible;
+					dgcCusto.visible=!dgcCusto.visible;
+				}
+					//mostrando_custo_compra = !mostrando_custo_compra;	
+			}
+	//Vinicius modificou 24 set
+		]]>
+	</mx:Script>
+	
+</mx:HBox>

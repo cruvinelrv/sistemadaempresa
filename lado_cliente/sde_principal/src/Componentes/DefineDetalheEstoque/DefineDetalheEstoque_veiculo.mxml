@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SuperDefineDetalheEstoque verticalAlign="middle" horizontalAlign="center"
+	showEffect="{quickFade}"
+	hideEffect="{quickFade}"
+	xmlns="Componentes.DefineDetalheEstoque.*" xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:comp="Componentes.comp.*" xmlns:controls="com.flexpernambuco.controls.*">
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:VBox width="100%" height="100%" verticalAlign="middle">
+		
+		<mx:Label text="Identificador" fontSize="16" fontWeight="bold"/>
+		<mx:VBox width="100%" horizontalAlign="center">
+			<mx:TextArea id="txtIdentificador"
+				fontSize="16" fontWeight="bold" width="100%" height="100"/>
+		</mx:VBox>
+		<comp:Botao2 cor="Verde" label="Mover Estoque" click="define()"/>
+		
+	</mx:VBox>
+
+	<mx:Script>
+		<![CDATA[
+			import Core.Ev.EvRetornaArray;
+			import Core.Utils.Funcoes;
+			import mx.binding.utils.BindingUtils;
+			import mx.collections.ArrayCollection;
+			import img.Imagens;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Entidade.MovItemEstoque;
+			import SDE.Entidade.MovItem;
+		
+			protected override function getResultado_impl():String
+			{
+				return new String();
+			}
+			
+			private function define():void
+			{
+				var ev:EvRetornaArray = new EvRetornaArray([1, txtIdentificador.text]);
+				dispatchEvent(ev);
+				txtIdentificador.text = "";
+				txtIdentificador.setFocus();
+			}
+		]]>
+	</mx:Script>
+</SuperDefineDetalheEstoque>

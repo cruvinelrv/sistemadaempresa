@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.adobe.flex.extras.controls.*" xmlns:comp="Componentes.comp.*" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Button label="BUSCAR" click="load()" icon="{Imagens.unica.icn_64_Atualiza}" labelPlacement="bottom" />
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.swf_loading}" scaleX="5" scaleY="5" />
+	</mx:HBox>
+	<mx:HBox>
+		<mx:VBox>
+			<mx:Label text="Preco Compra"/>
+			<mx:NumericStepper id="nsCompra" width="100" maximum="999999" stepSize="0.01" styleName="padding3"/>
+		</mx:VBox>
+		<mx:VBox>		
+			<mx:Label text="Preco Custo"/>
+			<mx:NumericStepper id="nsCusto" width="100" maximum="999999" stepSize="0.01" styleName="padding3"/>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="Margem Lucro"/>
+			<mx:NumericStepper id="nsMargemLucro" width="100" maxChars="999999" stepSize="0.01" styleName="padding3" valueCommit="nsMargemLucro_ValueCommit()"/>
+		</mx:VBox>
+		<mx:VBox>		
+			<mx:Label text="Preco Venda"/>
+			<mx:NumericStepper id="nsVenda" width="100" maximum="999999" stepSize="0.01" styleName="padding3"/>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="Desconto Maximo"/>
+			<mx:NumericStepper id="nsDescontoMaximo" width="100" maximum="999999" stepSize="0.01" styleName="padding3"/>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="% Comissão"/>
+			<mx:NumericStepper id="nsComissao" width="100" maximum="100" stepSize="0.1" styleName="padding3"/>
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import janelas.cadastro.ItemProduto1.JanelaCadItemProduto;
+			import janelas.cadastro.ItemServico.JanelaCadItemServico;
+			import SDE.Parametro.ParamLoadItem;
+			import img.Imagens;
+			import SDE.Entidade.ItemEmpPreco; 
+			import Core.Sessao;
+			import Core.Utils.Constantes;
+			import SDE.FachadaServico.FcdItem;
+			import SDE.Entidade.Item;
+			import SDE.FachadaServico.FcdCliente;
+			import mx.formatters.DateFormatter;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.Funcoes;
+			
+			[Bindable] public var mdlPai:JanelaCadItemProduto;
+			[Bindable] public var iep: ItemEmpPreco;
+			
+			
+            
+			private function create():void
+			{
+				mdlPai.addEventListener(JanelaCadItemProduto.EV_MUDA_ITEM, mudaItem);
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				selectedIndex = 0;
+			}
+			
+			private function nsMargemLucro_ValueCommit():void
+			{
+				nsVenda.value = ((nsCusto.value / 100) * nsMargemLucro.value) + nsCusto.value;
+			}
+			
+			private function load():void
+			{
+				var pl:ParamLoadItem = new ParamLoadItem();
+				pl.precos = true;
+				
+				selectedIndex = 1;
+				
+				FcdItem.unica.Load(
+					Sessao.unica.idEmp,
+					mdlPai.item.id, pl,
+					function(retorno:Item):void
+					{
+						mdlPai.item.__ie.__preco = retorno.__ie.__preco;
+						iep = mdlPai.item.__ie.__preco;
+						doBinding();
+						selectedIndex = 2;
+					}
+				);
+			}
+			
+			private function doBinding():void
+			{
+				Funcoes.myBind(nsDescontoMaximo, "value", iep, "descontoMaximo");
+				Funcoes.myBind(nsComissao, "value", iep, "pctComissao");
+				Funcoes.myBind(nsCompra, "value", iep, "compra");
+				Funcoes.myBind(nsCusto, "value", iep, "custo");
+				Funcoes.myBind(nsMargemLucro, "value", iep, "margemLucro");
+				Funcoes.myBind(nsVenda, "value", iep, "venda");
+			}
+			
+		]]>
+	</mx:Script>
+</mx:ViewStack>
+

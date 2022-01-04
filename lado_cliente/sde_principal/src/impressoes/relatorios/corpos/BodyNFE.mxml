@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Body xmlns="org.print.*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	paddingBottom="0" paddingLeft="0" paddingRight="-5" paddingTop="0" xmlns:BarCode="BarCode.*">
+
+	<mx:Repeater id="rptr" dataProvider="{dados}"
+		width="100%" height="100%">
+		
+		<mx:VBox width="100%" height="100%" verticalGap="0"
+			paddingTop="20" paddingBottom="20" paddingLeft="15" paddingRight="15">
+			
+			<!-- Quadro 1  - Cabecalho -->
+			<mx:HBox width="100%" height="40"
+				styleName="padding0" horizontalGap="0">
+				<mx:VBox width="80%" height="100%" styleName="padding0" 
+					verticalGap="-5" borderColor="black" borderThickness="1" borderStyle="solid">
+					<mx:Label text="{'RECEBEMOS DE ' +rptr.currentItem.cliEmp.nome+' OS PRODUTOS CONSTANTES DA NOTA FISCAL'}" 
+						width="100%" height="50%" styleName="font7"/>
+					<mx:HBox width="100%" height="50%" horizontalGap="0">
+						<mx:HBox width="30%" height="100%" styleName="padding0"
+							borderColor="black" borderThickness="1" borderStyle="solid">
+							<mx:Label text="DATA DE RECEBIMENTO" height="100%" styleName="font5"/>
+						</mx:HBox>
+						<mx:HBox width="70%" height="100%" styleName="padding0"
+							borderColor="black" borderThickness="1" borderStyle="solid">
+							<mx:Label text="CERTIFICAÇÃO E ASSINATURA DO RECEBEDOR"  height="100%" styleName="font5"/>
+						</mx:HBox>
+					</mx:HBox>
+				</mx:VBox>
+				<mx:VBox width="20%" height="100%"
+					styleName="padding0" verticalGap="-10"
+					borderColor="black" borderThickness="1" borderStyle="solid">
+					<mx:Label text="NF-e" width="100%" height="100%" textAlign="center" horizontalCenter="0" styleName="font10" fontWeight="bold"/>
+					<mx:Label text="N: {rptr.currentItem.numero}" width="100%" height="100%" textAlign="center" horizontalCenter="0" styleName="font10" fontWeight="bold"/>
+					<mx:Label text="SÉRIE: {rptr.currentItem.serie}" width="100%" height="100%" textAlign="center" horizontalCenter="0" styleName="font10" fontWeight="bold"/>
+				</mx:VBox>
+			</mx:HBox>
+			
+			<mx:HRule width="100%" height="10"/> 
+			
+			<!-- Quadro 2  EMPRESA/DANFE/BARRAS -->
+			<mx:HBox width="100%"  height="90" 
+				horizontalGap="0" styleName="padding0">
+				<mx:VBox width="45%" height="100%" 
+					styleName="padding0" horizontalAlign="center" verticalGap="-10"
+					borderColor="black" borderThickness="1" borderStyle="solid">
+					<!--
+					<mx:Label text="{rptr.currentItem.cliEmp.nome}" styleName="font10"/>
+					-->
+					<mx:TextArea width="100%" height="50" textAlign="center"  
+						fontWeight="bold"  styleName="font8"
+						borderThickness="0"
+						text="{rptr.currentItem.cliEmp.nome}"/>
+					<mx:TextArea width="100%" height="40" textAlign="center"
+						fontWeight="bold"  styleName="font8"
+						borderThickness="0"
+						text="{rptr.currentItem.cliEmp.logradouro+ ', ' +rptr.currentItem.cliEmp.numero +
+							'-'+ rptr.currentItem.cliEmp.bairro + ' - ' +rptr.currentItem.cliEmp.cidade+ ' - ' +
+							rptr.currentItem.cliEmp.uf+ ' - CEP: '+ rptr.currentItem.cliEmp.cep}"/>
+					
+					<!--
+					<mx:Label text="{rptr.currentItem.cliEmp.logradouro+ ', ' +rptr.currentItem.cliEmp.numero + '-'+ rptr.currentItem.cliEmp.bairro}"
+						 styleName="font8"/>	
+					<mx:Label text="{rptr.currentItem.cliEmp.cidade+' - '+rptr.currentItem.cliEmp.uf+ ' - CEP: '+ rptr.currentItem.cliEmp.cep }"
+						styleName="font8"/>	
+					-->	 			
+				</mx:VBox>				
+				<mx:VBox width="15%" height="100%" 
+					styleName="padding0" verticalGap="-7"
+					borderColor="black" borderThickness="1" borderStyle="solid">
+					<mx:VBox width="100%" height="100%" styleName="padding0"
+						horizontalAlign="center" verticalAlign="middle" verticalGap="-7">
+						<mx:Label text="DANFE" fontWeight="bold" styleName="font12"/>
+						<mx:Label text="Documento Auxiliar da" styleName="font7" fontSize="8" />
+						<mx:Label text="Nota Fiscal Eletronica" styleName="font7" fontSize="8"/>	
+					</mx:VBox>
+									
+					<mx:HBox width="100%" height="80%" horizontalAlign="left" styleName="padding0">
+						<mx:VBox width="50%" height="80%" verticalGap="-7" styleName="padding0">
+							<mx:Label text="0 - Entrada" styleName="font10"/>
+							<mx:Label text="1 - Saida" styleName="font10"/>
+						</mx:VBox>
+						<mx:VBox width="30%" height="80%" 
+							styleName="padding0"
+							borderColor="black" borderThickness="1" borderStyle="solid">
+							<mx:Label text="{rptr.currentItem.tipoMov}" styleName="font12"/>
+						</mx:VBox>							
+					</mx:HBox>
+					<mx:VBox width="100%" height="100%" verticalGap="-8" styleName="padding0">
+						<mx:Label width=" 100%" text="N: {rptr.currentItem.numero}" fontWeight="bold" styleName="font10" textAlign="center"/>
+						<mx:Label width=" 100%" text="SÉRIE: {rptr.currentItem.serie}" fontWeight="bold" styleName="font10" textAlign="center"/>
+						<mx:Label width=" 100%" text="FOLHA 1 de 1" fontWeight="bold" styleName="font7" textAlign="center"/>
+					</mx:VBox>					
+				</mx:VBox>	
+							
+				<mx:VBox width="310" height="100%" verticalGap="0" paddingTop="20" paddingLeft="0" paddingRight="0"
+					borderColor="black" borderThickness="1" borderStyle="solid"
+					horizontalScrollPolicy="off" verticalScrollPolicy="off">
+						<BarCode:Code128C  barCodeText="{rptr.currentItem.chaveAcesso}" barCodeHeight="30"/>
+				</mx:VBox>				
+			</mx:HBox>
+			
+			<!-- Quadro 3  Tipo Venda / dados Empresa-->
+			<mx:VBox width="100%" height="45" verticalGap="0"
+				styleName="padding0">							
+				<mx:VBox width="100%" height="50%" verticalGap="-5" styleName="padding0"
+					borderColor="black" borderThickness="1" borderStyle="solid">
+					<mx:Label text="NATUREZA DA OPERAÇÃO" styleName="font5"/>
+					<mx:Label text="{rptr.currentItem.natOperacao}" styleName="font8" height="12" />					
+				</mx:VBox>
+				<mx:HBox width="100%" height="50%" 
+					verticalGap="-5" horizontalGap="0" styleName="padding0">					
+					<mx:VBox width="100%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="INSCRICAO ESTADUAL" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.inscr}" styleName="font8" height="12" />					
+					</mx:VBox>
+					<mx:VBox width="100%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="INS. ESTADUAL DO SUBST. TRIB." styleName="font5"/>
+						<mx:Label text="{}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="100%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="CNPJ" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.cpf_cnpj}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="100%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="CHAVE DE ACESSO DA NFE - PARA CONSULTA NO SITE WWW.NFE.FAZENDA.GOV.BR" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.chaveAcesso}" styleName="font8" height="12"/>					
+					</mx:VBox>							
+				</mx:HBox>
+			</mx:VBox>
+			
+			<!-- Quadro Destinatario/remetente -->
+			<mx:Label text="DESTINATÁRIO / REMETENTE" width="100%" fontSize="8"/>
+			<mx:VBox width="100%"  verticalGap="0">
+				<mx:HBox width="100%" height="100%" 
+					verticalGap="-5" horizontalGap="0" styleName="padding0">
+					<mx:VBox width="70%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="NOME/RAZAO SOCIAL" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.nome}" styleName="font8" height="12" />					
+					</mx:VBox>	
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="CNPJ / CPF" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.cpf_cnpj}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="DATA DA EMISSÃO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.dthrMov}" styleName="font8" height="12"/>					
+					</mx:VBox>						
+				</mx:HBox>
+				
+				<mx:HBox width="100%" height="100%" 
+					horizontalGap="0" styleName="padding0">
+					<mx:VBox width="50%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="ENDERECO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.campo +' - '+rptr.currentItem.cli.logradouro+' n:'+ rptr.currentItem.cli.numero}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="BAIRRO / DISTRITO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.bairro}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="CEP" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.cep}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="DATA SAIDA/ENTRADA" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.dtEntSai}" styleName="font8" height="12"/>					
+					</mx:VBox>						
+				</mx:HBox>
+								
+				<mx:HBox width="100%" height="100%" 
+					horizontalGap="0" styleName="padding0">
+					<mx:VBox width="45%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="MUNICIPIO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.cidade}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="FONE / FAX" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.telefone}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="5%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="UF" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.uf}" styleName="font8" height="12"/>					
+					</mx:VBox>		
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="INSCRIÇÃO ESTADUAL" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cli.inscr}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="HORA SAIDA/ENTRADA" styleName="font5"/>
+						<mx:Label text="" styleName="font8" height="12"/>					
+					</mx:VBox>						
+				</mx:HBox>
+								
+			</mx:VBox>
+			
+			<!-- Quadro Fatura -->
+			<mx:Label  text="FATURA" fontSize="8"/>
+			<mx:VBox width="100%" height="30"
+				fontSize="8" verticalGap="0"
+				borderColor="black" borderThickness="1" borderStyle="solid">	
+				
+				<mx:TextArea width="100%" height="100%" textAlign="center"  
+						styleName="font7" borderThickness="0"
+						text="{rptr.currentItem.fatura}"/>			
+			</mx:VBox>
+			
+			<!-- Quadro calculo de impostos -->
+			<mx:Label  text="CÁLCULO DO IMPOSTO" fontSize="8"/>
+			<mx:VBox width="100%" height="45" verticalGap="0">
+				
+				<mx:HBox width="100%" height="50%" 
+					verticalGap="-5" horizontalGap="0" styleName="padding0">
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="BASE CÁLCULO DO ICMS" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.bcICMS}" styleName="font8" height="12" />					
+					</mx:VBox>	
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="VALOR ICMS" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.vlrICMS}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="BASE CÁLCULO DO ICMS SUBSTITUIÇÃO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.bcICMSSubst}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="VALOR DO ICMS SUBSTITUIÇÃO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.vlrICMSSubst}" styleName="font8" height="12"/>					
+					</mx:VBox>		
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="VALOR TOTAL DOS PRODUTOS" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.vlrProduto}" styleName="font8" height="12"/>					
+					</mx:VBox>							
+				</mx:HBox>
+				
+				<mx:HBox width="100%" height="50%" 
+					verticalGap="-5" horizontalGap="0" styleName="padding0">
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="VALOR DO FRETE" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.vlrFrete}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="VALOR SEGURO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.vlrSeguro}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="DESCONTO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.vlrDesc}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="OUTRAS DESPESAS ACESSORIAS" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.vlrOutros}" styleName="font8" height="12"/>					
+					</mx:VBox>		
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="VALOR DO IPI" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.vlrIPI}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="VALOR TOTAL DA NOTA" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.mMov.vlrTotal}" styleName="font8" height="12"/>					
+					</mx:VBox>						
+				</mx:HBox>
+	
+			</mx:VBox>
+						
+			<!-- Quadro Transportes -->
+			<mx:Label  text="TRANSPORTADOR / VOLUMES TRANSPORTADOS" fontSize="8"/>
+			<mx:VBox width="100%" height="65" verticalGap="0" styleName="padding0">
+								
+				<mx:HBox width="100%" height="24" 
+					horizontalGap="0" styleName="padding0">
+					
+					<mx:VBox width="40%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="RAZÃO SOCIAL" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cliTranp.nome}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:HBox width="15%" height="100%" horizontalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">												
+						<mx:VBox width="100%" height="100%" verticalGap="-5" styleName="padding0">
+							<mx:Label text="FRETE POR CONTA" styleName="font5" />
+							<mx:Label text="0 - EMITENTE" styleName="font5" />
+							<mx:Label text="1 - DESTINATÁRIO" styleName="font5"/>							
+						</mx:VBox>
+						<mx:VBox width="30%" height="70%" verticalGap="-5" styleName="padding0"
+							borderColor="black" borderThickness="1" borderStyle="solid">
+							<mx:Label text="{rptr.currentItem.tipoTransp}" styleName="font8" height="12"/>							
+						</mx:VBox>									
+					</mx:HBox>
+					<mx:VBox width="10%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="CÓDIGO ANTT" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.rntc}" styleName="font8" height="12"/>					
+					</mx:VBox>	
+					<mx:VBox width="10%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="PLACA VÉICULO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.placa}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="5%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="UF" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.placaUF}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="CNPJ / CPF" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cliTranp.cpf_cnpj}" styleName="font8" height="12"/>					
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" height="19" 
+					verticalGap="-5" horizontalGap="0" styleName="padding0">
+					<mx:VBox width="50%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="ENDEREÇO" styleName="font5"/>	
+						<mx:Label text="{ rptr.currentItem.cliTranp.campo+' - '+rptr.currentItem.cliTranp.logradouro +' n:'+ rptr.currentItem.cliTranp.numero}" 
+							styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="25%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="MUNICIPIO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cliTranp.cidade}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="5%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="UF" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cliTranp.uf}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="INSCRIÇÃO ESTADUAL" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.cliTranp.inscr}" styleName="font8" height="12"/>					
+					</mx:VBox>					
+				</mx:HBox>
+				
+				<mx:HBox width="100%" height="19" 
+					verticalGap="-5" horizontalGap="0" styleName="padding0">
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="QUANTIDADE" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.volQtd}" styleName="font8" height="12" />					
+					</mx:VBox>
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="ESPÉCIE" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.volEspecie}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="20%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="MARCA" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.volMarca}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="15%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="NUMERAÇÃO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.volNumero}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="12%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="PESO BRUTO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.volPesoB}" styleName="font8" height="12"/>					
+					</mx:VBox>
+					<mx:VBox width="13%" height="100%" verticalGap="-5" styleName="padding0"
+						borderColor="black" borderThickness="1" borderStyle="solid">
+						<mx:Label text="PESO LIQUIDO" styleName="font5"/>
+						<mx:Label text="{rptr.currentItem.volPesoL}" styleName="font8" height="12"/>					
+					</mx:VBox>
+				</mx:HBox>
+				
+			</mx:VBox>
+						
+			<!-- Quadro Produtos e Servicos -->
+			<mx:Label text="DADOS DOS PRODUTOS / SERVIÇOS" fontSize="8"/>
+			<ReportDataGrid width="100%" dataProvider="{ rptr.currentItem.itens }"
+				height="260" maxHeight="260" minHeight="250" rowHeight="9"
+				horizontalGridLines="false" headerStyleName="headerGrid"
+				styleName="headerGrid" fontSize="6"
+				>
+				<columns>
+					<mx:DataGridColumn width="2" headerText="CODIGO" dataField="idItem" textAlign="left"/>
+					<mx:DataGridColumn width="14" headerText="DESCRIÇÃO DOS PRODUTOS E SERVIÇOS" dataField="item" textAlign="left"/>
+					<mx:DataGridColumn width="3" headerText="NCM" dataField="ncm"/>
+					<mx:DataGridColumn width="2" headerText="CST" dataField="cst"/>
+					<mx:DataGridColumn width="2" headerText="CFOP" dataField="cfop"/>
+					<mx:DataGridColumn width="2" headerText="UN." dataField="um"/>
+					
+					<mx:DataGridColumn width="3" headerText="QTD." dataField="qtd" textAlign="right"/>
+					<mx:DataGridColumn width="3" headerText="VLR. UNIT." dataField="vlrUnit" textAlign="right"/>
+					<mx:DataGridColumn width="3" headerText="VLR. TOTAL" dataField="vlrTotal" textAlign="right"/>
+					<mx:DataGridColumn width="3" headerText="B CALC ICMS" dataField="bcICMS" textAlign="right"/>	
+					<mx:DataGridColumn width="3" headerText="VLR. ICMS" dataField="vlrICMS" textAlign="right"/>	
+					<mx:DataGridColumn width="2" headerText="VLR. IPI" dataField="vlrIPI" textAlign="right"/>
+					<mx:DataGridColumn width="2" headerText="A. ICMS" dataField="aliqICMS" textAlign="right"/>	
+					<mx:DataGridColumn width="2" headerText="A. IPI" dataField="aliqIPI" textAlign="right"/>			
+				</columns>
+			</ReportDataGrid>
+			
+			<!-- QUADRO CALCULO DO IISQN -->
+			<!--
+			<mx:Label  text="CÁLCULO DO IISQN" fontSize="8"/>
+			<mx:HBox width="100%"  height="20" horizontalGap="0"
+				fontSize="8" verticalGap="0"
+				borderColor="black" borderThickness="1" borderStyle="solid">
+			</mx:HBox>
+			-->			
+			
+			<!-- QUADRO ADICIONAIS -->
+			<mx:Label  text="DADOS ADICIONAIS" fontSize="8"/>
+			<mx:HBox width="100%"  height="60" horizontalGap="0">
+				<mx:VBox width="60%" height="100%" styleName="padding0" verticalGap="-5"
+					borderColor="black" borderThickness="1" borderStyle="solid">						
+					<mx:Label text="INFORMAÇÕES COMPLEMENTARES" styleName="font5"/>	
+					<mx:TextArea width="100%" height="100%" textAlign="left" 
+						styleName="font8" borderThickness="0"
+						text="{rptr.currentItem.infAdicional}"/>
+				</mx:VBox>	
+								
+				<mx:VBox width="40%" height="100%" 
+					borderColor="black" borderThickness="1" borderStyle="solid">					
+					<mx:Label text="RESERVDO AO FISCO" styleName="font5"/>
+					
+				</mx:VBox>	
+			</mx:HBox>
+			
+		</mx:VBox>			
+	</mx:Repeater>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.Utils.MyArrayUtils;
+			import Core.Sessao;
+			import SDE.Entidade.ClienteEndereco;
+			import SDE.Entidade.ClienteContato;
+			import impressoes.relatorios.modelos.ModeloMov;			
+			import impressoes.relatorios.modelos.ModeloMovItem;			
+			import mx.formatters.CurrencyFormatter;
+			import org.alivepdf.layout.Format;
+			import flash.text.engine.BreakOpportunity;
+			import Core.Utils.Funcoes;
+			import mx.controls.Alert;
+			import SDE.Entidade.MovNFE;			
+			import SDE.Entidade.Mov;
+			import SDE.Entidade.Cliente;
+			import SDE.Entidade.Empresa;
+			import SDE.Entidade.Item;
+			import SDE.Entidade.MovItem;
+			import SDE.Entidade.ClienteVeiculo;
+			import SDE.Enumerador.ENfeTipoTransporte;
+			import SDE.Enumerador.EMovResumo;
+			import impressoes.relatorios.modelos.ModeloCliente;
+			import impressoes.relatorios.modelos.ModeloNFE;
+			
+			public override function converteDados(origem:Array):Array
+			{
+				var retorno:Array = [];				
+				var fmtRS2:CurrencyFormatter = new CurrencyFormatter()
+				fmtRS2.currencySymbol = '';
+				fmtRS2.precision = 2;		
+				var fmtRS4:CurrencyFormatter = new CurrencyFormatter()
+				fmtRS4.currencySymbol = '';
+				fmtRS4.precision = 4;				
+				if(origem == null){
+					return null;
+				}
+				if(origem.length < 1){
+					return null;
+				}				
+				var mov:Mov = origem[0] as Mov;
+				//fazer verificação se nfe é null
+				//
+				var movNfe:MovNFE = mov.__movNfe;
+				var cli:Cliente = mov.__cli;
+				var transp:Cliente = movNfe.__transportador;
+				var emp:Cliente = mov.__emp.__cliente;				
+				var empEnd:ClienteEndereco = movNfe.__ceEmpresa;
+				var cliEnd:ClienteEndereco = movNfe.__ceCliente;
+				var transpEnd:ClienteEndereco = movNfe.__ceTransporte;
+				var veiculo:ClienteVeiculo = movNfe.__veiculo;				
+				//
+				var modeloNFE:ModeloNFE = new ModeloNFE();
+				var modeloMov:ModeloMov = new ModeloMov();
+				var modeloCli:ModeloCliente = new ModeloCliente();
+				var modeloCliEmp:ModeloCliente = new ModeloCliente();
+				var modeloCliTRansp:ModeloCliente = new ModeloCliente();
+				
+				modeloNFE.chaveAcesso =  movNfe.chaveAcessoNFE.toString();
+				modeloNFE.numero =  movNfe.numeroNota.toString();
+				modeloNFE.serie =  movNfe.serieNota.toString();	
+				modeloNFE.infAdicional = movNfe.infoAdicional;	
+				modeloNFE.fatura = (movNfe.fatura != null)? movNfe.fatura: "";		
+				
+				modeloNFE.natOperacao = movNfe.cfop;
+				modeloNFE.tipoMov
+					= (mov.resumo ==  EMovResumo.saida)
+					? "1" : "0";
+				
+				//Cliente
+				modeloCli.nome = cli.nome;
+				modeloCli.cpf_cnpj = cli.cpf_cnpj;
+				modeloCli.inscr = (cliEnd.inscr != null)?cliEnd.inscr:"ISENTO";
+				modeloCli.campo = (cliEnd.campo != null)?cliEnd.campo:"";
+				modeloCli.logradouro = cliEnd.logradouro;
+				modeloCli.numero =  cliEnd.numero;
+				modeloCli.bairro = cliEnd.bairro;
+				modeloCli.cidade = cliEnd.cidade;
+				modeloCli.uf = cliEnd.uf;
+				modeloCli.cep = cliEnd.cep;
+				modeloCli.telefone = (cliEnd.fone !=  null)?cliEnd.fone:"";
+				modeloNFE.cli =  modeloCli;
+				//Empresa
+				modeloCliEmp.nome = emp.nome;
+				modeloCliEmp.cpf_cnpj = emp.cpf_cnpj;
+				modeloCliEmp.inscr = (empEnd.inscr != null)? empEnd.inscr : "ISENTO";
+				modeloCliEmp.campo = (empEnd.campo != null)? empEnd.campo : "";				
+				modeloCliEmp.logradouro = empEnd.logradouro;
+				modeloCliEmp.numero =  empEnd.numero;
+				modeloCliEmp.bairro = empEnd.bairro;
+				modeloCliEmp.cidade = empEnd.cidade;
+				modeloCliEmp.uf = cliEnd.uf;
+				modeloCliEmp.cep = empEnd.cep;
+				modeloCliEmp.telefone = (empEnd.fone != null)?empEnd.fone:"";
+				modeloNFE.cliEmp =  modeloCliEmp;
+				
+				//transporte
+				//fazer verificacão se transportador null
+				//transportadora
+				if(transp !=  null)
+				{
+					modeloCliTRansp.nome = transp.nome;
+					modeloCliTRansp.cpf_cnpj = transp.cpf_cnpj;
+					modeloCliTRansp.inscr = (transpEnd.inscr != null)?transpEnd.inscr : "ISENTO";
+					modeloCliTRansp.campo = (transpEnd.campo != null)?transpEnd.campo : "";
+					modeloCliTRansp.logradouro =  transpEnd.logradouro;
+					modeloCliTRansp.numero =  transpEnd.numero;
+					modeloCliTRansp.bairro = transpEnd.bairro;
+					modeloCliTRansp.cidade = transpEnd.cidade;
+					modeloCliTRansp.uf = transpEnd.uf;
+					modeloCliTRansp.cep = transpEnd.cep;
+					modeloCliTRansp.telefone = (transpEnd.fone != null)?transpEnd.fone:"";
+				}
+				modeloNFE.cliTranp =  modeloCliTRansp;
+				
+				if(movNfe.tipoTranspNFE == ENfeTipoTransporte.emitente){
+					modeloNFE.tipoTransp = "0";
+				}
+				else{
+					modeloNFE.tipoTransp = "1";
+				}
+				modeloNFE.volEspecie = movNfe.volEspecie;
+				modeloNFE.volMarca = movNfe.volMarca;
+				modeloNFE.volNumero = movNfe.volNumeracao;
+				modeloNFE.volQtd = movNfe.volQuantidade.toString();
+				modeloNFE.volPesoB = fmtRS2.format(movNfe.volPesoBruto.toString());
+				modeloNFE.volPesoL = fmtRS2.format(movNfe.volPesoLiquido.toString());
+				//fazer verificação se veiculo é null
+				if(veiculo != null){				
+					modeloNFE.placa = veiculo.placaNumero;
+					modeloNFE.placaUF = veiculo.placaUF;
+					modeloNFE.rntc = veiculo.regNacTranspCarga;
+				}
+				
+				//variaveis totais
+				var totalBcICMS:Number = 0;
+				var totalBcICMSSubst:Number = 0;
+				var totalICMS:Number = 0;
+				var totalICMSSubst:Number = 0;
+				var totalProdutos:Number = 0;
+				var totalFrete:Number = 0;
+				var totalDesc:Number = 0;
+				var totalSeguro:Number = 0;
+				var totalIPI:Number = 0;
+				var totalOutros:Number =0;
+				var totalNota:Number = 0;
+				
+				//dados dos itens movimentação
+				modeloNFE.itens = [];
+				for each(var mi:MovItem in mov.__mItens)
+				{
+					var it:Item = mi.__item;
+					var mmi:ModeloMovItem = new ModeloMovItem();					
+					var valorUnit:Number = 0;
+					var valorTotalProduto:Number = 0;
+					if(mov.resumo == EMovResumo.entrada){
+						valorUnit = mi.vlrUnitCompra;
+					}
+					else if(mov.resumo == EMovResumo.saida){
+						valorUnit = mi.vlrUnitVendaFinal;
+					}
+					valorTotalProduto = valorUnit * mi.qtd;					
+					mmi.id =  mi.id;
+					mmi.idItem =  mi.idItem.toString();
+					mmi.item = it.nome;
+					mmi.um =  it.unidMed;										
+					mmi.aliqICMS = fmtRS2.format(mi.icmsAliq.toString());
+					mmi.aliqIPI = fmtRS2.format( mi.ipiAliq.toString());
+					mmi.bcICMS = fmtRS2.format( mi.bcICMS.toString());
+					mmi.cfop =  mi.cfop.toString();
+					mmi.cst = mi.icmsCst;
+					mmi.qtd = fmtRS2.format( mi.qtd.toString() );
+					mmi.vlrUnit =  fmtRS2.format( valorUnit.toString() );
+					mmi.vlrTotal = fmtRS2.format( valorTotalProduto.toString() );
+					mmi.vlrICMS = fmtRS2.format( mi.vlrICMS.toString() );
+					mmi.vlrIPI = fmtRS2.format( mi.vlrIPI.toString() );
+					modeloNFE.itens.push(mmi);					
+					//somatario dos totais
+					totalBcICMS += mi.bcICMS;
+					totalBcICMSSubst += mi.bcIcmsSubstTrib;
+					totalICMS += mi.vlrICMS;
+					totalICMSSubst += mi.vlrIcmsSubstTrib;
+					totalProdutos += valorTotalProduto;
+					totalFrete += mi.vlrFrete;
+					totalDesc += mi.vlrDesc;
+					totalSeguro += mi.vlrSeguro;
+					totalIPI += mi.vlrIPI;
+				}			
+				//DADOS DA MOV
+				modeloMov.dthrMov = (mov.dthrMovEmissao.length >=10)
+					?mov.dthrMovEmissao.substr(0,10): mov.dthrMovEmissao ;
+				if( mov.dtNF != "" ){
+					modeloMov.dtEntSai = (mov.dtNF.length >=10)?mov.dtNF.substr(0,10): mov.dtNF ;
+				}
+				else{
+					modeloMov.dtEntSai = (mov.dthrMovEmissao.length >=10)
+						?mov.dthrMovEmissao.substr(0,10): mov.dthrMovEmissao ;
+				}
+				//modeloMov.dtEntSai = (mov.dtNF != "")?mov.dtNF: mov.dthrMovEmissao;
+				modeloMov.bcICMS = fmtRS2.format(totalBcICMS.toString());
+				modeloMov.bcICMSSubst = fmtRS2.format(totalBcICMSSubst.toString());
+				modeloMov.vlrICMS = fmtRS2.format(totalICMS.toString());
+				modeloMov.vlrICMSSubst = fmtRS2.format(totalICMSSubst.toString());
+				modeloMov.vlrProduto = fmtRS2.format(totalProdutos.toString());
+				modeloMov.vlrFrete = fmtRS2.format(totalFrete.toString());
+				modeloMov.vlrDesc = fmtRS2.format(totalDesc.toString());
+				modeloMov.vlrSeguro = fmtRS2.format(totalSeguro.toString());
+				modeloMov.vlrIPI = fmtRS2.format(totalIPI.toString());
+				modeloMov.vlrOutros = fmtRS2.format("0");
+				modeloMov.vlrTotal = fmtRS2.format(totalProdutos.toString());				
+				modeloNFE.mMov = modeloMov;				
+				retorno.push(modeloNFE);
+				return retorno;
+			}
+		]]>
+	</mx:Script>
+	<mx:Style>	
+	
+		.font5
+		{			
+			font-size:5;
+		}
+		.font7
+		{			
+			font-size:7;
+		}
+		.font8
+		{
+			font-size:8;
+		}
+		.font10
+		{			
+			font-size:10;
+		}
+		.font12
+		{			
+			font-size:12;
+		}
+		.padding0
+		{
+			padding-bottom:0;
+			padding-left:0;
+			padding-right:0;
+			padding-top:0;
+		}
+		.headerGrid
+		{
+			font-size:5;
+			
+			padding-bottom:0;
+			padding-top:0;
+			padding-left:0;
+			padding-right:0;			
+		}	
+		
+	</mx:Style>
+	
+</Body>

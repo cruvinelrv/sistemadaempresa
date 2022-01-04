@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="400" height="2000"
+	right="20" bottom="-2000"
+	title="Alertas ({main.getChildren().length})"
+	mouseOver="mouse_em_cima=true"
+	mouseOut="mouse_em_cima=false"
+	moveEffect="{Move}" hideEffect="{Fade}"
+	visible="{main.getChildren().length>0}"
+	styleName="painel">
+	
+	<mx:VBox id="main"
+		width="100%" />
+	
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EModo;
+			import Core.Sessao;
+			import mx.effects.Fade;
+			import mx.controls.Text;
+			import mx.controls.Alert;
+			import mx.effects.Move;
+			import mx.controls.Label;
+			import flash.utils.setTimeout;
+			import mx.effects.Resize;
+			
+			private var mouse_em_cima:Boolean = false;
+			
+			public function mensagem(msg:String, delay:Number):void
+			{
+				pintaCorTela();
+				//height //getChildren().length*30
+				var txt:Text = new Text();
+				txt.percentWidth = 100;
+				txt.text = msg;
+				txt.styleName="msg";
+				main.addChild(txt);
+				
+				setTimeout(pintaAltura, 100);
+				setTimeout(remover ,delay, txt);
+			}
+			private function remover(txt:Text):void
+			{
+				if (mouse_em_cima)
+				{
+					setTimeout(remover, 5000, txt);
+					return;
+				}
+				main.removeChild(txt);
+				setTimeout(pintaAltura, 100);
+			}
+			private function pintaAltura():void
+			{
+				var a:int = (main.getChildren().length==0) ? -height : main.height-height+100;
+				if (a!=getStyle('bottom'))
+					setStyle('bottom', a);
+			}
+			private function pintaCorTela():void
+			{
+				styleName = (Sessao.unica.modoTecnico) ? "painelDesenvolve" : "painel";
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Style>
+		.painel
+		{
+			/* CORES DA CASINHA DA CAIXA */
+			/* #DCD7C7" backgroundColor="#F2F0DD" */
+			
+			borderAlpha: .6;
+			header-colors:  #FAFAFA, #DCD7C7; /*#F2D20D, #DBAE0B;*/
+			borderColor: #DCD7C7;/*#DBAE0B;*/
+			backgroundColor: #F2F0DD;/*#F0DB06;*/
+			/*borderThicknessBottom: 2;*/
+			borderThicknessLeft: 5;
+			borderThicknessRight: 5;
+			cornerRadius: 3;
+			drop-shadow-enabled: false;
+			titleStyleName: titulo;
+		}
+		.titulo
+		{
+			font-size:18;
+			font-weight:bold;
+			color: #413306;
+			color: #444444;
+		}
+		.painelDesenvolve
+		{
+			borderAlpha: 1;
+			header-colors: #24CC45, #04A056;
+			borderColor: #04A056;
+			backgroundColor: #80BFA2;
+			borderThicknessBottom: 2;
+			borderThicknessLeft: 2;
+			borderThicknessRight: 2;
+			cornerRadius: 3;
+			drop-shadow-enabled: false;
+			titleStyleName: tituloDesenvolve;
+		}
+		.tituloDesenvolve
+		{
+			font-size:18;
+			font-weight:bold;
+			color: #0E521F;
+		}
+		.msg
+		{
+			font-size:16;
+			font-weight:bold;
+		}
+	</mx:Style>
+</mx:Panel>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	creationComplete="create()"
+	xmlns:comp="Componentes.comp.*" xmlns:Combo="SDE.Componentes.Combo.*"
+	xmlns:Combo1="Componentes.Combo.*" xmlns:CP="Componentes.CaixaPesquisa.CP.*"
+	xmlns:CP1="Componentes.CP.*" xmlns:controls="com.flexpernambuco.controls.*">
+	
+	<mx:VBox fontSize="14" fontWeight="bold" horizontalCenter="0" verticalCenter="0"
+		moveEffect="{Move}">
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.icn_64_formaspgto}"/>
+			<mx:Label text="Débitos / Créditos a Vista" fontSize="14"/>
+		</mx:HBox>
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:VBox width="450">
+				<mx:Label text="Data do Fluxo de Caixa:"/>
+				<comp:DateFieldBR id="dtfDataFluxoCaixa" selectedDate="{new Date()}"/>
+			</mx:VBox>
+			<mx:VBox width="450">
+				<mx:Label text="Data do Lançamento:"/>
+				<comp:DateFieldBR id="dtfDataLancamento" selectedDate="{new Date()}"/>
+			</mx:VBox>
+		</mx:HBox>
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:VBox width="450">
+				<mx:Label text="Conta do Movimento:"/>
+				<Combo:CmbFinan_Conta id="cmbContaMovimento" width="400"/>
+			</mx:VBox>
+			<mx:VBox width="450">
+				<mx:Label text="Centro de Custo:"/>
+				<Combo:CmbFinan_CentroCusto id="cmbCentroCusto" width="400"/>
+			</mx:VBox>
+		</mx:HBox>
+		
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:VBox width="450">
+				<mx:Label text="Documento:"/>
+				<controls:MasterTextInput id="txtDocumento" width="400" capsType="upercase"/>
+			</mx:VBox>
+			<mx:VBox width="450">
+				<mx:Label text="Tipo do Lançamento:"/>
+				<CP1:PesqFinanTipoLancamento id="cpTipoLancamento" width="400"/>
+			</mx:VBox>
+		</mx:HBox>
+		
+		<mx:HBox verticalAlign="middle">
+			<mx:VBox width="450">
+				<mx:Label text="Valor do Lançamento:"/>
+				<mx:NumericStepper id="nsValorLancamento" stepSize="0.01" minimum="-999999" maximum="999999" width="400"/>
+			</mx:VBox>
+			<mx:VBox width="450" height="100%" verticalAlign="middle" verticalGap="0">
+				<mx:Label text="Para lançar Crédito: ex: 650.00"/>
+				<mx:Label text="Para lançar Débito: ex: -650.00"/>
+			</mx:VBox>
+		</mx:HBox>
+		
+		<mx:Label text="Histórico:"/>
+		<mx:TextArea id="txtHistorico" width="400" height="75"/>
+		
+		<mx:Button label="Lançar" textAlign="right" icon="{Imagens.unica.icn_32_aceita}"
+			click="{concluir()}"
+			/>
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.hillelcoren.components.autoComplete.classes.SelectedItem;
+			import SDE.Constantes.Variaveis_SdeConfig;
+			import SDE.Entidade.Finan_Conta;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Entidade.Finan_Lancamento;
+			import mx.core.Application;
+			import SDE.Entidade.Finan_TipoLancamento;
+			import SDE.CamadaNuvem.NuvemCache;
+			import Core.Sessao;
+			import mx.effects.Move;
+			import img.Imagens;
+			
+			private var ss:Sessao;
+			private var cache:NuvemCache;
+			private var tipoLancamentoManual:Finan_TipoLancamento;
+			
+			private function create():void
+			{
+				ss = Application.application.sessao;
+				cache = ss.nuvens.cache;
+				//
+				var idTipoLancamentoManual:Number = ss.parametrizacao.getParametro(Variaveis_SdeConfig.FINANCEIRO_TIPOSLANCAMENTO_MANUAL);
+				tipoLancamentoManual = cache.getFinan_TipoLancamento(idTipoLancamentoManual);
+				resetar();
+			}
+			private function resetar():void
+			{
+				dtfDataFluxoCaixa.selectedDate = new Date();
+				dtfDataLancamento.selectedDate = new Date();
+				cmbContaMovimento.selectedIndex = 0;
+				cmbCentroCusto.selectedIndex = 0;
+				txtDocumento.text = '';
+				cpTipoLancamento.selectedItems.removeAll();
+				nsValorLancamento.value = 0;
+				txtHistorico.text = '';
+				dtfDataFluxoCaixa.setFocus();
+			}
+			private function concluir():void
+			{
+				var cMovimento:Finan_Conta = cmbContaMovimento.getAs();
+				
+				var msg:String=null;
+				if (txtDocumento.text.length < 3)
+					msg += 'Digite um Documento\n';
+				if (cpTipoLancamento.selectedItem == null)
+					msg =='Selecione um Tipo de Lançamento'
+				if (nsValorLancamento.value == 0)
+					msg += 'Digite um Valor';
+				if (msg)
+				{
+					AlertaSistema.mensagem(msg);
+					return;
+				}
+				
+				var lan:Finan_Lancamento = new Finan_Lancamento();
+				lan.dtFluxoCaixa = dtfDataFluxoCaixa.text;
+				lan.dtLancamento = dtfDataLancamento.text;
+				lan.idContaDestino = cmbContaMovimento.getAs().id;
+				lan.idCentroCusto = cmbCentroCusto.getAs().id;
+				lan.idTipoLancamento = cpTipoLancamento.selectedItem.id;
+				lan.nome = txtDocumento.text;
+				if (nsValorLancamento.value > 0)
+					lan.isCredito = true;
+				else
+					lan.isCredito = false;
+				lan.valorLancado = nsValorLancamento.value;
+				lan.historico = txtHistorico.text.replace('\r','').replace('\n','');
+				
+				ss.nuvens.modificacoes.Finan_lancamento_DebitoCreditoVista(
+					lan,
+					function():void
+					{
+						AlertaSistema.mensagem("Lançado!");
+						resetar();
+					}
+				);
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	initialize="init()"
+	styleName="padding5" fontSize="14" fontWeight="bold"
+	verticalAlign="middle" horizontalAlign="center"
+	xmlns:SDE="Componentes.SDE.*" xmlns:controls="com.flexpernambuco.controls.*">
+	
+	<mx:states>
+		<mx:State name="stateCargoComissionado">
+			<mx:AddChild relativeTo="{cargoComissionadoPlaceHolder}" position="lastChild" target="{boxComssionameto}"/>
+		</mx:State>
+		<mx:State name="stateCargoAcessaSistema">
+			<mx:AddChild relativeTo="{cargoAcessaSistemaPlaceHolder}" position="lastChild" target="{boxPermissoesSistema}"/>
+		</mx:State>
+		<mx:State name="stateCargoComissionadoAcessaSistema">
+			<mx:AddChild relativeTo="{cargoComissionadoPlaceHolder}" position="lastChild" target="{boxComssionameto}"/>
+			<mx:AddChild relativeTo="{cargoAcessaSistemaPlaceHolder}" position="lastChild" target="{boxPermissoesSistema}"/>
+		</mx:State>
+	</mx:states>
+	
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize targets="{[cargoAcessaSistemaPlaceHolder, cargoComissionadoPlaceHolder]}"/>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:VBox width="85%" height="100%" verticalAlign="middle">
+		
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Image source="{(ehEditando?Imagens.unica.icn_64_edita:Imagens.unica.icn_64_adiciona)}"/>
+			<mx:Label text="{(ehEditando?'Edição':'Cadastro')}" fontSize="40" color="#666666" fontWeight="bold"/>
+		</mx:HBox>
+		
+		<mx:HBox width="100%" verticalAlign="middle">
+			<mx:Label text="Descrição do Cargo:"/>
+			<controls:MasterTextInput id="txtDescricaoCargo" capsType="upercase" width="100%"/>
+		</mx:HBox>
+		
+		<mx:CheckBox id="ckbComissionado" label="Cargo Comissionado"
+			change="currentState=cargoScript.ckbComissionadoAcessoSistema_Click(ckbComissionado.selected, ckbAcessaSistema.selected)"/>
+		<mx:VBox id="cargoComissionadoPlaceHolder"/>
+		
+		<mx:CheckBox id="ckbAcessaSistema" label="Cargo Acessa Sistema"
+			change="currentState=cargoScript.ckbComissionadoAcessoSistema_Click(ckbComissionado.selected, ckbAcessaSistema.selected)"/>
+		<mx:VBox id="cargoAcessaSistemaPlaceHolder" width="100%"/>
+		
+		<mx:HBox verticalAlign="middle" horizontalAlign="right" width="100%">
+			<SDE:Botao label="{ehEditando?'Cancelar Edição':'Cancelar Cadastro'}" labelPlacement="right" icon="{Imagens.unica.icn_32_deleta}"
+				click="cargoScript.mudaTela(mdlPai.vs, mdlPai.formPesquisa); cargoScript.limpaFormCadastro(this)"/>
+			<SDE:Botao label="Salvar" labelPlacement="right" icon="{Imagens.unica.icn_32_salva}"
+				click="cargoScript.salvaCadastroCargo(mdlPai, this)"/>
+		</mx:HBox>
+		
+	</mx:VBox>
+	
+	<!-- FORMULÁRIOS EXIBIDOS DE ACORDO COM O STATE DO FORM -->
+	<mx:VBox id="boxComssionameto" width="100%">
+		<mx:HBox verticalAlign="middle">
+			<mx:CheckBox id="ckbMaoDeObra" label="Mão de Obra:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMaoDeObra" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMaoDeObra.selected}"/>
+			<mx:Spacer width="50"/>
+			<mx:CheckBox id="ckbMaoDeObraGarantia" label="Mão de Obra Garantia:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMaoDeObraGarantia" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMaoDeObraGarantia.selected}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:CheckBox id="ckbMaoDeObraGeral" label="Mão de Obra Geral:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMaoDeObraGeral" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMaoDeObraGeral.selected}"/>
+			<mx:Spacer width="50"/>
+			<mx:CheckBox id="ckbMaoDeObraGeralEmGarantia" label="Mão de Obra Geral em Garantia:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMaoDeObraGeralEmGarantia" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMaoDeObraGeralEmGarantia.selected}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:CheckBox id="ckbProdutos" label="Produtos:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsProdutos" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbProdutos.selected}"/>
+			<mx:Spacer width="50"/>
+			<mx:CheckBox id="ckbProdutosEmGarantia" label="Produtos em Garantia:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsProdutosEmGarantia" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbProdutosEmGarantia.selected}"/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="middle">
+			<mx:CheckBox id="ckbMontanteTotal" label="Montante Total:" width="260" fontWeight="bold"/>
+			<mx:NumericStepper id="nsMontanteTotal" minimum="0" maximum="100" stepSize="0.01" width="180" enabled="{ckbMontanteTotal.selected}"/>
+		</mx:HBox>
+	</mx:VBox>
+	<mx:VBox id="boxPermissoesSistema" width="100%" height="100%">
+		<SDE:DataGrid id="dgPermissoes" editable="true"
+			width="100%" height="100%"
+			dataProvider="{dpPermissoesSistema}">
+			<SDE:columns>
+				<mx:DataGridColumn width="8.5" headerText="Menu" dataField="menu" editable="false"/>
+				<mx:DataGridColumn width="1.5" headerText="Acesso Permitido" dataField="permitido" editable="true"
+					textAlign="center" itemRenderer="mx.controls.CheckBox" itemEditor="mx.controls.CheckBox" editorDataField="selected"/>
+			</SDE:columns>
+		</SDE:DataGrid>
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import img.Imagens;
+			import janelas.cadastro.Cargo2.CargoScript;
+			import janelas.cadastro.Cargo2.JnlCadCargo2;
+			
+			public var mdlPai:JnlCadCargo2 = new JnlCadCargo2();
+			private var cargoScript:CargoScript = new CargoScript();
+			
+			private var _dpPermissoesSistema:ArrayCollection;
+			private var _ehEditando:Boolean;
+			private var _idCargo:Number;
+			private var _idCargoComissionamento:Number;
+			
+			private function init():void
+			{
+				cargoScript.removeComponente(boxComssionameto);
+				cargoScript.removeComponente(boxPermissoesSistema);
+			}
+			
+			[Bindable]
+			public function get ehEditando():Boolean{return this._ehEditando;}
+			public function set ehEditando(valor:Boolean):void{this._ehEditando = valor;}
+			
+			[Bindable]
+			public function get dpPermissoesSistema():ArrayCollection{return this._dpPermissoesSistema;}
+			public function set dpPermissoesSistema(valor:ArrayCollection):void{this._dpPermissoesSistema = valor;}
+			
+			public function get idCargo():Number{return this._idCargo;}
+			public function set idCargo(valor:Number):void{this._idCargo = valor;}
+			
+			public function get idCargoComissionamento():Number{return this._idCargoComissionamento;}
+			public function set idCargoComissionamento(valor:Number):void{this._idCargoComissionamento = valor;}
+		]]>
+	</mx:Script>
+</mx:VBox>

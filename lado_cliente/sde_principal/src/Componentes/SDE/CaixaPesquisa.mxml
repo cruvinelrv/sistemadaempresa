@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="400" verticalAlign="middle" height="34" creationPolicy="all"
+	xmlns:controls="com.flexpernambuco.controls.*" xmlns:SDE="Componentes.SDE.*">
+	
+	<mx:HBox width="100%" height="100%" borderStyle="solid" backgroundColor="#3B5998" cornerRadius="3" styleName="padding3">
+		<controls:MasterTextInput id="txtPesquisa" width="100%" height="100%" capsType="upercase" editable="{editable}"
+			keyDown="if(event.keyCode==Keyboard.ENTER)dispatchEvent(new Event('clickPesquisar'))"/>
+		<SDE:Botao label="Pesquisar" height="100%" icon="{icone}" click="dispatchEvent(new Event('clickPesquisar'))"/>
+	</mx:HBox>
+	
+	<mx:Metadata>
+		[Event(name="clickPesquisar", type="flash.events.Event")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import img.Imagens;
+			
+			private var icone_:Class = Imagens.unica.icn_16_pesquisa;
+			private var _editable:Boolean = true;
+			
+			public function get text():String{return txtPesquisa.text;}
+			public function set text(str:String):void{txtPesquisa.text = str;}
+			
+			public function get editable():Boolean{return _editable;}
+			[Bindable] public function set editable(valor:Boolean):void{_editable = valor;}
+			
+			public function get icone():Class{return icone_;}
+			[Bindable] public function set icone(icone:Class):void{icone_ = icone;}
+		]]>
+	</mx:Script>
+	
+</mx:HBox>

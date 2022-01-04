@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="Componentes.comp.*"
+	layout="vertical"
+	width="500" height="300"
+	horizontalCenter="0" verticalCenter="0"
+	borderAlpha="1" borderColor="#3B5998"
+	title="FINALIZANDO VENDA TEF" titleStyleName="titulo"
+	
+	showCloseButton="true" showEffect="{Move}"
+	close="cancela()"
+	creationComplete="create()">
+	<mx:Metadata>
+		[Event(name="retorno", type="EvRetornaArray")]
+		[Event(name="cancela")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import Core.Ev.Evento;
+			import Core.Ev.EvRetornaArray;
+			import Core.Alerta.AlertaSistema;
+			import mx.managers.PopUpManager;
+			import mx.effects.Move;
+			
+			
+			private function create():void
+			{
+				txtCOO.setFocus();
+			}
+			private function cancela():void
+			{
+				PopUpManager.removePopUp(this);
+				dispatchEvent(new Evento(Evento.CANCELA));
+			}
+			private function conclui():void
+			{
+				var coo:Number = Number(txtCOO.text);
+				dispatchEvent(new EvRetornaArray([coo]));
+			}
+			public function RetornoMultiTEF(parametros:Array):void
+			{
+				AlertaSistema.mensagem( "define coo: "+ parametros[0], true );
+				txtCOO.text = parametros[0];
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Style>
+		.titulo
+		{
+			fontWeight:bold;
+			color:#ffffff;
+		}
+	</mx:Style>
+	<mx:VBox
+		width="100%" height="100%"
+		fontSize="20"
+		horizontalAlign="center" verticalAlign="middle">
+		<mx:Label text="Ao concluir a operação TEF, clique em concluir" />
+		<mx:FormItem direction="vertical" label="COO:">
+			<mx:TextInput id="txtCOO" restrict="0-9" styleName="padding3" />
+		</mx:FormItem>
+	</mx:VBox>
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao2 cor="Vermelho" label="Cancelar" click="cancela()" />
+		<comp:Botao2 cor="Verde" label="Concluir" click="conclui()" />
+	</mx:HBox>
+	
+	
+	
+</mx:TitleWindow>

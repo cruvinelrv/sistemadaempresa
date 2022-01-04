@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	styleName="padding5" fontSize="12" fontWeight="bold"
+	creationPolicy="all"
+	creationComplete="create()"
+	xmlns:CP="Componentes.CP.*" xmlns:ns="Componentes.CP.CP_Rend.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*" xmlns:comp="Componentes.comp.*">
+	<mx:Script>
+		<![CDATA[
+			import SDE.Enumerador.EItemTipoIdent;
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	<mx:Script source="MdllJnlAjusteEstoque.as"/>
+	
+	<mx:HBox>
+		<mx:Label text="Produto:" width="89" />
+		<CP:PesqItem id="cpItem" change="itemSelecionadoCP()" width="400"/>
+	</mx:HBox>
+	<mx:HBox>
+		<mx:Label text="Estoque:" width="89"/>
+		<CP:PesqEstoque id="cpEstoque" change="estoqueSelecionadoCP()" width="400"/>
+	</mx:HBox>
+	
+	<mx:HBox>
+		<mx:Label text="Estoque Atual: "/>
+		<mx:NumericStepper id="nsEstoqueAtual" enabled="false" stepSize="0.001"
+			width="150" minimum="-999999" maximum="999999"/>
+		<mx:Label text="Estoque a Somar: "/>
+		<mx:NumericStepper id="nsEstoqueAjuste" enabled="{estoque_a_ajustar!=null}" stepSize="0.001"
+			width="150" minimum="-999999" maximum="999999"
+			change="quantidadeAjusteAlterada()"
+			focusOut="quantidadeAjusteAlterada()"
+			keyDown="if(event.keyCode==Keyboard.ENTER)lancaEstoque()"/>
+		<mx:Label text="Projeção: "/>
+		<mx:NumericStepper id="nsEstoqueProjecao" enabled="false" stepSize="0.001"
+			width="150" minimum="-999999" maximum="999999"/>
+		<mx:Button label="Lançar" click="lancaEstoque()" enabled="{estoque_a_ajustar!=null}"/>
+	</mx:HBox>
+	
+	<mx:DataGrid  id="dtGridPrincipal" dataProvider="{arraycAjustes}"
+		width="100%" height="100%" headerHeight="25"
+		themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+		<mx:columns>
+			<mx:DataGridColumn width="4" dataField="item_nome" headerText="Item"/>
+			<mx:DataGridColumn width="3" dataField="identificador" headerText="Grade/Ident."/>
+			<mx:DataGridColumn width="3" dataField="barras" headerText="Código Barras"/>
+			<mx:DataGridColumn width="3" dataField="estoque_atual" headerText="Estoque Atual"/>
+			<mx:DataGridColumn width="3" dataField="estoque_ajuste" headerText="Estoque a Somar"/>
+			<mx:DataGridColumn width="3" dataField="estoque_projecao" headerText="Projeção"/>
+			<mx:DataGridColumn width="1" headerText=" ">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Button
+							width="22" themeColor="#840000"
+							label="" icon="{Imagens.unica.icn_16_cancela}"
+							click="dispatchEvent(new Event('deleteRow', true))">
+							<mx:Script>
+								<![CDATA[
+									import img.Imagens;
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:Label text="Motivo do Ajuste:"/>
+	<mx:TextArea  id="txtObs" width="100%" height="100"/>
+	<mx:HBox width="100%" horizontalAlign="right">
+		<mx:Button label="Confirmar Ajuste de Estoque" click="confirmaAjusteEstoque()"/>
+	</mx:HBox>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupEstoque"
+		close="fechaPopupEstoque()"
+		titleIcon="{Imagens.unica.icn_32_estoque}"
+		title="Escolha o Estoque"
+		width="700" height="400"
+		layout="vertical"
+		fontSize="14"
+		showCloseButton="true">
+		
+		<mx:VBox x="10" y="10" width="100%" height="100%" horizontalAlign="right">
+			<mx:DataGrid id="dtGridEstoques"
+				headerColors="[#efefef,#3B5998]"
+				width="100%" height="100%"
+				keyDown="if(event.keyCode==Keyboard.ENTER)estoqueSelecionadoDG();">
+				<mx:columns>
+					<mx:DataGridColumn dataField="idItem" headerText="Item" />
+					<mx:DataGridColumn dataField="identificador" headerText="Grade/Ident." visible="{item.tipoIdent != EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="codBarras" headerText="Barras" />
+					<mx:DataGridColumn dataField="lote" headerText="Lote" visible="{item.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="dtFab" headerText="Fab" visible="{item.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="dtVal" headerText="Val" visible="{item.tipoIdent == EItemTipoIdent.lote}" />
+					<mx:DataGridColumn dataField="qtd" headerText="Qtd" />
+				</mx:columns>
+			</mx:DataGrid>
+			<comp:Botao2 cor="Azul" label="Selecionar"
+				click="estoqueSelecionadoDG()"
+				keyDown="if(event.keyCode==Keyboard.ENTER)estoqueSelecionadoDG();"/>
+		</mx:VBox>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+</mx:VBox>

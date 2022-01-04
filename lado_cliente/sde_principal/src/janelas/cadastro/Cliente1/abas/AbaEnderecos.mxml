@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:municipios="xml.tbl_municipios.xml" xmlns:comp="Componentes.comp.*" xmlns:CP="Componentes.CaixaPesquisa.CP.*" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Button label="BUSCAR" click = "load()" icon="{Imagens.unica.icn_64_Atualiza}" labelPlacement="bottom"/>
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.swf_loading}" scaleX="3" scaleY="3" />
+	</mx:HBox>
+	<mx:VBox width="100%" height="100%" styleName="padding3">
+	
+		<comp:Botao2 width="120" label="Inserir"
+				cor="Branco" icone="Adiciona"
+				click="{novoEndereco()}"
+				horizontalCenter="0" />
+				
+		<mx:DataGrid id="grid" width="100%" height="100%"
+			themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+			editable="false">
+			<mx:columns>
+				<mx:DataGridColumn width="3" dataField="campo" headerText="Tipo Endereço" />
+				<mx:DataGridColumn width="6" dataField="logradouro" headerText="Logradouro" />
+				<mx:DataGridColumn width="6" dataField="bairro" headerText="Bairro" />
+				<mx:DataGridColumn width="6" dataField="cidade" headerText="Cidade" />
+				<mx:DataGridColumn width="2" dataField="uf" headerText="UF" />
+				<mx:DataGridColumn width="3" dataField="numero" headerText="Número" />
+				<mx:DataGridColumn width="3" dataField="cep" headerText="CEP" />
+				<mx:DataGridColumn width="3" dataField="inscr" headerText="Insc. Estadual" />
+				<mx:DataGridColumn width="3" dataField="inscrMun" headerText="Insc. Municipal" />
+				<mx:DataGridColumn width="6" dataField="complemento" headerText="Complemento" />
+				<mx:DataGridColumn width="6" dataField="obs" headerText="Observação" />
+				<mx:DataGridColumn headerText=" " width="4" editable="false">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="{'Alterar'}"
+								labelPlacement="right" color="#008800"
+								click="dispatchEvent(new Event('editRow', true))" />
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="4" editable="false" >
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="{(data.isDeletado)?'removido':''}"
+								icon="@Embed(source='../../../../img/icones/16/cancela1.png')"
+								click="dispatchEvent(new Event('deleteRow', true))" />
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<mx:Panel id="popupEditar"
+			width="600" height="540" layout="absolute"
+			borderAlpha="1"
+			fontSize="14"
+			headerHeight="10">
+			
+			<mx:Image x="10" y="10" source="{Imagens.unica.icn_32_janela}" />
+			<mx:Label x="45" y="10" fontSize="20" fontWeight="bold" text="Endereços" />
+			
+			<comp:Botao2 width="120" label="Voltar"
+				bottom="10" right="140"
+				cor="Branco" icone="Deleta"
+				click="{ FechaPopUp() }"/>
+			<comp:Botao2 width="120" label="OK"
+				bottom="10" right="10"
+				cor="Branco" icone="Adiciona"
+				click="{ concluiEdicao() }"/>
+			
+			<mx:Grid x="10" y="42" width="100%">
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label text="Tipo Endereço"/>
+							<master:MasterTextInput id="boundNomeTextInput" capsType="upercase" width="250"/>
+						</mx:VBox>
+					</mx:GridItem>
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label text="Rua XYZ"/>
+							<master:MasterTextInput id="boundLogradouroTextInput" capsType="upercase" width="250"/>
+						</mx:VBox>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label text="Número" />
+							<master:MasterTextInput id="boundNumTextInput" capsType="upercase" onlyRestrict="number" text="0" width="80"  />
+						</mx:VBox>
+					</mx:GridItem>
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label text="Complemento " />
+							<master:MasterTextInput id="boundComplTextInput" capsType="upercase" width="250"/>
+						</mx:VBox>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label width="100%" text="Bairro " />
+							<master:MasterTextInput id="boundBairroTextInput" capsType="upercase" width="250"/>
+						</mx:VBox>
+					</mx:GridItem>
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label width="100%" text="CEP " />
+							<master:MasterTextInput id="boundCEPTextInput" width="100" color="black" maxChars="8" restrict="0-9"/>
+						</mx:VBox>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label text="UF:"/>
+							<mx:ComboBox id="cmbUF" width="80" dataProvider="{ibge_estados}" labelField="sigla" change="{ filtra_municipios() }" />
+						</mx:VBox>
+					</mx:GridItem>
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label width="100%" text="Cidade:"/>
+							<mx:ComboBox width="100%" id="cmbMunicipio" dataProvider="{ibge_municipios_filtrados}" labelField="nome"/>
+						</mx:VBox>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:Label width="100%" text="Tipo " />
+							<mx:ComboBox id="boundTipoComboBox" width="120"
+								dataProvider="{ EEnderecoTipo.getCampos() }" />
+						</mx:VBox>
+					</mx:GridItem>
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:CheckBox id="cbInscrEst" label="Inscr Est:" change="{/*valido=false*/}"/>
+							<master:MasterTextInput id="boundInscEstTextInput"
+								width="180" enabled="{cbInscrEst.selected}" restrict="0-9" maxChars="15"/>
+						</mx:VBox>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem>
+						<mx:VBox>
+							<mx:CheckBox id="cbInscrMun" label="Inscr Mun:" change="{/*valido=false*/}" x="270" y="354"/>
+							<master:MasterTextInput id="boundInscMunTextInput"
+								width="180" enabled="{cbInscrMun.selected}" restrict="0-9" maxChars="15" x="270" y="387"/>
+							</mx:VBox>
+					</mx:GridItem>
+				</mx:GridRow>
+			</mx:Grid>	
+			
+			<mx:Label text="Observação" x="10" y="408"/>
+			<master:MasterTextInput id="boundObsTextInput" capsType="upercase" width="510" x="10" y="433"/>
+			<mx:Label id="lblUFCodigo" text="{cmbUF.selectedItem.c}"  x="10" y="435" width="125" visible="false" fontSize="8"/>
+			<mx:Label id="lblCidadeCodigo" text="{cmbMunicipio.selectedItem.c}"  x="143" y="435" width="119" visible="false" fontSize="8"/>
+			
+		</mx:Panel>
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import SDE.Entidade.IBGEEstado;
+			import Core.Utils.MeuFiltroWhere;
+			import mx.collections.ArrayCollection;
+			import SDE.Entidade.IBGEMunicipio;
+			import Core.Utils.MyArrayUtils;
+			import org.alivepdf.colors.CMYKColor;
+			import SDE.Enumerador.EEnderecoTipo;
+			import SDE.Enumerador.EItemTipo;
+			import Core.Utils.Funcoes;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import SDE.Entidade.ClienteEndereco;
+			import Core.Ev.EvRetornaArray;
+			import Componentes.CaixaPesquisa.CP.CPesqCEP;
+			import mx.validators.Validator;
+			import mx.validators.StringValidator;
+			import mx.utils.StringUtil;
+			import SDE.CamadaServico.SLogin;
+			import flash.net.navigateToURL;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import Core.ConexaoExterna.BuscaCEP;
+			import Core.Sessao;
+			import flash.utils.setTimeout;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Entidade.Cliente;
+			import SDE.Parametro.ParamLoadCliente;
+			import janelas.cadastro.Cliente1.JanelaCadCliente;
+			import SDE.FachadaServico.FcdCliente;
+			import img.Imagens;
+			
+			[Bindable] public var mdlPai:JanelaCadCliente;
+			private var ibge_municipios:Array;
+			[Bindable] private var ibge_estados:Array;
+			[Bindable] private var ibge_municipios_filtrados:ArrayCollection = new ArrayCollection();
+            private var dictEstados:Array;
+			private var c:Cliente;//referencia do cliente atual
+			
+			private var enderecoOriginal:ClienteEndereco = null;
+			[Bindable] private var enderecoEditando:ClienteEndereco= null;
+			
+			
+			
+			
+			private function create():void
+			{
+				grid.addEventListener('editRow', iniciaEdicao);
+				grid.addEventListener('deleteRow', deleta);
+				mdlPai.addEventListener(JanelaCadCliente.EV_MUDA_CLIENTE, mudaCliente);
+				popupEditar.parent.removeChild(popupEditar);
+				ibge_municipios = App.single.cache.arrayIBGEMunicipio;
+				ibge_estados = App.single.cache.arrayIBGEEstado;
+				dictEstados = MyArrayUtils.asDictionary(ibge_estados,"codigo");
+			}
+			private function mudaCliente(ev:Object):void
+			{
+				selectedIndex = 0;
+				grid.dataProvider = null;
+				c = mdlPai.cliente;
+			}
+			
+			
+			
+			
+			
+			
+			private function novoEndereco():void
+			{
+				enderecoEditando = new ClienteEndereco();
+				enderecoEditando.idCliente = c.id;
+				enderecoOriginal = enderecoEditando;
+				//cmbUF.selectedIndex = 0;
+				mostraPopUp();
+			}
+			
+			private function deleta(event:Event):void
+            {
+            	var ce:ClienteEndereco = event.target.data;
+            	ce.isDeletado = !ce.isDeletado;
+            	
+            	if (ce.isDeletado && ce.id==0)
+            	{
+	            	var index:int = c.__enderecos.indexOf(ce);
+	            	c.__enderecos.splice(index, 1);//returns removed items
+            	}
+				grid.dataProvider = c.__enderecos;
+            }
+			private function iniciaEdicao(event:Event):void
+			{
+				enderecoOriginal = event.target.data;
+            	enderecoEditando = enderecoOriginal.clone();//cria um clone
+            	enderecoEditando.isDeletado = false;
+            	
+            	//parametros de comparação são os códigos do ibge
+            	
+        		mostraPopUp();
+			}
+			
+			
+			
+			private function preencheCidadeSeVazio():void
+			{
+				if (enderecoEditando.cidadeIBGE.length<5)
+				{
+					enderecoEditando.ufIBGE = "52";
+					enderecoEditando.cidadeIBGE = "5218805";
+				}
+			}
+			
+			
+			
+			
+			
+			private function filtra_municipios():void
+			{
+				ibge_municipios_filtrados.removeAll();
+				var codUF:String = String(cmbUF.selectedItem.codigo);
+				for each (var mun:IBGEMunicipio in ibge_municipios)
+				{
+					if (mun.codigoEstado==codUF)
+						ibge_municipios_filtrados.addItem( mun );
+				}
+    			for (var i:int=0; i<ibge_municipios_filtrados.length; i++)
+    				if (ibge_municipios_filtrados[i].codigo == enderecoEditando.cidadeIBGE)
+    					cmbMunicipio.selectedItem = ibge_municipios_filtrados[i];
+			}
+			
+			
+			
+			
+			private function mostraPopUp():void
+			{
+				PopUpManager.addPopUp(popupEditar, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupEditar);
+				doBinding();
+				//
+				preencheCidadeSeVazio();
+				cmbUF.selectedItem = dictEstados[enderecoEditando.ufIBGE];
+            	filtra_municipios();
+			}
+			
+			private function doBinding():void
+			{
+				Funcoes.myBind(boundNomeTextInput, "text", enderecoEditando, "campo");
+				Funcoes.myBind(boundLogradouroTextInput, "text", enderecoEditando, "logradouro");
+				Funcoes.myBind(boundNumTextInput, "text", enderecoEditando, "numero");
+				Funcoes.myBind(boundComplTextInput, "text", enderecoEditando, "complemento");
+				Funcoes.myBind(boundBairroTextInput, "text", enderecoEditando, "bairro");
+				Funcoes.myBind(boundCEPTextInput, "text", enderecoEditando, "cep");
+				//Funcoes.myBind(boundUFComboBox, "selectedItem", enderecoEditando, "uf");
+				//Funcoes.myBind(boundMunicipioComboBox, "selectedItem", enderecoEditando, "cidade");
+				Funcoes.myBind(boundTipoComboBox, "selectedItem", enderecoEditando, "tipo");
+				Funcoes.myBind(boundInscEstTextInput, "text", enderecoEditando, "inscr");
+				Funcoes.myBind(boundInscMunTextInput, "text", enderecoEditando, "inscrMun");
+				Funcoes.myBind(boundObsTextInput, "text", enderecoEditando, "obs");
+				
+			}
+			
+			private function navegaCorreio():void
+			{
+				//navigateToURL( new URLRequest( "http://www.correios.com.br/servicos/cep/default.cfm" ), "_blank" );
+				navigateToURL( new URLRequest( "http://www.correios.com.br/servicos/dnec/menuAction.do?Metodo=menuLogradouro" ), "_blank" );
+			}
+			
+			private function load():void
+			{
+				selectedIndex = 1;
+				
+				var param:ParamLoadCliente = new ParamLoadCliente();
+				param.ignorar=true;
+				param.enderecos=true;
+				
+				FcdCliente.unica.Load(mdlPai.cliente.id, param,
+					function(retorno:Cliente):void
+					{
+						c.__enderecos = retorno.__enderecos;
+						selectedIndex = 2;
+						grid.dataProvider = c.__enderecos;
+					}					
+				);
+			}
+            
+			private function concluiEdicao():void
+			{
+				/**INICIO VALIDAÇÃO*/
+				
+				var msg:String = "";
+				if (boundNomeTextInput.length < 3)
+					msg += "Digite o TIPO DO ENDEREÇO\n";
+				if (boundCEPTextInput.length < 8)
+					msg += "Digite o CEP completo";
+				if (boundBairroTextInput.length < 3)		
+					msg += "Digite o BAIRRO\n";
+				if (msg != "")
+				{
+					AlertaSistema.mensagem(msg);
+					return;
+				}
+				/**FIM VALIDAÇÃO*/
+				
+				enderecoEditando.uf = cmbUF.selectedItem.sigla;
+				enderecoEditando.ufIBGE = cmbUF.selectedItem.codigo;
+				enderecoEditando.cidade = cmbMunicipio.selectedItem.nome;
+				enderecoEditando.cidadeIBGE = cmbMunicipio.selectedItem.codigo;
+				
+				//caso seja um novo endereço, adiciona
+				if (enderecoEditando.id==0)
+					c.__enderecos.push(enderecoOriginal);
+				else//caso seja uma edição, transpoe os campos
+				{
+					for each(var campo:String in ClienteEndereco.getCampos())
+					{
+						enderecoOriginal[campo] = enderecoEditando[campo];
+					}
+				}
+				FechaPopUp();
+			}
+			
+			private function FechaPopUp():void
+			{
+				//atualiza na tela
+				grid.dataProvider = c.__enderecos;
+				PopUpManager.removePopUp(popupEditar);
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:ViewStack>

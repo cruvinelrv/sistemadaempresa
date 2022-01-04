@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:Cliente1="janelas.cadastro.Cliente1.*"
+	width="100%" height="100%"
+	themeColor="#3B5998"
+	initialize="init()">
+	
+	<mx:Canvas id="main" width="100%" height="100%">
+		<mx:LinkBar id="lb"
+			dataProvider="{vs}" />
+		<mx:Canvas width="200" height="30" backgroundColor="#ffffff" backgroundAlpha="0"/>
+		<mx:ViewStack id="vs" top="30" width="100%" height="100%" creationPolicy="all">
+			<Cliente1:VisaoCliConsultaNovo id="telaConsultar" label="Consulta / Novo"
+				mdlPai="{this}"
+				showEffect="{WipeDown}" hideEffect="{WipeUp}"/>
+			<Cliente1:VisaoCliEditar id="telaEditar" label="Editar"
+				mdlPai="{this}"
+				showEffect="{WipeDown}" hideEffect="{WipeUp}"/>
+		</mx:ViewStack>
+	</mx:Canvas>
+	<mx:Script>
+		<![CDATA[
+			import SDE.Entidade.Cliente;
+			import SDE.Enumerador.EModo;
+			import mx.effects.WipeDown;
+			import mx.effects.WipeUp;
+			import Core.Alerta.AlertaSistema;
+			import Core.Sessao;
+			
+			public static const EV_MUDA_CLIENTE:String="mudaCliente";
+			
+			[Bindable] private var _cliente:Cliente;
+			public function set cliente(v:Cliente):void
+			{
+				_cliente=v;
+				lb.selectedIndex = (_cliente==null) ? 0 : 1;
+				dispatchEvent(new Event(EV_MUDA_CLIENTE));
+			}
+			public function get cliente():Cliente
+			{
+				return _cliente;
+			}
+			private function init():void
+			{
+				/*
+				if (Sessao.unica.modo==EModo.desenvolvimento)
+				{
+					main.setStyle("backgroundColor", 0x012883);
+					main.setStyle("backgroundAlpha", .3);
+				}
+				/**/
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

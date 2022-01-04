@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabela>
+<e id="z1" modo="zeb"	label="MODELO 1" />
+<e id="z2" modo="zeb"	label="MODELO 2" />
+<e id="p1" modo="pdf"	label="VALUSA"	/>
+<e id="p2" modo="pdf"	label="SOFTS"	/>
+<e id="p3" modo="pdf"	label="MMORENA"	/>
+</tabela>

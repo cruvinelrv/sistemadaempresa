@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	keyDown="kDown(event)"
+	label="PESQUISA MOVIMENTAÇÕES"
+	creationComplete="create()" xmlns:comp="Componentes.comp.*">
+	<mx:Script>
+		<![CDATA[
+			import img.Imagens;
+			import Core.Alerta.AlertaSistema;
+		]]>
+	</mx:Script>
+	<mx:Script source="ConteudoPesquisaMov_script.as"/>
+	<!--
+	<controls:MasterTextInput id="txtIdMov"
+		x="5" y="25" capsType="upercase" onlyRestrict="number"
+		width="30%" height="33"
+		fontSize="20" enter="txt_KEnter()" />
+	-->
+	<mx:HBox>
+		<comp:DateFieldBR id="dtf1"
+			width="150" styleName="padding3"
+			fontSize="20" />
+		<comp:DateFieldBR id="dtf2"
+			width="150" styleName="padding3"
+			fontSize="20" />
+		<comp:Botao1 icone="Pesquisa" width="40" click="btn_click()" />
+	</mx:HBox>
+	
+	<mx:Canvas
+		width="100%" height="70%">
+		
+		<mx:VBox width="100%" height="100%">
+		<mx:DataGrid id="gridRet"
+			themeColor="#3B5998"
+			width="100%" height="100%"
+			styleName="dtgrid">
+			<mx:columns>
+				<mx:DataGridColumn width="16">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Canvas styleName="padding0">
+								<mx:Script>
+									<![CDATA[
+										import img.Imagens;
+									]]>
+								</mx:Script>
+								<mx:Image horizontalCenter="0" verticalCenter="0" width="20" height="20" source="{ Imagens.unica.icn_32_nfe_preenchida }" visible="{ data.isNfePreenchida }" />
+							</mx:Canvas>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="16">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Canvas styleName="padding0">
+								<mx:Script>
+									<![CDATA[
+										import img.Imagens;
+									]]>
+								</mx:Script>
+								<mx:Image horizontalCenter="0" verticalCenter="0" width="20" height="20" source="{ Imagens.unica.icn_32_nfe_enviada }" visible="{ data.isNfeEnviada }" />
+							</mx:Canvas>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Cód" dataField="idMov" textAlign="right"/>
+				<mx:DataGridColumn headerText="Num. NF" dataField="numeroNF"/>
+				<mx:DataGridColumn headerText="Tipo" dataField="tipo"/>
+				<mx:DataGridColumn headerText="Impressão" dataField="impressao"/>
+				<mx:DataGridColumn headerText="Cliente" dataField="idCliente"/>
+				<mx:DataGridColumn headerText="Funcionario" dataField="idCliFunc"/>
+				<mx:DataGridColumn headerText="Detalhes">
+					<mx:itemRenderer>
+						<mx:Component>
+							<comp:Botao1 icone="SetaBai" cor="Cinza" label="detalhes" click="dispatchEvent( new Event('detalhes', true) );" />
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="40" headerText="Seleciona">
+					<mx:itemRenderer>
+						<mx:Component>
+							<comp:Botao1 icone="Confirma" label="" click="dispatchEvent( new Event('seleciona', true) );" />
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+			<!--
+			<mx:columns>
+				<mx:DataGridColumn width="1" headerText="Cód" dataField="idItem" textAlign="right"/>
+				<mx:DataGridColumn width="7" headerText="Nome" dataField="nome" fontWeight="bold" />
+				<mx:DataGridColumn width="4" headerText="Cód Único" dataField="rfUnica"/>
+				<mx:DataGridColumn width="4" headerText="Cód Auxiliar" dataField="rfAuxiliar"/>
+				<mx:DataGridColumn width="3" headerText="Seção" dataField="secao"/>
+				<mx:DataGridColumn width="3" headerText="Marca" dataField="marca"/>
+				<mx:DataGridColumn width="1" headerText="medida" dataField="unidMed"/>
+			</mx:columns>
+						o.idMov = mov.id;
+						o.resumo = mov.resumo;
+						o.tipo = mov.tipo;
+						o.impressao = mov.impressao; 
+						o.idCliente = mov.idCliente;
+						o.idCliFunc = mov.idClienteFuncionarioLogado;
+			-->
+		</mx:DataGrid>
+		
+		</mx:VBox>
+		<mx:HBox id="loading1"
+			backgroundAlpha=".6" backgroundColor="#ffffff" visible="false"
+			width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.swf_loading}" scaleX="3" scaleY="3" />
+		</mx:HBox>
+	</mx:Canvas>
+	
+	<mx:Canvas
+		width="100%" height="30%">
+		
+		<mx:VBox width="100%" height="100%">
+			<mx:DataGrid id="gridMI"
+				themeColor="#3B5998"
+				height="100%">
+				<!--
+				doubleClickEnabled="true" doubleClick="gridRet_dclick()"
+				keyDown="gridRet_kdown(event)"
+				styleName="dtgrid" fontWeight="bold">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Grade" dataField="identificador" />
+					<mx:DataGridColumn headerText="Quant" dataField="qtd" />
+					<mx:DataGridColumn visible="{mostrando_reserva}" headerText="Quant Reserva" dataField="qtdReserva"/>
+					<mx:DataGridColumn visible="{mostrando_reserva}" headerText="Saldo" dataField="qtdSaldo"/>
+				</mx:columns>
+				-->
+			</mx:DataGrid>
+		</mx:VBox>
+		<mx:HBox id="loading2"
+			backgroundAlpha=".6" backgroundColor="#ffffff" visible="false"
+			width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.swf_loading}" scaleX="3" scaleY="3" />
+		</mx:HBox>
+	</mx:Canvas>
+	<!--
+	
+		doubleClickEnabled="true" doubleClick="grid_dclick()"
+		keyDown="grid_kdown(event)"
+	-->
+</mx:VBox>

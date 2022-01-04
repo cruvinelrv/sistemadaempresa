@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="Componentes.comp.*" xmlns:intelli="br.absolutobrasil.intelli.*" xmlns:master="com.flexpernambuco.controls.*" xmlns:abas="janelas.cadastro.ItemProduto1.abas.*"
+	width="100%" height="100%"
+	backgroundColor="#EFEFEF" fontSize="12"
+	preinitialize="inicia()"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%">
+		<mx:Label id="lblTitulo" width="100%" selectable="true" fontSize="14" fontWeight="bold" />
+	</mx:HBox>
+	
+	<mx:Canvas width="100%" height="160" >
+		<mx:VBox width="100%" height="100%" 
+			verticalGap="0" paddingLeft="5">
+			<mx:HBox>
+				<mx:VBox verticalGap="0">
+					<mx:Label text="Unid Med:"/>
+					<mx:ComboBox id="cmbUM" width="75" labelField="um" dataProvider="{Constantes.unica.UM}" />
+				</mx:VBox>
+				<mx:VBox verticalGap="0">
+					<mx:Label text="Seção:"/>
+					<mx:ComboBox id="cmbSecao" width="300" labelField="__orderBy"/>	
+				</mx:VBox>
+				<mx:VBox verticalGap="0">
+					<mx:Label text="Marca:"/>
+					<mx:ComboBox id="cmbMarca" width="225" labelField="__orderBy" />
+				</mx:VBox>
+				<mx:VBox verticalGap="0">
+					<mx:Label text="Tipo Ident:"/>
+					<mx:ComboBox id="cmbTipoIdent" width="226"
+						dataProvider="{ EItemTipoIdent.getCampos() }" labelFunction="fn_ComboTipoIdent_Label"/>
+				</mx:VBox>
+			</mx:HBox>
+			
+			<mx:HBox horizontalGap="5" verticalCenter="0">
+				<mx:VBox verticalGap="0">
+					<mx:Label text="Nome: " id="label1" styleName="lbl"/>
+					<master:MasterTextInput id="boundNomeTextInput" width="550" capsType="upercase"
+						 styleName="padding3" maxChars="120"/>
+				</mx:VBox>
+				<mx:VBox verticalGap="0">
+					<mx:Label text="Cód Único: " id="label2" styleName="lbl"/>
+					<master:MasterTextInput id="boundCodUnicoTextInput" width="145" capsType="upercase"
+						 maxChars="20" styleName="padding3"/>
+				</mx:VBox>
+				<mx:VBox verticalGap="0">
+					<mx:Label text="Cód Auxiliar: " id="label3" styleName="lbl"/>
+					<master:MasterTextInput id="boundCodAuxTextInput" width="145" capsType="upercase"
+						 maxChars="20" styleName="padding3"/>
+				</mx:VBox>
+			</mx:HBox>
+			
+			<mx:HBox horizontalGap="5" verticalCenter="0" width="850">
+				<mx:VBox verticalGap="0">
+					<mx:Label text="Rf. Peso: " styleName="lbl"/>
+					<mx:NumericStepper id="boundRfPeso" width="145" stepSize="0.01" minimum="0" maximum="999999"/>
+				</mx:VBox>
+				<mx:HBox verticalAlign="middle" height="50" width="100%" horizontalAlign="right">
+					<mx:CheckBox id="doundCmbDesuso" label="Produto em Desuso"/>
+				</mx:HBox>
+			</mx:HBox>
+			
+		</mx:VBox>
+		<mx:VBox right="10" bottom="10">
+			<comp:Botao1 id="btn1" label="Não Salvar" cor="Vermelho" icone="Cancela" click="cancelar()" />
+			<comp:Botao1 id="btn2" label="Salvar e Fechar" cor="Amarelo" icone="Salva" click="{ /*setTimeout(salvar, 500, false)*/salvar(false) }" />
+			<comp:Botao1 id="btn3" label="Salvar e Continuar" cor="Verde" icone="Salva" click="{ /*setTimeout(salvar, 500, true)*/salvar(true) }" />
+		</mx:VBox>
+	</mx:Canvas>
+	
+	<mx:LinkBar width="100%" dataProvider="{vs}"
+		backgroundColor="#D5D5D5"
+		borderColor="#D5D5D5" borderThickness="0" borderStyle="solid" cornerRadius="5" />
+	
+	<mx:ViewStack id="vs" width="100%" height="100%"
+		borderColor="#cccccc" borderStyle="inset" borderThickness="1">
+		<mx:VBox width="100%" height="100%" label="Obs"
+			styleName="padding10" verticalGap="5">
+			<mx:Label
+				fontWeight="bold" fontSize="14" 
+				text="Observações sobre o produto"/>
+			<mx:TextArea id="boundObsTextInput" width="80%" height="80%"/>
+		</mx:VBox>
+		
+		<abas:AbaPrecos label="Preços" mdlPai="{mdlPai}"/>
+		
+		<abas:AbaLocacao label="Locação" mdlPai="{mdlPai}"/>
+		
+		<abas:AbaTributacao label="Tributação" mdlPai="{mdlPai}"/>
+		
+		<abas:AbaEtiquetas id="abaEtiquetas" mdlPai="{mdlPai}"/>
+		
+		<!--
+		<abas:AbaFornecedores label="Fornecedores" mdlPai="{mdlPai}"/>
+		
+		<mx:Canvas label="Estoque" />
+		<mx:Canvas label="Fornecedores" />
+		<abas:AbaAvancado label="Avançado" mdlPai="{mdlPai}" />
+		-->
+	</mx:ViewStack>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import SDE.CamadaServico.SItem;
+			import SDE.Enumerador.EItemTipoIdent;
+			import Core.Utils.MyArrayUtils;
+			import mx.controls.Button;
+			import flash.utils.setTimeout;
+			import flash.utils.setInterval;
+			import SDE.Entidade.ItemEmpPreco;
+			import Core.Sessao;
+			import Core.Utils.Constantes;
+			import SDE.FachadaServico.FcdItem;
+			import SDE.Entidade.Item;
+			import SDE.FachadaServico.FcdCliente;
+			import mx.formatters.DateFormatter;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.Funcoes;
+			
+			[Bindable] public var mdlPai:JanelaCadItemProduto;			
+			[Bindable] private var it:Item;
+			
+			private var tipoIdentTexto:Array = null;
+			
+			private function fn_ComboTipoIdent_Label(tipoIdent:String):String
+			{
+				return tipoIdentTexto[tipoIdent];
+			}
+			
+			private function inicia():void
+			{
+				tipoIdentTexto = [];
+				tipoIdentTexto[EItemTipoIdent.grade] = 'Grade';
+				tipoIdentTexto[EItemTipoIdent.identificador] = 'Identificador';
+				tipoIdentTexto[EItemTipoIdent.lote] = 'Lote';
+			}
+			
+			private function create():void
+			{
+				mdlPai.addEventListener(JanelaCadItemProduto.EV_MUDA_ITEM, mudaItem);
+				
+				cmbSecao.dataProvider = mdlPai.secoes;
+				cmbMarca.dataProvider = mdlPai.marcas;
+				
+				
+				var ar:Array = [btn1, btn2, btn3];
+				//considerar transferir o codigo para Botao1
+				for each(var b:Button in ar)
+				{
+					b.addEventListener(MouseEvent.CLICK,
+						function(ev:Event):void
+						{
+							ev.target.visible = false;
+							setTimeout(function():void{ev.target.visible=true;}, 500);
+						}
+					);
+				}
+				
+				if (App.single.ss.idCorp == 44)
+				{
+					abaEtiquetas.enabled = true;
+					abaEtiquetas.label = "Etiquetas";
+				}
+				
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				if (mdlPai.item==null)
+					return;
+				it = mdlPai.item;
+				
+				preencherParaEdicao();
+				doBinding();//assim não precisamos popular de volta a maioria dos campos
+				vs.selectedIndex = 0; //seleciona a aba Observação, abaixo
+				lblTitulo.text = "Código do Item:"+ it.id;	
+			}
+			
+			private function salvar(continuarEditando:Boolean):void
+			{
+				//Inicio da VAlidação
+				var msg:String = null;
+				if (it.nome.length < 3)
+					msg = "Digite um Nome";
+				if (it.rfUnica.length<2)
+					msg = "Digite uma REFERENCIA";
+				if (it.__ie.__preco!=null)
+				{
+					if (it.__ie.__preco.custo == 0)
+						msg = "Digite um PREÇO DE CUSTO";
+					if (it.__ie.__preco.venda == 0)
+						msg = "Digite um PREÇO DE VENDA";
+					if (it.__ie.__preco.compra >= it.__ie.__preco.venda)
+						msg = "COMPRA deve ser menor que VENDA";
+				}
+				if (msg!=null)
+				{
+					AlertaSistema.mensagem(msg);
+					return;
+				}
+				//final da Validação
+				updateListas(); //Atualiza as Listas....Secao/Grupo/subGrupo/Modelo/Marca
+				//var fcd:FcdItem = new FcdItem();
+				SItem.unica.Atualizar(
+					Sessao.unica.idEmp,
+					it, continuarEditando,
+					function(retorno:Item):void
+					{
+						AlertaSistema.mensagem("Salvei");
+						mdlPai.item = (continuarEditando) ? retorno : null;
+					}
+				);
+				
+			}
+			
+			private function doBinding():void
+			{
+				Funcoes.myBind(boundNomeTextInput, "text", it, "nome");
+				Funcoes.myBind(boundCodUnicoTextInput, "text", it, "rfUnica");
+				Funcoes.myBind(boundCodAuxTextInput, "text", it, "rfAuxiliar");
+				Funcoes.myBind(boundObsTextInput, "text", it, "complAplic");
+				Funcoes.myBind(cmbUM, "selectedItem", it, "unidMed");
+				Funcoes.myBind(cmbTipoIdent, "selectedItem", it, "tipoIdent");
+				Funcoes.myBind(boundRfPeso, "value", it, "rfPeso");
+				Funcoes.myBind(doundCmbDesuso, "selected", it, "desuso");
+			}
+			
+			private function cancelar():void
+			{
+				mdlPai.item=null;
+			}
+			
+			private function preencherParaEdicao():void
+			{
+				if (it.idSecao>0)
+				{
+					var dictSecoes:Array = MyArrayUtils.asDictionary(mdlPai.secoes);
+					cmbSecao.selectedItem = dictSecoes[ it.idSecao ];
+				}
+			}
+			
+			private function updateListas():void
+			{
+				if (mdlPai.item==null)
+					return;
+				
+				it.idSecao = cmbSecao.selectedItem.id;
+				it.grupo = cmbSecao.selectedItem.grupo;
+				it.subgrupo = cmbSecao.selectedItem.subgrupo;
+				it.secao = cmbSecao.selectedItem.secao;
+				
+				it.idMarca = cmbMarca.selectedItem.id;
+				it.modelo = cmbMarca.selectedItem.modelo;
+				it.marca = cmbMarca.selectedItem.marca;
+			}
+
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

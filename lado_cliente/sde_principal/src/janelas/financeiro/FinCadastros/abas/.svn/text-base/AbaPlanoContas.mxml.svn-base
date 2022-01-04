@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*" xmlns:CamadaServico="SDE.CamadaServico.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	fontSize="14"
+	creationComplete="create()">
+	
+	<mx:HBox>
+		<mx:VBox>
+			<mx:Label text="CATEGORIA"/>
+			<master:MasterTextInput id="txtNomeCategoria" capsType="upercase" width="100%" enterPressed="novaCategoria()"/>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text=""/>
+			<comp:Botao1 label="Criar Categoria" icone="Adiciona" cor="Cinza" click="novaCategoria()" />
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:HBox>
+		<mx:VBox>
+			<mx:Label text="CATEGORIA"/>
+			<mx:ComboBox id="cmbContasCateg" labelField="nomeContaPai" />
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="CONTA"/>
+			<master:MasterTextInput id="txtNomeConta" capsType="upercase" width="100%"/>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text="TIPO"/>
+			<mx:ComboBox id="cmbTiposPlanos" labelField="sigla" />
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label text=""/>
+			<comp:Botao1 label="Criar Conta" icone="Adiciona" cor="Cinza" click="novaConta()" />
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:DataGrid id="grid" width="100%" height="100%" editable="false"
+		themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+		<mx:columns>
+			<mx:DataGridColumn width="2" dataField="cod" headerText="Código" textAlign="right" />
+			<!--
+			<mx:DataGridColumn width="1" dataField="codCateg" headerText="Categoria" textAlign="right" editable="false" />
+			<mx:DataGridColumn width="1" dataField="codConta" headerText="Conta" textAlign="right" editable="false" />
+			-->
+			<mx:DataGridColumn width="3" dataField="nomeCateg" headerText="Categoria" />
+			<mx:DataGridColumn width="3" dataField="nomeConta" headerText="Conta" />
+			<mx:DataGridColumn width="2" dataField="tipo" headerText="Tipo" />
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao1 cor="Cinza" icone="Cancela" width="220" label="Desfazer Alterações" click="resetar()" />
+		<comp:Botao1 cor="Cinza" icone="Salva" width="220" label="Salvar Alterações" click="salvar()" />
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import Core.Utils.MyArrayUtils;
+			import SDE.Entidade.Finan_Conta;
+
+			import mx.utils.ArrayUtil;
+			import mx.utils.StringUtil;
+
+			import SDE.Entidade.Finan_PlanoConta;
+			import SDE.Entidade.Finan_CentroCusto;
+			import img.Imagens;
+			
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+
+			
+			import SDE.FachadaServico.FcdCorp;
+			import SDE.CamadaServico.SCorp;
+
+			
+			private var planos:Array;
+			private var tiposPlanos:Array;
+			private var planosPai:Array;
+			
+			private function create():void
+			{
+				resetar();
+			}
+			
+			private function resetar():void
+			{
+				planos = Sessao.unica.nuvens.cache.Finan_PlanoConta.concat();
+				tiposPlanos = Sessao.unica.nuvens.cache.Finan_PlanoContaTipo.concat();
+				planos.sortOn("cod");
+				planosPai = [];
+				for each (var xxx:Finan_PlanoConta in planos)
+				{
+					if(xxx.codConta==0)
+						planosPai.push(xxx);
+				}
+				
+				cmbContasCateg.dataProvider = planosPai;
+				cmbTiposPlanos.dataProvider = ["*"].concat(tiposPlanos);
+				preencheGrid();
+			}
+			
+			private function preencheGrid():void
+			{
+				txtNomeCategoria.text = "";
+				txtNomeConta.text = "";
+				//as Dictionary
+				var tiposPlanos_AsDict:Array = MyArrayUtils.asDictionary(tiposPlanos);
+				//
+				var ar:Array = [];
+				for each (var xxx:Finan_PlanoConta in planos)
+				{
+					var o:Object = {};
+					//o.plano = xxx;
+					o.id = xxx.id;
+					o.nomeConta = xxx.nomeConta;
+					o.nomeCateg = xxx.nomeContaPai;
+					o.cod = xxx.cod;
+					if (xxx.idTipoPlanoConta>0)
+						o.tipo = tiposPlanos_AsDict[xxx.idTipoPlanoConta].nome;
+					ar.push(o);
+				}
+				grid.dataProvider = ar;
+				//grid.dataProvider = planos;
+			}
+			
+			private function novaCategoria():void
+			{
+				txtNomeCategoria.setFocus();
+				if(txtNomeCategoria.text == ''){
+					AlertaSistema.mensagem('Digite a Categoria');
+					return;
+				}
+				var xxx:Finan_PlanoConta;
+				for each(xxx in planos)
+				{
+					if(xxx.nomeContaPai == txtNomeCategoria.text)
+					{
+						AlertaSistema.mensagem("Este Plano de Conta já existe.");
+						return;
+					}
+				}
+				xxx = new Finan_PlanoConta();
+				xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.nomeContaPai = txtNomeCategoria.text;
+				xxx.nomeConta = "-";
+				//xxx.idTipoPlanoConta = cmbTiposPlanos.selectedItem.id; //isso não é uma conta
+				
+				planos.push(xxx);
+				preencheGrid();
+			}
+			
+			private function novaConta():void
+			{
+				txtNomeConta.setFocus();
+				if(txtNomeConta.text == ''){
+					AlertaSistema.mensagem('Digite a Categoria');
+					return;
+				}
+				if(cmbContasCateg.selectedIndex < 0){
+					AlertaSistema.mensagem('Selecione a Categoria');
+					return;
+				}
+				if(cmbTiposPlanos.selectedIndex <= 0){
+					AlertaSistema.mensagem('Selecione um Tipo de Plano de Conta');
+					return;
+				}
+				var xxx:Finan_PlanoConta;
+				for each(xxx in planos)
+				{
+					if(xxx.nomeContaPai==cmbContasCateg.selectedLabel && xxx.nomeConta == txtNomeCategoria.text)
+					{
+						AlertaSistema.mensagem("Este Plano de Conta já existe.");
+						return;
+					}
+				}
+				xxx = new Finan_PlanoConta();
+				xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.nomeContaPai = cmbContasCateg.selectedItem.nomeContaPai;
+				xxx.codContaPai = cmbContasCateg.selectedItem.codContaPai;
+				xxx.nomeConta = txtNomeConta.text;
+				xxx.idTipoPlanoConta = cmbTiposPlanos.selectedItem.id;
+				
+				planos.push(xxx);
+				preencheGrid();
+			}
+			
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				
+				for each(var xxx:Finan_PlanoConta in planos)			
+					if(xxx.id==0)
+						arSalvar.push(xxx);
+				
+				Sessao.unica.nuvens.modificacoes.Finan_PlanoConta_Novos(arSalvar,
+					function(retorno:Array):void
+					{
+						AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

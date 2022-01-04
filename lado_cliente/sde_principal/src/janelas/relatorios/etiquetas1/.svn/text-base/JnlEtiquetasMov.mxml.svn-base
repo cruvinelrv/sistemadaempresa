@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	styleName="padding10" fontSize="14" xmlns:CP="Componentes.CP.*" xmlns:comp="Componentes.comp.*"
+	initialize="init()">
+	
+	<mx:HBox width="100%" fontWeight="bold" verticalAlign="middle">
+		<mx:Label text="Movimentação:"/>
+		<CP:PesqMov id="cpMov" width="500" keyUp="cpMov_KeyUp()"/>
+	</mx:HBox>
+	
+	<mx:VBox width="100%" height="100%">
+		
+		<mx:DataGrid id="dgMov"
+			width="100%" height="50%"
+			themeColor="#3B5998"
+			change="dgMov_Change()"
+			dataProvider="{dpMov}">
+			<mx:columns>
+				<mx:DataGridColumn dataField="id" headerText="Cod"/>
+				<mx:DataGridColumn dataField="numeroNF" headerText="Número NF"/>
+				<mx:DataGridColumn labelFunction="fn_lblNomeClienteFornecedor" headerText="Cliente/Fornecedor"/>
+				<mx:DataGridColumn dataField="dthrMovEmissao" headerText="Data"/>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<mx:DataGrid id="dgMovItem"
+			width="100%" height="50%"
+			themeColor="#3B5998"
+			dataProvider="{dpMovItem}">
+			<mx:columns>
+				<mx:DataGridColumn dataField="cod" headerText="Cod"/>
+				<mx:DataGridColumn dataField="codUnico" headerText="Cod Único"/>
+				<mx:DataGridColumn dataField="nome" headerText="Item"/>
+				<mx:DataGridColumn dataField="grade" headerText="Grade/Ident."/>
+				<mx:DataGridColumn dataField="qtd" headerText="Quantidade"/>
+			</mx:columns>
+		</mx:DataGrid>
+		
+	</mx:VBox>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao2 cor="Verde" label="Imprimir Etiquetas" enabled="{dgMov.selectedItem}"
+			click="btnImprimir_Click()"/>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.Sessao;
+			import com.hillelcoren.utils.StringUtils;
+			import mx.utils.StringUtil;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Constantes.Variaveis_SdeConfig;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import Core.Utils.Formatadores;
+			import mx.core.Application;
+			import SDE.Entidade.MovItem;
+			import SDE.Entidade.Mov;
+			import Core.App;
+			import mx.collections.ArrayCollection;
+			
+			
+			[Bindable] private var dpMov:ArrayCollection = new ArrayCollection();
+			[Bindable] private var dpMovItem:ArrayCollection = new ArrayCollection();
+			
+			private function init():void
+			{
+				dpMov = App.single.cache.arraycMov;
+				cpMov_KeyUp();
+			}
+			
+			private function fn_lblNomeClienteFornecedor(mov:Mov, dgc:DataGridColumn):String
+			{
+				if (mov.idCliente != 0)
+					return App.single.cache.getCliente(mov.idCliente).nome;
+				else
+					return "";
+			}
+			
+			private function cpMov_KeyUp():void
+			{
+				var obj:Object = null;
+				if (cpMov.dropDown)
+					cpMov.dropDown.visible = false;
+				dpMov.removeAll();
+				for each (var xxx:Mov in cpMov.dataProvider)
+					dpMov.addItem(xxx);
+			}
+			
+			private function dgMov_Change():void
+			{
+				var idMov:Number = (dgMov.selectedItem).id;
+				
+				dpMovItem.removeAll();
+				for each (var mi:MovItem in App.single.cache.arrayMovItem)
+				{
+					if (mi.idMov == idMov && mi.qtd > 0)
+					{
+						var obj:Object = new Object();
+						obj.cod = mi.id;
+						obj.codUnico = App.single.cache.getItem(mi.idItem).rfUnica;
+						obj.nome = App.single.cache.getItem(mi.idItem).nome;
+						obj.grade = mi.estoque_identificador;
+						obj.qtd = mi.qtd;
+						dpMovItem.addItem(obj);
+					}
+				}
+			}
+			
+			private function btnImprimir_Click():void
+			{
+				var portaCOM:String;
+				if (App.single.idCorp == 44)
+				{
+					portaCOM = App.single.ss.parametrizacao.getParametro(Variaveis_SdeConfig.EMPRESA_ETIQUETA_PORTACOM);
+					if (!StringUtils.beginsWith(portaCOM, "COM"))
+					{
+						AlertaSistema.mensagem("Porta de comunicação com a impressora não configurada adequadamente, contate o suporte para configuração da mesma");
+						return;
+					}
+					App.single.mod.EscreveEtiquetaPorMovEMB((dgMov.selectedItem).id, portaCOM,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+						}
+					);
+				}
+				else if (App.single.idCorp == 56)
+				{
+					App.single.mod.escreveEtiquetaPorMovSETE((dgMov.selectedItem).id, 
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+						}
+					);
+				}
+				else if (App.single.idCorp == 68)
+				{
+					App.single.mod.escreveEtiquetaPorMovWembley((dgMov.selectedItem).id,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+						}
+					);
+				}
+				else if (App.single.idCorp == 53)
+				{
+					portaCOM = App.single.ss.parametrizacao.getParametro(Variaveis_SdeConfig.EMPRESA_ETIQUETA_PORTACOM);
+					if (!StringUtils.beginsWith(portaCOM, "COM"))
+					{
+						AlertaSistema.mensagem("Porta de comunicação com a impressora não configurada adequadamente, contate o suporte para configuração da mesma");
+						return;
+					}
+					App.single.mod.EscreveEtiquetaPorMovObraDensa((dgMov.selectedItem).id, portaCOM,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+						}
+					);
+				}
+				else if (App.single.idCorp == 20)
+				{
+					App.single.mod.escreveEtiquetaPorMovCostaAzul((dgMov.selectedItem).id,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+						}
+					);
+				}
+				else if (App.single.idCorp == 64)
+				{
+					App.single.mod.escreveEtiquetaPorMovModaMorena((dgMov.selectedItem).id,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(App.single.idCorp);
+						}
+					);
+				}
+				else if (App.single.idCorp == 76)
+				{
+					App.single.mod.escreveEtiquetaPorMovAntonietaCasa((dgMov.selectedItem).id,
+						function():void
+						{
+							Application.application.gerenteConexaoDesktop.imprimeEtiquetas(Sessao.unica.idCorp);
+						}
+					);
+				}
+				else
+					AlertaSistema.mensagem("Empresa sem opção de impressão de etiqueta");
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

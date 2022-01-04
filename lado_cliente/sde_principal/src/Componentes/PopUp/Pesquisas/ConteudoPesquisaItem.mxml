@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	
+	label="PRODUTOS E SERVIÇOS">
+	<mx:Script source="ConteudoPesquisaItem_script.as"/>
+	
+	<mx:HBox width="100%" fontSize="10" verticalAlign="middle">
+		<controls:MasterTextInput id="txt"
+			x="5" y="25" capsType="upercase"
+			width="30%" height="33"
+			fontSize="20" enter="txt_KEnter()"/>
+		<mx:VBox height="55" verticalGap="0">
+			<mx:CheckBox id="ckbProduto" label="Produto"/>
+			<mx:CheckBox id="ckbServico" label="Servico"/>
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:DataGrid id="gridRet"
+		width="100%" height="100%"
+		themeColor="#3B5998"
+		doubleClickEnabled="true" doubleClick="grid_dclick()"
+		keyDown="grid_kdown(event)"
+		styleName="dtgrid">
+		<mx:columns>
+			<mx:DataGridColumn width="1" headerText="Tipo">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:Canvas width="100%" height="100%">
+							<mx:Script>
+								<![CDATA[
+									import SDE.Enumerador.EItemTipo;
+								]]>
+							</mx:Script>
+							<mx:Label text="{ (data.tipo==EItemTipo.produto) ? 'P' : 'S' }"/>
+						</mx:Canvas>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Cód" dataField="idItem" textAlign="right"/>
+			<mx:DataGridColumn width="7" headerText="Nome" dataField="nome" fontWeight="bold" />
+			<mx:DataGridColumn width="4" headerText="Cód Único" dataField="rfUnica"/>
+			<mx:DataGridColumn width="4" headerText="Cód Auxiliar" dataField="rfAuxiliar"/>
+			<mx:DataGridColumn width="3" headerText="Seção" dataField="secao"/>
+			<mx:DataGridColumn width="3" headerText="Marca" dataField="marca"/>
+			<mx:DataGridColumn width="2" headerText="medida" dataField="unidMed"/>
+			<mx:DataGridColumn width="2" headerText="Valor" dataField="venda"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+</mx:VBox>

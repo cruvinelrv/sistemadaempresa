@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="Componentes.comp.*"
+	xmlns:CP="Componentes.CaixaPesquisa.CP.*"
+	width="100%" height="100%" fontSize="20"
+	horizontalAlign="center" verticalAlign="middle"
+	themeColor="#3B5998"
+	initialize="init()"
+	currentState="produto">
+	<mx:states>
+	
+		<mx:State name="movimentacao">
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<CP:CPesqMov id="cpMov" labelBtn="" widthBtn="35" widthTxt="100"
+					retorno="retornaMov(event)" cancela="cpMov.limpa()"/>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:Label text="{'Cod. Movimentação:'+idMov }" textAlign="center"/>		
+			</mx:AddChild>
+		</mx:State>
+		
+		
+		
+		<mx:State name="produto" enterState="create()" >
+			<mx:AddChild relativeTo="{conteudo}" position="lastChild">
+				<mx:VBox width="100%" height="100%">
+					<mx:HBox>
+						<CP:CPesqEstoque id="cpEst" labelBtn="" widthBtn="35" widthTxt="300" 
+							retorno="retornaEst(event)"  />
+						
+					</mx:HBox>
+					<mx:HBox verticalAlign="middle" horizontalAlign="center">			
+						<mx:Label id="lblItem" text="" width="300" textAlign="center"/>
+						<mx:NumericStepper id="nsQtd" width="100" height="33" fontSize="22" textAlign="center" minimum="0" maximum="999" />
+						<comp:Botao1 label="Lancar" width="120" icone="SetaBai" cor="Verde"
+							 click="lancar()"/>
+						<comp:Botao1 label="Retirar" width="120" cor="Verde"
+							 click="retirar()"/>
+					</mx:HBox>
+					
+					<mx:DataGrid id="grid" dataProvider="{arIEE}"
+						 themeColor="#3B5998"
+							width="100%" height="100%" rowCount="6">
+							<mx:columns>
+								<mx:DataGridColumn width="9" headerText="Produto" dataField="nome" />
+								<mx:DataGridColumn width="1" headerText="qtd" dataField="qtd" />
+							</mx:columns>
+						</mx:DataGrid>
+						
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		
+		
+	</mx:states>
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize target="{conteudo}"/>
+		</mx:Transition>
+	</mx:transitions>
+	
+	<mx:Style>
+		.head{color:#ffffff}
+	</mx:Style>
+	
+	
+	<mx:VBox width="700" height="500"
+		horizontalAlign="center" verticalAlign="middle"
+		textAlign="left">
+		<!--
+		<mx:HBox>
+			<mx:Label width="120" text="Modelo:"/>
+			<mx:ComboBox id="cmbEtiquetaModelo" width="300" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label width="120" text="Buscar Por:"/>
+			<mx:ComboBox id="cmbRelatorios" width="300" change=" mudaState() " />
+		</mx:HBox>
+		
+		
+		
+		
+		
+			visible="{(cmbRelatorios.selectedIndex>0)}"
+		-->
+		<mx:HBox>
+			<mx:Label text="Saltar" />
+			<mx:NumericStepper id="nsSaltar" maximum="30"
+				valueCommit="{
+					if (nsSaltar.value > qtdMaxEtiquetas)
+					{
+						nsSaltar.value=0;
+						Alert.show('Muitas Etiquetas');
+					}
+					mudaQtd();
+				}" />
+			<mx:Label text="Etiquetas" />
+		</mx:HBox>
+		<mx:HBox id="conteudo" width="100%" />
+		<mx:Label text="{qtdMaxEtiquetas} Etiquetas Restantes" />
+		<mx:Button id="btnGerar"
+			label="GERAR" icon="{Imagens.unica.icn_64_impressora}"
+			click="btnGerar_Click()"
+			styleName="padding10" />	
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.Base64Encoder;
+			import Core.Utils.EsquemaCores;
+			import SDE.Parametro.ParamLoadItem;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import Core.Alerta.AlertaSistema;
+			import img.Imagens;
+			import Core.Utils.Formatadores;
+			import Core.Ev.EvRetornaArray;
+			import flash.net.navigateToURL;
+			import mx.states.State;
+			import SDE.Enumerador.EModo;
+			import SDE.Entidade.Item;
+			import SDE.Entidade.ItemEmpEstoque;
+			import img.Imagens;
+			import mx.effects.WipeDown;
+			import mx.effects.WipeUp;
+			import Core.Sessao;	
+			
+			private var it:Item = null;
+			
+			[Bindable] private var arIEE:ArrayCollection = null;
+			[Bindable] private var idMov:Number=0;
+			
+			[Bindable] private var qtdMaxEtiquetas:Number=0;
+			
+			private function init():void
+			{
+				/*
+				var ar:Array = ['escolha...'];
+				for each (var st:* in this.states)
+				{
+					ar.push(st.name);
+				}
+				cmbRelatorios.dataProvider = ar;
+				cmbEtiquetaModelo.dataProvider=['escolha...','valusa','sofistique'];//,'mauro'	
+				*/	
+			}
+			
+			private function getModelo():String
+			{
+				if (Sessao.unica.idCorp==2)
+					return "modelo02";
+				return "modelo01";
+			}
+			
+			
+			private function create():void
+			{
+				var plItem:ParamLoadItem = new ParamLoadItem();
+				plItem.estoques =  true;
+				plItem.precos = true;
+				cpEst.pLoad = plItem;
+				mudaQtd();
+			}
+			/*
+			private function mudaState():void
+			{
+				this.currentState = (cmbRelatorios.selectedIndex==0) ? null : cmbRelatorios.selectedLabel;
+			}
+			*/
+			private function retornaMov(ev:EvRetornaArray):void
+			{
+				idMov = ev.retorno[0].id;
+				AlertaSistema.mensagem("IDmov:"+idMov);
+			}
+			
+			private function retornaEst(ev:EvRetornaArray):void
+			{
+				if(ev.retorno.length == 0)
+					return;
+				it = ev.retorno[0];
+				var iee:ItemEmpEstoque = it.__estoques[0];
+				lblItem.text = "["+iee.identificador+"]"+ it.nome;
+			}
+			
+			private function lancar():void
+			{
+				if (nsQtd.value<1)
+					return;
+					
+				if (nsQtd.value > qtdMaxEtiquetas)
+				{
+					Alert.show("Muitas Etiquetas");
+					return;
+				}
+				
+				if(it == null)
+				{
+					return;
+				}
+				if(arIEE == null)
+				{
+					arIEE = new ArrayCollection();
+				}
+				
+				var iee:ItemEmpEstoque = it.__estoques[0];
+				iee.qtd = nsQtd.value;
+				if( iee == null){
+					Alert.show();
+				}
+				var obj:Object = new Object();
+				obj.nome = it.nome;
+				obj.qtd = nsQtd.value;
+				obj.idIEE = iee.id;
+				arIEE.addItem(obj);
+				grid.dataProvider = arIEE;
+				mudaQtd();
+			}
+			
+			private function retirar():void
+			{
+				if(grid.selectedIndex == -1)
+					return;
+				var index:int = grid.selectedIndex;	
+				arIEE.removeItemAt(index);	
+				try
+				{
+					grid.selectedIndex = index;
+				}
+				catch (er:Error)
+				{
+					grid.selectedIndex = arIEE.length-1;
+				}	
+				mudaQtd();
+			}
+			
+			private function mudaQtd():void
+			{
+				qtdMaxEtiquetas
+					= (Sessao.unica.idCorp==2)
+					? 30
+					: 27;
+					
+				qtdMaxEtiquetas-=nsSaltar.value;
+				
+				for each (var iee:* in arIEE)
+				{
+					qtdMaxEtiquetas -= iee.qtd;
+				}
+				
+				
+			}
+			
+			private function btnGerar_Click():void
+			{
+				//sem modelo
+				/*
+				if (cmbEtiquetaModelo.selectedIndex==0)
+				{
+					AlertaSistema.mensagem("Escolha um modelo de etiqueta");
+					return;
+				}
+				*/
+				var url:URLRequest = new URLRequest("Imprime.swf");
+				var vars:URLVariables = new URLVariables();
+				url.data = vars;
+				vars.idCorp = Sessao.unica.idCorp;
+				vars.idEmp = Sessao.unica.idEmp;
+				vars.tipo = "produto";//cmbRelatorios.selectedLabel;
+				vars.tipo_impressao = "etiqueta";
+				vars.etiqueta = getModelo();//cmbEtiquetaModelo.selectedLabel;
+				vars.saltar = nsSaltar.value;
+				
+				var enc:Base64Encoder = new Base64Encoder();
+				enc.encodeUTFBytes("corp"+vars.idCorp);
+				vars.hash = enc.toString();
+                
+				
+				
+				switch(vars.tipo)
+				{
+					case "movimentacao":
+						vars.idMov = idMov;
+						Alert.show("mov:"+idMov);
+						break;
+					case "produto":
+						vars.total_pares = arIEE.length;
+						for (var i:int=0; i < arIEE.length; i++)
+						{
+							var obj:Object  = arIEE[i];
+							vars["lista"+i] = obj.idIEE+","+obj.qtd;
+						}
+						break;
+				}
+				navigateToURL(url, "_blank");
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:Janelas="Core.Janelas.*" xmlns:Alerta="Core.Alerta.*" xmlns:FoldPopup="Core.FoldPopup.*"
+	layout="absolute"
+	initialize="init()"
+	creationComplete="create()"
+	pageTitle="S.D.E - SISTEMA DA EMPRESA - MULTISOFT SISTEMAS - (64) 3621.4579">
+	<!--
+	<mx:Model id="modeloMunicipios" source="xml/municipios.xml"/>
+	<mx:Model id="modeloCFOP" source="xml/tbl_cfop.xml"/>
+	
+	-->
+	<mx:Style source="css/principal.css" />
+	<mx:Style source="css/autocomplete.css" />
+	<mx:Style source="css/WindowsXP_default.css"/>
+	
+	<!-- sim, a ordem importa
+	-->
+	<Janelas:GerenteJanelas id="gerenteJanelas"
+		RetornoLogin="{ janelaLogin_trata_retornoLogin(event) }"
+		BaixouTodosCache="{ gerenteJanela_trata_baixouTodosCache() }" />
+	<FoldPopup:GerenteFoldPopup id="gerenciadorFold" />
+	
+	<!--
+	<mx:Button click="{ Teste() }" left="100" top="100" width="200" height="40" />
+	<mx:ComboBox id="grid1" dataProvider="{Sessao.unica.municipios.uf}" labelField="n" />
+	<mx:DataGrid dataProvider="{grid1.selectedItem.m}" y="200" />
+	<Alerta:GerenciadorAlerta id="gerenteAlerta"/>
+	<mx:Button label="TESTE" fontSize="20" left="50" bottom="50" click="Teste()" />
+	-->
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import Core.ConexaoDesktop.ConnDesktop;
+			import Core.ConexaoDesktop.GerenteConexaoDesktop;
+			import SDE.CamadaNuvem.NuvemListagem;
+			import Core.Ev.EventoGenerico;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.http.HTTPService;
+			import flash.utils.setTimeout;
+			import SDE.CamadaServico.SCorp;
+			import SDE.Enumerador.EValorEspecie;
+			import mx.controls.Alert;
+			import SDE.FachadaServico.FcdCorp;
+			import SDE.Enumerador.EModo;
+			import SDE.Entidade.Item;
+			import Core.Alerta.AlertaSistema;
+			import Core.FoldPopup.FoldPopupPesquisa;
+			import SDE.Parametro.ParamLoadItem;
+			import SDE.Parametro.ParamFiltroItem;
+			import Core.Sessao;
+			import SDE.FachadaServico.FcdLogin;
+			
+			
+			private function janelaLogin_trata_retornoLogin(e:EventoGenerico):void
+			{
+				if (e.bool)
+				{
+					sessao.logar(e.array[0],e.array[1],e.array[2]);
+					sessao.nuvens.Inicializa();
+				}
+				
+			}
+			
+			private function gerenteJanela_trata_baixouTodosCache():void
+			{
+				//executa ações QUANDO o download de dados estiver completo.
+			}
+			
+			private function Teste():void
+			{
+				
+				var s:App = App.single;
+				Alert.show( App.single.cache.arrayCliente.length.toString()+" clientes foram baixados localmente" );
+				
+			}
+			
+			public var sessao:Sessao = new Sessao();
+			
+			private function init():void
+			{
+				
+			}
+			
+			[Bindable] public var gerenteConexaoDesktop:GerenteConexaoDesktop;
+			[Bindable] public var ProxyEstaAberto:Boolean = false;
+			
+			private function create():void
+			{
+				
+				if (parameters["proxy"]!=null)
+				{
+					gerenteConexaoDesktop = new GerenteConexaoDesktop(parameters["receiverweb"],parameters["receiverproxy"]);
+					gerenteConexaoDesktop.pingaProxy();
+					//gerente.addEventListener(ConnDesktop.RetornoTEF, fn_trata_RetornoTEF);
+				}
+				else
+				{
+					//AlertaSistema.mensagem("O SDE não está conectado com os periféricos deste computador");
+				}
+				
+				Alert.yesLabel = "sim";
+				Alert.noLabel = "não";
+				Alert.cancelLabel = "cancelar";
+				/**/
+				
+				FcdLogin.unica.ValidaVersao("1.0",//isso vai sair
+					function(modo:String):void
+					{
+						if (modo==null)
+							navigateToURL(new URLRequest("http://sde.sistemadaempresa.com.br/"), "_self");
+						else
+						{
+							
+							for (var i:int=0; i<5; i++)
+							{
+								
+								/*
+								setTimeout( 
+									function():void{
+										try {	StyleManager.loadStyleDeclarations("css/principal.swf");	} catch(err:Error) {}
+									},500 * i
+								);
+								
+								setTimeout( 
+									function():void{
+										try {	StyleManager.loadStyleDeclarations("css/WindowsXP_default.swf");	} catch(err:Error) {}
+									},500 * i
+								);
+								*/
+								
+							}
+							
+							this.visible=true;
+							
+							Sessao.unica.modo = modo;
+							Sessao.unica.versao = "v1.0";
+							var versao:String = Sessao.unica.versao;
+							if (modo!=EModo.producao.toString())
+								versao+=" - "+modo;
+							gerenteJanelas.versao = versao;
+						}
+					}
+				);
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:Application>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Body xmlns="org.print.*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="create()"
+	paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0"
+	>
+
+	<ReportDataGrid width="100%" height="100%" dataProvider="{dados}" fontSize="9"
+		rowHeight="17"
+	paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0"
+		 >
+		<columns>
+			<mx:DataGridColumn width="1" headerText="CÓD." dataField="id"/>
+			<mx:DataGridColumn width="3" headerText="CPF/CNPJ" dataField="cpf_cnpj"/>
+			<mx:DataGridColumn width="8" headerText="NOME" dataField="nome"/>
+			<mx:DataGridColumn width="4" headerText="CIDADE" dataField="cidade"/>
+			<mx:DataGridColumn width="4" headerText="CONTATOS" dataField="contato"/>
+		</columns>
+	</ReportDataGrid>
+
+	<mx:Script>
+		<![CDATA[
+			import flash.text.engine.BreakOpportunity;
+			import Core.Utils.Funcoes;
+			import mx.controls.Alert;
+			import SDE.Entidade.Cliente;
+			import impressoes.relatorios.modelos.ModeloCliente;
+			
+			public override function converteDados(origem:Array):Array
+			{
+				//origem.sortOn("nome");
+				var retorno:Array = [];
+				for each(var cli:Cliente in origem){
+					//var pes:Pessoa = cli.__pessoa;
+					var mc: ModeloCliente= new ModeloCliente();
+					mc.nome = cli.nome;
+					mc.id =  cli.id;
+					mc.cpf_cnpj = Funcoes.MascaraCPF(cli.cpf_cnpj);
+					/*
+					var maior:int = 0;
+					if(pes.__enderecos.length > pes.__contatos.length)
+						maior = pes.__enderecos.length;
+					else
+						maior = pes.__contatos.length;
+						
+					for(var i:int = 0; i<maior; i++){
+						//preencher endereco
+						if(i < pes.__enderecos.length){
+							var pe:PessoaEndereco = pes.__enderecos[0];
+							mc.cidade = pe.cidade;
+							mc.uf = pe.uf;
+						}
+						//preencher contatos
+						if(i < pes.__contatos.length){
+							var pc:PessoaContato = pes.__contatos[0];
+							mc.contato = pc.campo+":"+pc.valor ;
+						}
+						retorno.push(mc);	
+					}
+					*/
+					/*
+					for(var j:int =0; j < pes.__enderecos.length; j++)
+					{
+						var end:PessoaEndereco = pes.__enderecos[j];
+						mc.cidade += end.cidade+"-"+end.uf; 
+						break;	
+					}
+					for(var i:int =0; i < pes.__contatos.length; i++)
+					{
+						var contato: PessoaContato =  pes.__contatos[i];
+						mc.contato += contato.campo+":"+contato.valor;
+						break;
+					}
+					retorno.push(mc);
+					*/
+				}
+				retorno.sortOn("nome");
+				return retorno;
+			}
+			
+			private function create():void
+			{
+				//var a:Object = dados;
+			}
+		]]>
+	</mx:Script>
+	
+</Body>

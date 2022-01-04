@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:comp="Componentes.comp.*"
+	xmlns:Combo="SDE.Componentes.Combo.*"
+	xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*"
+	xmlns:CP="Componentes.CP.*"
+	xmlns:ns="Componentes.CP.CP_Rend.*"	
+	xmlns:master="com.flexpernambuco.controls.*"
+	xmlns:SDE="Componentes.SDE.*"
+	
+	width="100%" height="100%"
+	verticalGap="0"
+	color="#333333"
+	styleName="padding3">
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:ViewStack id="vs" width="100%" height="100%" verticalCenter="true" creationPolicy="all">
+		
+		<!-- vs INDEX:0 -->
+		<mx:HBox id="Menu" width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" fontSize="30" fontWeight="bold"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:Button label="Lançamento de Rota" textAlign="center" fontSize="17" width="240" height="80" click="vs.selectedIndex = 1;"/>
+			<mx:Button label="Recebimento de Rota" textAlign="center" fontSize="17" width="240" height="80" click="vs.selectedIndex = 2;"/>
+			<mx:Button label="Folha de Pagamento" textAlign="center" fontSize="17" width="240" height="80" click="vs.selectedIndex = 3;"/>
+						
+		</mx:HBox>
+		
+		<!-- vs INDEX:1 -->
+		<mx:VBox width="100%" height="100%" fontSize="14" fontWeight="bold"
+			verticalAlign="middle" horizontalAlign="center" 
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			<mx:VBox width="100%" id="placeHolderNovoCadastro"/>
+			
+			<mx:VBox width="100%" height="100%" fontSize="14">
+				<mx:HBox width="100%" horizontalAlign="right" verticalAlign="middle" verticalGap="0">
+					<mx:HBox verticalAlign="middle" fontSize="24">
+						<mx:Image source="{Imagens.unica.icn_64_formaspgto}"/>
+						<mx:Label text="Lançamento da Rota"/>
+					</mx:HBox>
+					<mx:VBox width="100%" horizontalAlign="right">
+						<mx:HBox width="100%" horizontalAlign="right">
+							<mx:Button label="Menu" icon="{Imagens.unica.icn_16_listas}" click="vs.selectedChild = Menu;"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox horizontalAlign="center" themeColor="#3B5998" width="100%">
+					<mx:HRule width="90%"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalAlign="right" verticalAlign="middle" verticalGap="0">
+					<mx:HBox verticalAlign="middle" fontSize="14">
+						<mx:Label text="Controle de Rota nº"/>
+						<master:MasterTextInput id="txtNumCRL" onlyRestrict="number" width="50"/>
+					</mx:HBox>
+					<mx:VBox width="100%" horizontalAlign="right">
+						<mx:HBox width="100%" horizontalAlign="right">
+							<mx:Button toolTip="Novo" icon="{Imagens.unica.icn_32_adiciona}" width="50"/>
+							<mx:Button toolTip="Editar" icon="{Imagens.unica.icn_32_edita}" width="50"/>
+							<mx:Button toolTip="Buscar" icon="{Imagens.unica.icn_32_busca}" width="50"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox horizontalAlign="center" themeColor="#3B5998" width="100%">
+					<mx:HRule width="90%"/>
+				</mx:HBox>
+				
+				<mx:HBox verticalAlign="middle" verticalGap="0">
+					<mx:VBox width="100" verticalAlign="middle" fontSize="24">
+					</mx:VBox>
+					<mx:VBox width="200">
+						<mx:Label text="Data da Saída da Rota:"/>
+						<comp:DateFieldBR id="dtfDataFluxoCaixa" selectedDate="{new Date()}"/>
+					</mx:VBox>
+					<mx:VBox width="200">
+						<mx:Label text="Previsão de Retorno:"/>
+						<comp:DateFieldBR id="dtfDataLancamento" selectedDate="{new Date()}"/>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox verticalAlign="middle" verticalGap="0">
+					<mx:VBox width="100" verticalAlign="middle" fontSize="24">
+					</mx:VBox>
+					<mx:VBox width="250">
+						<mx:Label text="Conta do Movimento:"/>
+						<Combo:CmbFinan_Conta id="cmbContaMovimento" width="200"/>
+					</mx:VBox>
+					<mx:VBox width="250">
+						<mx:Label text="Quantidade Estimada de Visitas:"/>
+						<mx:NumericStepper id="nsQuantidadeEstimada" stepSize="0.01" minimum="0" maximum="999999" width="200"/>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox horizontalAlign="center" themeColor="#3B5998" width="100%">
+					<mx:HRule width="90%"/>
+				</mx:HBox>	
+				
+				<mx:HBox verticalAlign="middle" horizontalAlign="center" width="100%">					
+					<mx:VBox verticalAlign="middle">		
+						<mx:HBox width="250">
+							<mx:Label text="Centro de Custo:"/>
+						</mx:HBox>
+						<mx:DataGrid id="dgCentroCusto" top="false" width="250" headerHeight="0">
+							<mx:columns>
+								<mx:DataGridColumn dataField="id" fontSize="12" headerText="Nome" />
+								<mx:DataGridColumn headerText=" ">
+									<mx:itemRenderer>
+										<mx:Component>
+											<mx:Button
+												width="22" themeColor="#840000"
+												label="" icon="{Imagens.unica.icn_16_cancela}"
+												click="dispatchEvent(new Event('deleteRow', true))">
+												<mx:Script>
+													<![CDATA[
+														import img.Imagens;
+													]]>
+												</mx:Script>
+											</mx:Button>
+										</mx:Component>
+									</mx:itemRenderer>
+								</mx:DataGridColumn>
+							</mx:columns>
+						</mx:DataGrid>
+						<mx:HBox width="100%" horizontalAlign="right" fontSize="16" fontWeight="bold">
+							<SDE:Botao height="30" width="100" fontSize="12" label="Adicionar" icon="{Imagens.unica.icn_16_adiciona}" textAlign="center"/>
+						</mx:HBox>
+					</mx:VBox>
+					
+					<mx:VBox verticalAlign="middle">		
+						<mx:HBox width="250">
+							<mx:Label text="Ajudante:"/>
+						</mx:HBox>
+						<mx:DataGrid id="dgCentroCustoAjudante" top="false" width="250" headerHeight="0">
+							<mx:columns>
+								<mx:DataGridColumn dataField="id" fontSize="12" headerText="Nome" />
+								<mx:DataGridColumn headerText=" ">
+									<mx:itemRenderer>
+										<mx:Component>
+											<mx:Button
+												width="22" themeColor="#840000"
+												label="" icon="{Imagens.unica.icn_16_cancela}"
+												click="dispatchEvent(new Event('deleteRow', true))">
+												<mx:Script>
+													<![CDATA[
+														import img.Imagens;
+													]]>
+												</mx:Script>
+											</mx:Button>
+										</mx:Component>
+									</mx:itemRenderer>
+								</mx:DataGridColumn>
+							</mx:columns>
+						</mx:DataGrid>
+						<mx:HBox width="100%" horizontalAlign="right" fontSize="16" fontWeight="bold">
+							<SDE:Botao height="30" width="100" fontSize="12" label="Adicionar" icon="{Imagens.unica.icn_16_adiciona}" textAlign="center"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox horizontalAlign="center" themeColor="#3B5998" width="100%">
+					<mx:HRule width="90%"/>
+				</mx:HBox>
+		
+				<mx:HBox height="100%" width="100%" verticalAlign="middle" horizontalAlign="right" fontSize="16" fontWeight="bold">
+					<mx:Button height="30" width="100" label="Cancelar" textAlign="center"/>
+					<mx:Button height="30" width="100" label="Salvar" textAlign="center"/>
+				</mx:HBox>
+			</mx:VBox>
+		</mx:VBox>
+		
+		<!-- vs INDEX:2 -->
+		<mx:VBox width="100%" height="100%" fontSize="14" fontWeight="bold"
+			verticalAlign="middle" horizontalAlign="center" 
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			<mx:VBox width="100%" id="placeHolderRecebimentodeRota"/>
+			
+			<mx:VBox width="100%" height="100%" fontSize="14">
+				<mx:HBox width="100%" horizontalAlign="right" verticalAlign="middle" verticalGap="0">
+					<mx:HBox verticalAlign="middle" fontSize="24">
+						<mx:Image source="{Imagens.unica.icn_64_formaspgto}"/>
+						<mx:Label text="Recebimento da Rota"/>
+					</mx:HBox>
+					<mx:VBox width="100%" horizontalAlign="right">
+						<mx:HBox width="100%" horizontalAlign="right">
+							<mx:Button label="Menu" icon="{Imagens.unica.icn_16_listas}" click="vs.selectedChild = Menu;"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox horizontalAlign="center" themeColor="#3B5998" width="100%">
+					<mx:HRule width="90%"/>
+				</mx:HBox>
+				
+				<mx:HBox width="100%" horizontalAlign="right" verticalAlign="middle" verticalGap="0">
+					<mx:HBox verticalAlign="middle" fontSize="14">
+						<mx:Label text="Controle de Rota nº"/>
+						<master:MasterTextInput id="txtNumCRR" onlyRestrict="number" width="50" enabled="false"/>
+						<mx:Label text="Conta do Movimento:" width="160"/>
+						<mx:Label id="txtContaMov" text="TESTE" width="200"/>
+						<mx:Label text="Status:" width="55"/>
+						<mx:Label id="txtStatus" text="TESTE" color="red" width="200"/>
+					</mx:HBox>
+					<mx:VBox width="100%" horizontalAlign="right">
+						<mx:HBox width="100%" horizontalAlign="right">
+							<mx:Button toolTip="Editar" icon="{Imagens.unica.icn_32_edita}" width="50"/>
+							<mx:Button toolTip="Buscar" icon="{Imagens.unica.icn_32_busca}" width="50"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox horizontalAlign="center" themeColor="#3B5998" width="100%">
+					<mx:HRule width="90%"/>
+				</mx:HBox>
+				
+				<mx:HBox verticalAlign="middle" verticalGap="0">
+					<mx:VBox verticalAlign="middle" verticalGap="0">
+						<mx:HBox verticalAlign="middle" verticalGap="0">
+							<mx:VBox width="200">
+								<mx:Label text="Data da Saída da Rota:"/>
+								<master:MasterTextInput id="dtfDataFluxoCaixaR" width="150" enabled="false"/>
+							</mx:VBox>
+							<mx:VBox width="200">
+								<mx:Label text="Previsão de Retorno:"/>
+								<master:MasterTextInput id="dtfDataLancamentoR" width="150" enabled="false"/>
+							</mx:VBox>
+							<mx:VBox width="150">
+								<mx:Label text="Retorno:"/>
+								<comp:DateFieldBR id="dtfDataRecebimentoR" selectedDate="{new Date()}"/>
+							</mx:VBox>
+						</mx:HBox>
+						<mx:HBox verticalAlign="middle" verticalGap="0">
+							<mx:VBox width="250">
+								<mx:Label text="Quantidade Estimada de Visitas:"/>
+								<mx:NumericStepper id="nsQuantidadeEstimadaR" stepSize="1" minimum="0" maximum="999999" width="200" enabled="false"/>
+							</mx:VBox>
+							<mx:VBox width="250">
+								<mx:Label text="Quantidade de Visitas Efetuadas:"/>
+								<mx:NumericStepper id="nsQuantidadeEfetuadaR" stepSize="1" minimum="0" maximum="999999" width="200"/>
+							</mx:VBox>
+						</mx:HBox>
+					</mx:VBox>
+					<mx:VBox verticalAlign="middle">		
+						<mx:HBox width="200">
+							<mx:Label text="Centro de Custo:"/>
+						</mx:HBox>
+						<mx:DataGrid id="dgCentroCustoR" top="false" width="200" height="100" headerHeight="0">
+							<mx:columns>
+								<mx:DataGridColumn dataField="id" fontSize="12" headerText="Nome" />
+							</mx:columns>
+						</mx:DataGrid>
+					</mx:VBox>
+					<mx:VBox verticalAlign="middle">		
+						<mx:HBox width="200">
+							<mx:Label text="Ajudante:"/>
+						</mx:HBox>
+						<mx:DataGrid id="dgCentroCustoAjudanteR" top="false" width="200" height="100" headerHeight="0">
+							<mx:columns>
+								<mx:DataGridColumn dataField="id" fontSize="12" headerText="Nome" />
+							</mx:columns>
+						</mx:DataGrid>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox horizontalAlign="center" themeColor="#3B5998" width="100%">
+					<mx:HRule width="90%"/>
+				</mx:HBox>
+				
+				<mx:HBox verticalAlign="middle" verticalGap="0" width="90%">
+					<mx:VBox width="100" verticalAlign="middle" fontSize="24">
+					</mx:VBox>
+					<mx:VBox width="100%" verticalAlign="middle">
+						<mx:HBox width="200" verticalAlign="middle">
+							<mx:Label text="Total: R$" fontWeight="bold" fontSize="14"/>
+							<mx:Label text="50.000,00" fontWeight="bold" fontSize="18"/>
+						</mx:HBox>
+						<mx:HBox width="200" verticalAlign="middle">
+							<mx:Label text="Total: R$" fontWeight="bold" fontSize="14"/>
+							<mx:Label text="50.000,00" fontWeight="bold" fontSize="18"/>
+						</mx:HBox>
+						<mx:HBox width="200" verticalAlign="middle">
+							<mx:Label text="Total: R$" fontWeight="bold" fontSize="14"/>
+							<mx:Label text="50.000,00" fontWeight="bold" fontSize="18"/>
+						</mx:HBox>
+					</mx:VBox>
+					<mx:HBox verticalAlign="middle">
+						<mx:VRule height="90%"/>
+					</mx:HBox>
+					<mx:VBox width="100%" verticalAlign="middle">
+						<mx:HBox width="200" verticalAlign="middle">
+							<mx:Label text="Total: R$" fontWeight="bold" fontSize="14"/>
+							<mx:Label text="50.000,00" fontWeight="bold" fontSize="18"/>
+						</mx:HBox>
+						<mx:HBox width="200" verticalAlign="middle">
+							<mx:Label text="Total: R$" fontWeight="bold" fontSize="14"/>
+							<mx:Label text="50.000,00" fontWeight="bold" fontSize="18"/>
+						</mx:HBox>
+						<mx:HBox width="200" verticalAlign="middle">
+							<mx:Label text="Total: R$" fontWeight="bold" fontSize="14"/>
+							<mx:Label text="50.000,00" fontWeight="bold" fontSize="18"/>
+						</mx:HBox>
+					</mx:VBox>
+				</mx:HBox>
+				
+				<mx:HBox verticalAlign="middle" verticalGap="0" width="90%">
+					<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+						<mx:Label text="Total: R$" fontWeight="bold" fontSize="14"/>
+						<mx:Label text="50.000,00" fontWeight="bold" fontSize="18"/>
+					</mx:HBox>
+				</mx:HBox>
+				
+				<mx:HBox horizontalAlign="center" themeColor="#3B5998" width="100%">
+					<mx:HRule width="90%"/>
+				</mx:HBox>
+		
+				<mx:HBox height="100%" width="100%" verticalAlign="middle" horizontalAlign="right" fontSize="16" fontWeight="bold">
+					<mx:Button height="30" width="100" label="Cancelar" textAlign="center"/>
+					<mx:Button height="30" width="100" label="Salvar" textAlign="center"/>
+				</mx:HBox>
+			</mx:VBox>
+		</mx:VBox>
+		
+		<!-- vs INDEX:3 -->
+		<mx:VBox width="100%" height="100%" fontSize="14" fontWeight="bold"
+			showEffect="{quickFade}" hideEffect="{quickFade}">
+			
+			<mx:VBox width="100%" height="100%" id="placeHolderBaixaChequeForm"/>
+			<mx:VBox width="100%" id="placeHolderBaixaChequeContaBanco"/>
+			
+			<mx:HBox width="100%" horizontalAlign="right" fontSize="16" fontWeight="bold">
+				<mx:Button height="30" width="100" label="Cancelar" textAlign="center"/>
+				<mx:Button height="30" width="100" label="Salvar" textAlign="center"/>
+			</mx:HBox>
+		
+		</mx:VBox>
+	</mx:ViewStack>
+
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Image;
+			import mx.core.Container;
+			import img.Imagens;
+		
+			private function create():void
+			{
+			}
+			
+			private function removeComponente(comp:Container):void
+			{
+				comp.parent.removeChild(comp);
+			}			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

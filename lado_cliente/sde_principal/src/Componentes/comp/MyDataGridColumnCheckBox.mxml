@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:DataGridColumn xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:itemRenderer>
+		<mx:Component>
+			<mx:CheckBox
+				selected="{data.veiculo}"
+				click="{
+					data.veiculo = !data.veiculo;
+					AlertaSistema.mensagem('aa: '+outerDocument);
+				}">
+				
+				<mx:Script>
+					<![CDATA[
+						import Core.Alerta.AlertaSistema;
+					]]>
+				</mx:Script>
+			</mx:CheckBox>
+		</mx:Component>
+	</mx:itemRenderer>
+</mx:DataGridColumn>

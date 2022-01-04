@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:template="janelas.mov.PDV.template.*"
+	width="100%" height="100%"
+	creationComplete="create()">
+	
+	<mx:Label id="lbl" fontSize="16" fontWeight="bold" />
+	<mx:VBox id="itensEspecie" width="100%" height="100%" />
+	
+	
+	
+	
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.formatters.CurrencyFormatter;
+			import Core.Alerta.AlertaSistema;
+			import Core.Utils.Constantes;
+		
+			private var valor:Number = 0;
+			
+			private function create():void
+			{
+				itensEspecie.addEventListener(SeletorValEspItem.COMMITVALOR, commitValor );
+			}
+			
+			public function limpar(valor:Number):void
+			{
+				this.valor = valor;
+				itensEspecie.removeAllChildren();
+				lbl.text = "";
+				if (valor > 0)
+					novaEspecie();
+			}
+			
+			public function getMV():Array
+			{
+				var a:Array = [];
+				for each(var item:SeletorValEspItem in itensEspecie.getChildren())
+				{
+					a.push( item.getMV() );
+				}
+				return a;
+			}
+			
+			private function getValorJaDistribuido():Number
+			{
+				var v:Number = 0;
+				for each(var item:SeletorValEspItem in itensEspecie.getChildren())
+				{
+					v+=item.valorDefinido;
+				}
+				return v;
+			}
+			
+			private function novaEspecie():void
+			{
+				lbl.text = "OK, você já pode finalizar";
+				var dif:Number = valor - getValorJaDistribuido();
+				if (dif < .01)
+					return;
+				var item:SeletorValEspItem = new SeletorValEspItem();
+				item.defineValor( dif );
+				itensEspecie.addChild( item );
+				
+				if (itensEspecie.getChildren().length>1)
+				{
+					setFocus();
+					itensEspecie.setFocus();
+					item.setFocus();
+				}
+				var fmt:CurrencyFormatter = new CurrencyFormatter();
+				fmt.precision = 2;
+				fmt.currencySymbol="R$";
+				lbl.text = "Você deve distribuir " +fmt.format(valor);
+			}
+			
+			private function commitValor(ev:Event):void
+			{
+				var displ:DisplayObject = ev.target as DisplayObject;
+				
+				var index:int = itensEspecie.getChildIndex(displ);
+				index++;//item logo após o atual
+				var largura:int = itensEspecie.getChildren().length;
+				
+				while (itensEspecie.getChildren().length > index)
+					itensEspecie.removeChildAt(index);
+				
+				novaEspecie();
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

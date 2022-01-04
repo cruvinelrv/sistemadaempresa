@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:masked="com.adobe.flex.extras.controls.*" xmlns:master="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	fontSize="14"
+	creationComplete="create()" xmlns:CP="Componentes.CP.*" xmlns:Combo="SDE.Componentes.Combo.*" xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*">
+	
+	<mx:HBox width="100%" fontWeight="bold">
+		<mx:Label text="FORMAS DE PAGAMENTO:" width="100%" />
+		<mx:Button icon="{Imagens.unica.icn_32_adiciona}"	label="Adicionar Forma"		click="{ inserir() }" />
+		<mx:Button icon="{Imagens.unica.icn_32_fecha}"		label="Desfazer Alterações"	click="{ resetar() }" />
+		<mx:Button icon="{Imagens.unica.icn_32_salva}"		label="Salvar Alterações"	click="{ salvar() }" />
+	</mx:HBox>
+	
+	<mx:VDividedBox width="100%" height="100%">
+		
+		<mx:HDividedBox width="100%" height="200">
+			
+			<mx:DataGrid id="dtgrMestre" width="50%" height="100%"
+				themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+				change="{ fn_dtgrMestre_trata_dtgrMestre() }"
+				verticalScrollPolicy="on">
+				<mx:columns>						
+					<mx:DataGridColumn width="1" headerText="Cód" dataField="id"/>
+					<mx:DataGridColumn width="6" headerText="Nome" dataField="nome"/>
+					<mx:DataGridColumn width="2" headerText="Período" dataField="periodo"/>
+					<!--
+					<comp:MyDataGridColumn width="2" dataField="ehComEntrada" headerText="Entrada" tipo="SimNao" />
+					-->
+					<mx:DataGridColumn width="2" headerText="Parcelas" dataField="qtdParcelas">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Label text="{
+									(data.ehComEntrada)
+									?'1 + '+(data.qtdParcelas - 1)
+									:'0 + '+data.qtdParcelas
+									}"/>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn width="3">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Button
+									width="22" color="#008400"
+									label="editar"
+									click="dispatchEvent(new Event('editRow', true))" />
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+			
+			<mx:Grid fontSize="10" width="50%" height="100%">
+				<mx:GridRow width="50%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="FORMA PAGAMENTO:" />
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label fontWeight="bold" text="{ tipoPagamento_em_edicao.nome }" />
+					</mx:GridItem>
+				</mx:GridRow>
+				<!--
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="QUANT PARCELAS:" />
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label fontWeight="bold" text="{ tipoPagamento_em_edicao.qtdParcelas }" />
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="PERIODO:" />
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label fontWeight="bold" text="{ tipoPagamento_em_edicao.periodo }" />
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="COM ENTRADA:" />
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label fontWeight="bold" text="{ (tipoPagamento_em_edicao.ehComEntrada) ? 'SIM' : 'NÃO' }" />
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="TIPO DE DOCUMENTO:" />
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label fontWeight="bold" text="{ tipoPagamento_em_edicao.tipoDocumento_ }" />
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="PORTADOR:" />
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label fontWeight="bold" text="{ tipoPagamento_em_edicao.portador_nome }" />
+					</mx:GridItem>
+				</mx:GridRow>
+				-->
+				<mx:GridRow width="100%" height="100%">
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label text="RESUMO CAIXA:" />
+					</mx:GridItem>
+					<mx:GridItem width="100%" height="100%">
+						<mx:Label fontWeight="bold" text="{ tipoPagamento_em_edicao.grupoTipoPagamento_nome }" />
+					</mx:GridItem>
+				</mx:GridRow>
+			</mx:Grid>
+			
+		</mx:HDividedBox>
+		
+		<mx:VBox width="100%" height="100%">
+			<mx:Label fontWeight="bold" text="PARCELAS:" />
+			<mx:DataGrid id="dtgrDetalhe" width="100%" height="100%"
+				themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+				rowHeight="24" verticalScrollPolicy="on"
+				dataProvider="{ parcelas }">
+				
+			</mx:DataGrid>
+		</mx:VBox>
+		
+	</mx:VDividedBox>
+	
+	<PopUpPesquisa:SuperPopPesq id="popupTipoPagamento"
+		title="Forma de Pagamento"
+		titleIcon="{Imagens.unica.icn_32_financeiro}"
+		showCloseButton="false"
+		width="500" height="500"
+		layout="vertical"
+		>
+		
+		<mx:HBox width="100%" horizontalAlign="right">
+			<mx:Button right="70" top="10" icon="{Imagens.unica.icn_32_salva}" click="{ usuario_salva_tipo_pagamento() }" />
+			<mx:Button right="10" top="10" icon="{Imagens.unica.icn_32_fecha}" click="{ usuario_fecha_popup() }" />
+		</mx:HBox>
+		
+		<mx:Grid x="10" y="50" width="100%" height="100%" verticalGap="0">
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="FORMA DE PAGAMENTO:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<master:MasterTextInput id="popup_nome" fontWeight="bold" width="100%" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="RESUMO CAIXA:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<Combo:CmbFinan_GrupoTipoPagamento id="popup_resumoCaixa" width="100%" fontWeight="bold" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="COMISSÃO(%):"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="popup_comissao" width="100%" minimum="0" maximum="100" stepSize="0.01"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:VBox>
+						<mx:CheckBox id="popup_geraContasPagar" fontWeight="bold" label="GERA CONTAS À PAGAR" />
+						<mx:CheckBox id="popup_geraContasReceber" fontWeight="bold" label="GERA CONTAS À RECEBER" />
+						<mx:CheckBox id="popup_ehPrazo" fontWeight="bold" label="É UM PAGAMENTO A PRAZO " />
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="QUANT PARCELAS:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="popup_qtdParcelas" fontWeight="bold" maximum="120" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="PERIODO:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="popup_periodo" fontWeight="bold" maximum="120" />
+					<mx:Label text="(zero equivale a 1 mês)" fontWeight="bold" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="TX JUROS PARCELAMENTO:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+				
+					<mx:NumericStepper id="popup_txJurosParcelamento" fontWeight="bold" maximum="120" />
+				<mx:HBox width="150">
+					<mx:Label text="TX MULTA ATRASO:" />
+				</mx:HBox>
+					<mx:NumericStepper id="popup_txMulta" fontWeight="bold" maximum="120" />
+				
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{popup_ehPrazo.selected}" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="CUSTO ADMINISTRATIVO(%):"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+				
+					<mx:NumericStepper id="popup_custoAdministrativo" fontWeight="bold" maximum="100"/>
+				<mx:HBox width="150">
+					<mx:Label text="TX JUROS ATRASO:" />
+				</mx:HBox>
+					<mx:NumericStepper id="popup_txJurosAtraso" fontWeight="bold" maximum="120" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:VBox>
+						<mx:CheckBox id="popup_podeAlterarQtdParcelas" fontWeight="bold" label="PARCELAS ABERTAS" />
+						<mx:CheckBox id="popup_podeAlterarJuroParcela" fontWeight="bold" label="JURO ABERTO " />
+					</mx:VBox>
+					<mx:VBox>
+						<mx:CheckBox id="popup_podeAlterarPeriodo" fontWeight="bold" label="PERÍODO ABERTO " />
+						<mx:CheckBox id="popup_imprimeCarne" fontWeight="bold" label="IMPRESSÃO DE CARNÊ " />
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="TIPO DOC:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<Combo:CmbFinan_TipoDocumento id="popup_tipoDoc" width="100%" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="PORTADOR:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<Combo:CmbFinan_Portador id="popup_portador" width="100%" />
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+		
+	</PopUpPesquisa:SuperPopPesq>
+	
+	<!--<mx:Panel id="popupTipoPagamento"
+		width="500" height="600"
+		layout="absolute"
+		borderAlpha="1"
+		fontSize="14"
+		headerHeight="10">
+		
+		<mx:Image left="10" top="10" source="{Imagens.unica.icn_32_financeiro}" />
+		<mx:Label left="45" top="10" fontSize="20" fontWeight="bold" text="Forma de Pagamento"/>
+		<mx:Button right="70" top="10" icon="{Imagens.unica.icn_32_salva}" click="{ usuario_salva_tipo_pagamento() }" />
+		<mx:Button right="10" top="10" icon="{Imagens.unica.icn_32_fecha}" click="{ usuario_fecha_popup() }" />
+		
+		<mx:Grid x="10" y="50" width="100%" height="100%">
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="FORMA DE PAGAMENTO:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<master:MasterTextInput id="popup_nome" fontWeight="bold" width="100%" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="RESUMO CAIXA:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<Combo:CmbFinan_GrupoTipoPagamento id="popup_resumoCaixa" width="100%" fontWeight="bold" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="COMISSÃO(%):"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="popup_comissao" width="100%" minimum="0" maximum="100" stepSize="0.01"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:VBox>
+						<mx:CheckBox id="popup_geraContasPagar" fontWeight="bold" label="GERA CONTAS À PAGAR" />
+						<mx:CheckBox id="popup_geraContasReceber" fontWeight="bold" label="GERA CONTAS À RECEBER" />
+						<mx:CheckBox id="popup_ehPrazo" fontWeight="bold" label="É UM PAGAMENTO A PRAZO " />
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="QUANT PARCELAS:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="popup_qtdParcelas" fontWeight="bold" maximum="120" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="PERIODO:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="popup_periodo" fontWeight="bold" maximum="120" />
+					<mx:Label text="(zero equivale a 1 mês)" fontWeight="bold" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="TX JUROS PARCELAMENTO:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="popup_txJurosParcelamento" fontWeight="bold" maximum="120" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="TX JUROS ATRASO:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="popup_txJurosAtraso" fontWeight="bold" maximum="120" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="TX MULTA ATRASO:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:NumericStepper id="popup_txMulta" fontWeight="bold" maximum="120" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:VBox>
+						<mx:CheckBox id="popup_podeAlterarQtdParcelas" fontWeight="bold" label="PARCELAS ABERTAS" />
+						<mx:CheckBox id="popup_podeAlterarJuroParcela" fontWeight="bold" label="JURO ABERTO " />
+						<mx:CheckBox id="popup_podeAlterarPeriodo" fontWeight="bold" label="PERÍODO ABERTO " />
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="TIPO DOC:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<Combo:CmbFinan_TipoDocumento id="popup_tipoDoc" width="100%" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%" visible="{ popup_ehPrazo.selected }" showEffect="{Fade}" hideEffect="{Fade}">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="PORTADOR:" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<Combo:CmbFinan_Portador id="popup_portador" width="100%" />
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+		
+	</mx:Panel>-->
+	
+	
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import SDE.Entidade.Finan_GrupoTipoPagamento;
+			import Core.Utils.MyArrayUtils;
+			import mx.controls.Alert;
+			import mx.effects.Fade;
+			import SDE.Entidade.Finan_Portador;
+			import SDE.Entidade.Finan_TipoDocumento;
+			import Core.Utils.MeuFiltroWhere;
+			import SDE.Enumerador.EValorEspecie;
+			import SDE.Enumerador.EMovResumo;
+			import img.Imagens;
+			import mx.managers.PopUpManager;
+			import Core.Alerta.AlertaSistema;
+			import mx.collections.ArrayCollection;
+			import SDE.Entidade.Finan_TipoPagamento;
+			import mx.core.Application;
+			import Core.Sessao;
+			import SDE.CamadaNuvem.NuvemCache;
+			import Core.Utils.Funcoes;
+			private var tiposPagamento:Array;
+			[Bindable] private var parcelas:ArrayCollection;
+			[Bindable] private var resumosCaixa:Array;
+			[Bindable] private var tipoPagamento_em_edicao:Finan_TipoPagamento;
+						
+			private var cache:NuvemCache;
+			private var ss:Sessao;
+			
+			private function create():void
+			{
+				ss = Application.application.sessao;
+				
+				cache = ss.nuvens.cache;
+				parcelas = new ArrayCollection();
+				resumosCaixa = EValorEspecie.getCampos();
+				popupTipoPagamento.parent.removeChild(popupTipoPagamento);
+				
+				dtgrMestre.addEventListener("editRow", fn_trata_dtgrMestre_edit);
+				resetar();
+			}
+			
+			private function resetar():void
+			{
+				tiposPagamento = App.single.cache.cloneFinan_TipoPagamento;
+				parcelas.removeAll();
+				preencheGridMestre();
+			}
+			private function inserir():void
+			{
+				tipoPagamento_em_edicao = new Finan_TipoPagamento();
+				usuario_abre_popup();
+			}
+			private function preencheGridMestre():void
+			{
+				dtgrMestre.dataProvider = tiposPagamento;
+				tipoPagamento_em_edicao=null;
+			}
+			private function fn_dtgrMestre_trata_dtgrMestre():void
+			{
+				tipoPagamento_em_edicao = new Finan_TipoPagamento(dtgrMestre.selectedItem);//cria um clone
+				exibeParcelas(tipoPagamento_em_edicao);
+			}
+			private function exibeParcelas(t:Finan_TipoPagamento):void
+			{
+				parcelas.removeAll();
+				/*
+				
+					<mx:DataGridColumn headerText="Parcela" dataField="numParcela"/>
+					<mx:DataGridColumn headerText="Periodo" dataField="dias"/>
+					<mx:DataGridColumn headerText="Porcentagem" dataField="porcentagem"/>
+					<mx:DataGridColumn headerText="Taxa Juro" dataField="taxaJuro"/>
+					<mx:DataGridColumn headerText="Taxa Multa" dataField="taxaMultaDiaria"/>
+				
+				 */
+				var pctParcela:Number = Math.round(1 / t.qtdParcelas*100*100)/100;
+				
+				var o:Object = null;
+				
+				if (t.qtdParcelas==0)
+				{
+					parcelas.addItem(
+						{numParcela:"PARCELAS LIVRES", periodo:"", pct:"", txJuros:"", txMulta:"", txJurosAtraso:""}
+						);	
+				}
+				for(var i:int = 0; i<t.qtdParcelas; i++)
+				{
+					var numParcela:int = i+1;
+					
+					
+					var periodo:String = numParcela*t.periodo+" dias";
+					if (t.periodo==0)
+						periodo = numParcela+" meses";
+					
+					parcelas.addItem(
+						{numParcela:numParcela, periodo:periodo, pct:pctParcela+"%", txJuros:t.txJuroParcelamento+"%", txMulta:t.txMultaAtraso+"%", txJurosAtraso:t.txJuroParcelamento+"%"}
+						);
+				}
+			}
+			
+			private function fn_trata_dtgrMestre_edit(ev:Event):void
+			{
+				tipoPagamento_em_edicao = ev.target.data;
+				//var t:Finan_TipoPagamento = 
+				//sistema_define_valor_falta_jogar_para_titulos();
+				usuario_abre_popup();
+			}
+			
+			
+			
+			
+					/*
+			private function popup_resumoCaixa_change():void
+			{
+				var s:String = String(popup_resumoCaixa.selectedItem);
+				popup_exigeDetalhes =
+					!(
+					s==EValorEspecie.nao_informado
+					||
+					s==EValorEspecie.dinheiro
+					||
+					s==EValorEspecie.haver
+					||
+					s==EValorEspecie.cartao_credito
+					||
+					s==EValorEspecie.cartao_debito
+					||
+					s==EValorEspecie.cheque_a_vista
+					);
+			}
+					*/
+			
+			//[Bindable] private var popup_exigeDetalhes:Boolean = false;
+			
+			
+			
+			
+			
+			
+			
+			private function usuario_abre_popup():void
+			{
+				//tipoPagamento_em_edicao = tipoPagamento_em_edicao.clone();
+				
+				var t:Finan_TipoPagamento = tipoPagamento_em_edicao;
+				
+				
+				
+				
+				
+				popup_nome.text = t.nome;
+				popup_comissao.value = t.pctComissao;
+				popup_qtdParcelas.value = t.qtdParcelas;
+				popup_periodo.value =  t.periodo;
+				popup_txJurosAtraso.value = t.txJuroAtraso;
+				popup_txJurosParcelamento.value = t.txJuroParcelamento;
+				popup_txMulta.value = t.txMultaAtraso;
+				popup_geraContasPagar.selected = t.geraContasPagar;
+				popup_geraContasReceber.selected = t.geraContasReceber;
+				popup_ehPrazo.selected = t.ehPrazo;
+				popup_podeAlterarJuroParcela.selected = t.podeAlterarJuroParcela;
+				popup_podeAlterarPeriodo.selected = t.podeAlterarPeriodo;
+				popup_podeAlterarQtdParcelas.selected = t.podeAlterarQtdParcelas;
+				popup_imprimeCarne.selected = t.imprimeCarne;
+				
+				
+				
+				popup_resumoCaixa.setIdentificador(t.idGrupoTipoPagamento);
+				popup_tipoDoc.setIdentificador(t.idTipoDocumento);
+				popup_portador.setIdentificador(t.idPortador);
+				
+				//popup_resumoCaixa_change();
+				
+				PopUpManager.addPopUp(popupTipoPagamento, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupTipoPagamento);
+			}
+
+			
+			private function usuario_salva_tipo_pagamento():void
+			{
+				if (popup_ehPrazo.selected && !popup_resumoCaixa.getAs())
+				{
+					Alert.show('escolha um resumo de caixa');
+					return;
+				}
+				
+				var t:Finan_TipoPagamento = tipoPagamento_em_edicao;
+				var tDoc:Finan_TipoDocumento = popup_tipoDoc.getAs();
+				var port:Finan_Portador = popup_portador.getAs();
+				var gt:Finan_GrupoTipoPagamento = popup_resumoCaixa.getAs();
+				//
+				//t.nome = popup_nome.text;
+				//t.resumoCaixa = String(popup_resumoCaixa.selectedItem);
+				
+				
+				
+				
+				
+				
+				t.nome = popup_nome.text;
+				t.pctComissao = popup_comissao.value;
+				t.qtdParcelas = popup_qtdParcelas.value;
+				t.periodo = popup_periodo.value;
+				t.txJuroAtraso = popup_txJurosAtraso.value;
+				t.txJuroParcelamento = popup_txJurosParcelamento.value;
+				t.txMultaAtraso = popup_txMulta.value;
+				t.pctCustoAdministrativo = popup_custoAdministrativo.value;
+				t.geraContasPagar = popup_geraContasPagar.selected;
+				t.geraContasReceber = popup_geraContasReceber.selected;
+				t.ehPrazo = popup_ehPrazo.selected;
+				t.podeAlterarJuroParcela = popup_podeAlterarJuroParcela.selected;
+				t.podeAlterarPeriodo = popup_podeAlterarPeriodo.selected;
+				t.podeAlterarQtdParcelas = popup_podeAlterarQtdParcelas.selected;
+				t.imprimeCarne = popup_imprimeCarne.selected;
+				
+				
+				
+				t.idGrupoTipoPagamento = popup_resumoCaixa.getAs().id;
+				t.grupoTipoPagamento_nome = popup_resumoCaixa.getAs().nome;
+				
+				
+				
+				
+				
+				if (t.ehPrazo)
+				{
+					if (tDoc==null||port==null)
+					{
+						Alert.show('escolha um tipo de documento e um portador');
+						return;
+					}
+					
+					t.idPortador = port.id;
+					t.idTipoDocumento = tDoc.id;
+				}
+				else
+				{
+					t.qtdParcelas = 0;
+					t.periodo = 0;
+					t.txJuroAtraso = 0;
+					t.txJuroParcelamento = 0;
+					t.txMultaAtraso = 0;
+					t.geraContasPagar = false;
+					t.geraContasReceber = false;
+					t.idPortador = 0;
+					//t.portador_nome = "NÃO É UM TÍTULO REAL";
+					t.idTipoDocumento = 0;
+					//t.nomeTipoDocumento = "NÃO É UM TÍTULO REAL";
+					t.podeAlterarJuroParcela = false;
+					t.podeAlterarPeriodo = false;
+					t.podeAlterarQtdParcelas = false;
+					t.imprimeCarne = false;
+				}
+				
+				
+				
+				
+				
+				//
+				t.__forcaAtualizacao = true;
+				t.idClienteFuncionarioLogado = ss.idClienteFuncionarioLogado;
+				t.idEmp == ss.idEmp;
+				t.idGrupoTipoPagamento = gt.id;
+				t.grupoTipoPagamento_nome = gt.nome;
+				
+				var indice:int = tiposPagamento.indexOf(t);
+				if (indice < 0)
+					tiposPagamento.push(t);
+				usuario_fecha_popup();
+			}
+			private function usuario_fecha_popup():void
+			{
+				PopUpManager.removePopUp(popupTipoPagamento);
+				preencheGridMestre();
+			}
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				
+				for each(var xxx:Finan_TipoPagamento in tiposPagamento)
+				{
+					if(xxx.id==0 || xxx.__forcaAtualizacao)
+						arSalvar.push(xxx);
+				}
+				Sessao.unica.nuvens.modificacoes.Finan_TipoPagamento_NovosAtualizacoes(arSalvar,
+					function():void
+					{
+						AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

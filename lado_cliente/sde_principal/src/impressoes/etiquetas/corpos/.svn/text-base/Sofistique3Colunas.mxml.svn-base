@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:BarCode="BarCode.*"
+	horizontalGap="-5" verticalGap="0" 
+	paddingTop="5" paddingBottom="0" paddingLeft="10" paddingRight="5"
+	verticalScrollPolicy="off" horizontalScrollPolicy="off"
+	borderColor="#ffffff" borderStyle="solid" borderThickness="0"
+	width="205" height="75"
+	creationComplete="create()">
+
+	<mx:Spacer id="espacador"/>
+	<mx:HBox width="90%" height="15" horizontalAlign="left" paddingLeft="-7">
+		<BarCode:Code39 id="barCode" width="90%" />
+	</mx:HBox>
+	<mx:HBox width="100%" horizontalGap="-5">
+		<mx:Label id="lblNome" width="150" fontSize="9" height="10"/>
+		<mx:Label id="lblGrade" width="30" fontSize="9" height="10"/>
+	</mx:HBox >
+	<mx:HBox width="100%" horizontalGap="-5">
+		<mx:Label id="lblDesconto" width="70" fontSize="8" height="8"/>
+		<mx:Label id="lblParcelas" width="110" fontSize="8" height="8"/>
+	</mx:HBox>
+	<mx:HBox width="100%" horizontalGap="-5">
+		<mx:Label id="lblVista" width="90"  fontSize="9" height="10"/>
+		<mx:Label id="lblPrazo" width="100" fontSize="9" height="10"/>
+	</mx:HBox>
+	
+	<mx:HBox width="100%">
+		<mx:Label id="lblTaxa" width="100%" fontSize="9" textAlign="center"/>
+	</mx:HBox>
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import impressoes.etiquetas.ModeloEtiqueta;
+			
+			[Bindable] public var coluna:String;
+			
+			private function create():void
+			{
+				espacador.height=75;
+				var etiq:ModeloEtiqueta = data[coluna];
+				if (etiq==null)
+					return;
+					
+				espacador.height=0;
+				barCode.barCodeHeight=15;
+				barCode.barCodeText=etiq.codBarras;
+				
+				lblNome.text = etiq.nome;
+				lblGrade.text= etiq.grade;
+				
+				lblDesconto.text='Desc. 10% à vista';
+				lblParcelas.text='Parc. em 1+2x de:'+etiq.vlrParcelas;
+				
+				lblVista.text="À Vista: "+etiq.vlrVista;
+				lblPrazo.text="À Prazo: "+etiq.vlrPrazo;
+				lblTaxa.text="Período 5,26%  Tx. Mens. 3,33%";
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

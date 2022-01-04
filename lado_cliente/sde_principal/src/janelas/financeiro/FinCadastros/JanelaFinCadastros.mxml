@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:abas="janelas.financeiro.FinCadastros.abas.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	xmlns:comp="Componentes.comp.*"
+	themeColor="#3B5998"
+	paddingRight="10" paddingBottom="20" paddingTop="20">
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import mx.controls.Alert;
+			import SDE.Entidade.Finan_Lancamento;
+			import mx.core.Application;
+			import img.Imagens;
+		]]>
+	</mx:Script>
+	
+	<mx:LinkBar textAlign="left" dataProvider="{vs}" fontSize="14" direction="vertical" height="100%" verticalAlign="top" />
+	
+	<mx:ViewStack id="vs" width="100%" height="100%" creationPolicy="all"
+		borderColor="#AAC527" borderStyle="solid" borderThickness="2"
+		cornerRadius="5"
+		styleName="padding10">
+		
+		<abas:AbaCentroCusto label="Centro de Custo" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		<!--
+		<abas:AbaTiposPlanoConta label="Tipos de Plano de Contas" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		<abas:AbaPlanoContas label="Plano de Contas" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		-->
+		<abas:AbaTiposLancamento label="Plano de Contas" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		
+		<abas:AbaTiposPortador label="Tipos de Portador" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		<abas:AbaPortadores label="Portadores" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		
+		<abas:AbaContasBancariasCaixa label="Contas Caixa/Banco" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		
+		<abas:AbaTiposDocumento label="Tipos de Documento" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		
+		<abas:AbaGruposTipoPagamento label="Resumo de Caixa" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		<abas:AbaTiposPagamento label="Formas de Pagamento" icon="{Imagens.unica.icn_32_centroCusto}"/>
+		
+		<mx:VBox width="100%" height="100%" label="VER TRANSFERENCIAS" icon="{Imagens.unica.icn_32_config}">
+			
+			<mx:Button label="atualiza" click="{
+				gridLancamentos.dataProvider = App.single.cache.arrayFinan_Lancamento;
+			}" />
+			<mx:DataGrid id="gridLancamentos" width="100%" height="100%"
+				themeColor="#3B5998" headerColors="[#efefef,#3B5998]"/>
+			
+			<mx:HBox>
+				<mx:Label text="Lança Capital Total:" />
+				<mx:NumericStepper id="nsCapitalTotal" stepSize=".01" minimum="-9999999" maximum="9999999"/>
+				<mx:Button label="lança"
+					click="{
+						Application.application.sessao.nuvens.modificacoes.Finan_LancaCapitalTotal(
+							nsCapitalTotal.value,
+							function():void{Alert.show('ok');}
+							);
+						nsCapitalTotal.value=0;
+					}"
+					/>
+			</mx:HBox>
+			
+		</mx:VBox>
+		
+	</mx:ViewStack>
+	
+</mx:HBox>

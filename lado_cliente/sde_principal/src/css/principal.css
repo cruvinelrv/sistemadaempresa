@@ -1,0 +1,155 @@
+/* CSS file */
+
+Application
+{
+	background-gradient-colors: #ffffff, #ffffff;
+	font-family: "Tahoma";
+}
+
+Alert
+{
+	borderColor: #3B5998;
+	backgroundColor: #ffffff;
+	color: #3B5998;
+	
+	title-style-name: "alertTitulo";
+	
+	border-thickness-bottom: 3px;
+	border-thickness-left: 3px;
+	border-thickness-right: 3px;
+	border-thickness-top: 0px;
+	roundedBottomCorners: true;
+	fontWeight: bold;
+	fontSize: 16;
+	
+	shadow-distance: 10;
+	shadow-direction:right;
+}
+
+.alertTitulo
+{
+	color:#ffffff;
+	fontSize: 16;
+	font-weight: bold;
+}
+
+.tituloPopupPesquisa
+{
+	font-size: 32px;
+	font-weight:bold;
+	color:white;
+}
+
+.padding3
+{
+	padding-top: 3px;
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-bottom: 3px;
+}
+.padding5
+{
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+.padding10
+{
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
+
+
+
+
+
+
+.dtgrid
+{
+	backgroundAlpha: 1;
+	
+	headerHeight: 30;
+	/*color: #333333;*/
+	
+	selectionDuration: 1000;
+	fontSize: 12;
+	
+	/*headerStyleName: datagridHeader;*/
+	verticalScrollBarStyleName: dataGridVerticalScrollBar;
+	/*headerColors: #559EC9, #8BC0D2;/*azulzinho*/
+	
+}
+.datagridHeader
+{
+	fontWeight: bold;
+	color: #ffffff;
+	fontSize: 12;
+}
+
+
+
+
+
+
+
+
+Application
+{
+	font-family: Arial;
+	/*background-gradient-colors: #cccccc, #dddddd;*/
+	color: 						#000000;
+	themeColor: 				#012883;
+	themeColor: 				#666666;
+	padding-top: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+}
+.menu
+{
+	 horizontalCenter: 0;
+}
+
+/* Gerenciador de Telas */
+
+.tela
+{
+	vertical-gap: 0;
+	padding-top: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	horizontalCenter: 0;
+	backgroundColor: #FFFFFF;
+}
+MenuBar
+{
+	fill-colors:	#ffffff, #ffffff, #ffffff, #ffffff;
+	background-color: #ffffff;
+	fontSize: 20;
+	color: #012883;
+}
+
+/* Fold Popup */
+.foldPopupTela
+{
+	vertical-gap: 0;
+	padding-top: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	horizontalCenter: 0;
+}
+.foldPopupTelaContent
+{
+	
+	borderColor: #559EC9;
+	borderStyle: solid;
+	borderThickness: 1;
+	top: 20;
+	cornerRadius: 20;
+	backgroundColor: #efefef;
+}

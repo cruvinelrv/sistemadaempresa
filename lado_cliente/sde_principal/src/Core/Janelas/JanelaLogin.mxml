@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	label="LOGIN" backgroundColor="#ffffff" backgroundAlpha=".7"
+	showEffect="{myFade}" hideEffect="{myFade}"
+	creationComplete="create();">
+	
+	<mx:Fade id="myFade" duration="1000"/>
+	
+	<mx:Metadata>
+		[Event(name="LoginOK")]
+		[Event(name="LoginERRO")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import Core.Janelas.JanelaEventos;
+			import mx.effects.Fade;
+			import Core.Alerta.AlertaSistema;
+			import Core.Sessao;
+			import SDE.Entidade.Login;
+			import SDE.FachadaServico.FcdLogin;
+			
+			private var secreto:String="";
+			private var shO:SharedObject = SharedObject.getLocal('dados_login');
+			
+			private function create():void
+			{
+				if (shO.size>0)
+				{
+					txtE.text = shO.data.empresa;
+					txtU.text = shO.data.usuario;
+				}
+				
+				/**
+				secreto='baba';
+				txtE.text='SC';txtU.text='ADMIN';txtS.text='ADMIN';
+				/**/
+			}
+			
+			private function tentaLogar():void
+			{
+				Application.application.sessao.modoTecnico = (secreto=="ddd");
+				secreto="";
+				
+				if (txtE.length==0 || txtU.length==0 || txtS.length ==0)
+				{
+					AlertaSistema.mensagem('Login Incorreto');
+					txtS.setFocus();
+					txtS.setSelection(0, txtS.length);
+				}
+				
+				FcdLogin.unica.FazLogin(txtE.text,txtU.text,txtS.text,
+					function(retorno:Login):void
+					{
+						if (retorno==null)
+						{
+							AlertaSistema.mensagem('Login Incorreto');
+							txtS.setFocus();
+							txtS.setSelection(0, txtS.length);
+							dispatchEvent(new Event(JanelaEventos.LOGINERRO));	
+						}
+						else
+						{
+							shO.data.empresa = txtE.text;
+							shO.data.usuario = txtU.text;
+							txtS.text="";
+							Sessao.unica.login = retorno;
+							
+							
+							dispatchEvent(new Event(JanelaEventos.LOGINOK));
+						}
+					}
+				);
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox
+		backgroundColor="#ffffff" backgroundAlpha="1"
+		borderColor="#C9CBCC" borderStyle="solid" borderThickness="2"
+		cornerRadius="10"
+		horizontalCenter="0" verticalCenter="0"
+		paddingTop="25" paddingBottom="25" paddingLeft="25" paddingRight="25">
+		<mx:VBox>
+			<mx:Label fontSize="14" text="EMPRESA"/>
+			<master:MasterTextInput id="txtE" capsType="upercase" width="200" fontSize="24"
+				keyDown="if (event.keyCode==Keyboard.ENTER) txtU.setFocus();"/>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label fontSize="14" text="USUÁRIO"/>
+			<master:MasterTextInput id="txtU" capsType="upercase" width="200" fontSize="24"
+				keyDown="if (event.keyCode==Keyboard.ENTER) txtS.setFocus();"/>
+		</mx:VBox>
+		<mx:VBox>
+			<mx:Label fontSize="14" text="SENHA"/>
+			<master:MasterTextInput id="txtS" capsType="upercase" width="200" fontSize="24"
+				displayAsPassword="true"
+				keyDown="if (event.keyCode==Keyboard.ENTER) tentaLogar();"/>
+		</mx:VBox>
+		<mx:HBox width="200" horizontalAlign="right" verticalAlign="middle">
+			<mx:VBox>
+				<mx:HBox>
+					<mx:Canvas width="10" height="10" click="secreto+='a'" backgroundColor="#666666" />
+					<mx:Canvas width="10" height="10" click="secreto+='b'" backgroundColor="#999999" />
+					<mx:Canvas width="10" height="10" click="secreto+='c'" backgroundColor="#cccccc" />
+				</mx:HBox>
+				<mx:HBox>
+					<mx:Canvas width="10" height="10" click="secreto+='d'" backgroundColor="#666666" />
+					<mx:Canvas width="10" height="10" click="secreto+='e'" backgroundColor="#999999" />
+					<mx:Canvas width="10" height="10" click="secreto+='f'" backgroundColor="#cccccc" />
+				</mx:HBox>
+			</mx:VBox>
+			
+			<mx:Button width="145" fontSize="28" label="ENTRAR"
+				click="tentaLogar()"/>
+		</mx:HBox>
+	</mx:VBox>
+	
+</mx:Canvas>

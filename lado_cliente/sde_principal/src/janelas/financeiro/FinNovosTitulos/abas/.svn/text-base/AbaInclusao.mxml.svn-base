@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:controls="com.flexpernambuco.controls.*" xmlns:Combo="SDE.Componentes.Combo.*"  xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	fontSize="16" fontWeight="bold"
+	creationComplete="create()" xmlns:CP="Componentes.CP.*"
+	removed="{this.percentHeight=100;}">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import mx.collections.ArrayCollection;
+			import img.Imagens;
+			import Core.Alerta.AlertaSistema;
+			import mx.core.Application;
+			import Core.Sessao;
+			import SDE.CamadaNuvem.NuvemCache;
+			
+			private var ss:Sessao;
+			private var cache:NuvemCache;
+			
+			/**
+			 * Autor: Thiago Almeida
+			 * Diagrama de sequencia
+			 * 
+			 * -- 
+			 * 
+			 * usuario, define um nome ao documento
+			 * sistema, abre campos para preencher
+			 * usuario, clica em gerar titulos
+			 * sistema, valida campos digitados
+			 * if (sim)
+			 * 		sistema, abre popup parcelas
+			 * 		for(parcela)
+			 * 			usuario, lança parcela
+			 * 			sistema, sugere proxima parcela
+			 * 		
+			 * //usuario, clica em concluir
+			 * sistema, manda servidor salvar
+			 * 
+			 * */
+			
+			[Bindable] private var incluindo:Boolean = false;
+			[Bindable] private var arraycParcelas:ArrayCollection = new ArrayCollection();
+			
+			private function create():void
+			{
+				//ss = Application.application.sessao;
+				//cache = ss.nuvens.cache;
+				popupParcelas.parent.removeChild(popupParcelas);
+				popupParcelas.height = 350;
+				//this.percentHeight=100;
+			}
+			
+			private function usuario_inicia_inclusao():void
+			{
+				incluindo = (txtNomeDocumento.text.length>0);
+				
+				if (!incluindo)
+					return;
+				
+				cmbTipoDocumento.setFocus();
+				cmbTipoDocumento.setIdentificador(0);
+				cmbPortador.setIdentificador(0);
+				cmbCentroCusto.setIdentificador(0);
+				cmbConta.setIdentificador(0);
+				cpCliente.selectedItem = null;
+				cpVendedor.selectedItem = null;
+				
+				dtfEmissao.selectedDate		= new Date();
+				dtfPrevisao.selectedDate	= new Date();
+				dtfRecebimento.selectedDate	= new Date();
+				dtfPrevisao.selectedDate.month+=1;
+				dtfRecebimento.selectedDate.month+=1;
+				
+				nsQtdParcelas.value = 1;
+				nsValorParcela.value = 0;
+				nsValorTotal.value = 0;
+				nsPeriodo.value = 0;
+			}
+			
+			private function usuario_clica_gerar_titulos():void
+			{
+				if (sistema_valida_campos())
+					sistema_abrepopup();
+			}
+			private function sistema_valida_campos():Boolean
+			{
+				if (txtNomeDocumento.text.length == 0)
+					return false;
+				if (nsQtdParcelas.value == 0)
+					return false;
+				if (nsValorParcela.value == 0)
+					return false;
+				if (cpCliente.selectedItem == 0)
+					return false;
+				if (cpVendedor.selectedItem == 0)
+					return false;
+				if (cmbCentroCusto.getAs() == null)
+					return false;
+				if (cmbConta.getAs() == null)
+					return false;
+				if (cmbPortador.getAs() == null)
+					return false;
+				if (cmbTipoDocumento.getAs() == null)
+					return false;
+				//
+				return true;
+			}
+			
+			private function sistema_abrepopup():void
+			{
+				PopUpManager.addPopUp(popupParcelas, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupParcelas);
+				popupParcelas_nome.setFocus();
+				arraycParcelas.removeAll();
+				sistema_sugere_proxima_parcela();
+			}
+			
+			private function usuario_lanca_parcela():void
+			{
+				//
+				arraycParcelas.addItem({nome:popupParcelas_nome.text});
+				
+				if (arraycParcelas.length < nsQtdParcelas.value)
+				{
+					sistema_sugere_proxima_parcela();
+				}
+				else
+				{
+					sistema_salva_no_servidor();
+				}
+			}
+			private function sistema_sugere_proxima_parcela():void
+			{
+				var dtP:Date = dtfPrevisao.selectedDate;
+				var dtR:Date = dtfRecebimento.selectedDate;
+				
+				if (nsPeriodo.value == 0)
+				{
+					dtP.month += 1;
+					dtR.month += 1;
+				}
+				else
+				{
+					dtP.date += nsPeriodo.value;
+					dtR.date += nsPeriodo.value;
+				}
+				
+				dtfRecebimento.selectedDate = dtR;
+				dtfPrevisao.selectedDate = dtP;
+				
+				//
+				var iAtual:Number = arraycParcelas.length+1;
+				
+				popupParcelas_vencimento.selectedDate = dtR;
+				popupParcelas_nome.text = txtNomeDocumento.text;
+				if (nsQtdParcelas.value > 1)
+					popupParcelas_nome.text += "-"+ iAtual;
+				
+				popupParcelas_valor.value = nsValorParcela.value;
+			}
+			private function sistema_salva_no_servidor():void
+			{
+				sistema_fecha_popup();
+			}
+			private function usuario_aborta_geracao_titulos():void
+			{
+				sistema_fecha_popup();
+				arraycParcelas.removeAll();
+			}
+			private function sistema_fecha_popup():void
+			{
+				PopUpManager.removePopUp(popupParcelas);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:HBox>
+		<mx:Label text="Documento:" width="150" />
+		<controls:MasterTextInput id="txtNomeDocumento" capsType="upercase"
+			keyDown="{
+				if(event.keyCode==Keyboard.ENTER)
+					usuario_inicia_inclusao();
+				}" />
+	</mx:HBox>
+	<mx:VBox enabled="{incluindo}">
+		<mx:HBox>
+			<mx:Label text="Tipo Documento:" width="150" />
+			<Combo:CmbFinan_TipoDocumento id="cmbTipoDocumento" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Cliente:" width="150" />
+			<CP:PesqCliente id="cpCliente" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Emissão:" width="150" />
+			<comp:DateFieldBR id="dtfEmissao" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Recebimento:" width="150" />
+			<comp:DateFieldBR id="dtfRecebimento" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Previsão:" width="150" />
+			<comp:DateFieldBR id="dtfPrevisao" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Quant Parcelas:" width="150" />
+			<mx:NumericStepper id="nsQtdParcelas" stepSize=".01" maximum="9999999"
+				focusOut="{
+					nsValorTotal.value = nsValorParcela.value * nsQtdParcelas.value;
+				}" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Valor da Parcela:" width="150" />
+			<mx:NumericStepper id="nsValorParcela" stepSize=".01" maximum="9999999"
+				focusOut="{
+					nsValorTotal.value = nsValorParcela.value * nsQtdParcelas.value;
+				}" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Valor Final:" width="150" />
+			<mx:NumericStepper id="nsValorTotal" stepSize=".01" maximum="9999999"
+				focusOut="{
+					nsValorParcela.value = nsValorTotal.value / nsQtdParcelas.value;
+				}" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Período:" width="150" />
+			<mx:NumericStepper id="nsPeriodo" maximum="120" />
+			<mx:Label text="(zero equivale a 01 mês)" />
+		</mx:HBox>
+		
+		<mx:HBox>
+			<mx:Label text="Portador:" width="150" />
+			<Combo:CmbFinan_Portador id="cmbPortador" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Centro Custo:" width="150" />
+			<Combo:CmbFinan_CentroCusto id="cmbCentroCusto" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Conta:" width="150" />
+			<Combo:CmbFinan_Conta id="cmbConta" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Vendedor:" width="150" />
+			<CP:PesqCliente id="cpVendedor" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Histórico:" width="150" />
+			<mx:TextArea width="400" height="100" />
+		</mx:HBox>
+		
+		<mx:Button label="Gerar Titulo(s)" click="{usuario_clica_gerar_titulos()}" />
+		
+	</mx:VBox>
+	
+	<mx:Panel id="popupParcelas"
+		width="750" height="0"
+		layout="absolute"
+		borderAlpha="1"
+		headerHeight="10">
+		
+		<mx:Image left="10" top="10" source="{Imagens.unica.icn_32_financeiro}" />
+		<mx:Label left="45" top="10" fontSize="20" fontWeight="bold" text="Lançando Parcelas"/>
+		<mx:Button right="10" top="10" icon="{Imagens.unica.icn_32_fecha}" click="{ usuario_aborta_geracao_titulos(); }" />
+		
+		<mx:VBox x="10" y="50" width="100%" height="100%">
+			
+			<mx:HBox width="100%">
+				<mx:Label text="DOCUMENTO:" />
+				<controls:MasterTextInput id="popupParcelas_nome" capsType="upercase"
+					keyDown="{
+						if (event.keyCode==Keyboard.ENTER)
+						{
+							popupParcelas_valor.setFocus();
+						}
+					}" />
+				<mx:Label text="VENCIMENTO:" />
+				<comp:DateFieldBR id="popupParcelas_vencimento" />
+				<mx:Label text="VALOR:" />
+				<mx:NumericStepper id="popupParcelas_valor" maximum="9999999" stepSize=".01"
+					keyDown="{
+						if (event.keyCode==Keyboard.ENTER)
+						{
+							usuario_lanca_parcela();
+						}
+					}" />
+			</mx:HBox>
+			<mx:DataGrid width="100%" height="100%" dataProvider="{arraycParcelas}"
+				themeColor="#3B5998" headerColors="[#efefef,#3B5998]"/>
+			
+		</mx:VBox>
+		
+	</mx:Panel>
+	
+</mx:VBox>

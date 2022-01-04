@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:comp="Componentes.comp.*"
+	xmlns:PopUpPesquisa="Componentes.PopUpPesquisa.*" xmlns:controls="com.flexpernambuco.controls.*"
+	creationComplete="create()">
+	
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Button label="BUSCAR" click="load()" icon="{Imagens.unica.icn_64_Atualiza}" labelPlacement="bottom"/>
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		<mx:Image id="loadAnimation" source="{Imagens.unica.swf_loading}" scaleX="3" scaleY="3"/>
+	</mx:HBox>
+	
+	<mx:VBox width="100%" height="100%">
+		
+		<comp:Botao2 label="Adicionar Local"
+			cor="Branco" icone="Adiciona"
+			click="btnAdiciona_Click()"/>
+			
+		<mx:DataGrid id="grid" width="100%" height="100%"
+			themeColor="#3B5998" headerColors="[#efefef,#3B5998]"
+			editable="false" dataProvider="{dp}">
+			<mx:columns>
+				<mx:DataGridColumn width="6" dataField="valor" headerText="Locação"/>
+				<mx:DataGridColumn width="2">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="Alterar"
+								labelPlacement="right" color="#008800"
+								click="dispatchEvent(new Event('editRow', true))"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="2">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Button label="Remover"
+								labelPlacement="right" icon="{Imagens.unica.icn_16_cancela}"
+								click="dispatchEvent(new Event('deleteRow', true))">
+								<mx:Script>
+									<![CDATA[
+										import img.Imagens;
+									]]>
+								</mx:Script>
+							</mx:Button>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		<PopUpPesquisa:SuperPopPesq id="popupLocacao"
+			title=""
+			titleIcon="{null}"
+			showCloseButton="false"
+			width="600" height="145"
+			fontWeight="bold" fontSize="16"
+			layout="vertical">
+			
+			<mx:VBox width="100%" height="100%" verticalAlign="middle">
+				<mx:HBox width="100%" verticalAlign="middle">
+					<mx:Label text="Locação:"/>
+					<controls:MasterTextInput id="txtLocacao" width="100%" capsType="upercase" keyDown="{if(event.keyCode == Keyboard.ENTER)btnSalvar_Click()}"/>
+				</mx:HBox>
+				<mx:HBox horizontalAlign="right" width="100%">
+					<mx:Button label="Cancelar" icon="{Imagens.unica.icn_32_deleta}" labelPlacement="right" click="{popupLocacao.parent.removeChild(popupLocacao)}"/>
+					<mx:Button label="Salvar" icon="{Imagens.unica.icn_32_aceita}" labelPlacement="right" click="btnSalvar_Click()"/>
+				</mx:HBox>
+			</mx:VBox>
+			
+		</PopUpPesquisa:SuperPopPesq>
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import janelas.cadastro.Cliente1.JanelaCadCliente;
+			import SDE.Entidade.Item;
+			import Core.Alerta.AlertaSistema;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import Core.Utils.Funcoes;
+			import Core.App;
+			import mx.collections.ArrayCollection;
+			import janelas.cadastro.ItemProduto1.JanelaCadItemProduto;
+			import mx.effects.Pause;
+			import img.Imagens;
+			
+			[Bindable] public var mdlPai:JanelaCadItemProduto;
+			[Bindable] private var dp:ArrayCollection;
+			
+			private var objetoOriginal:Object;
+			private var isEditando:Boolean;
+			
+			private function create():void
+			{
+				mdlPai.addEventListener(JanelaCadItemProduto.EV_MUDA_ITEM, mudaItem);
+				popupLocacao.parent.removeChild(popupLocacao);
+				grid.addEventListener('editRow', editRowHandler);
+				grid.addEventListener('deleteRow', deleteRowHandler);
+			}
+			
+			private function mudaItem(ev:Object):void
+			{
+				selectedIndex = 0;
+				if (dp)
+					dp.removeAll();
+			}
+			
+			private function abrePopup():void
+			{
+				PopUpManager.addPopUp(popupLocacao, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupLocacao);
+				txtLocacao.setFocus();
+			}
+			
+			private function btnAdiciona_Click():void
+			{
+				if (dp.length == 10 || dp.length > 10)
+				{
+					AlertaSistema.mensagem("Quantidade máxima de locações atingida");
+					return;
+				}
+				isEditando = false;
+				abrePopup();
+			}
+			
+			private function btnSalvar_Click():void
+			{
+				if (isEditando)
+					lancaEdicao();
+				else
+					adicionaLocal();
+			}
+			
+			private function load():void
+			{
+				selectedIndex = 1;
+				var pause:Pause = new Pause();
+				pause.duration = 1000;
+				pause.target = loadAnimation;
+				pause.addEventListener("effectEnd", onPauseComplete);
+				pause.play();
+				
+				if (dp == null)
+					dp = new ArrayCollection();
+				
+				for (var i:Number = 0 ; i < 10 ; i++)
+				{
+					var campo:String = "locacao" + (i + 1).toString();
+					
+					if (mdlPai.item[campo] != null)
+					{
+						var obj:Object = new Object();
+						obj.campo = campo;
+						obj.valor = mdlPai.item[campo];
+						dp.addItem(obj);
+					}
+				}
+			}
+			
+			private function onPauseComplete(ev:Event):void
+			{
+				selectedIndex = 2;
+			}
+			
+			private function adicionaLocal():void
+			{
+				if (txtLocacao.text == "")
+				{
+					AlertaSistema.mensagem("Digite a locação");
+					return;
+				}
+				
+				if (dp == null)
+					dp = new ArrayCollection();
+				
+				var campo:String = "locacao" + (dp.length + 1).toString();
+				mdlPai.item[campo] = txtLocacao.text;
+				
+				var obj:Object = new Object();
+				obj.campo = campo;
+				obj.valor = mdlPai.item[campo];
+				dp.addItem(obj);
+				
+				popupLocacao.parent.removeChild(popupLocacao);
+				
+				txtLocacao.text = "";
+			}
+			
+			private function editRowHandler(ev:Event):void
+			{
+				objetoOriginal = new Object();
+				objetoOriginal.campo = ev.target.data.campo;
+				objetoOriginal.valor = ev.target.data.valor;
+				abrePopup();
+				txtLocacao.text = objetoOriginal.valor;
+				isEditando = true;
+			}
+			
+			private function lancaEdicao():void
+			{
+				for each (var obj:Object in dp)
+				{
+					if (obj.campo == objetoOriginal.campo)
+					{
+						obj.valor = txtLocacao.text;
+						mdlPai.item[obj.campo] = txtLocacao.text;
+					}
+				}
+				
+				grid.dataProvider = dp;
+				
+				//mdlPai.item.locaisLocacao = dp.source;
+				popupLocacao.parent.removeChild(popupLocacao);
+				txtLocacao.text = "";
+			}
+			
+			private function deleteRowHandler(ev:Event):void
+			{
+				var index:int = dp.getItemIndex(ev.target.data);
+				dp.removeItemAt(index);
+				
+				var i:Number;
+				var campo:String;
+				
+				for (i = 0 ; i < 10 ; i++)
+				{
+					campo = "locacao" + (i + 1).toString();
+					mdlPai.item[campo] = null;
+				}
+				
+				for (i = 0; i < dp.length ; i++)
+				{
+					campo = "locacao" + (i + 1).toString();
+					mdlPai.item[campo] = dp.getItemAt(i).valor;
+				}
+				
+				var novoDp:ArrayCollection = new ArrayCollection();
+				for (i = 0 ; i < dp.length ; i++)
+				{
+					campo = "locacao" + (i + 1).toString();
+					
+					if (mdlPai.item[campo] != null)
+					{
+						var obj:Object = new Object();
+						obj.campo = campo;
+						obj.valor = mdlPai.item[campo];
+						novoDp.addItem(obj);
+					}
+				}
+				dp = novoDp;
+			}
+		]]>
+	</mx:Script>
+	
+</mx:ViewStack>

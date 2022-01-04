@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	xmlns:abas="janelas.financeiro.FinNovosTitulos.abas.*"
+	verticalAlign="middle"
+	creationComplete="{ create() }">
+	
+	<mx:Script>
+		<![CDATA[
+			import img.Imagens;
+			
+			private function create():void
+			{
+				
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:LinkBar textAlign="left" dataProvider="{vs}" fontSize="14" direction="vertical" verticalAlign="top" />
+	
+	<mx:VRule height="50%" strokeColor="#3B5998" />
+	
+	<mx:ViewStack id="vs" width="100%" height="100%" creationPolicy="all">
+		
+		<abas:AbaInclusao label="Inclusão" icon="{Imagens.unica.icn_32_financeiro}" />
+		<mx:HBox label="Alteração" width="100%" icon="{Imagens.unica.icn_32_financeiro}" />
+		
+	</mx:ViewStack>
+	
+</mx:HBox>

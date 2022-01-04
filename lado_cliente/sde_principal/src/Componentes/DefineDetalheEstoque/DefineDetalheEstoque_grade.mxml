@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SuperDefineDetalheEstoque verticalAlign="middle" horizontalAlign="center"
+	showEffect="{quickFade}"
+	hideEffect="{quickFade}"
+	xmlns="Componentes.DefineDetalheEstoque.*" xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:comp="Componentes.comp.*"
+	creationComplete="create()"
+	xmlns:controls="com.flexpernambuco.controls.*">
+	
+	<mx:Fade id="quickFade" duration="200"/>
+	
+	<mx:VBox width="50%" height="100%" horizontalAlign="center" verticalAlign="middle">
+		
+		<mx:VBox horizontalAlign="left">
+		
+			<mx:HBox>
+				
+				<mx:Label text="Quantidade:" fontSize="16" fontWeight="bold"/>
+				<mx:NumericStepper id="nsQtd" minimum="0" maximum="999999" fontSize="16" width="90"/>
+				
+			</mx:HBox>
+			
+			<mx:HBox>
+				
+				
+				<mx:ComboBox id="cmbGrade" width="300" fontSize="16" dataProvider="{grades_selecionadas}" labelField="__orderBy"/>
+				<!--
+				
+				objetos = MyArrayUtils.cloneArrayEntidades(Sessao.unica.nuvens.cache.Cad_Grade);
+				maes = ["*"];//cria um primeiro item, para forçar o usuário a escolher opção
+				for each (var o:Cad_Grade in objetos)
+				{
+					if (o.filha_rf=="-")
+						maes.push(o);
+					o.__orderBy = o.mae_rf+o.filha_rf;
+				}
+				objetos.sortOn("__orderBy");
+				cmbMaes.dataProvider = maes;
+				preencheGrid();
+				
+				
+				
+				
+				
+				<mx:Label text="Mãe:" fontSize="16" fontWeight="bold"/>
+				<mx:ComboBox id="cmbMae" width="150" fontSize="16" dataProvider="{Sessao.unica.cListas.grades}" labelField="nome"/>
+				<mx:Label text="Filha:" fontSize="16" fontWeight="bold"/>
+				<mx:ComboBox id="cmbFilha" width="150" fontSize="16" dataProvider="{cmbMae.selectedItem.filhos}" labelField="nome"/>
+				-->
+			</mx:HBox>
+			
+			<mx:HBox>
+				
+				<comp:Botao2 cor="Azul" label="Lançar" click="lancar()"/>
+				<comp:Botao2 cor="Azul" label="Retirar / Editar" enabled="{gridGrades.selectedIndex > -1}" click="retirar()"/>
+				
+			</mx:HBox>
+			
+			<mx:HBox>
+				
+				<mx:DataGrid id="gridGrades" width="420" rowCount="5"
+					themeColor="#3B5998"
+					dataProvider="{ grades_selecionadas }">
+					<mx:columns>
+						<mx:DataGridColumn width="1" dataField="mae" headerText="Mãe"/>
+						<mx:DataGridColumn width="1" dataField="filha" headerText="Filha"/>
+					</mx:columns>
+				</mx:DataGrid>
+				
+			</mx:HBox>
+			
+			<mx:HBox width="420" backgroundColor="gray">
+				<mx:Label text="{identificador_com_grade}" fontSize="16" fontWeight="bold" color="white"/>
+			</mx:HBox>
+			<mx:HBox width="420" verticalAlign="middle" fontSize="14" fontWeight="bold">
+				<mx:Label text="Cod. Barras Estoque"/>
+				<controls:MasterTextInput id="txtCodBarrasGrade" width="100%" capsType="upercase"/>
+			</mx:HBox>
+			
+			<comp:Botao2 cor="Verde" label="Mover Estoque" click="define()"/>
+			
+		</mx:VBox>
+		
+	</mx:VBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import SDE.Entidade.Cad_Grade;
+			import Core.Alerta.AlertaSistema;
+			import Core.Ev.EvRetornaArray;
+			import mx.collections.ArrayCollection;
+			import Core.Sessao;
+			import SDE.Entidade.MovItemEstoque;
+			import SDE.Entidade.MovItem;
+			
+			[Bindable]private var grades_selecionadas:ArrayCollection = new ArrayCollection();
+			[Bindable] private var identificador_com_grade:String = "";
+			
+			protected override function getResultado_impl():String
+			{
+				return new String();
+			}
+			
+			private function create():void
+			{
+				//var filhas:Array = ["*"];//cria um primeiro item, para forçar o usuário a escolher opção
+				
+				var filhas:Array = [];
+				for each (var o:Cad_Grade in App.single.cache.arrayCad_Grade)
+				{
+					if (o.filha_rf!="")
+					{
+						filhas.push(o);
+						o.__orderBy = o.mae+": "+o.filha;
+					}
+				}
+				filhas.sortOn("__orderBy");
+				cmbGrade.dataProvider = ["escolha uma grade..."].concat(filhas);
+				
+				//gridGrades.dataProvider = grades;
+			}
+			
+			private function lancar():void
+			{
+				//var obj:Object = new Object;
+				if (cmbGrade.selectedIndex==0)
+				{
+					AlertaSistema.mensagem("Escolha uma grade");
+					return;
+				}
+				
+				var g:Cad_Grade = cmbGrade.selectedItem as Cad_Grade;
+				if (grades_selecionadas.length > 0)
+				{
+					for each (var atual:Cad_Grade in grades_selecionadas)
+					{
+						if (atual.mae == g.mae)
+							grades_selecionadas.removeItemAt(grades_selecionadas.getItemIndex(atual));
+					}
+				}
+				
+				grades_selecionadas.addItem(g);
+				pinta();
+			}
+			
+			private function retirar():void
+			{
+				grades_selecionadas.removeItemAt(gridGrades.selectedIndex);
+				pinta();
+			}
+			
+			private function pinta():void
+			{
+				identificador_com_grade = "";
+				for each (var g:Cad_Grade in grades_selecionadas)
+				{
+					if (identificador_com_grade == "")
+						identificador_com_grade += g.mae_rf + ": " + g.filha_rf;
+					else
+						identificador_com_grade += "," + g.mae_rf+ ": " + g.filha_rf;
+				}
+			}
+			
+			private function limpaTela():void
+			{
+				grades_selecionadas.removeAll();
+				nsQtd.value = 0;
+				//cmbMae.selectedIndex = 0;
+				//cmbFilha.selectedIndex = 0;
+				cmbGrade.selectedIndex =  0;
+				nsQtd.setFocus();
+				txtCodBarrasGrade.text = "";
+				pinta();
+			}
+			
+			private function define():void
+			{
+				if (nsQtd.value > 0)
+				{
+					var ev:EvRetornaArray = new EvRetornaArray([nsQtd.value, identificador_com_grade, txtCodBarrasGrade.text]);
+					dispatchEvent(ev);
+					limpaTela();
+				}
+				else
+					AlertaSistema.mensagem("Informe a quantidade");
+			}
+		]]>
+	</mx:Script>
+	
+</SuperDefineDetalheEstoque>

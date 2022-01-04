@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*" xmlns:comp="Componentes.comp.*"
+	width="100%" height="100%"
+	verticalAlign="middle"
+	fontSize="14"
+	creationComplete="create()" show="show()">
+	
+	<mx:HBox width="100%">
+		<mx:VBox>
+			<mx:Label text="TIPO" width="100%"/>
+			<mx:HBox>
+				<mx:ComboBox id="cmbTiposPortador" labelField="nome" />
+			</mx:HBox>
+		</mx:VBox>		
+		<mx:VBox>
+			<mx:Label text="PORTADOR" width="100%"/>
+			<mx:HBox>
+				<master:MasterTextInput id="txtNome" capsType="upercase" width="100%" click="inserir()"/>
+				<comp:Botao1 width="250" label="Criar Portador" icone="Adiciona" cor="Cinza" click="inserir()" />
+			</mx:HBox>
+		</mx:VBox>		
+	</mx:HBox>
+	
+	<mx:DataGrid id="grid" width="100%" height="100%"
+		themeColor="#3B5998" headerColors="[#efefef,#3B5998]">
+		<mx:columns>
+			<mx:DataGridColumn dataField="id" headerText="Cód"/>
+			<mx:DataGridColumn dataField="tipo" headerText="Tipo"/>
+			<mx:DataGridColumn dataField="nome" headerText="Nome"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right">
+		<comp:Botao1 cor="Cinza" icone="Cancela" width="220" label="Desfazer Alterações" click="{resetar()}"/>
+		<comp:Botao1 cor="Cinza" icone="Salva" width="220" label="Salvar Portadores" click="{salvar()}"/>
+	</mx:HBox>
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import Core.Utils.MyArrayUtils;
+			import SDE.Entidade.Finan_PortadorTipo;
+			import SDE.CamadaNuvem.NuvemModificacoes;
+			import SDE.Enumerador.EPortadorTipo;
+			import SDE.Entidade.Finan_Portador;
+
+			import SDE.Entidade.Finan_CentroCusto;
+			import img.Imagens;
+			
+			import Core.Sessao;
+			import Core.Alerta.AlertaSistema;
+			
+			import SDE.FachadaServico.FcdCorp;
+			import SDE.CamadaServico.SCorp;
+			
+			private var portadores:Array;
+			private var tiposPortador:Array;
+			
+			private function create():void
+			{
+				resetar();
+			}
+			private function show():void		
+			{
+				tiposPortador = App.single.cache.cloneFinan_PortadorTipo;
+				tiposPortador.sortOn("nome");
+				cmbTiposPortador.dataProvider = tiposPortador;
+			}
+			
+			
+			private function resetar():void
+			{
+				portadores = App.single.cache.cloneFinan_Portador;
+				tiposPortador = App.single.cache.cloneFinan_PortadorTipo;
+				tiposPortador.sortOn("nome");
+				preencheGrid();
+			}
+			
+			private function preencheGrid():void
+			{
+				//as Dictionary
+				var tiposPortador_AsDict:Array = MyArrayUtils.asDictionary(tiposPortador);
+				//
+				var ar:Array = [];
+				portadores.sortOn("nome");
+				for each (var xxx:Finan_Portador in portadores)
+				{
+					var o:Object = {};
+					//o.portador = xxx;
+					o.id = xxx.id;
+					o.nome = xxx.nome;
+					o.tipo = tiposPortador_AsDict[xxx.idTipoPortador].nome;
+					ar.push(o);
+				}
+				grid.dataProvider = ar;
+				//
+				cmbTiposPortador.dataProvider = tiposPortador;
+				cmbTiposPortador.selectedIndex=0;
+			}
+			
+			private function inserir():void
+			{
+				txtNome.setFocus();
+				if(txtNome.text == ''){
+					AlertaSistema.mensagem('Digite o Portador');
+					return;
+				}
+				var xxx:Finan_Portador;
+				for each(xxx in portadores)
+				{
+					if(xxx.nome == txtNome.text)
+					{
+						AlertaSistema.mensagem("Este Portador já existe.");
+						return;
+					}
+				}
+				xxx = new Finan_Portador();
+				xxx.idEmp = Sessao.unica.idEmp;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				xxx.nome = txtNome.text;
+				xxx.idTipoPortador = cmbTiposPortador.selectedItem.id;
+				txtNome.text = "";
+				
+				portadores.push(xxx);
+				preencheGrid();
+			}
+			
+			private function salvar():void
+			{
+				var arSalvar:Array = [];
+				
+				for each(var xxx:Finan_Portador in portadores)			
+					if(xxx.id ==0)
+						arSalvar.push(xxx);
+				
+				Sessao.unica.nuvens.modificacoes.Finan_Portador_Novos(arSalvar,
+					function(retorno:Array):void
+					{
+						AlertaSistema.mensagem("Salvei.");
+						resetar();
+					}
+				);
+			}
+		]]>
+	</mx:Script>
+	
+	
+	
+	
+	
+</mx:VBox>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	keyDown="kDown(event)"
+	label="PESQUISA DE ESTOQUE">
+	<mx:Script>
+		<![CDATA[
+			import mx.effects.Resize;
+			import img.Imagens;
+			import Core.Alerta.AlertaSistema;
+		]]>
+	</mx:Script>
+	<mx:Script source="ConteudoPesquisaEstoque_script.as"/>
+	
+	<controls:MasterTextInput id="txt"
+		x="5" y="25" capsType="upercase"
+		width="30%" height="33"
+		fontSize="20" enter="txt_KEnter()"/>
+	
+	<mx:Canvas
+		width="100%" height="70%">
+		
+		<mx:VBox width="100%" height="100%">
+		<mx:DataGrid id="gridItens"
+			themeColor="#3B5998"
+			width="100%" height="100%"
+			doubleClickEnabled="true" doubleClick="gridItens_dclick()"
+			keyDown="gridItens_kdown(event)"
+			change="gridItens_change(event)"
+			styleName="dtgrid">
+			<mx:columns>
+				<mx:DataGridColumn width="1" headerText="Cód" dataField="idItem" textAlign="right"/>
+				<mx:DataGridColumn width="7" headerText="Nome" dataField="nome" fontWeight="bold" />
+				<mx:DataGridColumn width="4" headerText="Cód Único" dataField="rfUnica"/>
+				<mx:DataGridColumn width="4" headerText="Cód Auxiliar" dataField="rfAuxiliar"/>
+				<mx:DataGridColumn width="3" headerText="Seção" dataField="secao"/>
+				<mx:DataGridColumn width="3" headerText="Marca" dataField="marca"/>
+				<mx:DataGridColumn width="2" headerText="medida" dataField="unidMed"/>
+				<mx:DataGridColumn width="2" headerText="Valor" dataField="venda"/>
+			</mx:columns>
+		</mx:DataGrid>
+		
+		</mx:VBox>
+		<mx:HBox id="loading1"
+			backgroundAlpha=".6" backgroundColor="#ffffff" visible="false"
+			width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.swf_loading}" scaleX="3" scaleY="3" />
+		</mx:HBox>
+	</mx:Canvas>
+	
+	<mx:Canvas
+		width="100%" height="30%">
+		
+		<mx:HBox width="100%" height="100%" verticalAlign="bottom">
+			<mx:DataGrid id="gridRet"
+				themeColor="#3B5998"
+				height="100%"
+				doubleClickEnabled="true" doubleClick="gridRet_dclick()"
+				keyDown="gridRet_kdown(event)"
+				styleName="dtgrid" fontWeight="bold"
+				resizeEffect="{Resize}">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Grade" dataField="identificador" />
+					<mx:DataGridColumn headerText="Quant" dataField="qtd" />
+					<mx:DataGridColumn visible="{mostrando_reserva}" headerText="Quant Reserva" dataField="qtdReserva"/>
+					<mx:DataGridColumn visible="{mostrando_reserva}" headerText="Saldo" dataField="qtdSaldo"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:Label id="lblSomaEstoque" fontSize="16" fontWeight="bold" />
+		</mx:HBox>
+		<!--
+		<mx:HBox id="loading2"
+			backgroundAlpha=".6" backgroundColor="#ffffff" visible="false"
+			width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+			<mx:Image source="{Imagens.unica.swf_loading}" scaleX="3" scaleY="3" />
+		</mx:HBox>
+		-->
+	</mx:Canvas>
+	
+	<!--
+	
+		doubleClickEnabled="true" doubleClick="grid_dclick()"
+		keyDown="grid_kdown(event)"
+	-->
+</mx:VBox>

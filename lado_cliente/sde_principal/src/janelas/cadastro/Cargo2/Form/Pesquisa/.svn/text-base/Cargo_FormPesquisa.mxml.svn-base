@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	initialize="init()"
+	styleName="padding5" fontSize="14" fontWeight="bold" xmlns:CP="Componentes.CP.*"
+	xmlns:controls="com.flexpernambuco.controls.*" xmlns:SDE="Componentes.SDE.*">
+	
+	<mx:HBox width="100%" verticalAlign="middle">
+		<mx:Image source="{Imagens.unica.icn_64_pesquisa}"/>
+		<mx:Label text="Pesquisa" fontSize="40" color="#666666" fontWeight="bold"/>
+	</mx:HBox>
+	
+	<mx:HBox width="100%" verticalAlign="middle">
+		<SDE:CaixaPesquisa id="cpCargo" width="100%" clickPesquisar="dpCargo=cargoScript.buscaCargo(cpCargo.text)"/>
+		<SDE:Botao id="btnNovoCargo" label="Novo Cargo" labelPlacement="right" icon="{Imagens.unica.icn_32_adiciona}"
+			click="cargoScript.abreNovoCadastro(mdlPai)"/>
+	</mx:HBox>
+	
+	<SDE:DataGrid id="dgCargoPesquisa"
+		width="100%" height="100%" editable="false"
+		dataProvider="{dpCargo}">
+		<SDE:columns>
+			<mx:DataGridColumn width="1" headerText="Cód." dataField="cod"/>
+			<mx:DataGridColumn width="7" headerText="Cargo" dataField="nomeCargo"/>
+			<mx:DataGridColumn width="1" headerText="Comissionado" dataField="comissionado" itemRenderer="{checkBoxFac}" textAlign="center"/>
+			<mx:DataGridColumn width="1" headerText="Acessa Sistema" dataField="acessaSistema" itemRenderer="{checkBoxFac}" textAlign="center"/>
+		</SDE:columns>
+	</SDE:DataGrid>
+	
+	<mx:HBox width="100%" verticalAlign="middle" horizontalAlign="right">
+		<SDE:Botao id="btnSelecionar" label="Selecionar" labelPlacement="right" icon="{Imagens.unica.icn_32_aceita}"
+			click="cargoScript.carregaCargoSelecionado(dgCargoPesquisa.selectedItem, mdlPai)"/>
+	</mx:HBox>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.CheckBox;
+			import mx.collections.ArrayCollection;
+			import janelas.cadastro.Cargo2.JnlCadCargo2;
+			import janelas.cadastro.Cargo2.CargoScript;
+			import mx.controls.Alert;
+			import img.Imagens;
+			
+			public var mdlPai:JnlCadCargo2 = new JnlCadCargo2();
+			private var cargoScript:CargoScript = new CargoScript();
+			
+			private var _dpCargo:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var checkBoxFac:ClassFactory;
+			
+			private function init():void
+			{
+				checkBoxFac = new ClassFactory(CheckBox);
+				checkBoxFac.properties = 
+				{
+					enabled:false
+				};
+			}
+			
+			[Bindable]
+			public function get dpCargo():ArrayCollection{return _dpCargo;}
+			public function set dpCargo(valor:ArrayCollection):void{this._dpCargo = valor;}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

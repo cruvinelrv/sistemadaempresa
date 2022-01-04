@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+	creationComplete="create()" xmlns:print="org.print.*" xmlns:doc="org.doc.*"
+	paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0">
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.Base64Encoder;
+			import Core.Alerta.AlertaSistema;
+			import SDE.Enumerador.EPesTipo;
+			import mx.formatters.DateFormatter;
+			import mx.controls.Alert;
+			import mx.printing.FlexPrintJobScaleType;
+			import mx.printing.FlexPrintJob;
+			import mx.controls.Image;
+			import img.Imagens;
+			import flash.utils.setTimeout;
+			import mx.containers.VBox;
+			import mx.managers.PopUpManager;
+			import Core.Utils.Funcoes;
+			import impressoes.relatorios.RelatorioFabricaBodies;
+			import impressoes.relatorios.RelatorioRodape;
+			import impressoes.relatorios.RelatorioCabecalho;
+			import impressoes.relatorios.modelos.ModeloCabecalho;
+			import org.print.Body;
+			import org.print.Report;
+			import org.doc.PaperFormat;
+			import org.doc.Document;
+			
+			import SDE.Entidade.Empresa;
+			import SDE.Entidade.Mov;
+			import SDE.Parametro.ParamFiltroMov;
+			import SDE.Parametro.ParamFiltroItem;
+			import SDE.Parametro.ParamFiltroCliente;			
+			import SDE.FachadaServico.FcdRelatorio;
+			import SDE.FachadaServico.FcdCorp;
+			[Bindable]private var doc:Document = null;
+			
+			private function create():void
+			{
+				if (!parameters.tipo_impressao)
+				{
+					Alert.show("ENTRADA INVÁLIDA DE DADOS");
+					return;
+				}
+				
+				var enc:Base64Encoder = new Base64Encoder();
+				enc.encodeUTFBytes("corp"+parameters.idCorp);
+				var hash:String = enc.toString();
+				
+				if (hash!=parameters.hash)
+				{
+					Alert.show("FALHA NA AUTENTIÇÃO");
+					return;
+				}
+				
+				switch(parameters.tipo_impressao)
+				{
+					case "relatorio":
+						desenhaRelatorio();
+						break;
+					case "etiqueta":
+						desenhaEtiqueta();
+						break;
+					default:
+						Alert.show("ENTRADA INVÁLIDA DE DADOS");
+						break;
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Script source="impressoes/Imprime_script.as"/>
+	
+	<print:Preview id="relatorio" width="100%" height="100%"
+		 doc="{doc}"/>	
+		 
+</mx:Application>

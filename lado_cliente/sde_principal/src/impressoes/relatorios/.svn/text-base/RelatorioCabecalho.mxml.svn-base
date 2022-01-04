@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PrintComponent xmlns="org.print.*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="100%" height="50">
+	<mx:VBox width="100%" >
+	
+		<mx:HBox width="100%" fontSize="14">
+			<mx:Label text="{data.empresa}" />
+			<mx:Label text="CNPJ: {data.cpf_cnpj}"/>
+		</mx:HBox>
+		<mx:Label width="100%" text="{data.relatorio}"
+			fontSize="14" textAlign="center"/>
+		
+		<!--
+		<mx:HBox width="100%" fontSize="12">
+			<mx:Label text="Endereço: {data.__pessoa.__enderecos[0].logradouro}" />
+			<mx:Label text="n° {data.__pessoa.__enderecos[0].numero}"/>
+			<mx:Label text="{data.__pessoa.__enderecos[0].bairro}"/>
+			<mx:Label text="{data.__pessoa.__enderecos[0].cidade}"/>
+			<mx:Label text=" - {data.__pessoa.__enderecos[0].estado}"/>
+			<mx:Label text=" - {data.__pessoa.__enderecos[0].cep}"/>
+		</mx:HBox>
+		-->
+	</mx:VBox>
+</PrintComponent>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:master="com.flexpernambuco.controls.*"
+	width="100%" height="100%"
+	creationComplete="create()"
+	xmlns:comp="Componentes.comp.*">
+	
+	<comp:Botao1 label="Criar" cor="Cinza"  icone="Adiciona" click="abrePopupNovoTipoOS()" fontSize="14"/>
+	<mx:DataGrid id="gridTiposOS" width="100%" height="100%" dataProvider="{listaTiposOS}"
+		themeColor="#3B5998">
+		<mx:columns>
+			<mx:DataGridColumn width="2" dataField="nome" headerText="Tipo OS" />
+			<mx:DataGridColumn width="1" headerText="Veículo" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.veiculo}"
+							click="{data.veiculo = !data.veiculo;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Placa" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.placa}"
+							click="{data.placa = !data.placa;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Kilometragem" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.kilometragem}"
+							click="{data.kilometragem = !data.kilometragem;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Nº Motor" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.numMotor}"
+							click="{data.numMotor = !data.numMotor;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Máquina" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.maquina}"
+							click="{data.maquina = !data.maquina;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Impl. Agrícola" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.implAgricola}"
+							click="{data.implAgricola = !data.implAgricola;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Equipamento" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.equipamento}"
+							click="{data.equipamento = !data.equipamento;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Nº Série" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.numSerie}"
+							click="{data.numSerie = !data.numSerie;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Serviço" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.servico}"
+							click="{data.servico = !data.servico;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Defeito Reclamado" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.defeitoReclamado}"
+							click="{data.defeitoReclamado = !data.defeitoReclamado;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn width="1" headerText="Defeito Constatado" textAlign="center">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox
+							selected="{data.defeitoConstatado}"
+							click="{data.defeitoConstatado = !data.defeitoConstatado;}"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:HBox width="100%" horizontalAlign="right" fontSize="14">
+		<comp:Botao1 cor="Cinza" icone="Cancela" label="Desfazer" click="resetar()"/>
+		<comp:Botao1 cor="Cinza" icone="Salva" label="Salvar" click="salvar()"/>
+	</mx:HBox>
+	
+	<mx:Panel id="popupNovoTipoOS"
+		width="500" layout="absolute"
+		borderAlpha="1" fontSize="14" headerHeight="10">
+		
+		<mx:VBox fontSize="16" fontWeight="bold" width="100%" styleName="padding5">
+			<mx:Label text="Insira o nome do novo tipo de OS"/>
+			<mx:HBox width="100%" styleName="padding5">
+				<master:MasterTextInput id="txtNovoTipoOS"
+					styleName="padding5" capsType="upercase" height="40" width="100%"
+					enter="adicionaTipoOS()"/>
+				<comp:Botao2 cor="Cinza" icone="Aceita" height="40" width="38"
+					click="adicionaTipoOS()"/>
+			</mx:HBox>
+		</mx:VBox>
+		
+	</mx:Panel>
+	
+	<mx:Script>
+		<![CDATA[
+			import Core.App;
+			import SDE.Entidade.OrdemServico_Tipo;
+			import Core.Sessao;
+			import Core.Utils.MyArrayUtils;
+			import mx.events.DataGridEvent;
+			import Core.Alerta.AlertaSistema;
+			import mx.collections.ArrayCollection;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			
+			[Bindable] private var listaTiposOS:ArrayCollection = new ArrayCollection();
+			
+			private function create():void
+			{
+				popupNovoTipoOS.parent.removeChild(popupNovoTipoOS);
+				resetar();
+			}
+			
+			private function resetar():void
+			{
+				listaTiposOS = App.single.cache.arraycOrdemServico_Tipo;
+			}
+			
+			private function abrePopupNovoTipoOS():void
+			{
+				PopUpManager.addPopUp(popupNovoTipoOS, Application.application.gerenteJanelas, true);
+				PopUpManager.centerPopUp(popupNovoTipoOS);
+				txtNovoTipoOS.setFocus();
+			}
+			
+			private function fechaPopupNovoTipoOS():void
+			{
+				PopUpManager.removePopUp(popupNovoTipoOS);
+				txtNovoTipoOS.text = '';
+			}
+			
+			private function adicionaTipoOS():void
+			{
+				if (txtNovoTipoOS.text.length < 2)
+				{
+					AlertaSistema.mensagem("Informe um nome para o Tipo da OS");
+					return;
+					
+				}
+				var xxx:OrdemServico_Tipo;
+				for each(xxx in listaTiposOS)
+				{
+					if(xxx.nome == txtNovoTipoOS.text)
+					{
+						AlertaSistema.mensagem("Este tipo já foi definido");
+						return;
+					}
+				}
+				xxx = new OrdemServico_Tipo();
+				xxx.nome = txtNovoTipoOS.text;
+				xxx.idClienteFuncionarioLogado = Sessao.unica.idClienteFuncionarioLogado;
+				listaTiposOS.addItem(xxx);
+				fechaPopupNovoTipoOS();
+			}
+			
+			private function salvar():void
+			{
+				Sessao.unica.nuvens.modificacoes.OrdemServico_Tipo_NovosAtualizacoes(listaTiposOS.source,
+					function():void
+					{
+						AlertaSistema.mensagem("Salvei");
+						resetar();
+					}
+				);
+			}
+		]]>
+	</mx:Script>
+	
+</mx:VBox>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<novidades>
+
+<mes nome="MAIO">
+	<n data="20/MAI">
+	<texto>02 NOVOS RELATÓRIOS
+	Clique em "Relatórios -> Relatórios" e confira:
+	Resumo de Estoque,
+	Detalhes de Movimentação</texto>
+	</n>
+	
+	<n data="19/MAI">
+	<texto>IMPRIMA ETIQUETAS EM PDF
+	Clique em "Relatórios -> Etiquetas" e confira como está ainda mais fácil.
+	(o sde-desktop precisa estar rodando)</texto>
+	</n>
+	
+	<n data="15/MAI">
+	<texto>PESQUISA DE MOVIMENTAÇÃO APRIMORADA
+	Encontre suas vendas, compras e orçamentos entre determinados dias.</texto>
+	</n>
+	
+	<n data="12/MAI">
+	<texto>RESERVA DE ESTOQUE
+	Agora é possível colocar quantias de estoque em reserva ao fazer orçamentos.</texto>
+	</n>
+</mes>
+<mes nome="ABRIL">
+	<n data="27/ABR">
+	<texto>RELATÓRIOS
+	Confira 03 tipos de relatórios na guia "Relatório".</texto>
+	</n>
+	
+	<n data="15/ABR">
+	<texto>TEF EM TESTE
+	Após 03 semanas em desenvolvimento, os testes reais com TEF começam hoje.</texto>
+	</n>
+	
+	<n data="06/ABR">
+	<texto>Código de Barra Zebra
+	Incluída a opção de imprimir etiquetas de código de barra na impressora Zebra TLP2844.
+	Cupom Fiscal, Relatórios e TEF em teste.</texto>
+	</n>
+</mes>
+<mes nome="MARÇO">
+	<n data="20/MAR">
+	<texto>Saída de Estoque funcionando!
+	Agora você pode fazer ambos, entrada e saída de estoque.
+	Observe o sistema de GRADES para permitir detalhamento do ESTOQUE.
+	Ao remanejar estoque durante a entrada, agora você pode verificar o histórico de grades utilizadas para um produto específico.</texto>
+	</n>
+	
+	<n data="18/MAR">
+	<texto>Saída de Estoque em Teste!
+	Nos dê um retorno com sua opinião.</texto>
+	</n>
+	
+	<n data="16/MAR">
+	<texto>Entrada de Estoque disponível!
+	Confira como lançar suas NF de entrada e tenha controle de seu ESTOQUE com GRADE.</texto>
+	</n>
+</mes>
+
+</novidades>
